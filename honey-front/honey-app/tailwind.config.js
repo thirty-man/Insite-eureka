@@ -3,6 +3,9 @@ export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      width: {
+        640: "640px",
+      },
       colors: {
         cg1: "#FFC971",
         cg2: "#FFB627",
