@@ -13,6 +13,9 @@ export default {
       fontFamily: {
         ggul: ["GoryeongStrawberry"],
       },
+      backgroundImage: {
+        backgroundImg: "url('@assets/images/background.png')",
+      },
     },
   },
   plugins: [],
