@@ -7,11 +7,14 @@ export default {
         640: "640px",
       },
       colors: {
-        cg1: "#FFC971",
-        cg2: "#FFB627",
-        cg3: "#FF9505",
-        cg4: "#E2711D",
-        cg5: "#CC5803",
+        cg: {
+          DEFAULT: "#EEE6C4",
+          1: "#FFC971",
+          2: "#FFB627",
+          3: "#FF9505",
+          4: "#E2711D",
+          5: "#CC5803",
+        },
       },
       fontFamily: {
         ggul: ["GoryeongStrawberry"],
