@@ -32,6 +32,12 @@ h1 {
   align-items: center;
   padding: 1rem 1rem;
 }
+body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
 
 /* 폰트 */
 @font-face {
