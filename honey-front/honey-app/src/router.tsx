@@ -4,6 +4,7 @@ import Login from "@pages/login";
 import RoomList from "@pages/roomlist";
 import MyPage from "@pages/mypage";
 import Send from "@pages/send";
+import ErrorNotFound from "@pages/error";
 
 const routePaths: RouteObject[] = [
   {
@@ -42,6 +43,11 @@ const routePaths: RouteObject[] = [
         element: <ModifyRoom />,
       },
     ],
+  },
+  {
+    id: "error404",
+    path: "/*",
+    element: <ErrorNotFound />,
   },
 ];
 
