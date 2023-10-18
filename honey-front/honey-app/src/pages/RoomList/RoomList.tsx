@@ -1,5 +1,5 @@
 // import TextButton from "@components/common/button/TextButton";
-import SearchRoom from "@components/search/index";
+import SearchRoom from "@components/search";
 import { useRecoilValue } from "recoil";
 import roomAtoms from "@recoil/roomAtoms";
 
