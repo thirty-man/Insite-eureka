@@ -5,6 +5,11 @@ export default {
     extend: {
       width: {
         640: "640px",
+        960: "960px",
+      },
+      height: {
+        640: "640px",
+        960: "960px",
       },
       colors: {
         cg: {
