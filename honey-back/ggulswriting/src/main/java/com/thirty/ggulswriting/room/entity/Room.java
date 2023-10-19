@@ -33,7 +33,7 @@ public class Room extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String roomTitle;
 
     @Column(nullable = false)
