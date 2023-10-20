@@ -50,7 +50,7 @@ public class Participation extends BaseEntity {
 			.build();
 	}
 
-	public void out(Boolean isOut){
-		this.isOut = isOut;
+	public void out(){
+		this.isOut = true;
 	}
 }

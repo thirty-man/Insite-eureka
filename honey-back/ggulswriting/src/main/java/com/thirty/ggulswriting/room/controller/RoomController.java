@@ -30,7 +30,7 @@ public class RoomController {
 	public ResponseEntity<String> participate(
 		@Valid @RequestBody RoomParticipateReqDto roomParticipateReqDto
 	) {
-		int memberId = 1;
+		int memberId = 101;
 		String result = roomService.participate(roomParticipateReqDto, memberId);
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}

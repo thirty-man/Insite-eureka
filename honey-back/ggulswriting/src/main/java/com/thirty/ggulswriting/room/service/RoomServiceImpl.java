@@ -58,6 +58,11 @@ public class RoomServiceImpl implements RoomService {
 		if (optionalRoomMember.isPresent()) {
 			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
 		}
+		//100명 이상인 경우 입장 불가
+		int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
+		if(memberCount >= 100) {
+			return "room is full";
+		}
 
 		//저장
 		participationRepository.save(Participation.of(member, room, false));
@@ -91,8 +96,21 @@ public class RoomServiceImpl implements RoomService {
 		if(participation.getIsOut()){
 			throw new ParticipationException(ErrorCode.ALREADY_OUT_MEMBER);
 		}
+
+		//방장이면 권한을 넘김
+		if(member.equals(room.getMember())){
+			Optional<Participation> optionalOtherParticipation = participationRepository.findTopOneByIsOutIsFalse();
+
+			//다른 참여자가 없으면 방 삭제 아니면 방장을 넘김
+			if(optionalOtherParticipation.isEmpty()){
+				room.delete();
+			}else{
+				Participation otherParticipation = optionalOtherParticipation.get();
+				room.changeMaster(otherParticipation.getMember());
+			}
+		}
 		//방 나가기
-		participation.out(true);
+		participation.out();
 	}
 
 	@Override
