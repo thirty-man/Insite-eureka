@@ -50,11 +50,11 @@ public class Room extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
-    public Room create(Member member, String title, LocalDateTime expireTime, String password){
+    public Room create(Member member, String title, LocalDateTime showTime, String password){
         return Room.builder()
             .member(member)
             .roomTitle(title)
-            .showTime(expireTime)
+            .showTime(showTime)
             .password(password)
             .build();
     }
