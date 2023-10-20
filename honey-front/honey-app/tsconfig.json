@@ -26,10 +26,11 @@
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@config/*": ["src/config/*"],
+      "@customType/*": ["src/customtype/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
       "@recoil/*": ["src/recoil/*"],
-      "@styles/*": ["src/styles/*"],
-      "@types/*": ["src/types/*"]
+      "@styles/*": ["src/styles/*"]
     }
   },
   "include": ["src", ".eslintrc.json"],
