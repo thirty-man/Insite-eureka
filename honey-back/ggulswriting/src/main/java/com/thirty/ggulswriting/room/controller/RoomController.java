@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,17 @@ public class RoomController {
 	public ResponseEntity<String> participate(
 		@Valid @RequestBody RoomParticipateReqDto roomParticipateReqDto
 	) {
-		Long memberId = 1l;
+		int memberId = 1;
 		String result = roomService.participate(roomParticipateReqDto, memberId);
 		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+
+	@PatchMapping("/{roomId}/out")
+	public ResponseEntity<Void> out(
+		@Valid @PathVariable int roomId
+	){
+		int memberId = 1;
+		roomService.out(roomId,memberId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

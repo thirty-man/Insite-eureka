@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RoomParticipateReqDto {
 	@NotNull
-	private Long roomId;
+	private int roomId;
 
 }

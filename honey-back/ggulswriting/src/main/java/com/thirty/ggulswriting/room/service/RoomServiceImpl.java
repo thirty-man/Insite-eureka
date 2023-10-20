@@ -28,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
 	private final ParticipationRepository participationRepository;
 
 	@Override
-	public String participate(RoomParticipateReqDto roomParticipateReqDto, Long memberId) {
+	public String participate(RoomParticipateReqDto roomParticipateReqDto, int memberId) {
 		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
 		//탈퇴 회원 검증
 		if (optionalMember.isEmpty()) {
@@ -56,5 +56,36 @@ public class RoomServiceImpl implements RoomService {
 		//저장
 		participationRepository.save(Participation.of(member, room, false));
 		return "ok";
+	}
+
+	@Override
+	public void out(int roomId, int memberId) {
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+		//탈퇴 회원 검증
+		if (optionalMember.isEmpty()) {
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		//방이 존재하는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+		//방에 참여한 사람인지 검증
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
+			room);
+		if (optionalParticipation.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
+
+		Participation participation = optionalParticipation.get();
+
+		//이미 나간 사람인지 검증
+		if(participation.getIsOut()){
+			throw new ParticipationException(ErrorCode.ALREADY_OUT_MEMBER);
+		}
+		//방 나가기
+		participation.out(true);
 	}
 }

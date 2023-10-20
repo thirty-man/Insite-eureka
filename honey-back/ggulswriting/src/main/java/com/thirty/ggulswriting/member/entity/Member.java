@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private int memberId;
 
     @Column(nullable = false)
     private String kakaoToken;

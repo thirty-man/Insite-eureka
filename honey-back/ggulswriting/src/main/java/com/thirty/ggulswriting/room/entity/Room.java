@@ -27,7 +27,7 @@ public class Room extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    private int roomId;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -37,7 +37,7 @@ public class Room extends BaseEntity {
     private String roomTitle;
 
     @Column(nullable = false)
-    private LocalDateTime expireTime;
+    private LocalDateTime showTime;
 
     @Column
     private String password;
@@ -50,11 +50,11 @@ public class Room extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
-    public Room create(Member member, String title, LocalDateTime expireTime, String password){
+    public Room create(Member member, String title, LocalDateTime showTime, String password){
         return Room.builder()
             .member(member)
             .roomTitle(title)
-            .expireTime(expireTime)
+            .showTime(showTime)
             .password(password)
             .build();
     }
