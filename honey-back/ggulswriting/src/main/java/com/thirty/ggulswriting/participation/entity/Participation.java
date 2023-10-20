@@ -29,7 +29,7 @@ public class Participation extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long participationId;
+	private int participationId;
 
 	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
@@ -48,5 +48,9 @@ public class Participation extends BaseEntity {
 			.room(room)
 			.isOut(isOut)
 			.build();
+	}
+
+	public void out(Boolean isOut){
+		this.isOut = isOut;
 	}
 }
