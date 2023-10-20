@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int memberId;
+    private Integer memberId;
 
     @Column(nullable = false)
     private String kakaoToken;
@@ -32,15 +32,17 @@ public class Member extends BaseEntity {
     @Column
     private LocalDateTime goodbyeTime;
 
-    public Member create(String kakaoToken){
+    @Column(nullable = false)
+    private String name;
+
+    public Member create(String kakaoToken, String name){
         return Member.builder()
             .kakaoToken(kakaoToken)
+            .name(name)
             .build();
     }
 
-    public Member delete(){
-        return Member.builder()
-            .goodbyeTime(LocalDateTime.now())
-            .build();
+    public void delete(){
+        this.goodbyeTime = LocalDateTime.now();
     }
 }
