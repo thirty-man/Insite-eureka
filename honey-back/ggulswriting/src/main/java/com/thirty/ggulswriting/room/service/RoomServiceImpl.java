@@ -1,7 +1,9 @@
 package com.thirty.ggulswriting.room.service;
 
 import com.thirty.ggulswriting.member.dto.MemberDto;
+import com.thirty.ggulswriting.room.dto.RoomDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -119,5 +121,28 @@ public class RoomServiceImpl implements RoomService {
 			memberDtoList.add(MemberDto.of(member.getMemberId(), member.getName()));
 		}
 		return RoomMemberResDto.from(memberDtoList);
+	}
+
+	@Override
+	public RoomResDto getMyRoomList(int memberId) {
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+		//탈퇴 회원 검증
+		if (optionalMember.isEmpty()) {
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		Member member = optionalMember.get();
+
+		//참여한 방 조회
+		List<Participation> participationList = participationRepository.findAllByMemberAndIsOutIsFalse(member);
+		List<Room> roomList = new ArrayList<>();
+		for(Participation participation: participationList){
+			roomList.add(participation.getRoom());
+		}
+
+		List<RoomDto> roomDtoList = new ArrayList<>();
+		for(Room room: roomList){
+			roomDtoList.add(RoomDto.from(room));
+		}
+		return RoomResDto.from(roomDtoList);
 	}
 }
