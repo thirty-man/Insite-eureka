@@ -87,6 +87,5 @@ public class RoomServiceImpl implements RoomService {
 		}
 		//방 나가기
 		participation.out(true);
-		participationRepository.save(participation);
 	}
 }
