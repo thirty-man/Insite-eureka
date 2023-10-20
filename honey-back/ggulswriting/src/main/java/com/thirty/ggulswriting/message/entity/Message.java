@@ -26,7 +26,7 @@ public class Message extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long messageId;
+    private int messageId;
 
     @ManyToOne
     @JoinColumn(name = "participation_to", nullable = false)
