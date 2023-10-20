@@ -1,6 +1,6 @@
 interface TextInputProps {
   holder: string;
-  value: string;
+  value: string | number;
   className: string;
   onChange(event: React.ChangeEvent<HTMLInputElement>): void;
   onKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
