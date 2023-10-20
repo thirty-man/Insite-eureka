@@ -1,5 +1,9 @@
 package com.thirty.ggulswriting.room.service;
 
+import com.thirty.ggulswriting.member.dto.MemberDto;
+import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -87,5 +91,33 @@ public class RoomServiceImpl implements RoomService {
 		}
 		//방 나가기
 		participation.out(true);
+	}
+
+	@Override
+	public RoomMemberResDto getMemberList(int roomId) {
+		//방이 존재하는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+		Room room = optionalRoom.get();
+		//삭제된 방인지 검증
+		if(room.getIsDeleted()){
+			throw new RoomException(ErrorCode.DELETED_ROOM);
+		}
+
+		//방에 참여한 회원 조회
+		List<Participation> participationList = participationRepository.findAllByRoomAndIsOutIsFalse(room);
+		List<Member> memberList = new ArrayList<>();
+		for(Participation participation : participationList){
+			memberList.add(participation.getMember());
+		}
+
+		//회원 id, 이름 반환
+		List<MemberDto> memberDtoList = new ArrayList<>();
+		for(Member member: memberList){
+			memberDtoList.add(MemberDto.of(member.getMemberId(), member.getName()));
+		}
+		return RoomMemberResDto.from(memberDtoList);
 	}
 }
