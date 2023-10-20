@@ -1,3 +1,3 @@
-import Help from "./help.svg";
+import HelpIcon from "./help.svg";
 
-export default Help;
+export default HelpIcon;
