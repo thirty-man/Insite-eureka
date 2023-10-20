@@ -116,7 +116,7 @@ public class RoomServiceImpl implements RoomService {
 		//회원 id, 이름 반환
 		List<MemberDto> memberDtoList = new ArrayList<>();
 		for(Member member: memberList){
-			memberDtoList.add(MemberDto.from(member.getMemberId(), member.getName()));
+			memberDtoList.add(MemberDto.of(member.getMemberId(), member.getName()));
 		}
 		return RoomMemberResDto.from(memberDtoList);
 	}

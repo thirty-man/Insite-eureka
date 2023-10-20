@@ -15,7 +15,7 @@ public class MemberDto {
 
     private String name;
 
-    public static MemberDto from(int id, String name){
+    public static MemberDto of(int id, String name){
         return MemberDto.builder()
             .id(id)
             .name(name)
