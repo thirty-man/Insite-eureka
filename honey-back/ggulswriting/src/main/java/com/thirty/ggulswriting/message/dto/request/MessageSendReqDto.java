@@ -17,12 +17,18 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MessageSendReqDto {
 	@NotNull
+	private int participationFromId;
+
+	@NotNull
+	private int participationToId;
+
+	@NotNull
 	private String nickName;
 
-	@Column(length = 100)
+	@Size(max = 100, message = "내용은 100자 제한입니다.")
 	private String content;
 
 	@NotNull
-	private int honeyCaseType;
+	private String honeyCaseType;
 
 }

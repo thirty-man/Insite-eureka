@@ -4,31 +4,43 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
-import com.thirty.ggulswriting.room.service.RoomService;
+import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
+import com.thirty.ggulswriting.message.dto.response.MessageResDto;
+import com.thirty.ggulswriting.message.service.MessageService;
 
 import lombok.AllArgsConstructor;
+
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/messages")
 public class MessageController {
 
-	private final MeesageService messageService;
+	private final MessageService messageService;
 
 	@PostMapping("/")
 	public ResponseEntity<String> send(
-		@Valid @RequestBody MessageSendReqDto messageSendReqDto
+			@Valid @RequestBody MessageSendReqDto messageSendReqDto
 	) {
-		int participationFrom = 1;
-		String result = messageService.send(messageSendReqDto, participationFrom);
+		String result = messageService.send(messageSendReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
+
+	@GetMapping("/{messageId}")
+	public ResponseEntity<MessageResponseDto> read(
+			@PathVariable Long messageId
+	) {
+		int memberId = 1;
+		MessageResponseDto response = messageService.read(messageId, memberId);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+
 }

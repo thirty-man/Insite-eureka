@@ -1,8 +1,8 @@
-package com.thirty.ggulswriting.room.service;
+package com.thirty.ggulswriting.message.service;
 
-import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
+import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
 
 public interface MessageService {
-	String send(MessageSendReqDto messageSendReqDto, int participationFrom);
-
+	String send(MessageSendReqDto messageSendReqDto);
+	String read(Long messageId, int memberId);
 }

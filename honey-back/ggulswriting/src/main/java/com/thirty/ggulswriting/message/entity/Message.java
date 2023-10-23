@@ -43,15 +43,19 @@ public class Message extends BaseEntity {
     private Boolean isCheck;
 
     @Column(nullable = false)
-    private int honeyCaseType;
+    private String honeyCaseType;
 
-    public Message create(Participation to, Participation from, String content, Boolean isCheck, int honeyCaseType){
+    @Column(nullable = false)
+    private String nickName;
+
+    public Message create(Participation to, Participation from, String content, Boolean isCheck, String honeyCaseType, String nickName){
         return Message.builder()
             .participationTo(to)
             .participationFrom(from)
             .content(content)
             .isCheck(isCheck)
             .honeyCaseType(honeyCaseType)
+            .nickName(nickName)
             .build();
     }
 }
