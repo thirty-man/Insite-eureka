@@ -70,8 +70,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 
 		// 메세지 수신
-		message.setIsCheck(true);
-		messageRepository.save(message);
+		message.markAsChecked();
 
 		return MessageResDto.from(message);
 	}
