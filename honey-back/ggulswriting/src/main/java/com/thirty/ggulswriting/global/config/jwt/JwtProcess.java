@@ -9,11 +9,13 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 
 import com.thirty.ggulswriting.global.config.auth.LoginUser;
+import com.thirty.ggulswriting.global.error.ErrorCode;
+import com.thirty.ggulswriting.global.error.exception.TokenException;
 import com.thirty.ggulswriting.member.entity.Member;
 
 import java.util.Date;
 
-public class JwrProcess {
+public class JwtProcess {
 
     public static String createAccessToken(LoginUser loginUser){
         String jwtToken = JWT.create()
@@ -41,7 +43,11 @@ public class JwrProcess {
             LoginUser loginUser = new LoginUser(member);
             return loginUser;
         } catch (TokenExpiredException e){
-            throw new TokenException
+            throw new TokenException(ErrorCode.EXPIRED_JWT_TOKEN);//만료된 토큰
+        } catch (SignatureVerificationException e){
+            throw new TokenException(ErrorCode.NOT_VALID_TOKEN);//서명 문제
+        } catch (JWTVerificationException e){
+            throw new TokenException(ErrorCode.NOT_VALID_TOKEN);//그 외 JWT 검증 오류
         }
     }
 }
