@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.global.config;
 
+import com.nimbusds.oauth2.sdk.auth.JWTAuthentication;
 import com.thirty.ggulswriting.global.util.CustomResponseUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity builder) throws Exception{
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-            builder.addFilter(new JwtAuthe)
+            builder.addFilter(new JWTAuthentication())
         }
     }
 }

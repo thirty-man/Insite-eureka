@@ -25,7 +25,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private int memberId;
 
     @Column(nullable = false)
     private String kakaoId;
@@ -40,9 +40,9 @@ public class Member extends BaseEntity {
     @Column
     private LocalDateTime goodbyeTime;
 
-    public Member create(String kakaoToken){
+    public Member create(String kakaoId){
         return Member.builder()
-            .kakaoToken(kakaoToken)
+            .kakaoId(kakaoId)
             .build();
     }
 
