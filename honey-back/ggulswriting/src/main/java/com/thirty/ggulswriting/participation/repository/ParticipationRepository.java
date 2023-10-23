@@ -12,6 +12,8 @@ import com.thirty.ggulswriting.room.entity.Room;
 public interface ParticipationRepository extends JpaRepository<Participation, Integer> {
 	Optional<Participation> findParticipationByMemberAndRoom(Member member, Room room);
 
+	Optional<Participation> findParticipationByMemberAndRoomAndIsOutIsFalse(Member member, Room room);
+
 	List<Participation> findAllByRoomAndIsOutIsFalse(Room room);
 
 	List<Participation> findAllByMemberAndIsOutIsFalse(Member member);

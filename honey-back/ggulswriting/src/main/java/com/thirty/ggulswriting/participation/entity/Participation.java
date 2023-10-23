@@ -53,4 +53,6 @@ public class Participation extends BaseEntity {
 	public void out(){
 		this.isOut = true;
 	}
+
+	public void reParticipate(){ this.isOut = false; }
 }

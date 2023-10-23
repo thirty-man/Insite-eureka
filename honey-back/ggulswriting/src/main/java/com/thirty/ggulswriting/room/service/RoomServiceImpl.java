@@ -50,21 +50,21 @@ public class RoomServiceImpl implements RoomService {
 		Room room = optionalRoom.get();
 		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
 			room);
-		if (optionalParticipation.isPresent()) {
-			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
-		}
-		//방장인지 검증
-		Optional<Room> optionalRoomMember = roomRepository.findRoomByMember(member);
-		if (optionalRoomMember.isPresent()) {
-			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
-		}
+		Participation participation = optionalParticipation.get();
+
 		//100명 이상인 경우 입장 불가
 		int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
 		if(memberCount >= 100) {
 			return "room is full";
 		}
 
-		//저장
+		//재입장
+		if (participation.getIsOut()) {
+			participation.reParticipate();
+			return "ok";
+		}
+
+		//첫입장
 		participationRepository.save(Participation.of(member, room, false));
 		return "ok";
 	}
@@ -84,18 +84,13 @@ public class RoomServiceImpl implements RoomService {
 		//방에 참여한 사람인지 검증
 		Member member = optionalMember.get();
 		Room room = optionalRoom.get();
-		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
+		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(member,
 			room);
 		if (optionalParticipation.isEmpty()) {
 			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
 		}
 
 		Participation participation = optionalParticipation.get();
-
-		//이미 나간 사람인지 검증
-		if(participation.getIsOut()){
-			throw new ParticipationException(ErrorCode.ALREADY_OUT_MEMBER);
-		}
 
 		//방장이면 권한을 넘김
 		if(member.equals(room.getMember())){
