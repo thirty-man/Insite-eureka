@@ -13,10 +13,28 @@
   padding: 0.7rem;
 }
 
+.roomBtn {
+  display: flex;
+  margin: 0.5rem;
+  text-align: left;
+  width: 20remrem;
+  padding: 0.7rem;
+  text-align: center;
+  justify-content: left;
+  align-items: center;
+  padding: 1rem 1rem;
+  border: 2px solid;
+}
+
 .input {
   margin: 1rem;
   width: 20rem;
   height: 3rem;
+}
+
+.bg-size {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 input::placeholder {
@@ -30,8 +48,27 @@ h1 {
   text-align: center;
   justify-content: center;
   align-items: center;
+  overflow: auto;
   padding: 1rem 1rem;
 }
+
+h2 {
+  display: flex;
+  font-size: 40px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  paddig: 5rem;
+}
+
 body {
   -ms-overflow-style: none;
 }

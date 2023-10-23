@@ -14,4 +14,5 @@ public interface ParticipationRepository extends JpaRepository<Participation, In
 
 	List<Participation> findAllByRoomAndIsOutIsFalse(Room room);
 
+	List<Participation> findAllByMemberAndIsOutIsFalse(Member member);
 }

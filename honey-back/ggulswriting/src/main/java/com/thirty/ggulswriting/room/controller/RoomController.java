@@ -1,6 +1,7 @@
 package com.thirty.ggulswriting.room.controller;
 
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,13 @@ public class RoomController {
 	){
 		RoomMemberResDto roomMemberResDto = roomService.getMemberList(roomId);
 		return new ResponseEntity<>(roomMemberResDto, HttpStatus.OK);
+	}
+
+	@GetMapping("/list")
+	public ResponseEntity<RoomResDto> getRoomList(
+	){
+		int memberId = 1;
+		RoomResDto roomResDto = roomService.getMyRoomList(memberId);
+		return new ResponseEntity<>(roomResDto, HttpStatus.OK);
 	}
 }
