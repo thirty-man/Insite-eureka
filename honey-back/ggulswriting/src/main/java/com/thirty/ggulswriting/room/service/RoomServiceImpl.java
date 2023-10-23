@@ -4,6 +4,8 @@ import com.thirty.ggulswriting.member.dto.MemberDto;
 import com.thirty.ggulswriting.room.dto.RoomDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
+import com.thirty.ggulswriting.room.dto.MessageListDto;
+import com.thirty.ggulswriting.room.dto.response.MessageListResDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -157,5 +159,37 @@ public class RoomServiceImpl implements RoomService {
 			roomDtoList.add(RoomDto.from(room));
 		}
 		return RoomResDto.from(roomDtoList);
+	}
+
+	@Override
+	public MessageListResDto getMyMessageList(int memberId, int roomId) {
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+		//탈퇴 회원 검증
+		if (optionalMember.isEmpty()) {
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		//방이 존재하는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+
+		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(member, room);
+		if (optionalParticipation.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
+		Participation participation = optionalParticipation.get();
+
+		// 메세지 가져오기
+		List<Message> messages = messageRepository.findAllByParticipationTo(participation);
+
+		// 메세지 목록 response 주기
+		List<MessageListDto> messageListDtoList = new ArrayList<>();
+		for (Message message : messages) {
+			messageListDtoList.add(MessageListDto.from(message));
+		}
+		return MessageListResDto.from(messageListDtoList);
 	}
 }

@@ -1,4 +1,4 @@
-package com.thirty.ggulswriting.message.dto;
+package com.thirty.ggulswriting.message.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -45,8 +45,14 @@ public class MessageServiceImpl implements MessageService {
 		Member memberTo = optionalMemberTo.get();
 		Room room = optionalRoom.get();
 
-		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoom(memberFrom, room);
-		Optional<Participation> optionalParticipationTO = participationRepository.findParticipationByMemberAndRoom(memberTo, room);
+		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(memberFrom, room);
+		if (optionalParticipationFrom.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
+		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(memberTo, room);
+		if (optionalParticipationTo.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
 
 		Participation participationFrom = optionalParticipationFrom.get();
 		Participation participationTo = optionalParticipationTo.get();
@@ -59,7 +65,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public String read(int messageId, int memberId) {
+	public MessageResDto read(int messageId, int memberId) {
 		// 메세지 유효성 검사
 		Message message = messageRepository.findById(messageId)
 				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_MESSAGE));
@@ -70,9 +76,8 @@ public class MessageServiceImpl implements MessageService {
 		}
 
 		// 메세지 수신
-		message.setIsCheck(true);
-		messageRepository.save(message);
+		message.markAsChecked();
 
-		return MessageResponseDto.from(message);
+		return MessageResDto.from(message);
 	}
 }
