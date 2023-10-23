@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.message.dto.response;
 
+import com.thirty.ggulswriting.message.entity.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
