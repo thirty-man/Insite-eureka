@@ -4,5 +4,5 @@ import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
 
 public interface MessageService {
 	String send(MessageSendReqDto messageSendReqDto);
-	String read(Long messageId, int memberId);
+	String read(int messageId, int memberId);
 }

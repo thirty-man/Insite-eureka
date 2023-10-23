@@ -17,10 +17,13 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MessageSendReqDto {
 	@NotNull
-	private int participationFromId;
+	private int memberIdFrom;
 
 	@NotNull
-	private int participationToId;
+	private int memberIdTo;
+
+	@NotNull
+	private int roomId;
 
 	@NotNull
 	private String nickName;

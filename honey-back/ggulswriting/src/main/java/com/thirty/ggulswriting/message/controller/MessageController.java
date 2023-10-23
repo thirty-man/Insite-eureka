@@ -35,12 +35,10 @@ public class MessageController {
 
 	@GetMapping("/{messageId}")
 	public ResponseEntity<MessageResponseDto> read(
-			@PathVariable Long messageId
+			@PathVariable int messageId
 	) {
 		int memberId = 1;
 		MessageResponseDto response = messageService.read(messageId, memberId);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-
-
 }

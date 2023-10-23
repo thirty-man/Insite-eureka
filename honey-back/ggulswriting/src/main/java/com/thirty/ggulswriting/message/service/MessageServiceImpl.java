@@ -25,23 +25,41 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public String send(MessageSendReqDto messageSendReqDto) {
-		// 발신자 유효성 검사
-		Participation from = participationRepository.findById(messageSendReqDto.getParticipationFromId())
-				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_PARTICIPATION));
+		Optional<Member> optionalMemberFrom = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(messageSendReqDto.getMemberIdFrom());
+		//발신자 탈퇴 회원 검증
+		if (optionalMemberFrom.isEmpty()) {
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		Optional<Member> optionalMemberTo = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(messageSendReqDto.getMemberIdTo());
+		//수신자 탈퇴 회원 검증
+		if (optionalMemberTo.isEmpty()) {
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		//방이 존재하는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(messageSendReqDto.getRoomId());
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
 
-		// 수신자 유효성 검사
-		Participation to = participationRepository.findById(messageSendReqDto.getParticipationToId())
-				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_PARTICIPATION));
+		Member memberFrom = optionalMemberFrom.get();
+		Member memberTo = optionalMemberTo.get();
+		Room room = optionalRoom.get();
+
+		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoom(memberFrom, room);
+		Optional<Participation> optionalParticipationTO = participationRepository.findParticipationByMemberAndRoom(memberTo, room);
+
+		Participation participationFrom = optionalParticipationFrom.get();
+		Participation participationTo = optionalParticipationTo.get();
 
 		// 메세지 생성
-		Message message = new Message().create(to, from, messageSendReqDto.getContent(), false, messageSendReqDto.getHoneyCaseType());
+		Message message = new Message().create(participationTo, participationFrom, messageSendReqDto.getContent(), false, messageSendReqDto.getHoneyCaseType());
 		messageRepository.save(message);
 
 		return "메세지 전송 완료";
 	}
 
 	@Override
-	public String read(Long messageId, int memberId) {
+	public String read(int messageId, int memberId) {
 		// 메세지 유효성 검사
 		Message message = messageRepository.findById(messageId)
 				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_MESSAGE));
