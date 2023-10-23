@@ -45,8 +45,14 @@ public class MessageServiceImpl implements MessageService {
 		Member memberTo = optionalMemberTo.get();
 		Room room = optionalRoom.get();
 
-		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoom(memberFrom, room);
-		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoom(memberTo, room);
+		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(memberFrom, room);
+		if (optionalParticipationFrom.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
+		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(memberTo, room);
+		if (optionalParticipationTo.isEmpty()) {
+			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
+		}
 
 		Participation participationFrom = optionalParticipationFrom.get();
 		Participation participationTo = optionalParticipationTo.get();

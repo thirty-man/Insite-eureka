@@ -176,7 +176,7 @@ public class RoomServiceImpl implements RoomService {
 		Member member = optionalMember.get();
 		Room room = optionalRoom.get();
 
-		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member, room);
+		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(member, room);
 		if (optionalParticipation.isEmpty()) {
 			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
 		}
