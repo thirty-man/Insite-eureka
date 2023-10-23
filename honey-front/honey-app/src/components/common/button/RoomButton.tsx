@@ -7,7 +7,7 @@ interface RoomButtonProps {
 }
 
 function RoomButton({ room, onClick, className }: RoomButtonProps) {
-  const basicType: string = `${className} flex hover:bg-cg-1`;
+  const basicType: string = `${className} flex hover:bg-cg-1 hover:scale-110`;
   const lockImg: string = "./src/assets/images/lock.png";
 
   return (

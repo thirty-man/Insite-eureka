@@ -10,4 +10,12 @@ type UserType = {
   nickName: string;
 };
 
-export type { RoomType, UserType };
+type PotType = {
+  potId: number;
+  content: string;
+  honeyCaseType: string;
+  nickname: string;
+  isCheck: boolean;
+};
+
+export type { RoomType, UserType, PotType };

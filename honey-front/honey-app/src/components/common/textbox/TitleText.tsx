@@ -4,9 +4,9 @@ interface TitleTextProps {
 }
 
 function TitleText({ text, className }: TitleTextProps) {
-  const basicType: string = `${className}`;
+  const basicType: string = `${className} sm:text-[50px] text-[20px]`;
 
-  return <h2 className={basicType}> {text} </h2>;
+  return <p className={basicType}> {text} </p>;
 }
 
 export default TitleText;

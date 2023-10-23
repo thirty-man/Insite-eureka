@@ -77,15 +77,17 @@ function PageMove() {
               <TextInput
                 value={strNum}
                 holder=""
-                className="w-[60%] bg-cg-2 h-[30px]"
+                className="w-[60%] bg-cg-2 h-[30px] sm:text-[15px] text-[10px] overflow-x-auto"
                 onChange={handleNum}
                 onKeyDown={(e) => e.key === "Enter" && goToTargetPage()}
               />
-              <div className="w-[40%]">/ {totalNum}</div>
+              <div className="w-[50%] sm:text-[15px] text-[10px]">
+                / {totalNum}
+              </div>
               <TextButton
                 text="이동"
                 color="3"
-                className="rounded-xl w-[50%] h-[30px] m-1"
+                className="rounded-xl sm:text-[15px] text-[10px] w-[60%] h-[30px] m-1"
                 onClick={() => goToTargetPage()}
               />
             </div>
