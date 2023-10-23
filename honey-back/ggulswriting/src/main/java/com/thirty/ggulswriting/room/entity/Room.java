@@ -58,4 +58,12 @@ public class Room extends BaseEntity {
             .password(password)
             .build();
     }
+
+    public void changeMaster(Member member){
+        this.member = member;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
 }
