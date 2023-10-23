@@ -14,7 +14,9 @@ public enum ErrorCode {
 	DELETED_ROOM(HttpStatus.BAD_REQUEST, "002", "삭제된 방입니다."),
 	//참가자
 	ALREADY_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "001", "이미 방에 참가중인 회원입니다."),
-	NOT_EXIST_PARTICIPATION(HttpStatus.BAD_REQUEST, "002", "방에 참여하지 않은 회원입니다.");
+	NOT_EXIST_PARTICIPATION(HttpStatus.BAD_REQUEST, "002", "방에 참여하지 않은 회원입니다."),
+	//메세지
+	NOT_EXIST_MESSAGE(HttpStatus.BAD_REQUEST, "001", "존재하지 않는 메세지입니다.");
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
 		this.httpStatus = httpStatus;

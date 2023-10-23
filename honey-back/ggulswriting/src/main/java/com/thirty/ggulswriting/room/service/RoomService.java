@@ -14,6 +14,6 @@ public interface RoomService {
 
 	RoomResDto getMyRoomList(int memberId);
 
-	MessageListResDto getMyMessageList(int memberId, int roomId)
+	MessageListResDto getMyMessageList(int memberId, int roomId);
 
 }

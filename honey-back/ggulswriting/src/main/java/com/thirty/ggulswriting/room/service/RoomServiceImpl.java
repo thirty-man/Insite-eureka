@@ -1,11 +1,13 @@
 package com.thirty.ggulswriting.room.service;
 
 import com.thirty.ggulswriting.member.dto.MemberDto;
+import com.thirty.ggulswriting.message.entity.Message;
+import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.room.dto.RoomDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
-import com.thirty.ggulswriting.room.dto.MessageListDto;
-import com.thirty.ggulswriting.room.dto.response.MessageListResDto;
+import com.thirty.ggulswriting.message.dto.MessageListDto;
+import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class RoomServiceImpl implements RoomService {
 	private final MemberRepository memberRepository;
+	private final MessageRepository messageRepository;
 	private final RoomRepository roomRepository;
 	private final ParticipationRepository participationRepository;
 
@@ -176,7 +179,7 @@ public class RoomServiceImpl implements RoomService {
 		Member member = optionalMember.get();
 		Room room = optionalRoom.get();
 
-		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoomIsOutIsFalse(member, room);
+		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(member, room);
 		if (optionalParticipation.isEmpty()) {
 			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
 		}
