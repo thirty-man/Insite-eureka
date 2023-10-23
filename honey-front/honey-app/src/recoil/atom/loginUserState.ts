@@ -1,9 +1,14 @@
 import { atom } from "recoil";
 import { UserType } from "@customtype/dataTypes";
 
+const testUser: UserType = {
+  userId: 1,
+  nickName: "테스트",
+};
+
 const loginUserState = atom<UserType>({
   key: "loginUserAtom",
-  default: undefined,
+  default: testUser,
 });
 
 export default loginUserState;

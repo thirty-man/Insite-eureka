@@ -21,6 +21,9 @@ export default {
           5: "#CC5803",
           6: "#A66127",
           7: "#521E07",
+          8: "#6F401A",
+          9: "#788E52",
+          10: "#E0A959",
         },
       },
       fontFamily: {
@@ -29,6 +32,7 @@ export default {
       backgroundImage: {
         backgroundImg: "url('@assets/images/background.png')",
         board: "url('@assets/images/board.png')",
+        cupboard: "url(@assets/images/open_cupboard.png)",
       },
     },
   },
