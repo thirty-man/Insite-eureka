@@ -46,7 +46,7 @@ public class MessageServiceImpl implements MessageService {
 		Room room = optionalRoom.get();
 
 		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoom(memberFrom, room);
-		Optional<Participation> optionalParticipationTO = participationRepository.findParticipationByMemberAndRoom(memberTo, room);
+		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoom(memberTo, room);
 
 		Participation participationFrom = optionalParticipationFrom.get();
 		Participation participationTo = optionalParticipationTo.get();
@@ -59,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public String read(int messageId, int memberId) {
+	public MessageResDto read(int messageId, int memberId) {
 		// 메세지 유효성 검사
 		Message message = messageRepository.findById(messageId)
 				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_MESSAGE));
@@ -73,6 +73,6 @@ public class MessageServiceImpl implements MessageService {
 		message.setIsCheck(true);
 		messageRepository.save(message);
 
-		return MessageResponseDto.from(message);
+		return MessageResDto.from(message);
 	}
 }

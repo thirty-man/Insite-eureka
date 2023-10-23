@@ -1,4 +1,4 @@
-package com.thirty.ggulswriting.room.dto.request;
+package com.thirty.ggulswriting.message.dto.request;
 
 import javax.validation.constraints.NotNull;
 
