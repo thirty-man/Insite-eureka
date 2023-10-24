@@ -3,7 +3,7 @@ import Modal from "@components/common/modal";
 import Pot from "@components/pot";
 import { PotType } from "@customtype/dataTypes";
 import potListState from "@recoil/atom/potListState";
-import potGroupSelector from "@recoil/selector";
+import { potGroupSelector } from "@recoil/selector";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
