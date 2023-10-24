@@ -9,11 +9,12 @@ import {
 } from "@recoil/atom";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { greedyPooh, sendPot } from "@assets/images";
 
 function ButtomMenu() {
   const { routeTo } = useRouter();
-  const greedyPooh = "./src/assets/images/greedypooh.png";
-  const sendPot = "./src/assets/images/sendPot.png";
+  const greedyPoohImg = greedyPooh;
+  const sendPotImg = sendPot;
   const buttonStyle: string =
     "flex rounded-xl sm:h-[17%] h-[15%] m-2 p-3 sm:w-[50%] w-[60%] sm:text-[20px] text-[13px] justify-center items-center";
 
@@ -71,7 +72,7 @@ function ButtomMenu() {
                   <div className="w-[100%] flex justify-center items-center">
                     <div className="w-[70%]">{member.nickName}</div>
                     <ImageButton
-                      image={sendPot}
+                      image={sendPotImg}
                       alt="보내기"
                       className="flex items-center justify-center w-[30%] h-[40px]text-[16px] rounded-md"
                       onClick={() => sendMessage(member)}
@@ -115,7 +116,7 @@ function ButtomMenu() {
         />
       </div>
       <div className="flex w-[50%] justify-center items">
-        <img src={greedyPooh} alt="푸" className="" />
+        <img src={greedyPoohImg} alt="푸" className="" />
       </div>
     </div>
   );

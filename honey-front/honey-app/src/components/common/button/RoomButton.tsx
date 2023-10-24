@@ -1,4 +1,5 @@
 import { RoomType } from "@customtype/dataTypes";
+import { lock } from "@assets/images";
 
 interface RoomButtonProps {
   room: RoomType;
@@ -8,7 +9,7 @@ interface RoomButtonProps {
 
 function RoomButton({ room, onClick, className }: RoomButtonProps) {
   const basicType: string = `${className} flex hover:bg-cg-1 hover:scale-110`;
-  const lockImg: string = "./src/assets/images/lock.png";
+  const lockImg: string = lock;
 
   return (
     <button type="button" onClick={onClick} className={basicType}>

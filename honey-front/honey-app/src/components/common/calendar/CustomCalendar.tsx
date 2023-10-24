@@ -18,7 +18,7 @@ function CustomCalendar({ value, onChange }: CalendarProps) {
       <Calendar
         onChange={onChange}
         value={value}
-        formatDay={(locale, date) => moment(date).format("DD")}
+        formatDay={(_locale, date) => moment(date).format("DD")}
       />
     </div>
   );
