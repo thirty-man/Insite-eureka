@@ -1,10 +1,14 @@
 import { ImageButton, TextButton } from "@components/common/button";
 import Modal from "@components/common/modal";
-import { UserType } from "@customtype/dataTypes";
+import { RoomType, UserType } from "@customtype/dataTypes";
 import useRouter from "@hooks/useRouter";
-import { memberListState } from "@recoil/atom";
+import {
+  memberListState,
+  selectedMemberState,
+  selectedRoomState,
+} from "@recoil/atom";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function ButtomMenu() {
   const { routeTo } = useRouter();
@@ -15,17 +19,29 @@ function ButtomMenu() {
 
   const [memberOpen, setMemberOpen] = useState<boolean>(false);
   const [memberList] = useRecoilState<UserType[]>(memberListState);
+  const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
+  const nowRoom: RoomType = useRecoilValue<RoomType>(selectedRoomState);
 
   function showMemberList(): void {
     setMemberOpen(true);
   }
 
-  function moveTo(path: string): void {
-    routeTo(path);
+  function modifyRoom(): void {
+    routeTo("/room/modify");
   }
 
-  function sendMessage(userId: number) {
-    console.log(userId);
+  function roomPaste(): void {
+    console.log(nowRoom);
+  }
+
+  function exitRoom(): void {
+    console.log("방을 나갔습니다.");
+    routeTo("/");
+  }
+
+  function sendMessage(member: UserType) {
+    setSelectedMember(member);
+    routeTo("/send");
   }
 
   return (
@@ -58,7 +74,7 @@ function ButtomMenu() {
                       image={sendPot}
                       alt="보내기"
                       className="flex items-center justify-center w-[30%] h-[40px]text-[16px] rounded-md"
-                      onClick={() => sendMessage(member.userId)}
+                      onClick={() => sendMessage(member)}
                     />
                   </div>
                 </div>
@@ -83,19 +99,19 @@ function ButtomMenu() {
           text="초대 링크 복사"
           color="3"
           className={buttonStyle}
-          onClick={() => moveTo("")}
+          onClick={() => roomPaste()}
         />
         <TextButton
           text="방 수정"
           color="3"
           className={buttonStyle}
-          onClick={() => moveTo("")}
+          onClick={() => modifyRoom()}
         />
         <TextButton
           text="방 탈퇴"
           color="3"
           className={buttonStyle}
-          onClick={() => moveTo("")}
+          onClick={() => exitRoom()}
         />
       </div>
       <div className="flex w-[50%] justify-center items">

@@ -9,9 +9,8 @@ function MyPage() {
   // 내가 참여한 방 목록 중 가장 앞에 있는 방을 우선 보여준다
   const roomList = useRecoilValue<RoomType[]>(myRoomListState);
   const [roomNum, setRoomNum] = useState<number | null>(0);
-  const [selectedRoom, setSelectedRoom] = useRecoilState<RoomType | null>(
-    selectedRoomState,
-  );
+  const [selectedRoom, setSelectedRoom] =
+    useRecoilState<RoomType>(selectedRoomState);
 
   useEffect(() => {
     if (roomNum !== null) {

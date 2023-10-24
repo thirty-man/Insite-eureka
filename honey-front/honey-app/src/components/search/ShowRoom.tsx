@@ -1,15 +1,19 @@
 import { RoomButton } from "@components/common/button";
 import roomListState from "@recoil/atom/roomListState";
 import { RoomType } from "@customtype/dataTypes";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedRoomState } from "@recoil/atom";
+import useRouter from "@hooks/useRouter";
 
 function ShowRoom() {
-  const roomList: RoomType[] = useRecoilValue(roomListState);
+  const roomList = useRecoilValue<RoomType[]>(roomListState);
+  const [, setSelectedRoom] = useRecoilState<RoomType>(selectedRoomState);
+  const { routeTo } = useRouter();
 
   function gotoRoom(room: RoomType) {
     // 룸으로 이동
-    // eslint-disable-next-line no-console
-    console.log(room.roomId);
+    setSelectedRoom(room);
+    routeTo(`/room/participate/${room.roomId}`);
   }
 
   return (
