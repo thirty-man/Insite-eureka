@@ -9,9 +9,12 @@ import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.MessageListDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +33,12 @@ import com.thirty.ggulswriting.room.repository.RoomRepository;
 import lombok.AllArgsConstructor;
 
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class RoomServiceImpl implements RoomService {
+	@Value("${room.salt}")
+	private String SALT;
+
 	private final MemberRepository memberRepository;
 	private final MessageRepository messageRepository;
 	private final RoomRepository roomRepository;
@@ -55,7 +61,14 @@ public class RoomServiceImpl implements RoomService {
 		Room room = optionalRoom.get();
 		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
 			room);
-		Participation participation = optionalParticipation.get();
+
+		//비밀번호 검증
+		String password = SALT+roomParticipateReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+		if(!encodedPassword.equals(room.getPassword())){
+			throw new RoomException(ErrorCode.NOT_MATCH_PASSWORD);
+		}
 
 		//100명 이상인 경우 입장 불가
 		int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
@@ -64,9 +77,12 @@ public class RoomServiceImpl implements RoomService {
 		}
 
 		//재입장
-		if (participation.getIsOut()) {
-			participation.reParticipate();
-			return "ok";
+		if(optionalParticipation.isPresent()){
+			Participation participation = optionalParticipation.get();
+			if (participation.getIsOut()) {
+				participation.reParticipate();
+				return "ok";
+			}
 		}
 
 		//첫입장
