@@ -2,9 +2,9 @@ import { ImageButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
-import useRouter from "@hooks/useRouter";
 import { myRoomListState, selectedRoomState } from "@recoil/atom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 interface MypageTitleProps {
@@ -17,7 +17,7 @@ function MypageTitle({ selectedRoom, roomNum, setRoomNum }: MypageTitleProps) {
   const roomList = useRecoilValue<RoomType[]>(myRoomListState);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [, setNextRoom] = useRecoilState(selectedRoomState);
-  const { routeTo } = useRouter();
+  const navi = useNavigate();
   const backArrow = "./src/assets/images/leftArrow.png";
 
   function goToRoom(roomId: number) {
@@ -42,7 +42,7 @@ function MypageTitle({ selectedRoom, roomNum, setRoomNum }: MypageTitleProps) {
   }
 
   function goToBack(): void {
-    routeTo("/");
+    navi(-1);
   }
 
   return (
