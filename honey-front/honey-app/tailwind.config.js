@@ -33,6 +33,7 @@ export default {
         backgroundImg: "url('@assets/images/background.png')",
         board: "url('@assets/images/board.png')",
         cupboard: "url(@assets/images/open_cupboard.png)",
+        paper: "url(@assets/images/paper.png)",
       },
     },
   },

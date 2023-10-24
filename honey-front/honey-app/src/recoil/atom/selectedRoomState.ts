@@ -1,9 +1,9 @@
 import { RoomType } from "@customtype/dataTypes";
 import { atom } from "recoil";
 
-const selectedRoomState = atom<RoomType | null>({
+const selectedRoomState = atom<RoomType>({
   key: "selectedRoomAtom",
-  default: null,
+  default: undefined,
 });
 
 export default selectedRoomState;

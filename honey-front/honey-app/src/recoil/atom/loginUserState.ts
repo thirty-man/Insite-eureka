@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import { UserType } from "@customtype/dataTypes";
 
 const testUser: UserType = {
-  userId: 1,
+  userId: 100,
   nickName: "테스트",
 };
 
