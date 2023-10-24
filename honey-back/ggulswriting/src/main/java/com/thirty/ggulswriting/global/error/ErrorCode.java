@@ -12,6 +12,7 @@ public enum ErrorCode {
 	//room
 	NOT_EXIST_ROOM(HttpStatus.BAD_REQUEST, "001", "존재하지 않는 방입니다."),
 	DELETED_ROOM(HttpStatus.BAD_REQUEST, "002", "삭제된 방입니다."),
+	NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "003", "방 비밀번호가 일치하지 않습니다"),
 	//참가자
 	ALREADY_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "001", "이미 방에 참가중인 회원입니다."),
 	NOT_EXIST_PARTICIPATION(HttpStatus.BAD_REQUEST, "002", "방에 참여하지 않은 회원입니다."),
