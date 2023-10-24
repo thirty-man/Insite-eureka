@@ -2,6 +2,7 @@ interface TextInputProps {
   holder: string;
   value: string | number;
   className: string;
+  readonly: boolean;
   onChange(event: React.ChangeEvent<HTMLInputElement>): void;
   onKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
 }
@@ -10,6 +11,7 @@ function TextInput({
   value,
   holder,
   className,
+  readonly,
   onChange,
   onKeyDown,
 }: TextInputProps) {
@@ -20,6 +22,7 @@ function TextInput({
       placeholder={holder}
       className={basicType}
       value={value}
+      readOnly={readonly}
       onChange={onChange}
       onKeyDown={onKeyDown}
     />
