@@ -1,10 +1,12 @@
+import pots from "@assets/images/pots";
+
 type PotPropsType = {
   potNum: string;
   onClick: () => void;
 };
 
 function Pot({ potNum, onClick }: PotPropsType) {
-  const pot: string = `./src/assets/images/pots/pot${potNum}.png`;
+  const pot: string = `${pots[Number(potNum)]}`;
 
   const potAlt: string = "pot";
 
