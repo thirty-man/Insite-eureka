@@ -4,6 +4,7 @@ import com.thirty.ggulswriting.member.dto.MemberDto;
 import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.room.dto.RoomDto;
+import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.MessageListDto;
@@ -52,7 +53,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomParticipateReqDto.getRoomId());
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomParticipateReqDto.getRoomId());
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -61,6 +62,10 @@ public class RoomServiceImpl implements RoomService {
 		Room room = optionalRoom.get();
 		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
 			room);
+
+		if(optionalParticipation.isPresent() && !optionalParticipation.get().getIsOut()){
+			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
+		}
 
 		//비밀번호 검증
 		String password = SALT+roomParticipateReqDto.getPassword();
@@ -79,10 +84,8 @@ public class RoomServiceImpl implements RoomService {
 		//재입장
 		if(optionalParticipation.isPresent()){
 			Participation participation = optionalParticipation.get();
-			if (participation.getIsOut()) {
-				participation.reParticipate();
-				return "ok";
-			}
+			participation.reParticipate();
+			return "ok";
 		}
 
 		//첫입장
@@ -98,7 +101,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -132,15 +135,11 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public RoomMemberResDto getMemberList(int roomId) {
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
 		Room room = optionalRoom.get();
-		//삭제된 방인지 검증
-		if(room.getIsDeleted()){
-			throw new RoomException(ErrorCode.DELETED_ROOM);
-		}
 
 		//방에 참여한 회원 조회
 		List<Participation> participationList = participationRepository.findAllByRoomAndIsOutIsFalse(room);
@@ -188,7 +187,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -210,5 +209,19 @@ public class RoomServiceImpl implements RoomService {
 			messageListDtoList.add(MessageListDto.from(message));
 		}
 		return MessageListResDto.from(messageListDtoList);
+	}
+
+	@Override
+	public RoomDetailResDto getRoomDetail(int roomId) {
+		//방이 살아있는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+
+		Room room = optionalRoom.get();
+		Boolean isOpen = true;
+		if(room.getPassword() != null) isOpen = false;
+		return RoomDetailResDto.of(room.getMember().getName(), room.getRoomTitle(), isOpen, room.getShowTime());
 	}
 }
