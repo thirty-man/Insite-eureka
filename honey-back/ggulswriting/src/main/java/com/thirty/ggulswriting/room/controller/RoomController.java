@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.room.controller;
 
+import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
@@ -68,5 +69,13 @@ public class RoomController {
 		int memberId = 1;
 		MessageListResDto messageListResDto = roomService.getMyMessageList(memberId, roomId);
 		return new ResponseEntity<>(messageListResDto, HttpStatus.OK);
+	}
+
+	@GetMapping("/{roomId}")
+	public ResponseEntity<RoomDetailResDto> roomDetail(
+		@Valid @PathVariable int roomId
+	){
+		RoomDetailResDto roomDetailResDto = roomService.getRoomDetail(roomId);
+		return new ResponseEntity<>(roomDetailResDto, HttpStatus.OK);
 	}
 }
