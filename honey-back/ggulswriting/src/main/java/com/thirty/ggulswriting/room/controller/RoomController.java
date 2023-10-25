@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.room.controller;
 
+import com.thirty.ggulswriting.global.config.auth.LoginUser;
 import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
 import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
 import com.thirty.ggulswriting.room.dto.request.RoomModifyReqDto;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,19 +36,19 @@ public class RoomController {
 
 	@PostMapping("/participate")
 	public ResponseEntity<String> participate(
-		@Valid @RequestBody RoomParticipateReqDto roomParticipateReqDto
+		@Valid @RequestBody RoomParticipateReqDto roomParticipateReqDto,
+		@AuthenticationPrincipal LoginUser loginUser
 	) {
-		int memberId = 1;
-		String result = roomService.participate(roomParticipateReqDto, memberId);
+		String result = roomService.participate(roomParticipateReqDto, loginUser.getMember().getMemberId());
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
 	@PatchMapping("/{roomId}/out")
 	public ResponseEntity<Void> out(
-		@Valid @PathVariable int roomId
+		@Valid @PathVariable int roomId,
+		@AuthenticationPrincipal LoginUser loginUser
 	){
-		int memberId = 1;
-		roomService.out(roomId,memberId);
+		roomService.out(roomId, loginUser.getMember().getMemberId());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -60,18 +62,18 @@ public class RoomController {
 
 	@GetMapping("/list")
 	public ResponseEntity<RoomResDto> getRoomList(
+		@AuthenticationPrincipal LoginUser loginUser
 	){
-		int memberId = 1;
-		RoomResDto roomResDto = roomService.getMyRoomList(memberId);
+		RoomResDto roomResDto = roomService.getMyRoomList(loginUser.getMember().getMemberId());
 		return new ResponseEntity<>(roomResDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{roomId}/message-list")
 	public ResponseEntity<MessageListResDto> getMessageList(
-		@Valid @PathVariable int roomId
+		@Valid @PathVariable int roomId,
+		@AuthenticationPrincipal LoginUser loginUser
 	){
-		int memberId = 1;
-		MessageListResDto messageListResDto = roomService.getMyMessageList(memberId, roomId);
+		MessageListResDto messageListResDto = roomService.getMyMessageList(loginUser.getMember().getMemberId(), roomId);
 		return new ResponseEntity<>(messageListResDto, HttpStatus.OK);
 	}
 
@@ -85,19 +87,20 @@ public class RoomController {
 
 	@PatchMapping("/remove")
 	public ResponseEntity<Void> deleteRoom(
-		@Valid @RequestBody RoomDeleteReqDto roomDeleteReqDto
+		@Valid @RequestBody RoomDeleteReqDto roomDeleteReqDto,
+		@AuthenticationPrincipal LoginUser loginUser
 	){
-		int memberId = 1;
-		roomService.deleteRoom(roomDeleteReqDto, memberId);
+		roomService.deleteRoom(roomDeleteReqDto, loginUser.getMember().getMemberId());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping("/create")
 	public ResponseEntity<RoomCreateResDto> createRoom(
-		@Valid @RequestBody RoomCreateReqDto roomCreateReqDto
+		@Valid @RequestBody RoomCreateReqDto roomCreateReqDto,
+		@AuthenticationPrincipal LoginUser loginUser
 	){
-		int memberId = 1;
-		RoomCreateResDto roomCreateResDto= roomService.createRoom(roomCreateReqDto,memberId);
+		RoomCreateResDto roomCreateResDto= roomService.createRoom(roomCreateReqDto,
+			loginUser.getMember().getMemberId());
 		return new ResponseEntity<>(roomCreateResDto, HttpStatus.CREATED);
 	}
 
@@ -112,10 +115,10 @@ public class RoomController {
 	@PatchMapping("/{roomId}/update")
 	public ResponseEntity<Void> modifyRoom(
 		@Valid @PathVariable int roomId,
+		@AuthenticationPrincipal LoginUser loginUser,
 		@Valid @RequestBody RoomModifyReqDto roomModifyReqDto
 	){
-		int memberId = 1;
-		roomService.modify(roomId, memberId, roomModifyReqDto);
+		roomService.modify(roomId, loginUser.getMember().getMemberId(), roomModifyReqDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
