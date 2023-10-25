@@ -1,16 +1,34 @@
 import { ButtomMenu, Cupboard } from "@components/mypage";
 import MypageTitle from "@components/mypage/MypageTitle";
 import { RoomType } from "@customtype/dataTypes";
-import { myRoomListState, selectedRoomState } from "@recoil/atom";
+import { myRoomListState } from "@recoil/atom";
+import { getMyRoomlistSelector } from "@recoil/selector";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 function MyPage() {
-  // 내가 참여한 방 목록 중 가장 앞에 있는 방을 우선 보여준다
-  const roomList = useRecoilValue<RoomType[]>(myRoomListState);
-  const [roomNum, setRoomNum] = useState<number | null>(0);
-  const [selectedRoom, setSelectedRoom] =
-    useRecoilState<RoomType>(selectedRoomState);
+  const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
+  const setRoomList = useSetRecoilState<RoomType[]>(myRoomListState);
+  const [roomNum, setRoomNum] = useState<number>(0);
+  const [selectedRoom, setSelectedRoom] = useState<RoomType>(roomList[0]);
+
+  useEffect(() => {
+    // Axios를 사용하여 데이터 가져오기
+    axios
+      .get("/api/v1/rooms/list")
+      .then((response) => {
+        const { data } = response;
+        // Recoil 상태 업데이트
+        setRoomList(data.roomDtoList);
+        if (data.length > 0) {
+          setSelectedRoom(data[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching room list:", error);
+      });
+  }, [setRoomList]);
 
   useEffect(() => {
     if (roomNum !== null) {

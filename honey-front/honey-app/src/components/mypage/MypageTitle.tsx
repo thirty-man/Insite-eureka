@@ -2,28 +2,34 @@ import { ImageButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
-import { myRoomListState, selectedRoomState } from "@recoil/atom";
-import { useState } from "react";
+import { selectedRoomState } from "@recoil/atom";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { leftArrow } from "@assets/images";
+import { getMyRoomlistSelector } from "@recoil/selector";
 
 interface MypageTitleProps {
-  selectedRoom: RoomType | null;
-  roomNum: number | null;
-  setRoomNum: React.Dispatch<React.SetStateAction<number | null>>;
+  selectedRoom: RoomType;
+  roomNum: number;
+  setRoomNum: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function MypageTitle({ selectedRoom, roomNum, setRoomNum }: MypageTitleProps) {
-  const roomList = useRecoilValue<RoomType[]>(myRoomListState);
+  // const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
+  const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [, setNextRoom] = useRecoilState(selectedRoomState);
+  const [, setNextRoom] = useRecoilState<RoomType>(selectedRoomState);
   const navi = useNavigate();
-  const backArrow = "./src/assets/images/leftArrow.png";
 
   function goToRoom(roomId: number) {
-    // roomId로 나중에 axios통신해서 room하나 받아와서 set해주기
-    setNextRoom(roomList[roomId]);
+    setRoomNum(roomId - 1);
   }
+
+  useEffect(() => {
+    setNextRoom(roomList[roomNum]);
+  }, [roomNum, roomList, setNextRoom]);
 
   function nextPage(): void {
     if (roomNum === null) {
@@ -49,7 +55,7 @@ function MypageTitle({ selectedRoom, roomNum, setRoomNum }: MypageTitleProps) {
     <>
       <div className="flex justify-center items-center w-full">
         <ImageButton
-          image={backArrow}
+          image={leftArrow}
           alt="뒤로가기"
           className="flex w-[10%] justify-center items-center"
           onClick={() => goToBack()}
@@ -61,25 +67,28 @@ function MypageTitle({ selectedRoom, roomNum, setRoomNum }: MypageTitleProps) {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <TitleText
-              text={selectedRoom ? selectedRoom.roomName : "방이 없습니다"}
+              text={selectedRoom ? selectedRoom.title : "방이 없습니다"}
               className="p-1 pr-5 pl-5 rounded-xl sm:h-[90px] h-[38px] bg-cg-9 overflow-x-auto items-start"
             />
           </button>
           {isDropdownOpen && (
             <div className="flex justify-center w-[50%]">
-              <Dropdown
-                className=""
-                onClick={(roomId) => goToRoom(roomId)}
-                items={roomList.map((room) => ({
-                  roomName:
-                    room.roomName.length > 10
-                      ? `${room.roomName.slice(0, 10)}...`
-                      : room.roomName,
-                  roomId: room.roomId,
-                  owner: room.owner,
-                  password: room.password,
-                }))}
-              />
+              {roomList.length === 0 ? (
+                <div>방이 없습니다</div>
+              ) : (
+                <Dropdown
+                  className=""
+                  items={roomList.map((room) => ({
+                    ...room,
+                    roomTitle:
+                      room.title.length > 10
+                        ? `${room.title.slice(0, 10)}...`
+                        : room.title,
+                    roomId: room.id,
+                  }))}
+                  onClick={(roomId) => goToRoom(roomId)}
+                />
+              )}
             </div>
           )}
         </div>
