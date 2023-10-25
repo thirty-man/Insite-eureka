@@ -1,11 +1,19 @@
 package com.thirty.ggulswriting.room.controller;
 
+import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomModifyReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
+import com.thirty.ggulswriting.room.dto.response.RoomCreateResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomSearchResDto;
+import com.thirty.ggulswriting.room.service.RoomService;
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
-import com.thirty.ggulswriting.room.service.RoomService;
-
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
@@ -77,5 +81,41 @@ public class RoomController {
 	){
 		RoomDetailResDto roomDetailResDto = roomService.getRoomDetail(roomId);
 		return new ResponseEntity<>(roomDetailResDto, HttpStatus.OK);
+	}
+
+	@PatchMapping("/remove")
+	public ResponseEntity<Void> deleteRoom(
+		@Valid @RequestBody RoomDeleteReqDto roomDeleteReqDto
+	){
+		int memberId = 1;
+		roomService.deleteRoom(roomDeleteReqDto, memberId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/create")
+	public ResponseEntity<RoomCreateResDto> createRoom(
+		@Valid @RequestBody RoomCreateReqDto roomCreateReqDto
+	){
+		int memberId = 1;
+		RoomCreateResDto roomCreateResDto= roomService.createRoom(roomCreateReqDto,memberId);
+		return new ResponseEntity<>(roomCreateResDto, HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<RoomSearchResDto> searchRoom(
+		@Valid @RequestParam("title") String title,
+		@Valid @RequestParam("page") int page
+	){
+		return new ResponseEntity<>(roomService.searchRoom(title, page), HttpStatus.OK);
+	}
+
+	@PatchMapping("/{roomId}/update")
+	public ResponseEntity<Void> modifyRoom(
+		@Valid @PathVariable int roomId,
+		@Valid @RequestBody RoomModifyReqDto roomModifyReqDto
+	){
+		int memberId = 1;
+		roomService.modify(roomId, memberId, roomModifyReqDto);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

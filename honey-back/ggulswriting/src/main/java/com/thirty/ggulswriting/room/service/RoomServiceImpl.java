@@ -4,6 +4,11 @@ import com.thirty.ggulswriting.member.dto.MemberDto;
 import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.room.dto.RoomDto;
+import com.thirty.ggulswriting.room.dto.RoomSearchDto;
+import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomModifyReqDto;
+import com.thirty.ggulswriting.room.dto.response.RoomCreateResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
@@ -14,6 +19,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import com.thirty.ggulswriting.room.dto.response.RoomSearchResDto;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,10 +42,9 @@ import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
 import com.thirty.ggulswriting.room.entity.Room;
 import com.thirty.ggulswriting.room.repository.RoomRepository;
 
-import lombok.AllArgsConstructor;
-
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
 	@Value("${room.salt}")
@@ -224,4 +234,109 @@ public class RoomServiceImpl implements RoomService {
 		if(room.getPassword() != null) isOpen = false;
 		return RoomDetailResDto.of(room.getMember().getName(), room.getRoomTitle(), isOpen, room.getShowTime());
 	}
+
+	@Override
+	public void modify(int roomId, int memberId, RoomModifyReqDto roomModifyReqDto) {
+		//방이 살아있는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+		Optional<Member> optionalMember = memberRepository.findById(memberId);
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+
+		// 방장이 아닌 회원 검사
+		if(!room.getMember().equals(member)){
+			throw new MemberException(ErrorCode.NOT_HOST_MEMBER);
+		}
+
+		//방 비밀번호 인코딩
+		String password = SALT+roomModifyReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+
+		room.modify(roomModifyReqDto.getRoomTitle(),encodedPassword);
+	}
+
+	@Override
+	public void deleteRoom(RoomDeleteReqDto roomDeleteReqDto, int memberId) {
+		// 탈퇴한 회원인지 검증
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+
+		// 방 유효성 검사
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomDeleteReqDto.getRoomId());
+		if(optionalRoom.isEmpty()){
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+
+		// 방장이 아닌 회원 검사
+		if(!room.getMember().equals(member)){
+			throw new MemberException(ErrorCode.NOT_HOST_MEMBER);
+		}
+
+		// 방 삭제
+		room.delete();
+	}
+
+	@Override
+	public RoomCreateResDto createRoom(RoomCreateReqDto roomCreateReqDto, int memberId) {
+		// 탈퇴한 회원인지 검증
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+
+		Member member = optionalMember.get();
+
+		//비밀번호 인코딩
+		String password = SALT+roomCreateReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+
+		Room room = Room.create(
+				member,
+				roomCreateReqDto.getRoomTitle(),
+				roomCreateReqDto.getShowTime(),
+				encodedPassword
+		);
+
+		roomRepository.save(room);
+
+		return RoomCreateResDto.from(room.getRoomId());
+	}
+
+	@Override
+	public RoomSearchResDto searchRoom(String title, int page) {
+		log.info("@@@@@@@@@@@@@@");
+		//5개 페이지 네이션
+		Pageable pageable = PageRequest.of(page,5, Sort.by(Sort.Order.desc("roomId")));
+
+		Page<Room> roomList = roomRepository.findByRoomTitleContainsAndIsDeletedIsFalse(title, pageable);
+		List<RoomSearchDto> roomSearchDtoList = new ArrayList<>();
+		for(Room room: roomList){
+			log.info("room ={}",room);
+			int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
+
+			Boolean isOpen = true;
+			if(room.getPassword() != null){
+				isOpen = false;
+			}
+
+			RoomSearchDto roomListDto = RoomSearchDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),memberCount,isOpen);
+			roomSearchDtoList.add(roomListDto);
+		}
+		return RoomSearchResDto.from(roomSearchDtoList);
+	}
+
 }

@@ -50,12 +50,13 @@ public class Room extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
-    public Room create(Member member, String title, LocalDateTime showTime, String password){
+    public static Room create(Member member, String title, LocalDateTime showTime, String password){
         return Room.builder()
             .member(member)
             .roomTitle(title)
             .showTime(showTime)
             .password(password)
+            .isDeleted(false)
             .build();
     }
 
@@ -65,5 +66,10 @@ public class Room extends BaseEntity {
 
     public void delete(){
         this.isDeleted = true;
+    }
+
+    public void modify(String roomTitle, String password){
+        this.roomTitle = roomTitle;
+        this.password = password;
     }
 }
