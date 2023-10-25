@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.util.StringTokenizer;
 
 @Slf4j
 @Service
@@ -27,9 +28,13 @@ public class MemberServiceImpl implements MemberService{
     public Member join(String kakaoId){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("");
+        StringTokenizer st = new StringTokenizer(kakaoId);
+        String kakao = st.nextToken();
+        String nickname= st.nextToken();
         Member member = Member.builder()
                 .password(password)
-                .kakaoId(kakaoId)
+                .kakaoId(kakao)
+                .name(nickname)
                 .build();
         Member savedMember = memberRepository.save(member);
         return savedMember;

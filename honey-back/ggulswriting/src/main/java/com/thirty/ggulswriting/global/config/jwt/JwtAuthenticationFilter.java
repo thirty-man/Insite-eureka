@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CustomResponseUtil customResponseUtil){
         super(authenticationManager);
         this.customResponseUtil =customResponseUtil;
-        setFilterProcessesUrl("/member/login");
+        setFilterProcessesUrl("/members/login");
         this.authenticationManager=authenticationManager;
     }
 
@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             LoginReqDto loginReqDto = om.readValue(request.getInputStream(),LoginReqDto.class);
             String username = loginReqDto.getCode();
-
+            System.out.println("use"+username);
             String password = "";
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -75,6 +75,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtVO.HEADER,accessToken);
         response.addHeader(JwtVO.REFRESH_HEADER,refreshToken);
         int memberId = loginUser.getMember().getMemberId();
+        System.out.println("MemberId = "+loginUser.getMember().getMemberId());
         customResponseUtil.success(response,memberId);
     }
 }

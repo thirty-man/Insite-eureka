@@ -34,6 +34,9 @@ public class Member extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdTime;
 

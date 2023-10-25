@@ -28,6 +28,7 @@ public class CustomResponseUtil {
             response.setContentType("application/json; charset=utf-8");
             response.setStatus(200);
             String refreshToken = response.getHeader("RefreshToken");
+            System.out.println("refreshToken= "+ refreshToken);
             redisService.setValues(String.valueOf(memberId),refreshToken);
         }catch(Exception e){
             System.out.println(e.getMessage());

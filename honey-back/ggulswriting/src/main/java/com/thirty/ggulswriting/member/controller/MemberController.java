@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.member.controller;
 
+
 import com.thirty.ggulswriting.global.config.auth.LoginUser;
 import com.thirty.ggulswriting.global.config.jwt.JwtProcess;
 import com.thirty.ggulswriting.global.config.jwt.JwtVO;
@@ -17,11 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RestController
 public class MemberController {
 
     private final MemberService memberService;
+
+
 
     @PostMapping ("/logout")
     public ResponseEntity<String> logout(@AuthenticationPrincipal LoginUser loginUser){

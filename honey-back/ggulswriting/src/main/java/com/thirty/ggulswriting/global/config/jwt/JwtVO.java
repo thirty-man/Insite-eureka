@@ -2,7 +2,7 @@ package com.thirty.ggulswriting.global.config.jwt;
 
 public interface JwtVO {
 
-    public static final String SECRET = "꿀스라이팅Honey'sWriting꿀스라이팅Honey'sWriting꿀스라이팅Honey'sWriting" //HS256
+    public static final String SECRET = "꿀스라이팅Honey'sWriting꿀스라이팅Honey'sWriting꿀스라이팅Honey'sWriting";//HS256
     //jwt 토큰을 암호화할 때 사용하는 키
     //노출 x
 

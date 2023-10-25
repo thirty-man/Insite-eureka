@@ -73,7 +73,7 @@ public class SecurityConfig {
         });
 
         http.authorizeRequests()
-                .antMatchers("/member/reissue").permitAll()
+                .antMatchers("/members/reissue").permitAll()
                 .antMatchers("/**")
                 .authenticated()
                 .anyRequest()
