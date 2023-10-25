@@ -17,7 +17,8 @@ function Login() {
   const authenticateUser = (code: string) => {
     axios
       // .post(`${AXIOS_URL}/members/login`, { code })
-      .post(`/api/v1/members/login`, { code })
+      // .post(`/api/v1/members/login`, { code })
+      .post("/api/v1/members/login", { code })
       .then((response) => {
         console.log(response.data);
         const authToken = response.headers.authorization;
@@ -29,7 +30,6 @@ function Login() {
         routeTo("/");
       })
       .catch((error) => {
-        // console.log(data);
         console.log("Error:", error);
       });
   };
@@ -50,6 +50,7 @@ function Login() {
     const KAKAO_BASE_URL = "https://kauth.kakao.com/oauth/authorize";
     window.location.href = `${KAKAO_BASE_URL}?client_id=${VITE_KAKAO_CLIENT_ID}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&response_type=code`;
   };
+
   return (
     <>
       <div className="flex h-10 mt-5 items-center justify-end px-5">
@@ -110,6 +111,9 @@ function Login() {
             className="rounded border border-blue-700"
             onClick={handleLoginClick}
           />
+          <button type="button" onClick={handleLoginClick}>
+            버튼
+          </button>
         </div>
       </div>
     </>

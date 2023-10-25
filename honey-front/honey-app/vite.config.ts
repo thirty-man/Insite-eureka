@@ -11,6 +11,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://k9a701a.p.ssafy.io:8080",
+        // target: "http://localhost:8080",
       },
     },
   },
