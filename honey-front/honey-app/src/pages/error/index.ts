@@ -1,3 +1,4 @@
 import ErrorNotFound from "./ErrorNotFound";
+import AccessError from "./AccessError";
 
-export default ErrorNotFound;
+export { ErrorNotFound, AccessError };

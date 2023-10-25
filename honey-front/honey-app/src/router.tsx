@@ -1,10 +1,10 @@
-import { Room, CreateRoom, ModifyRoom } from "@pages/room";
+import { Room, CreateRoom, ModifyRoom, ParticipateRoom } from "@pages/room";
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import Login from "@pages/login";
 import RoomList from "@pages/roomlist";
 import MyPage from "@pages/mypage";
 import Send from "@pages/send";
-import ErrorNotFound from "@pages/error";
+import { ErrorNotFound } from "@pages/error";
 
 const routePaths: RouteObject[] = [
   {
@@ -41,6 +41,11 @@ const routePaths: RouteObject[] = [
         id: "modify-room",
         path: "modify",
         element: <ModifyRoom />,
+      },
+      {
+        id: "participate-room",
+        path: "participate/:roomId",
+        element: <ParticipateRoom />,
       },
     ],
   },

@@ -1,3 +1,4 @@
 import potGroupSelector from "./potGroupSelector";
+import selectedRoomSelector from "./selectedRoomSelector";
 
-export default potGroupSelector;
+export { potGroupSelector, selectedRoomSelector };

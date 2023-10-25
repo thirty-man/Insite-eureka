@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/react-datepicker/dist/**/*.js",
+  ],
   theme: {
     extend: {
       width: {
@@ -33,6 +36,8 @@ export default {
         backgroundImg: "url('@assets/images/background.png')",
         board: "url('@assets/images/board.png')",
         cupboard: "url(@assets/images/open_cupboard.png)",
+        paper: "url(@assets/images/paper.png)",
+        writePaper: "url(@assets/images/writepaper.png)",
       },
     },
   },

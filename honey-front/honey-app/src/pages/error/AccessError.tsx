@@ -1,16 +1,16 @@
 import { TextButton } from "@components/common/button";
 import { useNavigate } from "react-router-dom";
 
-function ErrorNotFound() {
+function AccessError() {
   const navi = useNavigate();
 
   function goToBack() {
-    navi("/");
+    navi(-1);
   }
 
   return (
     <div>
-      <h1>존재하지 않는 페이지입니다.</h1>
+      <h1> 잘못된 접근입니다.</h1>
       <TextButton
         text="돌아가기"
         color="3"
@@ -22,4 +22,5 @@ function ErrorNotFound() {
     </div>
   );
 }
-export default ErrorNotFound;
+
+export default AccessError;

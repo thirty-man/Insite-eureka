@@ -5,9 +5,10 @@ import roomListState from "@recoil/atom/roomListState";
 import { RoomType } from "@customtype/dataTypes";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
+import { searchImg } from "@assets/images";
 
 function SearchRoom() {
-  const imgAddress: string = "src/assets/images/search.png";
+  const imgAddress: string = searchImg;
   const [inputSearch, setInputSearch] = useState<string>("");
   const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
 
@@ -41,11 +42,12 @@ function SearchRoom() {
 
   return (
     <div className="flex w-full h-[70px] items-center justify-center relative z-[50] top-6 ">
-      <div className="flex w-[80%] justify-end">
+      <div className="flex w-[70%] justify-end">
         <TextInput
           value={inputSearch}
           holder="방을 검색하세요"
-          className="h-12 w-5/6 m-5 p-1"
+          readonly={false}
+          className="h-12 w-full m-5 p-1"
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
             e.key === "Enter" && searchRoom()
@@ -55,7 +57,7 @@ function SearchRoom() {
       <ImageButton
         image={imgAddress}
         alt="검색"
-        className="flex items-center justify-start w-1/6 m-3 p-1"
+        className="flex items-center justify-start w-[10%] mr-5"
         onClick={searchRoom}
       />
     </div>
