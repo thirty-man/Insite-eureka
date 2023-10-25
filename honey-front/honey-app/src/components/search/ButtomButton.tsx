@@ -5,8 +5,6 @@ function ButtomButton() {
   const { routeTo } = useRouter();
 
   function goToMyCupboard(): void {
-    // 내가 참여한 방 목록을 가져오는 api 호출(전역 myRoomList 변경)
-
     routeTo("/mypage");
   }
   function createRoom(): void {

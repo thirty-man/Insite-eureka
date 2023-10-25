@@ -6,12 +6,16 @@ interface ModalType {
   className: string;
 }
 
-function Modal({
+function PotModal({
   openModal,
   children,
   overlay,
   className,
 }: PropsWithChildren<ModalType>) {
+  const modalClasses = `
+    fixed bottom-1/2 left-1/2 z-[99] ${className}
+   `;
+
   const [visible, setVisible] = useState<boolean>(false);
   useEffect(() => {
     if (openModal) {
@@ -23,10 +27,8 @@ function Modal({
   return (
     visible && (
       <>
-        <div className={className}>{children}</div>
-        {overlay ? (
-          <div className="inset-0 fixed bg-black opacity-[90%] z-[100]" />
-        ) : null}
+        <div className={modalClasses}>{children}</div>
+        {overlay ? <div className="inset-0 fixed bg-black opacity-75" /> : null}
       </>
     )
   );
@@ -34,4 +36,4 @@ function Modal({
 // ----------------------------------------------------------------------------------------------------
 
 /* Export */
-export default Modal;
+export default PotModal;

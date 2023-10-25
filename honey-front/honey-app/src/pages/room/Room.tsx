@@ -1,5 +1,5 @@
 import { Pen } from "@assets/images";
-import Modal from "@components/common/modal";
+import { Modal } from "@components/common/modal";
 import { Outlet } from "react-router-dom";
 
 function Room() {

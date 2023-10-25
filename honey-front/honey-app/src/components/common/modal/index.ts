@@ -1,3 +1,4 @@
 import Modal from "./Modal";
+import PotModal from "./PotModal";
 
-export default Modal;
+export { Modal, PotModal };
