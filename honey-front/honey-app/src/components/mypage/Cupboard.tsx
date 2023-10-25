@@ -14,7 +14,7 @@ function Cupboard() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
   const [potOpen, setPotOpen] = useState<boolean>(false);
-  const [selectedPot, setSelectedPot] = useState<PotType | undefined>();
+  const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
 
   const totalPotCnt: number = totalPotList.length;
   const chunkSize: number = 3;
@@ -95,12 +95,11 @@ function Cupboard() {
               <div className="w-full h-full flex items-center justify-center bg-size bg-paper bg-cover">
                 <div className="flex flex-col h-[80%] w-full justify-center items-center">
                   <div className="flex items-center h-[15%] sm:text-[30px] text-[20px]">
-                    From:{" "}
-                    {selectedPot === undefined ? "" : selectedPot.nickname}
+                    From: {selectedPot ? selectedPot.nickname : ""}
                   </div>
                   <div className="flex justify-center h-[80%] w-full">
                     <div className="flex h-[80%] w-[80%] text-[15px] sm:text-[20px] break-words overflow-y-auto justify-center items-center">
-                      {selectedPot === undefined
+                      {selectedPot === null
                         ? "항아리가 없어요"
                         : selectedPot.content}
                     </div>
