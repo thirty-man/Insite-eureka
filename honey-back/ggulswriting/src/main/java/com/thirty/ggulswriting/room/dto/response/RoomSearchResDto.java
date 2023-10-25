@@ -1,6 +1,6 @@
 package com.thirty.ggulswriting.room.dto.response;
 
-import com.thirty.ggulswriting.room.dto.RoomListDto;
+import com.thirty.ggulswriting.room.dto.RoomSearchDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class RoomSearchResDto {
 
-    private List<RoomListDto> roomListDtoList;
-    public static RoomSearchResDto from(List<RoomListDto> roomListDtoList){
+    private List<RoomSearchDto> roomSearchDtoList;
+    public static RoomSearchResDto from(List<RoomSearchDto> roomSearchDtoList){
         return RoomSearchResDto.builder()
-                .roomListDtoList(roomListDtoList)
+                .roomSearchDtoList(roomSearchDtoList)
                 .build();
     }
 }

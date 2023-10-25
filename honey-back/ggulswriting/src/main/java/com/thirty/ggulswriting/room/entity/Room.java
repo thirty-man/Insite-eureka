@@ -67,4 +67,9 @@ public class Room extends BaseEntity {
     public void delete(){
         this.isDeleted = true;
     }
+
+    public void modify(String roomTitle, String password){
+        this.roomTitle = roomTitle;
+        this.password = password;
+    }
 }

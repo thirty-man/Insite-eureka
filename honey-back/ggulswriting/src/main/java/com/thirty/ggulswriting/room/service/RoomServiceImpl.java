@@ -4,23 +4,29 @@ import com.thirty.ggulswriting.member.dto.MemberDto;
 import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.room.dto.RoomDto;
-import com.thirty.ggulswriting.room.dto.RoomListDto;
+import com.thirty.ggulswriting.room.dto.RoomSearchDto;
 import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
 import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomModifyReqDto;
 import com.thirty.ggulswriting.room.dto.response.RoomCreateResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.MessageListDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 import com.thirty.ggulswriting.room.dto.response.RoomSearchResDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,12 +42,14 @@ import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
 import com.thirty.ggulswriting.room.entity.Room;
 import com.thirty.ggulswriting.room.repository.RoomRepository;
 
-import lombok.AllArgsConstructor;
-
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
+	@Value("${room.salt}")
+	private String SALT;
+
 	private final MemberRepository memberRepository;
 	private final MessageRepository messageRepository;
 	private final RoomRepository roomRepository;
@@ -55,7 +63,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomParticipateReqDto.getRoomId());
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomParticipateReqDto.getRoomId());
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -64,7 +72,18 @@ public class RoomServiceImpl implements RoomService {
 		Room room = optionalRoom.get();
 		Optional<Participation> optionalParticipation = participationRepository.findParticipationByMemberAndRoom(member,
 			room);
-		Participation participation = optionalParticipation.get();
+
+		if(optionalParticipation.isPresent() && !optionalParticipation.get().getIsOut()){
+			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
+		}
+
+		//비밀번호 검증
+		String password = SALT+roomParticipateReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+		if(!encodedPassword.equals(room.getPassword())){
+			throw new RoomException(ErrorCode.NOT_MATCH_PASSWORD);
+		}
 
 		//100명 이상인 경우 입장 불가
 		int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
@@ -73,7 +92,8 @@ public class RoomServiceImpl implements RoomService {
 		}
 
 		//재입장
-		if (participation.getIsOut()) {
+		if(optionalParticipation.isPresent()){
+			Participation participation = optionalParticipation.get();
 			participation.reParticipate();
 			return "ok";
 		}
@@ -91,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -125,15 +145,11 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public RoomMemberResDto getMemberList(int roomId) {
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
 		Room room = optionalRoom.get();
-		//삭제된 방인지 검증
-		if(room.getIsDeleted()){
-			throw new RoomException(ErrorCode.DELETED_ROOM);
-		}
 
 		//방에 참여한 회원 조회
 		List<Participation> participationList = participationRepository.findAllByRoomAndIsOutIsFalse(room);
@@ -181,7 +197,7 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 		//방이 존재하는지 검증
-		Optional<Room> optionalRoom = roomRepository.findRoomByRoomId(roomId);
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
 		if (optionalRoom.isEmpty()) {
 			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
 		}
@@ -203,6 +219,47 @@ public class RoomServiceImpl implements RoomService {
 			messageListDtoList.add(MessageListDto.from(message));
 		}
 		return MessageListResDto.from(messageListDtoList);
+	}
+
+	@Override
+	public RoomDetailResDto getRoomDetail(int roomId) {
+		//방이 살아있는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+
+		Room room = optionalRoom.get();
+		Boolean isOpen = true;
+		if(room.getPassword() != null) isOpen = false;
+		return RoomDetailResDto.of(room.getMember().getName(), room.getRoomTitle(), isOpen, room.getShowTime());
+	}
+
+	@Override
+	public void modify(int roomId, int memberId, RoomModifyReqDto roomModifyReqDto) {
+		//방이 살아있는지 검증
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomId);
+		if (optionalRoom.isEmpty()) {
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+		Optional<Member> optionalMember = memberRepository.findById(memberId);
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+
+		// 방장이 아닌 회원 검사
+		if(!room.getMember().equals(member)){
+			throw new MemberException(ErrorCode.NOT_HOST_MEMBER);
+		}
+
+		//방 비밀번호 인코딩
+		String password = SALT+roomModifyReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+
+		room.modify(roomModifyReqDto.getRoomTitle(),encodedPassword);
 	}
 
 	@Override
@@ -241,11 +298,17 @@ public class RoomServiceImpl implements RoomService {
 		}
 
 		Member member = optionalMember.get();
+
+		//비밀번호 인코딩
+		String password = SALT+roomCreateReqDto.getPassword();
+		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+		String encodedPassword = new String(encoding);
+
 		Room room = Room.create(
 				member,
 				roomCreateReqDto.getRoomTitle(),
 				roomCreateReqDto.getShowTime(),
-				roomCreateReqDto.getPassword()
+				encodedPassword
 		);
 
 		roomRepository.save(room);
@@ -255,15 +318,25 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public RoomSearchResDto searchRoom(String title, int page) {
-
+		log.info("@@@@@@@@@@@@@@");
+		//5개 페이지 네이션
 		Pageable pageable = PageRequest.of(page,5, Sort.by(Sort.Order.desc("roomId")));
 
-		Page<Room> roomList = roomRepository.findByRoomTitleLike(title, pageable);
-		List<RoomListDto> roomListDtoList = new ArrayList<>();
+		Page<Room> roomList = roomRepository.findByRoomTitleContainsAndIsDeletedIsFalse(title, pageable);
+		List<RoomSearchDto> roomSearchDtoList = new ArrayList<>();
 		for(Room room: roomList){
-			roomListDtoList.add(RoomListDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),))
+			log.info("room ={}",room);
+			int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
+
+			Boolean isOpen = true;
+			if(room.getPassword() != null){
+				isOpen = false;
+			}
+
+			RoomSearchDto roomListDto = RoomSearchDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),memberCount,isOpen);
+			roomSearchDtoList.add(roomListDto);
 		}
-		return null;
+		return RoomSearchResDto.from(roomSearchDtoList);
 	}
 
 }

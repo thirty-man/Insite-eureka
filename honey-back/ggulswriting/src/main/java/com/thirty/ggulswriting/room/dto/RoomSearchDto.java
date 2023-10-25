@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomListDto {
+public class RoomSearchDto {
 
     private int id;
 
@@ -21,8 +21,8 @@ public class RoomListDto {
 
     private Boolean isOpen;
 
-    public static RoomListDto of(int id, String roomTitle, String masterName, int memberCounts, Boolean isOpen){
-        return RoomListDto.builder()
+    public static RoomSearchDto of(int id, String roomTitle, String masterName, int memberCounts, Boolean isOpen){
+        return RoomSearchDto.builder()
                 .id(id)
                 .roomTitle(roomTitle)
                 .masterName(masterName)
