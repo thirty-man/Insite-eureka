@@ -1,1 +1,1 @@
-# A701 삼십국지 팀
+# A701 삼십국지 thirty kingdoms 팀
