@@ -98,6 +98,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService{
             kakaoId = element.getAsJsonObject().get("id").getAsString();
             kakaoId+=" ";
             kakaoId+= properties.get("nickname").getAsString();
+            System.out.println("KakaoLogin Service kakaoId 변수 = "+ kakaoId);
             br.close();
         }catch(IOException e){
             e.printStackTrace();

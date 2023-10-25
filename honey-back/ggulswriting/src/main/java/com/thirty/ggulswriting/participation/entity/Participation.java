@@ -1,23 +1,11 @@
 package com.thirty.ggulswriting.participation.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import com.thirty.ggulswriting.global.entity.BaseEntity;
 import com.thirty.ggulswriting.member.entity.Member;
 import com.thirty.ggulswriting.room.entity.Room;
+import lombok.*;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -29,7 +17,7 @@ public class Participation extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long participationId;
+	private int participationId;
 
 	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
@@ -49,4 +37,10 @@ public class Participation extends BaseEntity {
 			.isOut(isOut)
 			.build();
 	}
+
+	public void out(){
+		this.isOut = true;
+	}
+
+	public void reParticipate(){ this.isOut = false; }
 }

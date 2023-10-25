@@ -44,8 +44,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             LoginReqDto loginReqDto = om.readValue(request.getInputStream(),LoginReqDto.class);
             String username = loginReqDto.getCode();
-            System.out.println("use"+username);
             String password = "";
+            System.out.println("Jwt Authentication Filter username = "+username);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     username,password

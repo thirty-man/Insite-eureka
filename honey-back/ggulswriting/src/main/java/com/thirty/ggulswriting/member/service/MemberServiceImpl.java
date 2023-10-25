@@ -29,8 +29,11 @@ public class MemberServiceImpl implements MemberService{
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("");
         StringTokenizer st = new StringTokenizer(kakaoId);
+        System.out.println("join 메소드 변수 kakaoId = "+kakaoId);
+        System.out.println(st.toString());
         String kakao = st.nextToken();
         String nickname= st.nextToken();
+        System.out.println("kakaoId ="+kakao+" and nickname ="+nickname);
         Member member = Member.builder()
                 .password(password)
                 .kakaoId(kakao)

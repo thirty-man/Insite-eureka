@@ -45,8 +45,7 @@ public class Member extends BaseEntity {
 
     public Member create(String kakaoId){
         return Member.builder()
-            .kakaoId(kakaoId)
-            .build();
+            .kakaoId(kakaoId).name(name).build();
     }
 
     public Member delete(){

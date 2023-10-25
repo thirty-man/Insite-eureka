@@ -2,21 +2,12 @@ package com.thirty.ggulswriting.room.entity;
 
 import com.thirty.ggulswriting.global.entity.BaseEntity;
 import com.thirty.ggulswriting.member.entity.Member;
-import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,7 +18,7 @@ public class Room extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    private int roomId;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -37,7 +28,7 @@ public class Room extends BaseEntity {
     private String roomTitle;
 
     @Column(nullable = false)
-    private LocalDateTime expireTime;
+    private LocalDateTime showTime;
 
     @Column
     private String password;
@@ -50,12 +41,20 @@ public class Room extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
-    public Room create(Member member, String title, LocalDateTime expireTime, String password){
+    public Room create(Member member, String title, LocalDateTime showTime, String password){
         return Room.builder()
             .member(member)
             .roomTitle(title)
-            .expireTime(expireTime)
+            .showTime(showTime)
             .password(password)
             .build();
+    }
+
+    public void changeMaster(Member member){
+        this.member = member;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
     }
 }
