@@ -3,6 +3,7 @@ package com.thirty.ggulswriting.member.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
@@ -15,13 +16,13 @@ import com.google.gson.JsonParser;
 @Slf4j
 @Service
 public class KakaoLoginServiceImpl implements KakaoLoginService{
-
+    @Value("${KAKAO_URL}")
+    private String kakaoUrl;
     @Override
     public String getKakaoAccessToken(String code) {
         String access_Token ="";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
-
         try{
             URL url = new URL(reqURL);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -33,7 +34,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=367be5f2a1031bc9fb556dd456869c88"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080");//TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri="+kakaoUrl);//TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" +code);
             bw.write(sb.toString());
             bw.flush();
