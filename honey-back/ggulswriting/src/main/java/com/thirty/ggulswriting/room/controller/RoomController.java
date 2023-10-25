@@ -3,14 +3,17 @@ package com.thirty.ggulswriting.room.controller;
 import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
 import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
 import com.thirty.ggulswriting.room.dto.request.RoomModifyReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
 import com.thirty.ggulswriting.room.dto.response.RoomCreateResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomSearchResDto;
+import com.thirty.ggulswriting.room.service.RoomService;
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @AllArgsConstructor
 @RestController
