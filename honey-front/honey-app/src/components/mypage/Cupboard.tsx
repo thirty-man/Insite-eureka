@@ -16,7 +16,7 @@ function Cupboard() {
     potList[0] || [],
   );
   const [potOpen, setPotOpen] = useState<boolean>(false);
-  const [selectedPot, setSelectedPot] = useState<PotType>();
+  const [selectedPot, setSelectedPot] = useState<PotType | undefined>();
 
   const totalPotCnt: number = totalPotList.length;
   const chunkSize: number = 3;
@@ -24,6 +24,9 @@ function Cupboard() {
   const pagination: PotType[] = [
     ...Array(Math.ceil(currentPotList.length / chunkSize)),
   ];
+  console.log(totalPotList);
+  console.log(potList);
+  console.log(currentPotList);
 
   function potClick(pot: PotType) {
     setSelectedPot(pot);
@@ -74,10 +77,11 @@ function Cupboard() {
                         groupIndex * chunkSize,
                         (groupIndex + 1) * chunkSize,
                       )
+                      .filter((pot) => pot)
                       .map((pot) => (
                         <Pot
                           key={pot.potId}
-                          potNum={pot.isCheck ? pot.honeyCaseType : "0"}
+                          potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
                           onClick={() => potClick(pot)}
                         />
                       ))}
@@ -87,7 +91,7 @@ function Cupboard() {
               </div>
             ))}
           </div>
-          {potOpen && (
+          {selectedPot && potOpen && (
             <PotModal
               className="fixed bottom-1/2 left-1/2 z-[99] w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[230px] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
               overlay

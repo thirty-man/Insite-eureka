@@ -8,13 +8,15 @@ import { Modal } from "@components/common/modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
+// import { useRecoilValue } from "recoil";
 
 function Send() {
+  // const selectedMember = useRecoilValue<UserType>(selectedMemberState);
   // const selectedMember = useRecoilValue<UserType>(selectedMemberState);
   const navi = useNavigate();
   const basicType = "sm:text-[30px] text-[20px] rounded-xl p-1 m-2";
   const [openPotModal, setOpenPotModal] = useState<boolean>(false);
-  const [selectedPotIdx, setSelectedPotIdx] = useState(1);
+  const [selectedPotIdx, setSelectedPotIdx] = useState<number>(1);
 
   function send() {
     // 전송 api요청
@@ -54,13 +56,13 @@ function Send() {
             <div className="h-[10%] w-[40%] flex justify-between items-center">
               <TextButton
                 text="전송"
-                color=""
+                color="4"
                 className={basicType}
                 onClick={() => setOpenPotModal(true)}
               />
               <TextButton
                 text="취소"
-                color=""
+                color="4"
                 className={basicType}
                 onClick={() => {
                   goToBack();
@@ -106,15 +108,15 @@ function Send() {
                 <div className="w-[80%] h-full flex flex-row items-center justify-around">
                   <TextButton
                     text="보내기"
-                    color="4"
+                    color="2"
                     className="w-[100px] h-[35px] rounded-[60px] flex items-center justify-center"
                     onClick={() => send}
                   />
                   <TextButton
                     text="닫기"
-                    color="4"
+                    color="2"
                     className="w-[100px] h-[35px] rounded-[60px] flex items-center justify-center"
-                    onClick={() => send}
+                    onClick={() => setOpenPotModal(false)}
                   />
                 </div>
               </div>
