@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
   const VITE_KAKAO_CLIENT_ID = "367be5f2a1031bc9fb556dd456869c88";
-  const VITE_KAKAO_REDIRECT_URI = "http://localhost:3000/login";
+  const VITE_KAKAO_REDIRECT_URI = "http://k9a701a.p.ssafy.io:3000/login";
   const { routeTo } = useRouter();
   const location = useLocation();
 
