@@ -1,9 +1,11 @@
-package com.thirty.ggulswriting.room.controller;
+package com.thirty.ggulswriting.message.controller;
 
+import com.thirty.ggulswriting.global.config.auth.LoginUser;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,10 +37,10 @@ public class MessageController {
 
 	@GetMapping("/{messageId}")
 	public ResponseEntity<MessageResDto> read(
-			@PathVariable int messageId
+		@PathVariable int messageId,
+		@AuthenticationPrincipal LoginUser loginUser
 	) {
-		int memberId = 1;
-		MessageResDto response = messageService.read(messageId, memberId);
+		MessageResDto response = messageService.read(messageId, loginUser.getMember().getMemberId());
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }
