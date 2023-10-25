@@ -1,11 +1,54 @@
 import HelpIcon from "@assets/icons";
 import { KakaoLoginButton, PoohHelpModal, PoohLogin } from "@assets/images";
+import { ImageButton } from "@components/common/button";
 import { Modal } from "@components/common/modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import useRouter from "@hooks/useRouter";
+import { useLocation } from "react-router-dom";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
+  const { VITE_KAKAO_CLIENT_ID, VITE_KAKAO_REDIRECT_URI } = import.meta.env;
+  const { routeTo } = useRouter();
+  const location = useLocation();
 
+  const authenticateUser = (code: string) => {
+    axios
+      // .post(`${AXIOS_URL}/members/login`, { code })
+      .post(`/api/v1/members/login`, { code })
+      .then((response) => {
+        console.log(response.data);
+        const authToken = response.headers.authorization;
+        // const refreshToken = response.headers.authorization;
+        if (authToken) {
+          sessionStorage.setItem("Authorization", authToken);
+          // sessionStorage.setItem("RefreshToken", refreshToken);
+        }
+        routeTo("/");
+      })
+      .catch((error) => {
+        // console.log(data);
+        console.log("Error:", error);
+      });
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const code = params.get("code");
+    console.log(code);
+
+    // If code exists, authenticate the user
+    if (code) {
+      authenticateUser(code);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
+
+  const handleLoginClick = () => {
+    const KAKAO_BASE_URL = "https://kauth.kakao.com/oauth/authorize";
+    window.location.href = `${KAKAO_BASE_URL}?client_id=${VITE_KAKAO_CLIENT_ID}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+  };
   return (
     <>
       <div className="flex h-10 mt-5 items-center justify-end px-5">
@@ -56,12 +99,16 @@ function Login() {
       <h1 className="h-1/6">
         <span className="text-cg-3">꿀</span>&apos;s Writing
       </h1>
+
       <div className="flex h-4/6 justify-center items-center">
         <div className="flex flex-col h-full items-center justify-center">
           <img src={PoohLogin} alt="mainpooh" />
-          <button className="rounded border border-blue-700" type="button">
-            <img src={KakaoLoginButton} alt="kakao Login Btn" />
-          </button>
+          <ImageButton
+            image={KakaoLoginButton}
+            alt="kakao Login Btn"
+            className="rounded border border-blue-700"
+            onClick={handleLoginClick}
+          />
         </div>
       </div>
     </>
