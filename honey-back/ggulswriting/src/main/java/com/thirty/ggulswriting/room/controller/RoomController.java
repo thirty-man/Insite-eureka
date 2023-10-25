@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
-import com.thirty.ggulswriting.room.service.RoomService;
-
-import lombok.AllArgsConstructor;
+import javax.validation.Valid;
 
 @AllArgsConstructor
 @RestController

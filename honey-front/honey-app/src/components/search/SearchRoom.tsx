@@ -1,42 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ImageButton } from "@components/common/button";
 import { TextInput } from "@components/common/input";
-import roomListState from "@recoil/atom/roomListState";
-import { RoomType } from "@customtype/dataTypes";
+// import roomListState from "@recoil/atom/roomListState";
+// import { RoomType } from "@customtype/dataTypes";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+// import { useRecoilState } from "recoil";
 import { searchImg } from "@assets/images";
 
 function SearchRoom() {
   const imgAddress: string = searchImg;
   const [inputSearch, setInputSearch] = useState<string>("");
-  const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
-
-  const dummyRoom: RoomType[] = [
-    {
-      roomId: 1,
-      roomName: "동현이 방",
-      owner: "동현",
-      password: null,
-    },
-    {
-      roomId: 2,
-      roomName: "동현이 안방",
-      owner: "현동이",
-      password: null,
-    },
-    {
-      roomId: 3,
-      roomName: "동현이 옆방",
-      owner: "홍뎐이",
-      password: 13579,
-    },
-  ];
+  // const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
 
   const searchRoom = () => {
     // 이 부분에서 방 목록을 호출하는 axios통신 코드 작성
     // dummy test
-    setRoomList(dummyRoom);
+
     setInputSearch("");
   };
 

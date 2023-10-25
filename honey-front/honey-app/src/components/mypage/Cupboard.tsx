@@ -1,27 +1,29 @@
 import { ImageButton } from "@components/common/button";
-import Modal from "@components/common/modal";
+import { PotModal } from "@components/common/modal";
 import Pot from "@components/pot";
 import { PotType } from "@customtype/dataTypes";
 import potListState from "@recoil/atom/potListState";
 import { potGroupSelector } from "@recoil/selector";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import { leftArrow, rightArrow } from "@assets/images";
 
 function Cupboard() {
-  const backArrow: string = "./src/assets/images/leftArrow.png";
-  const forwardArrow: string = "./src/assets/images/rightArrow.png";
-
   const totalPotList = useRecoilValue<PotType[]>(potListState);
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [currentPotList, setCurrentPotList] = useState<PotType[]>(potList[0]);
+  const [currentPotList, setCurrentPotList] = useState<PotType[]>(
+    potList[0] || [],
+  );
   const [potOpen, setPotOpen] = useState<boolean>(false);
   const [selectedPot, setSelectedPot] = useState<PotType>();
 
   const totalPotCnt: number = totalPotList.length;
   const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
-  const pagination = [...Array(Math.ceil(currentPotList.length / chunkSize))];
+  const pagination: PotType[] = [
+    ...Array(Math.ceil(currentPotList.length / chunkSize)),
+  ];
 
   function potClick(pot: PotType) {
     setSelectedPot(pot);
@@ -29,9 +31,10 @@ function Cupboard() {
   }
 
   function goToBack() {
-    setCurrentPage(currentPage - 1);
-    if (currentPage <= 0) {
+    if (currentPage <= 1) {
       setCurrentPage(maxCupboardIndex);
+    } else {
+      setCurrentPage(currentPage - 1);
     }
   }
 
@@ -51,7 +54,7 @@ function Cupboard() {
       <div className="flex items-center w-full justify-center sm:h-[550px] h-[350px] bg-cupboard bg-cover bg-size">
         <div className="flex justify-start w-[20%]">
           <ImageButton
-            image={backArrow}
+            image={leftArrow}
             alt="이전 찬장"
             className=""
             onClick={() => goToBack()}
@@ -85,8 +88,8 @@ function Cupboard() {
             ))}
           </div>
           {potOpen && (
-            <Modal
-              className=" w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[230px] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
+            <PotModal
+              className="fixed bottom-1/2 left-1/2 z-[99] w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[230px] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
               overlay
               openModal={potOpen}
             >
@@ -105,7 +108,7 @@ function Cupboard() {
                   </div>
                 </div>
               </div>
-              <Modal
+              <PotModal
                 className="w-[80px] h-[25px] -translate-x-[40px] translate-y-[130px] sm:w-[100px] sm:h-[35px] sm:-translate-x-[50px] sm:translate-y-[210px] rounded-[60px] bg-cg-2 flex items-center justify-center"
                 overlay={false}
                 openModal
@@ -117,13 +120,13 @@ function Cupboard() {
                 >
                   닫기
                 </button>
-              </Modal>
-            </Modal>
+              </PotModal>
+            </PotModal>
           )}
         </div>
         <div className="flex justify-end w-[20%]">
           <ImageButton
-            image={forwardArrow}
+            image={rightArrow}
             alt="다음 찬장"
             className=""
             onClick={() => goToNext()}

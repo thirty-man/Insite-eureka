@@ -18,11 +18,9 @@ function RoomButton({ room, onClick, className }: RoomButtonProps) {
           <img className="w-[90%]" src={lockImg} alt="잠김" />
         )}
       </p>
-      <p className="w-[20%]">{room.roomId}</p>
+      <p className="w-[20%]">{room.id}</p>
       <p className="w-[46%]">
-        {room.roomName.length <= 10
-          ? room.roomName
-          : `${room.roomName.slice(0, 10)}...`}
+        {room.title.length <= 10 ? room.title : `${room.title.slice(0, 10)}...`}
       </p>
       <p className="w-[26%]">{room.owner}</p>
     </button>

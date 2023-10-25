@@ -1,6 +1,6 @@
 import HelpIcon from "@assets/icons";
 import { KakaoLoginButton, PoohHelpModal, PoohLogin } from "@assets/images";
-import Modal from "@components/common/modal";
+import { Modal } from "@components/common/modal";
 import { useState } from "react";
 
 function Login() {
