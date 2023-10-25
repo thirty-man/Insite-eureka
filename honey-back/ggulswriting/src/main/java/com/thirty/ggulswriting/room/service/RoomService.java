@@ -1,5 +1,6 @@
 package com.thirty.ggulswriting.room.service;
 
+import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
 import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;

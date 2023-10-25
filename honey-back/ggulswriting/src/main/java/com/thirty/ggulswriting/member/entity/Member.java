@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Getter
@@ -27,7 +28,17 @@ public class Member extends BaseEntity {
     private int memberId;
 
     @Column(nullable = false)
-    private String kakaoToken;
+    private String kakaoId;
+
+    @Column(nullable = false, length = 60)
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    @CreatedDate
+    private LocalDateTime createdTime;
 
     @Column
     private LocalDateTime goodbyeTime;
