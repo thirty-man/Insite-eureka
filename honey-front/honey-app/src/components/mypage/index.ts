@@ -1,5 +1,5 @@
 import MypageTitle from "./MypageTitle";
 import Cupboard from "./Cupboard";
-import ButtomMenu from "./ButtomMenu";
+import ButtomMenu from "./BottomMenu";
 
 export { MypageTitle, Cupboard, ButtomMenu };

@@ -1,4 +1,4 @@
-import Modal from "@components/common/modal";
+import { Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";

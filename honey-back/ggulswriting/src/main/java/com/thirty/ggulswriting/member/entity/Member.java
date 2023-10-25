@@ -27,7 +27,10 @@ public class Member extends BaseEntity {
     private int memberId;
 
     @Column(nullable = false)
-    private String kakaoToken;
+    private String kakaoId;
+
+    @Column(nullable = false, length = 60)
+    private String password;
 
     @Column
     private LocalDateTime goodbyeTime;
@@ -35,9 +38,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    public Member create(String kakaoToken, String name){
+    public Member create(String kakaoId, String name){
         return Member.builder()
-            .kakaoToken(kakaoToken)
+            .kakaoId(kakaoId)
             .name(name)
             .build();
     }

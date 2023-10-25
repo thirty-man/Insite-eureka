@@ -10,13 +10,13 @@ function Dropdown({ className, items, onClick }: DropdwonProps) {
   return (
     <div className="absolute flex flex-col max-w-[300px] sm:w-[25%] justify-start items-center bg-cg-1 rounded-xl sm:h-[250px] overflow-y-scroll">
       {items.map((item, index) => (
-        <div key={item.roomId}>
+        <div key={item.id}>
           <button
             type="button"
             className={className}
-            onClick={() => onClick(item.roomId)}
+            onClick={() => onClick(item.id)}
           >
-            <p className="sm:text-2xl p-2">{item.roomName}</p>
+            <p className="sm:text-2xl p-2">{item.title}</p>
           </button>
           {index !== items.length - 1 && (
             <hr className="w-[90%] border border-black" />

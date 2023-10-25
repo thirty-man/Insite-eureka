@@ -1,5 +1,5 @@
 import { ImageButton, TextButton } from "@components/common/button";
-import Modal from "@components/common/modal";
+import { PotModal } from "@components/common/modal";
 import { RoomType, UserType } from "@customtype/dataTypes";
 import useRouter from "@hooks/useRouter";
 import {
@@ -55,7 +55,7 @@ function ButtomMenu() {
           onClick={() => showMemberList()}
         />
         {memberOpen && (
-          <Modal
+          <PotModal
             className=" w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[250px] rounded-[36px] shadow-lg flex flex-col items-center px-[15px] py-[15px] bg-cg-6"
             overlay
             openModal={memberOpen}
@@ -70,7 +70,7 @@ function ButtomMenu() {
                   className="flex w-[80%] bg-cg-1 m-2 rounded-xl items-center justify-center"
                 >
                   <div className="w-[100%] flex justify-center items-center">
-                    <div className="w-[70%]">{member.nickName}</div>
+                    <div className="w-[70%]">{member.name}</div>
                     <ImageButton
                       image={sendPotImg}
                       alt="보내기"
@@ -81,7 +81,7 @@ function ButtomMenu() {
                 </div>
               ))}
             </div>
-            <Modal
+            <PotModal
               className="w-[80px] h-[25px] -translate-x-[40px] translate-y-[190px] sm:w-[100px] sm:h-[35px] sm:-translate-x-[50px] sm:translate-y-[280px] rounded-[60px] bg-cg-1 flex items-center justify-center hover:scale-125 hover:bg-cg-3"
               overlay={false}
               openModal
@@ -93,8 +93,8 @@ function ButtomMenu() {
               >
                 닫기
               </button>
-            </Modal>
-          </Modal>
+            </PotModal>
+          </PotModal>
         )}
         <TextButton
           text="초대 링크 복사"
