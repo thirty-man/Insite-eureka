@@ -8,4 +8,5 @@ import com.thirty.ggulswriting.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
 	Optional<Member> findMemberByMemberIdAndGoodbyeTimeIsNull(int memberId);
+	Optional<Member> findByKakaoIdAndGoodbyeTimeIsNull(String kakaoId);
 }
