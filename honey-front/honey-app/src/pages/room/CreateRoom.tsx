@@ -53,7 +53,19 @@ function CreateRoom() {
     setBoxChecked(!boxChecked);
     setRoomPasswordFocused(false);
   };
+  function parseKoreanDateString(dateString: string): Date {
+    const matches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
 
+    if (!matches) {
+      throw new Error("Invalid date string format.");
+    }
+
+    const year = parseInt(matches[1], 10);
+    const month = parseInt(matches[2], 10) - 1; // JavaScript의 month는 0부터 시작
+    const day = parseInt(matches[3], 10);
+
+    return new Date(year, month, day);
+  }
   const compareDate = (value: Value): boolean => {
     const nextDate = moment().add(1, "days").startOf("day");
     if (!(value instanceof Date) || value === null) {
@@ -76,11 +88,12 @@ function CreateRoom() {
     } else {
       const eventTarget = event.target as HTMLElement;
       const aria = eventTarget.getAttribute("aria-label");
-      if (aria === null) {
+      if (aria !== null) {
+        setReleaseDate(aria);
+        setToday(parseKoreanDateString(aria));
+      } else {
         setReleaseDate("날짜 설정");
-        return;
       }
-      setReleaseDate(aria);
     }
   };
   const handleCalendar = () => {
@@ -129,7 +142,7 @@ function CreateRoom() {
           <input
             value={roomName}
             placeholder={roomNameFocused ? "" : "방제목을 입력해주세요."}
-            className="w-[90%] h-[10%] min-h-[50px] text-[18px] bg-cg-2 rounded-2xl"
+            className="w-[90%] h-[13%] min-h-[50px] text-[24px] bg-cg-2 rounded-2xl"
             onChange={handleRoomName}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
@@ -137,10 +150,14 @@ function CreateRoom() {
           <div className="pt-[20px] pb-[8px] text-[30px] text-white">
             공개일
           </div>
-          <div className="w-[100%]" onClick={handleCalendar} aria-hidden>
+          <div
+            className="w-[100%] h-[13%]"
+            onClick={handleCalendar}
+            aria-hidden
+          >
             <input
               value={releaseDate}
-              className="w-[90%] h-[10%] min-h-[50px] text-[18px] bg-cg-2 rounded-2xl"
+              className="w-[90%] h-[100%] min-h-[50px] text-[24px] text-white bg-cg-2 rounded-2xl"
               readOnly
             />
           </div>
@@ -184,8 +201,8 @@ function CreateRoom() {
             }
             className={
               boxChecked
-                ? "w-[90%] h-[10%] min-h-[50px] text-[18px] bg-cg-2 rounded-2xl"
-                : "w-[90%] h-[10%] min-h-[50px] text-[18px] bg-transparent text-transparent"
+                ? "w-[90%] h-[13%] min-h-[50px] text-[24px] bg-cg-2 rounded-2xl"
+                : "w-[90%] h-[13%] min-h-[50px] text-[24px] bg-transparent text-transparent"
             }
             disabled={!boxChecked}
             onFocus={handleRoomPasswordFocus}
@@ -212,7 +229,7 @@ function CreateRoom() {
       </div>
       {openCalendar && (
         <Modal
-          className="fixed w-[320px] h-[320px] bottom-[50%] left-[50%] -translate-x-[160px] translate-y-[100px] z-[150]"
+          className="fixed w-[280px] h-[280px] bottom-[50%] left-[50%] -translate-x-[140px] translate-y-[70px] z-[150]"
           overlay
           openModal={openCalendar}
         >
