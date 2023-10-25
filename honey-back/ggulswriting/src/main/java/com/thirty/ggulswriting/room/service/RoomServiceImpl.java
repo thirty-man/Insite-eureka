@@ -1,5 +1,24 @@
 package com.thirty.ggulswriting.room.service;
 
+import com.thirty.ggulswriting.member.dto.MemberDto;
+import com.thirty.ggulswriting.message.entity.Message;
+import com.thirty.ggulswriting.message.repository.MessageRepository;
+import com.thirty.ggulswriting.room.dto.RoomDto;
+import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
+import com.thirty.ggulswriting.room.dto.response.RoomResDto;
+import com.thirty.ggulswriting.message.dto.MessageListDto;
+import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.thirty.ggulswriting.global.error.ErrorCode;
 import com.thirty.ggulswriting.global.error.exception.MemberException;
 import com.thirty.ggulswriting.global.error.exception.ParticipationException;

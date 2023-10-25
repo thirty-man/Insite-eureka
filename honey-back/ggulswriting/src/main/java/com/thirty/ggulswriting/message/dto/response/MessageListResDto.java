@@ -1,12 +1,11 @@
 package com.thirty.ggulswriting.message.dto.response;
 
 import com.thirty.ggulswriting.message.dto.MessageListDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Builder

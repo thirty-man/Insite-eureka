@@ -43,14 +43,17 @@ public class Member extends BaseEntity {
     @Column
     private LocalDateTime goodbyeTime;
 
-    public Member create(String kakaoId){
+    @Column(nullable = false)
+    private String name;
+
+    public Member create(String kakaoToken, String name){
         return Member.builder()
-            .kakaoId(kakaoId).name(name).build();
+            .kakaoToken(kakaoToken)
+            .name(name)
+            .build();
     }
 
-    public Member delete(){
-        return Member.builder()
-            .goodbyeTime(LocalDateTime.now())
-            .build();
+    public void delete(){
+        this.goodbyeTime = LocalDateTime.now();
     }
 }

@@ -1,23 +1,25 @@
 package com.thirty.ggulswriting.message.service;
 
-import com.thirty.ggulswriting.global.error.ErrorCode;
 import com.thirty.ggulswriting.global.error.exception.MemberException;
-import com.thirty.ggulswriting.global.error.exception.MessageException;
 import com.thirty.ggulswriting.global.error.exception.ParticipationException;
 import com.thirty.ggulswriting.global.error.exception.RoomException;
 import com.thirty.ggulswriting.member.entity.Member;
 import com.thirty.ggulswriting.member.repository.MemberRepository;
+import com.thirty.ggulswriting.room.entity.Room;
+import com.thirty.ggulswriting.room.repository.RoomRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thirty.ggulswriting.global.error.ErrorCode;
+import com.thirty.ggulswriting.global.error.exception.MessageException;
+import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
 import com.thirty.ggulswriting.message.dto.response.MessageResDto;
-import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.participation.entity.Participation;
 import com.thirty.ggulswriting.participation.repository.ParticipationRepository;
-import com.thirty.ggulswriting.room.entity.Room;
-import com.thirty.ggulswriting.room.repository.RoomRepository;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

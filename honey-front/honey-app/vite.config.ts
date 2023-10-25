@@ -8,6 +8,11 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
     port: 3000,
+    proxy: {
+      "/api": {
+        target: "http://k9a701a.p.ssafy.io:8080",
+      },
+    },
   },
   resolve: {
     alias: [
@@ -32,6 +37,14 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "src/config"),
       },
       {
+        find: "@customtype",
+        replacement: path.resolve(__dirname, "src/customtype"),
+      },
+      {
+        find: "@hooks",
+        replacement: path.resolve(__dirname, "src/hooks"),
+      },
+      {
         find: "@pages",
         replacement: path.resolve(__dirname, "src/pages"),
       },
@@ -42,10 +55,6 @@ export default defineConfig({
       {
         find: "@styles",
         replacement: path.resolve(__dirname, "src/styles"),
-      },
-      {
-        find: "@types",
-        replacement: path.resolve(__dirname, "src/types"),
       },
     ],
   },

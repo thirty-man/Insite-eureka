@@ -1,14 +1,21 @@
-package com.thirty.ggulswriting.message.controller;
+package com.thirty.ggulswriting.room.controller;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
 import com.thirty.ggulswriting.message.dto.response.MessageResDto;
 import com.thirty.ggulswriting.message.service.MessageService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor

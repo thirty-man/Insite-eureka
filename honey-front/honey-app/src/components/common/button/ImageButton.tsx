@@ -6,7 +6,7 @@ interface ImageButtonProps {
 }
 
 function ImageButton({ image, alt, className, onClick }: ImageButtonProps) {
-  const basicType: string = `${className}`;
+  const basicType: string = `${className} hover:scale-150`;
 
   return (
     <button type="button" onClick={onClick} className={basicType}>

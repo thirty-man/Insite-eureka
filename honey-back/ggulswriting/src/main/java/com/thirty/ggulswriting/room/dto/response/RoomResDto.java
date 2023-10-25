@@ -1,12 +1,11 @@
 package com.thirty.ggulswriting.room.dto.response;
 
 import com.thirty.ggulswriting.room.dto.RoomDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Builder

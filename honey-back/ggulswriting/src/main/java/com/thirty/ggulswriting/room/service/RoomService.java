@@ -5,6 +5,7 @@ import com.thirty.ggulswriting.room.dto.request.RoomParticipateReqDto;
 import com.thirty.ggulswriting.room.dto.response.RoomDetailResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
+import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
 
 public interface RoomService {
 	String participate(RoomParticipateReqDto roomParticipateReqDto, int memberId);
