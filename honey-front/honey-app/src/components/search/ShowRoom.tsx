@@ -13,7 +13,7 @@ function ShowRoom() {
   function gotoRoom(room: RoomType) {
     // 룸으로 이동
     setSelectedRoom(room);
-    routeTo(`/room/participate/${room.roomId}`);
+    routeTo(`/room/participate/${room.id}`);
   }
 
   return (
@@ -28,10 +28,10 @@ function ShowRoom() {
       </div>
       <div className="flex flex-col h-[400px] w-4/5 items-center justify-start">
         {roomList.map((room) => (
-          <div className="flex w-full h-20 justify-center" key={room.roomId}>
+          <div className="flex w-full h-20 justify-center" key={room.id}>
             <RoomButton
               className="bg-cg-5 w-5/6 h-15 roomBtn rounded-2xl m-0"
-              key={room.roomId}
+              key={room.id}
               room={room}
               onClick={() => gotoRoom(room)}
             />

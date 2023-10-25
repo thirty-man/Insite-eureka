@@ -1,16 +1,16 @@
 import { nextArrow, prevArrow } from "@assets/images";
 import pots from "@assets/images/pots";
-import { TextButton } from "@components/common/button";
+import { ImageButton, TextButton } from "@components/common/button";
 import { Modal } from "@components/common/modal";
-import { UserType } from "@customtype/dataTypes";
-import { AccessError } from "@pages/error";
-import { selectedMemberState } from "@recoil/atom";
+// import { UserType } from "@customtype/dataTypes";
+// import { AccessError } from "@pages/error";
+// import { selectedMemberState } from "@recoil/atom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+// import { useRecoilValue } from "recoil";
 
 function Send() {
-  const selectedMember = useRecoilValue<UserType>(selectedMemberState);
+  // const selectedMember = useRecoilValue<UserType>(selectedMemberState);
   const navi = useNavigate();
   const basicType = "sm:text-[30px] text-[20px] rounded-xl p-1 m-2";
   const [openPotModal, setOpenPotModal] = useState<boolean>(false);
@@ -36,7 +36,7 @@ function Send() {
     setSelectedPotIdx((prev) => (prev - 1 + pots.length) % pots.length);
   };
 
-  //랜덤 꿀단지일경우(potIdx==0)=> send할 때, if문으로 Math.random함수로 인덱스 정해주면 될 듯
+  // 랜덤 꿀단지일경우(potIdx==0)=> send할 때, if문으로 Math.random함수로 인덱스 정해주면 될 듯
 
   return (
     <>
@@ -45,7 +45,8 @@ function Send() {
           <div className="flex flex-col justify-center items-center h-[90%] w-full">
             <div className="flex h-[11%] justify-center items-center sm:text-[30px] text-[20px]">
               <p className="text-emerald-800 ">
-                유섭{/* {selectedMember.name} */}
+                유섭
+                {/* {selectedMember.name} */}
               </p>
               님에게 보내는 편지
             </div>
@@ -80,18 +81,20 @@ function Send() {
               <div className="pt-[15px] text-[36px]">꿀단지 선택</div>
               <div className="flex flex-row items-center justify-center">
                 <div className="pt-[20px] flex flex-row items-center justify-around">
-                  <img
-                    src={prevArrow}
+                  <ImageButton
+                    image={prevArrow}
                     className="w-[30px] h-[40px]"
                     onClick={prevPot}
+                    alt="이전"
                   />
                   <img
                     src={pots[selectedPotIdx]}
                     className="w-[150px] h-[150px]"
                     alt="Selected pot"
                   />
-                  <img
-                    src={nextArrow}
+                  <ImageButton
+                    image={nextArrow}
+                    alt="다음"
                     className="w-[30px] h-[40px]"
                     onClick={nextPot}
                   />
@@ -101,20 +104,18 @@ function Send() {
             <div className="w-full h-[10%] pb-[100px] ">
               <div className="w-full h-[40px] flex flex-row items-center justify-center">
                 <div className="w-[80%] h-full flex flex-row items-center justify-around">
-                  <button
-                    type="button"
-                    className="w-[100px] h-[35px] rounded-[60px] bg-cg-4 flex items-center justify-center"
-                    onClick={send}
-                  >
-                    보내기
-                  </button>
-                  <button
-                    type="button"
-                    className="w-[100px] h-[35px] rounded-[60px] bg-cg-4 flex items-center justify-center"
-                    onClick={() => setOpenPotModal(false)}
-                  >
-                    닫기
-                  </button>
+                  <TextButton
+                    text="보내기"
+                    color="4"
+                    className="w-[100px] h-[35px] rounded-[60px] flex items-center justify-center"
+                    onClick={() => send}
+                  />
+                  <TextButton
+                    text="닫기"
+                    color="4"
+                    className="w-[100px] h-[35px] rounded-[60px] flex items-center justify-center"
+                    onClick={() => send}
+                  />
                 </div>
               </div>
             </div>

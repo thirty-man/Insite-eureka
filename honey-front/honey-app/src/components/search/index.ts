@@ -1,4 +1,4 @@
-import ButtomButton from "./ButtomButton";
+import ButtomButton from "./BottomButton";
 import SearchRoom from "./SearchRoom";
 import ShowRoom from "./ShowRoom";
 import PageMove from "./PageMove";
