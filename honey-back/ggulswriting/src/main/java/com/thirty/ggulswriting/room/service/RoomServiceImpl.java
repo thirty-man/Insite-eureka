@@ -4,6 +4,10 @@ import com.thirty.ggulswriting.member.dto.MemberDto;
 import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.room.dto.RoomDto;
+import com.thirty.ggulswriting.room.dto.RoomListDto;
+import com.thirty.ggulswriting.room.dto.request.RoomCreateReqDto;
+import com.thirty.ggulswriting.room.dto.request.RoomDeleteReqDto;
+import com.thirty.ggulswriting.room.dto.response.RoomCreateResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.MessageListDto;
@@ -12,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.thirty.ggulswriting.room.dto.response.RoomSearchResDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -195,4 +204,66 @@ public class RoomServiceImpl implements RoomService {
 		}
 		return MessageListResDto.from(messageListDtoList);
 	}
+
+	@Override
+	public void deleteRoom(RoomDeleteReqDto roomDeleteReqDto, int memberId) {
+		// 탈퇴한 회원인지 검증
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+
+		// 방 유효성 검사
+		Optional<Room> optionalRoom = roomRepository.findRoomByRoomIdAndIsDeletedIsFalse(roomDeleteReqDto.getRoomId());
+		if(optionalRoom.isEmpty()){
+			throw new RoomException(ErrorCode.NOT_EXIST_ROOM);
+		}
+
+		Member member = optionalMember.get();
+		Room room = optionalRoom.get();
+
+		// 방장이 아닌 회원 검사
+		if(!room.getMember().equals(member)){
+			throw new MemberException(ErrorCode.NOT_HOST_MEMBER);
+		}
+
+		// 방 삭제
+		room.delete();
+	}
+
+	@Override
+	public RoomCreateResDto createRoom(RoomCreateReqDto roomCreateReqDto, int memberId) {
+		// 탈퇴한 회원인지 검증
+		Optional<Member> optionalMember = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
+
+		if(optionalMember.isEmpty()){
+			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+		}
+
+		Member member = optionalMember.get();
+		Room room = Room.create(
+				member,
+				roomCreateReqDto.getRoomTitle(),
+				roomCreateReqDto.getShowTime(),
+				roomCreateReqDto.getPassword()
+		);
+
+		roomRepository.save(room);
+
+		return RoomCreateResDto.from(room.getRoomId());
+	}
+
+	@Override
+	public RoomSearchResDto searchRoom(String title, int page) {
+
+		Pageable pageable = PageRequest.of(page,5, Sort.by(Sort.Order.desc("roomId")));
+
+		Page<Room> roomList = roomRepository.findByRoomTitleLike(title, pageable);
+		List<RoomListDto> roomListDtoList = new ArrayList<>();
+		for(Room room: roomList){
+			roomListDtoList.add(RoomListDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),))
+		}
+		return null;
+	}
+
 }

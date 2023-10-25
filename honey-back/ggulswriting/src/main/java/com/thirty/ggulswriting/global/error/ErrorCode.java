@@ -9,6 +9,7 @@ public enum ErrorCode {
 	//회원
 	ALREADY_WITHDRAWAL_MEMBER(HttpStatus.UNAUTHORIZED, "001", "탈퇴한 회원입니다."),
 	NOT_EXIST_MEMBER(HttpStatus.UNAUTHORIZED, "002", "존재하지 않는 회원입니다."),
+	NOT_HOST_MEMBER(HttpStatus.UNAUTHORIZED, "003","방장이 아닌 회원입니다."),
 	//room
 	NOT_EXIST_ROOM(HttpStatus.BAD_REQUEST, "001", "존재하지 않는 방입니다."),
 	DELETED_ROOM(HttpStatus.BAD_REQUEST, "002", "삭제된 방입니다."),
