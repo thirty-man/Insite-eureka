@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 public class KakaoLoginServiceImpl implements KakaoLoginService{
     @Value("${KAKAO_URL}")
     private String kakaoUrl;
+    private String tempUrl = "http://localhost:3000/login";
     @Override
     public String getKakaoAccessToken(String code) {
         String access_Token ="";
@@ -34,7 +35,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=367be5f2a1031bc9fb556dd456869c88"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri="+kakaoUrl);//TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri="+tempUrl);//TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" +code);
             bw.write(sb.toString());
             bw.flush();
