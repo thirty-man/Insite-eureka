@@ -33,9 +33,7 @@ function Cupboard() {
   const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
   console.log(maxCupboardIndex, "8");
-  const [pagination, setPagination] = useState<PotType[] | []>([
-    ...Array(Math.ceil(currentPotList.length / chunkSize)),
-  ]);
+  const [pagination, setPagination] = useState<PotType[] | undefined>([]);
   console.log(pagination, "10");
 
   function potClick(pot: PotType) {
@@ -64,6 +62,16 @@ function Cupboard() {
   useEffect(() => {
     setPagination(potList[currentPage]);
   }, [currentPage, potList]);
+
+  useEffect(() => {
+    // Calculate the new pagination array based on currentPotList's length
+    const newPagination = Array(
+      Math.ceil(currentPotList.length / chunkSize),
+    ).fill(undefined);
+
+    // Update the pagination state
+    setPagination(newPagination);
+  }, [currentPotList, chunkSize]);
 
   return (
     <>
