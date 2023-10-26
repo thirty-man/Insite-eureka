@@ -17,7 +17,7 @@ function Login() {
 
   const authenticateUser = (code: string) => {
     axios
-      .post("/api/v1/members/login", { code })
+      .post("http://k9a701a.p.ssafy.io:8080/api/v1/members/login", { code })
       .then((response) => {
         console.log(response.data);
         const authToken = response.headers.authorization;

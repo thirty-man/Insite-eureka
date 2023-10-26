@@ -29,10 +29,9 @@ function Cupboard() {
   }
 
   function goToBack() {
-    if (currentPage <= 1) {
+    setCurrentPage(currentPage - 1);
+    if (currentPage <= 0) {
       setCurrentPage(maxCupboardIndex);
-    } else {
-      setCurrentPage(currentPage - 1);
     }
   }
 
