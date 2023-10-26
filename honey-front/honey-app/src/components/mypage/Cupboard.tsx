@@ -1,55 +1,57 @@
-// import { ImageButton } from "@components/common/button";
-// import { PotModal } from "@components/common/modal";
-// import Pot from "@components/pot";
-// import { PotType } from "@customtype/dataTypes";
-// import potListState from "@recoil/atom/potListState";
-// import { potGroupSelector } from "@recoil/selector";
-// import { useEffect, useState } from "react";
-// import { useRecoilValue } from "recoil";
-// import { leftArrow, rightArrow } from "@assets/images";
+import { ImageButton } from "@components/common/button";
+import { PotModal } from "@components/common/modal";
+import Pot from "@components/pot";
+import { PotType } from "@customtype/dataTypes";
+import potListState from "@recoil/atom/potListState";
+import { potGroupSelector } from "@recoil/selector";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { leftArrow, rightArrow } from "@assets/images";
 
 function Cupboard() {
-  // const totalPotList = useRecoilValue<PotType[]>(potListState);
-  // const potList = useRecoilValue<PotType[][]>(potGroupSelector);
-  // const [currentPage, setCurrentPage] = useState<number>(0);
-  // const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
-  // const [potOpen, setPotOpen] = useState<boolean>(false);
-  // const [selectedPot, setSelectedPot] = useState<PotType>();
+  const totalPotList = useRecoilValue<PotType[]>(potListState);
+  console.log(totalPotList);
+  const potList = useRecoilValue<PotType[][]>(potGroupSelector);
+  console.log(potList);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
+  const [potOpen, setPotOpen] = useState<boolean>(false);
+  const [selectedPot, setSelectedPot] = useState<PotType>();
 
-  // const totalPotCnt: number = totalPotList.length;
-  // const chunkSize: number = 3;
-  // const maxCupboardIndex: number = potList.length - 1;
-  // const pagination: PotType[] = [
-  //   ...Array(Math.ceil(currentPotList.length / chunkSize)),
-  // ];
+  const totalPotCnt: number = totalPotList.length;
+  const chunkSize: number = 3;
+  const maxCupboardIndex: number = potList.length - 1;
+  const pagination: PotType[] = [
+    ...Array(Math.ceil(currentPotList.length / chunkSize)),
+  ];
 
-  // function potClick(pot: PotType) {
-  //   setSelectedPot(pot);
-  //   setPotOpen(true);
-  // }
+  function potClick(pot: PotType) {
+    setSelectedPot(pot);
+    setPotOpen(true);
+  }
 
-  // function goToBack() {
-  //   setCurrentPage(currentPage - 1);
-  //   if (currentPage <= 0) {
-  //     setCurrentPage(maxCupboardIndex);
-  //   }
-  // }
+  function goToBack() {
+    setCurrentPage(currentPage - 1);
+    if (currentPage <= 0) {
+      setCurrentPage(maxCupboardIndex);
+    }
+  }
 
-  // function goToNext() {
-  //   setCurrentPage(currentPage + 1);
-  //   if (currentPage >= maxCupboardIndex) {
-  //     setCurrentPage(0);
-  //   }
-  // }
+  function goToNext() {
+    setCurrentPage(currentPage + 1);
+    if (currentPage >= maxCupboardIndex) {
+      setCurrentPage(0);
+    }
+  }
 
-  // useEffect(() => {
-  //   setCurrentPotList(potList[currentPage]);
-  // }, [currentPage, potList]);
+  useEffect(() => {
+    setCurrentPotList(potList[currentPage]);
+  }, [currentPage, potList]);
 
   return (
     <>
-      <div className="flex items-center w-full justify-center sm:h-[550px] h-[350px] bg-cupboard bg-cover bg-size" />
-      {/* <div className="flex justify-start w-[20%]">
+      <div className="flex items-center w-full justify-center sm:h-[550px] h-[350px] bg-cupboard bg-cover bg-size">
+        <div className="flex justify-start w-[20%]">
           <ImageButton
             image={leftArrow}
             alt="이전 찬장"
@@ -132,7 +134,7 @@ function Cupboard() {
       </div>
       <div className="sm:text-[20px] text-[10px]">
         내 항아리 수: {totalPotCnt}개
-      </div> */}
+      </div>
     </>
   );
 }
