@@ -2,7 +2,7 @@ import { ButtomMenu, Cupboard } from "@components/mypage";
 import MypageTitle from "@components/mypage/MypageTitle";
 import { RoomType } from "@customtype/dataTypes";
 import { myRoomListState } from "@recoil/atom";
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
