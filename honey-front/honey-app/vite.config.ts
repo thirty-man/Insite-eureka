@@ -7,11 +7,10 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
-    port: 3000,
+    // port: 3000,
     proxy: {
-      "/api": {
+      "/api/v1": {
         target: "http://k9a701a.p.ssafy.io:8080",
-        // target: "http://localhost:8080",
       },
     },
   },
