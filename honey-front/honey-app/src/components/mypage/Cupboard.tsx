@@ -83,33 +83,15 @@ const testPot: PotType[] = [
 ];
 
 function Cupboard() {
-  // 진짜 전체 유저가 그 방에서 가진 팟리스트
   const [totalPotList, setTotalPotList] =
     useRecoilState<PotType[]>(potListState);
-  console.log(totalPotList, "1");
-  // 전체를 페이지별 * 9개씩 나눠놓은 리스트
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
-  console.log(potList, "2");
-  // 현재 페이지(이건 페이지네이션)
   const [currentPage, setCurrentPage] = useState<number>(0);
-  console.log(currentPage, "3");
-  // 현재 페이지에있는 팟을 가져오는것
   const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
-  console.log(currentPotList, "4");
-  // 모달오픈클로즈
   const [potOpen, setPotOpen] = useState<boolean>(false);
-  console.log(potOpen, "5");
-  // 선택하면 여기에 선택한 팟 정보를 넘겨서 모달로 띄움
   const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
-  console.log(selectedPot, "6");
-
   const totalPotCnt: number = totalPotList.length;
-  console.log(totalPotCnt, "7");
-  const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
-  console.log(maxCupboardIndex, "8");
-  const [pagination, setPagination] = useState<PotType[] | undefined>([]);
-  console.log(pagination, "10");
 
   function potClick(pot: PotType) {
     setSelectedPot(pot);
@@ -134,20 +116,6 @@ function Cupboard() {
     setTotalPotList(testPot);
     setCurrentPotList(potList[currentPage]);
   }, [currentPage, potList, setTotalPotList]);
-
-  useEffect(() => {
-    setPagination(potList[currentPage]);
-  }, [currentPage, potList]);
-
-  useEffect(() => {
-    // Calculate the new pagination array based on currentPotList's length
-    const newPagination = Array(
-      Math.ceil(currentPotList.length / chunkSize),
-    ).fill(undefined);
-
-    // Update the pagination state
-    setPagination(newPagination);
-  }, [currentPotList, chunkSize]);
 
   return (
     <>

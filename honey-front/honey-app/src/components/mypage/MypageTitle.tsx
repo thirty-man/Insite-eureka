@@ -10,7 +10,7 @@ import { leftArrow } from "@assets/images";
 import { getMyRoomlistSelector } from "@recoil/selector";
 
 interface MypageTitleProps {
-  selectedRoom: RoomType;
+  selectedRoom: RoomType | null;
   roomNum: number;
   setRoomNum: React.Dispatch<React.SetStateAction<number>>;
 }
