@@ -10,20 +10,27 @@ import { leftArrow, rightArrow } from "@assets/images";
 
 function Cupboard() {
   const totalPotList = useRecoilValue<PotType[]>(potListState);
-  console.log(totalPotList);
+  console.log(totalPotList, "1");
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
-  console.log(potList);
+  console.log(potList, "2");
   const [currentPage, setCurrentPage] = useState<number>(0);
+  console.log(currentPage, "3");
   const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
+  console.log(currentPotList, "4");
   const [potOpen, setPotOpen] = useState<boolean>(false);
+  console.log(potOpen, "5");
   const [selectedPot, setSelectedPot] = useState<PotType>();
+  console.log(selectedPot, "6");
 
   const totalPotCnt: number = totalPotList.length;
+  console.log(totalPotCnt, "7");
   const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
+  console.log(maxCupboardIndex, "8");
   const pagination: PotType[] = [
     ...Array(Math.ceil(currentPotList.length / chunkSize)),
   ];
+  console.log(pagination, "10");
 
   function potClick(pot: PotType) {
     setSelectedPot(pot);
