@@ -1,0 +1,92 @@
+package com.thirty.insite.global.config.jwt;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thirty.insite.global.config.auth.LoginUser;
+import com.thirty.insite.global.util.CustomResponseUtil;
+import com.thirty.insite.member.dto.request.LoginReqDto;
+
+//로그인 인증 필터임 securityconfig에서 따로 등록이 필요함
+//UsernamePasswordAuthenticationFilter 시큐리티 필터임/api/login 주소 에서만 동작
+
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	private AuthenticationManager authenticationManager;
+
+	private final CustomResponseUtil customResponseUtil;
+
+	//생성자
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CustomResponseUtil customResponseUtil) {
+		super(authenticationManager);
+		this.customResponseUtil = customResponseUtil;
+		setFilterProcessesUrl("/member/login"); //주소 변경 기본은  /login
+		this.authenticationManager = authenticationManager;
+	}
+
+	// Post : /api/login 이러면 동작
+	//login시 이 필터를 제일 먼저 거친다
+	// 여기서는 로그인 데이터를 받아 강제 로그인(세션) 진행 후
+	//successfulAuthentication 메서드에서 jwt 발급받아서 전달해줌
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+		throws AuthenticationException {
+		try {
+			ObjectMapper om = new ObjectMapper();
+
+			//이건 한 번만 쓸 수 있음 !! 한 번 꺼낼 때 필요한 정보 저장해두기
+			LoginReqDto loginReqDto = om.readValue(request.getInputStream(), LoginReqDto.class);
+			String username = loginReqDto.getCode();
+
+			String password = "";
+
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+				username, password);
+
+			Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+			return authentication;
+		} catch (Exception e) {
+			// unsuccessfulAuthentication 호출함
+			System.out.println("error");
+			throw new InternalAuthenticationServiceException(e.getMessage());
+		}
+	}
+
+	// 로그인 실패
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+		AuthenticationException failed) throws IOException, ServletException {
+		customResponseUtil.fail(response, "로그인실패", HttpStatus.UNAUTHORIZED);
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+		Authentication authResult) throws IOException, ServletException {
+
+		LoginUser loginUser = (LoginUser)authResult.getPrincipal(); //로그인 유저 정보
+		String accessToken = JwtProcess.createAccessToken(loginUser); // 이 로그인 유저로 jwt 액세스 토큰 만들기
+		String refreshToken = JwtProcess.createRefreshToken(loginUser);//리프레시 토큰도 만들어줘야함
+		response.addHeader(JwtVO.HEADER, accessToken); // 헤더에 토큰 담아
+		response.addHeader(JwtVO.REFRESH_HEADER, refreshToken);
+		int memberId = loginUser.getMember().getMemberId();
+		customResponseUtil.success(response, memberId);
+	}
+
+}
