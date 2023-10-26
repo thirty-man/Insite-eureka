@@ -6,7 +6,7 @@ type PotPropsType = {
 };
 
 function Pot({ potNum, onClick }: PotPropsType) {
-  const pot: string = `${pots[Number(potNum)]}`;
+  const pot: string = pots[Number(potNum)];
 
   const potAlt: string = "pot";
 

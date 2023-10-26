@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
+  // todo 나중에 그거 env파일로 만들어서 올리기
   const VITE_KAKAO_CLIENT_ID = "367be5f2a1031bc9fb556dd456869c88";
   const VITE_KAKAO_REDIRECT_URI = "http://k9a701a.p.ssafy.io:3000/login";
   const { routeTo } = useRouter();
@@ -16,9 +17,7 @@ function Login() {
 
   const authenticateUser = (code: string) => {
     axios
-      // .post(`${AXIOS_URL}/members/login`, { code })
-      // .post(`/api/v1/members/login`, { code })
-      .post("http://k9a701a.p.ssafy.io:8080/api/v1/members/login", { code })
+      .post("/api/v1/members/login", { code })
       .then((response) => {
         console.log(response.data);
         const authToken = response.headers.authorization;
