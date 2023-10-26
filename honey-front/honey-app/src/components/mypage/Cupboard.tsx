@@ -83,7 +83,7 @@ function Cupboard() {
               <div key={pot.potId} className="">
                 <Pot
                   key={pot.potId}
-                  potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
+                  potNum={pot.isCheck ? pot.honeyCaseType || 0 : 0}
                   onClick={() => potClick(pot)}
                 />
               </div>
