@@ -60,6 +60,7 @@ function Cupboard() {
   useEffect(() => {
     setCurrentPotList(potList[currentPage]);
   }, [currentPage, potList]);
+
   useEffect(() => {
     setPagination(potList[currentPage]);
   }, [currentPage, potList]);
