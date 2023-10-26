@@ -1,10 +1,11 @@
 import { ImageButton } from "@components/common/button";
-import { PotModal } from "@components/common/modal";
-import Pot from "@components/pot";
+// import { PotModal } from "@components/common/modal";
+// import Pot from "@components/pot";
 import { PotType } from "@customtype/dataTypes";
 import potListState from "@recoil/atom/potListState";
 import { potGroupSelector } from "@recoil/selector";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+// import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { leftArrow, rightArrow } from "@assets/images";
 
@@ -12,21 +13,21 @@ function Cupboard() {
   const totalPotList = useRecoilValue<PotType[]>(potListState);
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
-  const [potOpen, setPotOpen] = useState<boolean>(false);
-  const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
+  // const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
+  // const [potOpen, setPotOpen] = useState<boolean>(false);
+  // const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
 
   const totalPotCnt: number = totalPotList.length;
-  const chunkSize: number = 3;
+  // const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
-  const pagination: PotType[] = [
-    ...Array(Math.ceil(currentPotList.length / chunkSize)),
-  ];
+  // const pagination: PotType[] = [
+  //   ...Array(Math.ceil(currentPotList.length / chunkSize)),
+  // ];
 
-  function potClick(pot: PotType) {
-    setSelectedPot(pot);
-    setPotOpen(true);
-  }
+  // function potClick(pot: PotType) {
+  //   setSelectedPot(pot);
+  //   setPotOpen(true);
+  // }
 
   function goToBack() {
     if (currentPage <= 1) {
@@ -43,9 +44,9 @@ function Cupboard() {
     }
   }
 
-  useEffect(() => {
-    setCurrentPotList(potList[currentPage]);
-  }, [currentPage, potList]);
+  // useEffect(() => {
+  //   setCurrentPotList(potList[currentPage]);
+  // }, [currentPage, potList]);
 
   return (
     <>
@@ -60,7 +61,7 @@ function Cupboard() {
         </div>
         <div className="flex flex-col w-[52%] mb-3 h-[80%] items-center">
           <div className="flex flex-col h-[95%] w-full justify-start">
-            {pagination.map((_, groupIndex) => (
+            {/* {pagination.map((_, groupIndex) => (
               <div
                 key={currentPotList[groupIndex].potId}
                 className="w-full h-[33%]"
@@ -84,7 +85,7 @@ function Cupboard() {
                   <div className="h-[10%] bg-cg-10" />
                 </div>
               </div>
-            ))}
+            ))} */}
           </div>
           {/* {selectedPot && potOpen && (
             <PotModal
