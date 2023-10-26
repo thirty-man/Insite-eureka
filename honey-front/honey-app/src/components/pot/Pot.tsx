@@ -33,7 +33,7 @@ function Pot({ potNum, onClick }: PotPropsType) {
   const potAlt: string = "pot";
 
   return (
-    <div className="flex w-[33%] justify-center items-end h-[114%] hover:scale-125">
+    <div className="flex w-full justify-center items-center h-full hover:scale-125">
       <button type="button" onClick={onClick}>
         <img src={pot[Number(potNum)]} alt={potAlt} className="w-[300px]" />
       </button>

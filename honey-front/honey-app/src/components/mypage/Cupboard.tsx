@@ -9,17 +9,23 @@ import { useRecoilValue } from "recoil";
 import { leftArrow, rightArrow } from "@assets/images";
 
 function Cupboard() {
+  // 진짜 전체 유저가 그 방에서 가진 팟리스트
   const totalPotList = useRecoilValue<PotType[]>(potListState);
   console.log(totalPotList, "1");
+  // 전체를 페이지별 * 9개씩 나눠놓은 리스트
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
   console.log(potList, "2");
+  // 현재 페이지(이건 페이지네이션)
   const [currentPage, setCurrentPage] = useState<number>(0);
   console.log(currentPage, "3");
+  // 현재 페이지에있는 팟을 가져오는것
   const [currentPotList, setCurrentPotList] = useState<PotType[]>([]);
   console.log(currentPotList, "4");
+  // 모달오픈클로즈
   const [potOpen, setPotOpen] = useState<boolean>(false);
   console.log(potOpen, "5");
-  const [selectedPot, setSelectedPot] = useState<PotType>();
+  // 선택하면 여기에 선택한 팟 정보를 넘겨서 모달로 띄움
+  const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
   console.log(selectedPot, "6");
 
   const totalPotCnt: number = totalPotList.length;
@@ -27,9 +33,9 @@ function Cupboard() {
   const chunkSize: number = 3;
   const maxCupboardIndex: number = potList.length - 1;
   console.log(maxCupboardIndex, "8");
-  const pagination: PotType[] = [
+  const [pagination, setPagination] = useState<PotType[] | []>([
     ...Array(Math.ceil(currentPotList.length / chunkSize)),
-  ];
+  ]);
   console.log(pagination, "10");
 
   function potClick(pot: PotType) {
@@ -54,11 +60,14 @@ function Cupboard() {
   useEffect(() => {
     setCurrentPotList(potList[currentPage]);
   }, [currentPage, potList]);
+  useEffect(() => {
+    setPagination(potList[currentPage]);
+  }, [currentPage, potList]);
 
   return (
     <>
       <div className="flex items-center w-full justify-center sm:h-[550px] h-[350px] bg-cupboard bg-cover bg-size">
-        <div className="flex justify-start w-[20%]">
+        <div className="flex justify-start w-[10%]">
           <ImageButton
             image={leftArrow}
             alt="이전 찬장"
@@ -66,34 +75,35 @@ function Cupboard() {
             onClick={() => goToBack()}
           />
         </div>
-        <div className="flex flex-col w-[52%] mb-3 h-[80%] items-center">
-          <div className="flex flex-col h-[95%] w-full justify-start">
-            {pagination.map((_, groupIndex) => (
-              <div
-                key={currentPotList[groupIndex].potId}
-                className="w-full h-[33%]"
-              >
-                <div className="flex flex-col justify-end h-[90%] w-full">
-                  <div className="flex">
-                    {currentPotList
-                      .slice(
-                        groupIndex * chunkSize,
-                        (groupIndex + 1) * chunkSize,
-                      )
-                      .filter((pot) => pot)
-                      .map((pot) => (
-                        <Pot
-                          key={pot.potId}
-                          potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
-                          onClick={() => potClick(pot)}
-                        />
-                      ))}
-                  </div>
-                  <div className="h-[10%] bg-cg-10" />
-                </div>
+        <div className="grid grid-cols-3 grid-rows-3 gap-y-16 w-[60%] h-[69%] mb-[5%] items-center">
+          {currentPotList
+            .filter((pot) => pot)
+            .map((pot) => (
+              <div key={pot.potId} className="">
+                <Pot
+                  key={pot.potId}
+                  potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
+                  onClick={() => potClick(pot)}
+                />
               </div>
             ))}
-          </div>
+
+          {/* {pagination.map((_, groupIndex) => (
+            <div key={pagination[groupIndex].potId} className="">
+              {currentPotList
+                .slice(groupIndex * 3, (groupIndex + 1) * 3)
+                .filter((pot) => pot)
+                .map((pot) => (
+                  <div key={pot.potId} className="">
+                    <Pot
+                      key={pot.potId}
+                      potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
+                      onClick={() => potClick(pot)}
+                    />
+                  </div>
+                ))}
+            </div>
+          ))} */}
           {selectedPot && potOpen && (
             <PotModal
               className="fixed bottom-1/2 left-1/2 z-[99] w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[230px] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
@@ -130,7 +140,7 @@ function Cupboard() {
             </PotModal>
           )}
         </div>
-        <div className="flex justify-end w-[20%]">
+        <div className="flex justify-end w-[10%]">
           <ImageButton
             image={rightArrow}
             alt="다음 찬장"
