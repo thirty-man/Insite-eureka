@@ -5,12 +5,87 @@ import { PotType } from "@customtype/dataTypes";
 import potListState from "@recoil/atom/potListState";
 import { potGroupSelector } from "@recoil/selector";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { leftArrow, rightArrow } from "@assets/images";
+
+const testPot: PotType[] = [
+  {
+    potId: 1,
+    honeyCaseType: "8",
+    nickname: "유섭",
+    content: "안녕 하이",
+    isCheck: true,
+  },
+  {
+    potId: 2,
+    honeyCaseType: "9",
+    nickname: "동현",
+    content: "안녕 ㅎㅇ",
+    isCheck: false,
+  },
+  {
+    potId: 3,
+    honeyCaseType: "1",
+    nickname: "현철",
+    content: "안녕 현철",
+    isCheck: true,
+  },
+  {
+    potId: 4,
+    honeyCaseType: "2",
+    nickname: "성규",
+    content: "안녕 성규",
+    isCheck: true,
+  },
+  {
+    potId: 5,
+    honeyCaseType: "3",
+    nickname: "연수",
+    content:
+      "그곳에 니가 있다면 힘든하루 지친 네 마음이 내 품에 안겨 쉴 텐데 지금처럼만 날 사랑해줘 난 너만 변하지 않는다면 그곳에 니가 있다면 힘든하루 지친 네 마음이 내 품에 안겨 쉴 텐데 지금처럼만 날 사랑해줘 난 너만 변하지 않는다면 그곳에 니가 있다면 힘든하루 지친 네 마음이 내 품에 안겨 쉴 텐데 지금처럼만 날 사랑해줘 난 너만 변하지 않는다면",
+    isCheck: false,
+  },
+  {
+    potId: 6,
+    honeyCaseType: "4",
+    nickname: "재웅",
+    content: "안녕 재웅",
+    isCheck: false,
+  },
+  {
+    potId: 7,
+    honeyCaseType: "5",
+    nickname: "test",
+    content: "안녕 test",
+    isCheck: false,
+  },
+  {
+    potId: 8,
+    honeyCaseType: "6",
+    nickname: "연수",
+    content: "안녕 연수",
+    isCheck: false,
+  },
+  {
+    potId: 9,
+    honeyCaseType: "7",
+    nickname: "재웅",
+    content: "안녕 재웅",
+    isCheck: true,
+  },
+  {
+    potId: 10,
+    honeyCaseType: "8",
+    nickname: "넘친다",
+    content: "안녕 재웅",
+    isCheck: false,
+  },
+];
 
 function Cupboard() {
   // 진짜 전체 유저가 그 방에서 가진 팟리스트
-  const totalPotList = useRecoilValue<PotType[]>(potListState);
+  const [totalPotList, setTotalPotList] =
+    useRecoilState<PotType[]>(potListState);
   console.log(totalPotList, "1");
   // 전체를 페이지별 * 9개씩 나눠놓은 리스트
   const potList = useRecoilValue<PotType[][]>(potGroupSelector);
@@ -56,8 +131,9 @@ function Cupboard() {
   }
 
   useEffect(() => {
+    setTotalPotList(testPot);
     setCurrentPotList(potList[currentPage]);
-  }, [currentPage, potList]);
+  }, [currentPage, potList, setTotalPotList]);
 
   useEffect(() => {
     setPagination(potList[currentPage]);
@@ -85,34 +161,19 @@ function Cupboard() {
           />
         </div>
         <div className="grid grid-cols-3 grid-rows-3 gap-y-16 w-[60%] h-[69%] mb-[5%] items-center">
-          {currentPotList
-            .filter((pot) => pot)
-            .map((pot) => (
-              <div key={pot.potId} className="">
-                <Pot
-                  key={pot.potId}
-                  potNum={pot.isCheck ? pot.honeyCaseType || 0 : 0}
-                  onClick={() => potClick(pot)}
-                />
-              </div>
-            ))}
+          {currentPotList &&
+            currentPotList
+              .filter((pot) => pot)
+              .map((pot) => (
+                <div key={pot.potId} className="">
+                  <Pot
+                    key={pot.potId}
+                    potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
+                    onClick={() => potClick(pot)}
+                  />
+                </div>
+              ))}
 
-          {/* {pagination.map((_, groupIndex) => (
-            <div key={pagination[groupIndex].potId} className="">
-              {currentPotList
-                .slice(groupIndex * 3, (groupIndex + 1) * 3)
-                .filter((pot) => pot)
-                .map((pot) => (
-                  <div key={pot.potId} className="">
-                    <Pot
-                      key={pot.potId}
-                      potNum={pot.isCheck ? pot.honeyCaseType || "0" : "0"}
-                      onClick={() => potClick(pot)}
-                    />
-                  </div>
-                ))}
-            </div>
-          ))} */}
           {selectedPot && potOpen && (
             <PotModal
               className="fixed bottom-1/2 left-1/2 z-[99] w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[230px] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"

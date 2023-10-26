@@ -13,7 +13,7 @@ type UserType = {
 type PotType = {
   potId: number;
   content: string;
-  honeyCaseType: number;
+  honeyCaseType: string;
   nickname: string;
   isCheck: boolean;
 };

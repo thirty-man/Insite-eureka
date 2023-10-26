@@ -12,7 +12,7 @@ import {
 } from "@assets/images/pots";
 
 type PotPropsType = {
-  potNum: number;
+  potNum: string;
   onClick: () => void;
 };
 
