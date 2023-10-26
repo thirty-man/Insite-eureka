@@ -313,12 +313,16 @@ public class RoomServiceImpl implements RoomService {
 
 		roomRepository.save(room);
 
+		participationRepository.save(Participation.of(
+			member,
+			room,
+			false
+		));
 		return RoomCreateResDto.from(room.getRoomId());
 	}
 
 	@Override
 	public RoomSearchResDto searchRoom(String title, int page) {
-		log.info("@@@@@@@@@@@@@@");
 		//5개 페이지 네이션
 		Pageable pageable = PageRequest.of(page,5, Sort.by(Sort.Order.desc("roomId")));
 
