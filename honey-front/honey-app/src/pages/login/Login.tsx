@@ -18,7 +18,7 @@ function Login() {
     axios
       // .post(`${AXIOS_URL}/members/login`, { code })
       // .post(`/api/v1/members/login`, { code })
-      .post("/api/v1/members/login", { code })
+      .post("/api/members/login", { code })
       .then((response) => {
         console.log(response.data);
         const authToken = response.headers.authorization;
