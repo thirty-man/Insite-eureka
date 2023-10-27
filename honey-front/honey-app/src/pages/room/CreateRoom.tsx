@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";
 import moment from "moment";
+import axios, { AxiosError } from "axios";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -100,6 +101,62 @@ function CreateRoom() {
     setOpenCalendar((prev) => !prev);
   };
 
+  const parseKoreanDateStringtoLocalDateTime = (dateString: string): Date => {
+    const regex = /(\d{4})년 (\d{1,2})월 (\d{1,2})일/;
+    const match = dateString.match(regex);
+    if (!match) throw new Error("Invalid date format");
+
+    const year = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    const day = parseInt(match[3], 10);
+
+    return new Date(year, month - 1, day);
+  };
+  const submitRoomData = async () => {
+    try {
+      const token = sessionStorage.getItem("Authorization");
+      const dateObject = parseKoreanDateStringtoLocalDateTime(releaseDate);
+      const formattedDate = moment(dateObject).format("YYYY-MM-DDTHH:mm:ss");
+
+      const postData = {
+        roomTitle: roomName,
+        showTime: formattedDate,
+        password: roomPassword,
+      };
+
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/rooms/create`,
+        postData,
+        config,
+      );
+      console.log(response.data);
+
+      routeTo("/");
+    } catch (error: unknown) {
+      if ((error as AxiosError).response) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          console.error("Server Response: ", axiosError.response.data);
+          console.error("Status Code: ", axiosError.response.status);
+          if (axiosError.response.headers) {
+            console.error("Headers: ", axiosError.response.headers);
+          }
+        } else if (axiosError.request) {
+          console.error("No Response from Server: ", axiosError.request);
+        } else {
+          console.error("Error", axiosError.message);
+        }
+        console.error("Error Config: ", axiosError.config);
+      }
+    }
+  };
+
   const submitCreateRoom = () => {
     const newRoomName = roomName.replace(/^\s+|\s+$|\n/g, "");
     setRoomName(newRoomName);
@@ -130,7 +187,10 @@ function CreateRoom() {
         );
       }
     }
+
+    submitRoomData();
   };
+
   return (
     <>
       <div className="text-[30px] text-white">방 만들기</div>
@@ -255,4 +315,5 @@ function CreateRoom() {
     </>
   );
 }
+
 export default CreateRoom;
