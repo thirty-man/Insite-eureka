@@ -35,8 +35,8 @@ public class MessageServiceImpl implements MessageService {
 	private final ParticipationRepository participationRepository;
 
 	@Override
-	public String send(MessageSendReqDto messageSendReqDto) {
-		Optional<Member> optionalMemberFrom = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(messageSendReqDto.getMemberIdFrom());
+	public String send(MessageSendReqDto messageSendReqDto, int memberId) {
+		Optional<Member> optionalMemberFrom = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(memberId);
 		//발신자 탈퇴 회원 검증
 		if (optionalMemberFrom.isEmpty()) {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);

@@ -3,7 +3,7 @@ import { RoomType } from "@customtype/dataTypes";
 interface DropdwonProps {
   items: RoomType[];
   className: string;
-  onClick: (roomId: number) => void;
+  onClick: (room: RoomType) => void;
 }
 
 function Dropdown({ className, items, onClick }: DropdwonProps) {
@@ -14,7 +14,7 @@ function Dropdown({ className, items, onClick }: DropdwonProps) {
           <button
             type="button"
             className={className}
-            onClick={() => onClick(item.id)}
+            onClick={() => onClick(item)}
           >
             <p className="sm:text-2xl p-2">{item.title}</p>
           </button>
