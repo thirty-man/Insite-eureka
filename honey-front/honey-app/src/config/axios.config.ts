@@ -46,6 +46,7 @@ axios.interceptors.response.use(
         return await axios(originalRequest);
       } catch (refreshError) {
         // 새 토큰 요청 실패 처리
+        // eslint-disable-next-line no-console
         console.error("Error Refresh:", refreshError);
         return Promise.reject(refreshError);
       }

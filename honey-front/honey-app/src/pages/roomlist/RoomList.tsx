@@ -7,16 +7,58 @@ import {
   SearchRoom,
   ShowRoom,
 } from "@components/search/index";
+import { PageType, RoomType } from "@customtype/dataTypes";
+import { roomListState, selectedPageState } from "@recoil/atom";
 import successCreateRoomState from "@recoil/atom/successCreateRoomState";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import axios from "axios";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 function RoomList() {
-  // 여기서 초기 room list를 받아서 출력할 예정
+  // 방 목록 가져오기
+  const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
+  const [, setSelectedPage] = useRecoilState<PageType>(selectedPageState);
+  // const [title] = useRecoilState<string>(inputSearchState);
+  const token = sessionStorage.getItem("Authorization");
+
   const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,
   );
-  console.log(successCreateRoom);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    axios
+      .get(
+        // `http://localhost:8080/api/v1/rooms?${title}&${selectedPage}`,
+        `http://localhost:8080/api/v1/rooms?title=&page=0`,
+        config,
+      )
+      .then((response) => {
+        const { data } = response;
+        const getRoomList = data.roomSearchDtoList;
+
+        // Recoil 상태 업데이트
+        if (getRoomList.length > 0) {
+          setRoomList(getRoomList);
+        }
+        const newPage: PageType = {
+          currentPage: data.currentPage,
+          totalPages: data.totalPages,
+          hasNext: data.hasNext,
+        };
+
+        setSelectedPage(newPage);
+      })
+      .catch((error) => {
+        console.error("Err:", error);
+      });
+  }, [token, setRoomList, setSelectedPage]);
 
   return (
     <>

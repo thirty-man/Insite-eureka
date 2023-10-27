@@ -27,16 +27,22 @@ function ShowRoom() {
         </div>
       </div>
       <div className="flex flex-col h-[400px] w-4/5 items-center justify-start">
-        {roomList.map((room) => (
-          <div className="flex w-full h-20 justify-center" key={room.id}>
-            <RoomButton
-              className="bg-cg-5 w-5/6 h-15 roomBtn rounded-2xl m-0"
-              key={room.id}
-              room={room}
-              onClick={() => gotoRoom(room)}
-            />
+        {roomList.length > 0 ? (
+          roomList.map((room) => (
+            <div className="flex w-full h-20 justify-center" key={room.id}>
+              <RoomButton
+                className="bg-cg-5 w-5/6 h-15 roomBtn rounded-2xl m-0"
+                key={room.id}
+                room={room}
+                onClick={() => gotoRoom(room)}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="flex h-full w-full text-center justify-center items-center text-white sm:text-[30px]">
+            방이 없습니다
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

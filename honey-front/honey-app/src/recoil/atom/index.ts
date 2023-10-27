@@ -5,6 +5,8 @@ import selectedRoomState from "./selectedRoomState";
 import memberListState from "./memberListState";
 import selectedMemberState from "./selectedMemberState";
 import roomNumState from "./roomNumState";
+import selectedPageState from "./selectedPageState";
+import inputSearchState from "./inputSearchState";
 
 export {
   loginUserState,
@@ -14,4 +16,6 @@ export {
   memberListState,
   selectedMemberState,
   roomNumState,
+  selectedPageState,
+  inputSearchState,
 };

@@ -250,7 +250,6 @@ function CreateRoom() {
                   className="w-0 h-0 opacity-0 absolute"
                   id="passwordCheckbox"
                 />
-
                 <span
                   className={`block w-[24px] h-[14px] border-t-[5px] border-r-[5px] transform rotate-[135deg] absolute top-[40%] left-[53%] -translate-x-[50%] -translate-y-[50%] ${
                     boxChecked ? "border-cg-7" : "border-transparent"
