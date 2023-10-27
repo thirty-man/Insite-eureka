@@ -15,9 +15,13 @@ import java.util.List;
 public class RoomSearchResDto {
 
     private List<RoomSearchDto> roomSearchDtoList;
-    public static RoomSearchResDto from(List<RoomSearchDto> roomSearchDtoList){
+
+    int totalCount;
+
+    public static RoomSearchResDto from(List<RoomSearchDto> roomSearchDtoList, int totalCount){
         return RoomSearchResDto.builder()
                 .roomSearchDtoList(roomSearchDtoList)
+                .totalCount(totalCount)
                 .build();
     }
 }

@@ -340,7 +340,8 @@ public class RoomServiceImpl implements RoomService {
 			RoomSearchDto roomListDto = RoomSearchDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),memberCount,isOpen);
 			roomSearchDtoList.add(roomListDto);
 		}
-		return RoomSearchResDto.from(roomSearchDtoList);
+		int totalCount = roomRepository.countAllByIsDeletedIsFalse();
+		return RoomSearchResDto.from(roomSearchDtoList, totalCount);
 	}
 
 }

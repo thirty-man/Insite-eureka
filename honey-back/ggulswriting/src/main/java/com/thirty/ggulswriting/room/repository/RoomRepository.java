@@ -19,4 +19,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
 	Page<Room> findByRoomTitleContainsAndIsDeletedIsFalse(String title, Pageable pageable);
 
+	int countAllByIsDeletedIsFalse();
+
 }
