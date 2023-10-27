@@ -340,8 +340,11 @@ public class RoomServiceImpl implements RoomService {
 			RoomSearchDto roomListDto = RoomSearchDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),memberCount,isOpen);
 			roomSearchDtoList.add(roomListDto);
 		}
-		int totalCount = roomRepository.countAllByIsDeletedIsFalse();
-		return RoomSearchResDto.from(roomSearchDtoList, totalCount);
+		int totalPages = roomList.getTotalPages();
+		int currentPage = roomList.getNumber();
+		Boolean hasNext = roomList.hasNext();
+
+		return RoomSearchResDto.from(roomSearchDtoList, totalPages, currentPage, hasNext);
 	}
 
 }

@@ -16,12 +16,18 @@ public class RoomSearchResDto {
 
     private List<RoomSearchDto> roomSearchDtoList;
 
-    int totalCount;
+    int totalPages;
 
-    public static RoomSearchResDto from(List<RoomSearchDto> roomSearchDtoList, int totalCount){
+    int currentPage;
+
+    Boolean hasNext;
+
+    public static RoomSearchResDto from(List<RoomSearchDto> roomSearchDtoList, int totalCount, int currentPage, Boolean hasNext){
         return RoomSearchResDto.builder()
                 .roomSearchDtoList(roomSearchDtoList)
-                .totalCount(totalCount)
+                .totalPages(totalCount)
+                .currentPage(currentPage)
+                .hasNext(hasNext)
                 .build();
     }
 }
