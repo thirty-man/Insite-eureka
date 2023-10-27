@@ -60,6 +60,7 @@ function Login() {
           alt="help"
           aria-hidden
           onClick={() => setHelpOpen(true)}
+          className="cursor-pointer"
         />
       </div>
       {helpOpen && (

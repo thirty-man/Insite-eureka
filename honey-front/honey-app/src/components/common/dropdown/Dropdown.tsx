@@ -8,7 +8,7 @@ interface DropdwonProps {
 
 function Dropdown({ className, items, onClick }: DropdwonProps) {
   return (
-    <div className="absolute flex flex-col max-w-[300px] sm:w-[25%] justify-start items-center bg-cg-1 rounded-xl sm:h-[250px] overflow-y-scroll">
+    <div className="absolute flex flex-col max-w-[300px] mt-[10px] sm:w-[100%] justify-start items-center bg-cg-1 rounded-xl sm:h-[250px] overflow-y-scroll">
       {items.map((item, index) => (
         <div key={item.id}>
           <button

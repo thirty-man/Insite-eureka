@@ -4,6 +4,8 @@ import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";
 import moment from "moment";
 import axios, { AxiosError } from "axios";
+import { useSetRecoilState } from "recoil";
+import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -18,6 +20,10 @@ function CreateRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
+
+  const setSuccessCreateRoom = useSetRecoilState<boolean>(
+    successCreateRoomState,
+  );
 
   useEffect(() => {
     setToday(new Date());
@@ -136,7 +142,7 @@ function CreateRoom() {
         config,
       );
       console.log(response.data);
-
+      setSuccessCreateRoom(true);
       routeTo("/");
     } catch (error: unknown) {
       if ((error as AxiosError).response) {
@@ -185,6 +191,7 @@ function CreateRoom() {
         alert(
           "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         );
+        return;
       }
     }
 
@@ -230,19 +237,20 @@ function CreateRoom() {
               암호 사용
             </div>
             <div className="flex items-center pt-[20px] pb-[10px]">
-              <input
-                type="checkbox"
-                checked={boxChecked}
-                onChange={handleCheckboxToggle}
-                className="w-0 h-0 opacity-0 absolute"
-                id="passwordCheckbox"
-              />
               <label
                 htmlFor="passwordCheckbox"
                 className={`w-[35px] h-[35px] border-[5px] border-white relative rounded-sm cursor-pointer ${
                   boxChecked ? "bg-white" : "bg-cg-7"
                 }`}
               >
+                <input
+                  type="checkbox"
+                  checked={boxChecked}
+                  onChange={handleCheckboxToggle}
+                  className="w-0 h-0 opacity-0 absolute"
+                  id="passwordCheckbox"
+                />
+
                 <span
                   className={`block w-[24px] h-[14px] border-t-[5px] border-r-[5px] transform rotate-[135deg] absolute top-[40%] left-[53%] -translate-x-[50%] -translate-y-[50%] ${
                     boxChecked ? "border-cg-7" : "border-transparent"
@@ -289,7 +297,7 @@ function CreateRoom() {
       </div>
       {openCalendar && (
         <Modal
-          className="fixed w-[280px] h-[280px] bottom-[50%] left-[50%] -translate-x-[140px] translate-y-[70px] z-[150]"
+          className="fixed w-[320px] h-[320px] bottom-[50%] left-[50%] -translate-x-[160px] translate-y-[100px] z-[150]"
           overlay
           openModal={openCalendar}
         >

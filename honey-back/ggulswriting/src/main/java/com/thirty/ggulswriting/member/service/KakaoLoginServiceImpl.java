@@ -18,7 +18,7 @@ import com.google.gson.JsonParser;
 public class KakaoLoginServiceImpl implements KakaoLoginService{
     @Value("${KAKAO_URL}")
     private String kakaoUrl;
-    private String tempUrl = "http://k9a701a.p.ssafy.io:3000/login";
+//    private String tempUrl = "http://k9a701a.p.ssafy.io:3000/login";
     @Override
     public String getKakaoAccessToken(String code) {
         String access_Token ="";
