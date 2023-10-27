@@ -1,6 +1,9 @@
 type RoomType = {
+  masterName: string;
+  roomTitle: string;
+  isOpen: boolean;
+  memberCount: number;
   id: number;
-  title: string;
 };
 
 type UserType = {
@@ -16,4 +19,10 @@ type PotType = {
   isCheck: boolean;
 };
 
-export type { RoomType, UserType, PotType };
+type PageType = {
+  currentPage: number;
+  hasNext: boolean;
+  totalPages: number;
+};
+
+export type { RoomType, UserType, PotType, PageType };

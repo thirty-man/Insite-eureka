@@ -31,7 +31,7 @@ function TextInput({
 
 // 엔터를 치지 않는 input은 무시할 수 있도록
 TextInput.defaultProps = {
-  onKeyDown: undefined, // defaultProps로 기본값을 지정
+  onKeyDown: undefined, // defaultProps로 기본값을 지정// defaultProps로 기본값을 지정
 };
 
 export default TextInput;
