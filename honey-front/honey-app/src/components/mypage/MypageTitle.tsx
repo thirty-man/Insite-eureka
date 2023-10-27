@@ -3,7 +3,7 @@ import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
 import { selectedRoomState } from "@recoil/atom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
@@ -39,6 +39,28 @@ function MypageTitle() {
       setTitle("방을 선택하세요");
     }
   }, [selectedRoom, roomList, setSelectedRoom]);
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // useEffect(() => {
   //   setNextRoom(roomList[roomNum]);
@@ -78,36 +100,42 @@ function MypageTitle() {
         />
         <div className="flex flex-col justify-center items-center w-full pr-10 ">
           <button
+            ref={buttonRef}
             type="button"
-            className="w-[70%] mt-5 mb-2"
+            className="w-[70%] mt-5 mb-2 relative"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <TitleText
               text={title}
               className="p-1 pr-5 pl-5 rounded-xl sm:h-[90px] h-[38px] bg-cg-9 overflow-x-auto items-start"
             />
+            {isDropdownOpen && (
+              <div
+                className="flex justify-center w-[100%]"
+                ref={dropdownRef}
+                onClick={(e) => e.stopPropagation()}
+                aria-hidden
+              >
+                {roomList.length === 0 ? (
+                  <div>방이 없습니다</div>
+                ) : (
+                  <Dropdown
+                    className=""
+                    // items={roomList.map((room) => ({
+                    //   ...room,
+                    //   roomTitle:
+                    //     room.title.length > 10
+                    //       ? `${room.title.slice(0, 10)}...`
+                    //       : room.title,
+                    //   roomId: room.id,
+                    // }))}
+                    items={roomList}
+                    onClick={(room) => goToRoom(room)}
+                  />
+                )}
+              </div>
+            )}
           </button>
-          {isDropdownOpen && (
-            <div className="flex justify-center w-[50%]">
-              {roomList.length === 0 ? (
-                <div>방이 없습니다</div>
-              ) : (
-                <Dropdown
-                  className=""
-                  // items={roomList.map((room) => ({
-                  //   ...room,
-                  //   roomTitle:
-                  //     room.title.length > 10
-                  //       ? `${room.title.slice(0, 10)}...`
-                  //       : room.title,
-                  //   roomId: room.id,
-                  // }))}
-                  items={roomList}
-                  onClick={(room) => goToRoom(room)}
-                />
-              )}
-            </div>
-          )}
         </div>
       </div>
       <div className="flex justify-center items-center">
