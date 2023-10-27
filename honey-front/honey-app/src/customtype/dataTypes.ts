@@ -1,12 +1,10 @@
 type RoomType = {
   id: number;
   title: string;
-  password: string | null;
-  owner: string | null;
 };
 
 type UserType = {
-  userId: number;
+  id: number;
   name: string;
 };
 

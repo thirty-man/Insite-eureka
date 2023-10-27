@@ -3,8 +3,8 @@ import { RouteObject, createBrowserRouter } from "react-router-dom";
 import Login from "@pages/login";
 import RoomList from "@pages/roomlist";
 import MyPage from "@pages/mypage";
-// import Send from "@pages/send";
 import { ErrorNotFound } from "@pages/error";
+import Send from "@pages/send";
 
 const routePaths: RouteObject[] = [
   {
@@ -22,11 +22,11 @@ const routePaths: RouteObject[] = [
     path: "/mypage",
     element: <MyPage />,
   },
-  // {
-  //   id: "send",
-  //   path: "/send",
-  //   element: <Send />,
-  // },
+  {
+    id: "send",
+    path: "/send",
+    element: <Send />,
+  },
   {
     id: "room",
     path: "/room",

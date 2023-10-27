@@ -17,13 +17,14 @@ function ButtomMenu() {
   const sendPotImg = sendPot;
   const buttonStyle: string =
     "flex rounded-xl sm:h-[17%] h-[15%] m-2 p-3 sm:w-[50%] w-[60%] sm:text-[20px] text-[13px] justify-center items-center";
-
+  const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const [memberOpen, setMemberOpen] = useState<boolean>(false);
   const [memberList] = useRecoilState<UserType[]>(memberListState);
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const nowRoom: RoomType = useRecoilValue<RoomType>(selectedRoomState);
 
   function showMemberList(): void {
+    console.log(selectedRoom.id);
     setMemberOpen(true);
   }
 
@@ -41,6 +42,7 @@ function ButtomMenu() {
   }
 
   function sendMessage(member: UserType) {
+    console.log("BottomMenu/선택된 멤버는? : ", member.name);
     setSelectedMember(member);
     routeTo("/send");
   }
@@ -66,7 +68,7 @@ function ButtomMenu() {
             <div className="flex flex-col justify-start items-center w-[100%] h-[80%] overflow-y-auto rounded-[30px] bg-cg-7  text-[20px] px-[15px] py-[15px]">
               {memberList.map((member) => (
                 <div
-                  key={member.userId}
+                  key={member.id}
                   className="flex w-[80%] bg-cg-1 m-2 rounded-xl items-center justify-center"
                 >
                   <div className="w-[100%] flex justify-center items-center">

@@ -9,4 +9,17 @@ import pot7 from "./pot7.png";
 import pot8 from "./pot8.png";
 import pot9 from "./pot9.png";
 
-export { pot0, pot1, pot2, pot3, pot4, pot5, pot6, pot7, pot8, pot9 };
+const potList: string[] = [
+  pot0,
+  pot1,
+  pot2,
+  pot3,
+  pot4,
+  pot5,
+  pot6,
+  pot7,
+  pot8,
+  pot9,
+];
+
+export default potList;

@@ -15,6 +15,7 @@ import com.thirty.ggulswriting.room.service.RoomService;
 import javax.validation.Valid;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/rooms")
+@Slf4j
 public class RoomController {
 
 	private final RoomService roomService;
@@ -65,6 +67,7 @@ public class RoomController {
 		@AuthenticationPrincipal LoginUser loginUser
 	){
 		RoomResDto roomResDto = roomService.getMyRoomList(loginUser.getMember().getMemberId());
+		log.info("memberId ={}",loginUser.getMember().getMemberId());
 		return new ResponseEntity<>(roomResDto, HttpStatus.OK);
 	}
 

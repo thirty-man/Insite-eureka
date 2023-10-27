@@ -4,6 +4,7 @@ import myRoomListState from "./myRoomListState";
 import selectedRoomState from "./selectedRoomState";
 import memberListState from "./memberListState";
 import selectedMemberState from "./selectedMemberState";
+import roomNumState from "./roomNumState";
 
 export {
   loginUserState,
@@ -12,4 +13,5 @@ export {
   selectedRoomState,
   memberListState,
   selectedMemberState,
+  roomNumState,
 };

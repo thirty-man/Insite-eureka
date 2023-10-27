@@ -28,12 +28,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws IOException, ServletException{
-        if(isHeaderVerify(request,response)){
-            String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX,"");
+        if(isHeaderVerify(request,response)) {
+            String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
             LoginUser loginUser = JwtProcess.verifyAccessToken(token);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(loginUser,null
-                    ,Collections.emptyList());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(loginUser, null
+                    , Collections.emptyList());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
