@@ -1,28 +1,30 @@
 package com.thirty.ggulswriting.message.service;
 
-import com.thirty.ggulswriting.global.error.exception.MemberException;
-import com.thirty.ggulswriting.global.error.exception.ParticipationException;
-import com.thirty.ggulswriting.global.error.exception.RoomException;
-import com.thirty.ggulswriting.member.entity.Member;
-import com.thirty.ggulswriting.member.repository.MemberRepository;
-import com.thirty.ggulswriting.room.entity.Room;
-import com.thirty.ggulswriting.room.repository.RoomRepository;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thirty.ggulswriting.global.error.ErrorCode;
+import com.thirty.ggulswriting.global.error.exception.MemberException;
 import com.thirty.ggulswriting.global.error.exception.MessageException;
-import com.thirty.ggulswriting.message.entity.Message;
+import com.thirty.ggulswriting.global.error.exception.ParticipationException;
+import com.thirty.ggulswriting.global.error.exception.RoomException;
+import com.thirty.ggulswriting.member.entity.Member;
+import com.thirty.ggulswriting.member.repository.MemberRepository;
 import com.thirty.ggulswriting.message.dto.request.MessageSendReqDto;
 import com.thirty.ggulswriting.message.dto.response.MessageResDto;
+import com.thirty.ggulswriting.message.entity.Message;
 import com.thirty.ggulswriting.message.repository.MessageRepository;
 import com.thirty.ggulswriting.participation.entity.Participation;
 import com.thirty.ggulswriting.participation.repository.ParticipationRepository;
+import com.thirty.ggulswriting.room.entity.Room;
+import com.thirty.ggulswriting.room.repository.RoomRepository;
 
 import lombok.AllArgsConstructor;
-
-import java.util.Optional;
-
 
 @Transactional
 @AllArgsConstructor
@@ -41,7 +43,8 @@ public class MessageServiceImpl implements MessageService {
 		if (optionalMemberFrom.isEmpty()) {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
-		Optional<Member> optionalMemberTo = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(messageSendReqDto.getMemberIdTo());
+		Optional<Member> optionalMemberTo = memberRepository.findMemberByMemberIdAndGoodbyeTimeIsNull(
+			messageSendReqDto.getMemberIdTo());
 		//수신자 탈퇴 회원 검증
 		if (optionalMemberTo.isEmpty()) {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
@@ -56,11 +59,13 @@ public class MessageServiceImpl implements MessageService {
 		Member memberTo = optionalMemberTo.get();
 		Room room = optionalRoom.get();
 
-		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(memberFrom, room);
+		Optional<Participation> optionalParticipationFrom = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(
+			memberFrom, room);
 		if (optionalParticipationFrom.isEmpty()) {
 			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
 		}
-		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(memberTo, room);
+		Optional<Participation> optionalParticipationTo = participationRepository.findParticipationByMemberAndRoomAndIsOutIsFalse(
+			memberTo, room);
 		if (optionalParticipationTo.isEmpty()) {
 			throw new ParticipationException(ErrorCode.NOT_EXIST_PARTICIPATION);
 		}
@@ -69,7 +74,8 @@ public class MessageServiceImpl implements MessageService {
 		Participation participationTo = optionalParticipationTo.get();
 
 		// 메세지 생성
-		Message message = Message.create(participationTo, participationFrom, messageSendReqDto.getContent(), false, messageSendReqDto.getHoneyCaseType(), messageSendReqDto.getNickName());
+		Message message = Message.create(participationTo, participationFrom, messageSendReqDto.getContent(), false,
+			messageSendReqDto.getHoneyCaseType(), messageSendReqDto.getNickName());
 		messageRepository.save(message);
 
 		return "메세지 전송 완료";
@@ -79,11 +85,21 @@ public class MessageServiceImpl implements MessageService {
 	public MessageResDto read(int messageId, int memberId) {
 		// 메세지 유효성 검사
 		Message message = messageRepository.findById(messageId)
-				.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_MESSAGE));
+			.orElseThrow(() -> new MessageException(ErrorCode.NOT_EXIST_MESSAGE));
 
 		// 수신자 유효성 검사
 		if (message.getParticipationTo().getMember().getMemberId() != memberId) {
 			throw new MessageException(ErrorCode.NOT_EXIST_MESSAGE);
+		}
+		//메세지 쇼타임
+		LocalDateTime showtime = message.getParticipationTo().getRoom().getShowTime();
+
+		// 현재 시간(한국 시간) 확인
+		ZonedDateTime nowInKorea = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+
+		// showtime이 현재 시간보다 뒤라면 null 반환
+		if (showtime.isAfter(nowInKorea.toLocalDateTime())) {
+			return null;
 		}
 
 		// 메세지 수신
