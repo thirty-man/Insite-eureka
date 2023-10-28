@@ -1,0 +1,45 @@
+server:
+  port: 8000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    server-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: insite-gateway-service
+  cloud: # it can register by java code
+    gateway:
+      routes:
+        - id: insite-member-service #?? ?? id
+          uri: lb://INSITE_MEMBER_SERVICE #http://localhost:8081/
+          predicates: #client path
+            - Path=/member-service/**
+          filters:
+            - CustomFilter
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment,*>, /$\{segment}
+#        - id: second-service  #lb : use eureka name
+#          uri: lb://MY-SECOND-SERVICE #http://localhost:8082/
+#          predicates:
+#            - Path=/second-service/**
+#          filters:
+#            - CustomFilter
+
+
+##localhost:8000/first-service/ ->
+#http://localhost:8081/first-service/**
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expirationTime: 3600000 # 1?? (1000 * 60 * 60)
+  tokenPrefix: "Bearer "
+  header: "Authorization"
+  refreshHeader: "RefreshToken"
+
