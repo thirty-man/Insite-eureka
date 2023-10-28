@@ -15,21 +15,38 @@ spring:
   cloud: # it can register by java code
     gateway:
       routes:
-        - id: insite-member-service #?? ?? id
-          uri: lb://INSITE_MEMBER_SERVICE #http://localhost:8081/
-          predicates: #client path
+        - id: insite-member-service-login #memberlogin
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/member/login
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service-reissue #memberreissue
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/member/reissue
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service-health #memberhealth
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/health/check
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service #insitemember
+          uri: lb://INSITE-MEMBER-SERVICE  #lb : use eureka name
+          predicates:
             - Path=/member-service/**
           filters:
-            - CustomFilter
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
-            - RewritePath=/member-service/(?<segment,*>, /$\{segment}
-#        - id: second-service  #lb : use eureka name
-#          uri: lb://MY-SECOND-SERVICE #http://localhost:8082/
-#          predicates:
-#            - Path=/second-service/**
-#          filters:
-#            - CustomFilter
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+
+##ex http://localhost:8000/member-service/api/v1/member/reissue
+## http://localhost:8000/member-service/api/v1/health/check
 
 
 ##localhost:8000/first-service/ ->
