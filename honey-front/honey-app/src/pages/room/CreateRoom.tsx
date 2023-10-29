@@ -47,9 +47,11 @@ function CreateRoom() {
       setRoomPasswordFocused(false);
     }
   };
+
   const handleRoomName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
   };
+
   const handleRoomPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     const newPassword = password.replace(/\s/g, "");
@@ -60,6 +62,7 @@ function CreateRoom() {
     setBoxChecked(!boxChecked);
     setRoomPasswordFocused(false);
   };
+
   function parseKoreanDateString(dateString: string): Date {
     const matches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
 
