@@ -55,9 +55,12 @@ function ButtomMenu() {
         config,
       )
       .then(() => {
-        console.log("방 나가기");
+        alert("탈퇴되었습니다.");
       })
       .catch((error) => {
+        if (error.response.data.errorCode === "002") {
+          alert("참가되어있지 않은 방입니다.");
+        }
         console.error("Error Delete:", error.response.data.errorCode);
       });
 

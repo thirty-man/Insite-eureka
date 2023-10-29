@@ -4,6 +4,7 @@ type RoomType = {
   isOpen: boolean;
   memberCount: number;
   id: number;
+  showTime: string;
 };
 
 type UserType = {

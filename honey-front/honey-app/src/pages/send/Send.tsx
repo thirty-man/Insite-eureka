@@ -29,8 +29,6 @@ function Send() {
     content,
     honey_case_type: String(selectedPotIdx),
   };
-  console.log(selectedRoom.id);
-  console.log(nickName);
 
   function send() {
     // 전송 api요청
@@ -43,6 +41,7 @@ function Send() {
       .post(`http://localhost:8080/api/v1/messages`, messageSendReqDto, config)
       .then((response) => {
         console.log("response : ", response);
+        navi("/mypage");
       })
       .catch((error) => {
         if (error.response.data.errorCode === "000") {
