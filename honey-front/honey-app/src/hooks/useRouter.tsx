@@ -7,7 +7,7 @@ function useRouter(): RouterFuncType {
   const navigate = useNavigate();
   const routeTo = useCallback(
     (path: string) => {
-      navigate(path);
+      navigate(path, { replace: true });
     },
     [navigate],
   );

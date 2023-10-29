@@ -62,9 +62,6 @@ function MypageTitle() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   setNextRoom(roomList[roomNum]);
-  // }, [roomNum, roomList, setNextRoom]);
   function beforePage(): void {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
