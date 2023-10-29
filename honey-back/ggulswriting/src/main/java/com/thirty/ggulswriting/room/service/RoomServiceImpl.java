@@ -78,7 +78,7 @@ public class RoomServiceImpl implements RoomService {
 		}
 		String inputPassword = roomParticipateReqDto.getPassword();
 		//비밀번호 검증
-		if(inputPassword != null && inputPassword.isEmpty()){
+		if(inputPassword != null || inputPassword.isEmpty()){
 			String password = SALT+roomParticipateReqDto.getPassword();
 			byte[] encoding = Base64.getEncoder().encode(password.getBytes());
 			String encodedPassword = new String(encoding);
