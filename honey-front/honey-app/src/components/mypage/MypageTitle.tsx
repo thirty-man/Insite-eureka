@@ -1,9 +1,9 @@
+import { useState, useEffect, useRef } from "react";
 import { ImageButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
 import { selectedRoomState } from "@recoil/atom";
-import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
@@ -32,6 +32,8 @@ function MypageTitle() {
     // selectedRoom이 변경될 때 title 업데이트
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
+      console.log("Selected Room:", selectedRoom);
+      console.log("Selected Room Title:", selectedRoom.roomTitle);
     } else if (roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
@@ -106,33 +108,33 @@ function MypageTitle() {
               text={title}
               className="p-1 pr-5 pl-5 rounded-xl sm:h-[90px] h-[38px] bg-cg-9 overflow-x-auto items-start"
             />
-            {isDropdownOpen && (
-              <div
-                className="flex justify-center w-[100%]"
-                ref={dropdownRef}
-                onClick={(e) => e.stopPropagation()}
-                aria-hidden
-              >
-                {roomList.length === 0 ? (
-                  <div>방이 없습니다</div>
-                ) : (
-                  <Dropdown
-                    className=""
-                    // items={roomList.map((room) => ({
-                    //   ...room,
-                    //   roomTitle:
-                    //     room.title.length > 10
-                    //       ? `${room.title.slice(0, 10)}...`
-                    //       : room.title,
-                    //   roomId: room.id,
-                    // }))}
-                    items={roomList}
-                    onClick={(room) => goToRoom(room)}
-                  />
-                )}
-              </div>
-            )}
           </button>
+          {isDropdownOpen && (
+            <div
+              className="flex justify-center w-[100%]"
+              ref={dropdownRef}
+              onClick={(e) => e.stopPropagation()}
+              aria-hidden
+            >
+              {roomList.length === 0 ? (
+                <div>방이 없습니다</div>
+              ) : (
+                <Dropdown
+                  className=""
+                  // items={roomList.map((room) => ({
+                  //   ...room,
+                  //   roomTitle:
+                  //     room.title.length > 10
+                  //       ? `${room.title.slice(0, 10)}...`
+                  //       : room.title,
+                  //   roomId: room.id,
+                  // }))}
+                  items={roomList}
+                  onClick={(room) => goToRoom(room)}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-center items-center">

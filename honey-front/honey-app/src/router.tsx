@@ -1,5 +1,7 @@
 import { Room, CreateRoom, ModifyRoom, ParticipateRoom } from "@pages/room";
 import { RouteObject, createBrowserRouter } from "react-router-dom";
+import App from "@App";
+import ProtectedRoute from "@components/common/protect";
 import Login from "@pages/login";
 import RoomList from "@pages/roomlist";
 import MyPage from "@pages/mypage";
@@ -8,51 +10,74 @@ import Send from "@pages/send";
 
 const routePaths: RouteObject[] = [
   {
-    id: "roomlist",
+    id: "app",
     path: "",
-    element: <RoomList />,
-  },
-  {
-    id: "login",
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    id: "mypage",
-    path: "/mypage",
-    element: <MyPage />,
-  },
-  {
-    id: "send",
-    path: "/send",
-    element: <Send />,
-  },
-  {
-    id: "room",
-    path: "/room",
-    element: <Room />,
+    element: <App />,
     children: [
       {
-        id: "create-room",
+        id: "roomlist",
         path: "",
-        element: <CreateRoom />,
+        element: (
+          <ProtectedRoute>
+            <RoomList />
+          </ProtectedRoute>
+        ),
       },
       {
-        id: "modify-room",
-        path: "modify",
-        element: <ModifyRoom />,
+        id: "login",
+        path: "/login",
+        element: <Login />,
       },
       {
-        id: "participate-room",
-        path: "participate/:roomId",
-        element: <ParticipateRoom />,
+        id: "mypage",
+        path: "/mypage",
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        id: "send",
+        path: "/send",
+        element: (
+          <ProtectedRoute>
+            <Send />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        id: "room",
+        path: "/room",
+        element: (
+          <ProtectedRoute>
+            <Room />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            id: "create-room",
+            path: "",
+            element: <CreateRoom />,
+          },
+          {
+            id: "modify-room",
+            path: "modify",
+            element: <ModifyRoom />,
+          },
+          {
+            id: "participate-room",
+            path: "participate/:roomId",
+            element: <ParticipateRoom />,
+          },
+        ],
+      },
+      {
+        id: "error404",
+        path: "*",
+        element: <ErrorNotFound />,
       },
     ],
-  },
-  {
-    id: "error404",
-    path: "/*",
-    element: <ErrorNotFound />,
   },
 ];
 
