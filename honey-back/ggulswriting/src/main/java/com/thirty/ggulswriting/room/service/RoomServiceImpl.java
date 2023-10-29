@@ -76,13 +76,15 @@ public class RoomServiceImpl implements RoomService {
 		if(optionalParticipation.isPresent() && !optionalParticipation.get().getIsOut()){
 			throw new ParticipationException(ErrorCode.ALREADY_EXIST_MEMBER);
 		}
-
+		String inputPassword = roomParticipateReqDto.getPassword();
 		//비밀번호 검증
-		String password = SALT+roomParticipateReqDto.getPassword();
-		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
-		String encodedPassword = new String(encoding);
-		if(!encodedPassword.equals(room.getPassword())){
-			throw new RoomException(ErrorCode.NOT_MATCH_PASSWORD);
+		if(inputPassword != null || inputPassword.isEmpty()){
+			String password = SALT+roomParticipateReqDto.getPassword();
+			byte[] encoding = Base64.getEncoder().encode(password.getBytes());
+			String encodedPassword = new String(encoding);
+			if(!encodedPassword.equals(room.getPassword())){
+				throw new RoomException(ErrorCode.NOT_MATCH_PASSWORD);
+			}
 		}
 
 		//100명 이상인 경우 입장 불가
@@ -128,7 +130,7 @@ public class RoomServiceImpl implements RoomService {
 
 		//방장이면 권한을 넘김
 		if(member.equals(room.getMember())){
-			Optional<Participation> optionalOtherParticipation = participationRepository.findTopOneByIsOutIsFalse();
+			Optional<Participation> optionalOtherParticipation = participationRepository.findTopOneByIsOutIsFalseAndExcludeMember(member);
 
 			//다른 참여자가 없으면 방 삭제 아니면 방장을 넘김
 			if(optionalOtherParticipation.isEmpty()){
@@ -259,7 +261,14 @@ public class RoomServiceImpl implements RoomService {
 		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
 		String encodedPassword = new String(encoding);
 
-		room.modify(roomModifyReqDto.getRoomTitle(),encodedPassword);
+		byte[] salting = Base64.getEncoder().encode(password.getBytes());
+		String salt = new String(salting);
+
+		room.modify(
+			roomModifyReqDto.getRoomTitle(),
+			encodedPassword,
+			encodedPassword.equals(salt)
+		);
 	}
 
 	@Override
@@ -304,11 +313,15 @@ public class RoomServiceImpl implements RoomService {
 		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
 		String encodedPassword = new String(encoding);
 
+		byte[] salting = Base64.getEncoder().encode(password.getBytes());
+		String salt = new String(salting);
+
 		Room room = Room.create(
 				member,
 				roomCreateReqDto.getRoomTitle(),
 				roomCreateReqDto.getShowTime(),
-				encodedPassword
+				encodedPassword,
+				encodedPassword.equals(salt)
 		);
 
 		roomRepository.save(room);
@@ -329,7 +342,6 @@ public class RoomServiceImpl implements RoomService {
 		Page<Room> roomList = roomRepository.findByRoomTitleContainsAndIsDeletedIsFalse(title, pageable);
 		List<RoomSearchDto> roomSearchDtoList = new ArrayList<>();
 		for(Room room: roomList){
-			log.info("room ={}",room);
 			int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
 
 			Boolean isOpen = true;
