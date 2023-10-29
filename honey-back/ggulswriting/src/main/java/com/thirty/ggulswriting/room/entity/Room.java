@@ -50,14 +50,23 @@ public class Room extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
-    public static Room create(Member member, String title, LocalDateTime showTime, String password){
-        return Room.builder()
-            .member(member)
-            .roomTitle(title)
-            .showTime(showTime)
-            .password(password)
-            .isDeleted(false)
-            .build();
+    public static Room create(Member member, String title, LocalDateTime showTime, String password, boolean isOpen){
+        if(!isOpen){
+            return Room.builder()
+                .member(member)
+                .roomTitle(title)
+                .showTime(showTime)
+                .password(password)
+                .isDeleted(false)
+                .build();
+        }else{
+            return Room.builder()
+                .member(member)
+                .roomTitle(title)
+                .showTime(showTime)
+                .isDeleted(false)
+                .build();
+        }
     }
 
     public void changeMaster(Member member){
@@ -68,8 +77,11 @@ public class Room extends BaseEntity {
         this.isDeleted = true;
     }
 
-    public void modify(String roomTitle, String password){
+    public void modify(String roomTitle, String password, boolean isOpen){
         this.roomTitle = roomTitle;
-        this.password = password;
+
+        if(!isOpen){
+            this.password = password;
+        }
     }
 }
