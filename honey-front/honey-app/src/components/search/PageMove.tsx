@@ -35,7 +35,7 @@ function PageMove() {
   };
 
   const goToFirst = () => {
-    if (pageInfo.currentPage === 0) {
+    if (pageInfo.currentPage > 0) {
       axios
         .get(
           `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=0`,

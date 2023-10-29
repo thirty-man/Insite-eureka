@@ -5,7 +5,7 @@ function AccessError() {
   const navi = useNavigate();
 
   function goToBack() {
-    navi(-1);
+    navi("/login");
   }
 
   return (

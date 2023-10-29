@@ -1,5 +1,8 @@
 import { useState } from "react";
 import useRouter from "@hooks/useRouter";
+import { useRecoilState } from "recoil";
+import { selectedRoomState } from "@recoil/atom";
+import axios from "axios";
 
 function ModifyRoom() {
   const { routeTo } = useRouter();
@@ -9,6 +12,8 @@ function ModifyRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
+  const token = sessionStorage.getItem("Authorization");
+  const [selectedRoom] = useRecoilState(selectedRoomState);
 
   const handleInputFocus = () => {
     setRoomNameFocused(true);
@@ -19,6 +24,7 @@ function ModifyRoom() {
       setRoomNameFocused(false);
     }
   };
+
   const handleRoomPasswordFocus = () => {
     setRoomPasswordFocused(true);
   };
@@ -28,9 +34,11 @@ function ModifyRoom() {
       setRoomPasswordFocused(false);
     }
   };
+
   const handleRoomName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
   };
+
   const handleRoomPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     const newPassword = password.replace(/\s/g, "");
@@ -41,6 +49,7 @@ function ModifyRoom() {
     setBoxChecked(!boxChecked);
     setRoomPasswordFocused(false);
   };
+
   const submitCreateRoom = () => {
     const newRoomName = roomName.replace(/^\s+|\s+$|\n/g, "");
     setRoomName(newRoomName);
@@ -68,7 +77,32 @@ function ModifyRoom() {
         );
       }
     }
+
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    const roomModifyReqDto = {
+      roomTitle: roomName,
+      password: roomPassword,
+    };
+
+    axios
+      .patch(
+        `http://localhost:8080/api/v1/rooms/${selectedRoom.id}/update`,
+        roomModifyReqDto,
+        config,
+      )
+      .then(() => {
+        routeTo("/mypage");
+      })
+      .catch((error) => {
+        console.error("Error fetching room list:", error);
+      });
   };
+
   return (
     <>
       <div className="text-[30px] text-white">방 수정</div>
@@ -92,19 +126,19 @@ function ModifyRoom() {
               암호 사용
             </div>
             <div className="flex items-center pt-[20px] pb-[10px]">
-              <input
-                type="checkbox"
-                checked={boxChecked}
-                onChange={handleCheckboxToggle}
-                className="w-0 h-0 opacity-0 absolute"
-                id="passwordCheckbox"
-              />
               <label
                 htmlFor="passwordCheckbox"
                 className={`w-[35px] h-[35px] border-[5px] border-white relative rounded-sm cursor-pointer ${
                   boxChecked ? "bg-white" : "bg-cg-7"
                 }`}
               >
+                <input
+                  type="checkbox"
+                  checked={boxChecked}
+                  onChange={handleCheckboxToggle}
+                  className="w-0 h-0 opacity-0 absolute"
+                  id="passwordCheckbox"
+                />
                 <span
                   className={`block w-[24px] h-[14px] border-t-[5px] border-r-[5px] transform rotate-[135deg] absolute top-[40%] left-[53%] -translate-x-[50%] -translate-y-[50%] ${
                     boxChecked ? "border-cg-7" : "border-transparent"
@@ -139,7 +173,7 @@ function ModifyRoom() {
           className="w-[30%] h-[45px] bg-cg-1 text-[24px] rounded-[60px] text-center"
           onClick={submitCreateRoom}
         >
-          만들기
+          수정하기
         </button>
         <button
           type="button"
