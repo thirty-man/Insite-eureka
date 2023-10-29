@@ -29,10 +29,11 @@ function MypageTitle() {
   }
 
   useEffect(() => {
+    console.log("Selected Room:", selectedRoom);
     // selectedRoom이 변경될 때 title 업데이트
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
-      console.log("Selected Room:", selectedRoom);
+
       console.log("Selected Room Title:", selectedRoom.roomTitle);
     } else if (roomList.length > 0) {
       setTitle(roomList[0].roomTitle);

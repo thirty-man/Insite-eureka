@@ -14,12 +14,12 @@ public class RoomDto {
 
     private int id;
 
-    private String title;
+    private String roomTitle;
 
     public static RoomDto from(Room room){
         return RoomDto.builder()
             .id(room.getRoomId())
-            .title(room.getRoomTitle())
+            .roomTitle(room.getRoomTitle())
             .build();
     }
 }

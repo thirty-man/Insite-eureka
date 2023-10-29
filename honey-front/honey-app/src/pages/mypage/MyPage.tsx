@@ -32,7 +32,7 @@ function MyPage() {
       .then((response) => {
         const { data } = response;
         const getRoomList = data.roomDtoList;
-        console.log(getRoomList);
+        console.log("겟 룸: ", getRoomList);
         // Recoil 상태 업데이트
         if (getRoomList.length > 0) {
           setRoomList(() => [...data.roomDtoList]);
