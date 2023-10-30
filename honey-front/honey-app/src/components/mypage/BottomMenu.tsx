@@ -23,7 +23,8 @@ function ButtomMenu() {
   const [memberList] = useRecoilState<UserType[]>(memberListState);
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const token = sessionStorage.getItem("Authorization");
-  const { VITE_API_URL } = import.meta.env;
+  const { VITE_API_URL } = process.env;
+  const { VITE_URL } = process.env;
 
   function showMemberList(): void {
     setMemberOpen(true);
@@ -34,7 +35,7 @@ function ButtomMenu() {
   }
 
   function roomPaste(): void {
-    const link = `http://localhost:3000/room/participate/${selectedRoom.id}`;
+    const link = `${VITE_URL}/room/participate/${selectedRoom.id}`;
     navigator.clipboard.writeText(link);
     alert("링크가 클립보드에 복사되었습니다.");
   }

@@ -12,13 +12,10 @@ import { useRecoilState } from "recoil";
 
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
-  // const [roomNum, setRoomNum] = useRecoilState<number>(roomNumState);
-  // const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
-  // const { VITE_API_URL } = import.meta.env;
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
-  const { VITE_API_URL } = import.meta.env;
+  const { VITE_API_URL } = process.env;
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기

@@ -14,7 +14,7 @@ function ParticipateRoom() {
   const [selectedRoom, setSelectedRoom] = useRecoilState(selectedRoomState);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const { VITE_API_URL } = import.meta.env;
+  const { VITE_API_URL } = process.env;
 
   function enterRoom() {
     const roomParticipateReqDto = {

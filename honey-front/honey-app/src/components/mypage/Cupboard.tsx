@@ -21,7 +21,7 @@ function Cupboard() {
   const maxCupboardIndex: number = potList.length - 1;
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const token = sessionStorage.getItem("Authorization");
-  const { VITE_API_URL } = import.meta.env;
+  const { VITE_API_URL } = process.env;
 
   useEffect(() => {
     if (selectedRoom) {

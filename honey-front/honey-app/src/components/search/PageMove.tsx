@@ -33,7 +33,7 @@ function PageMove() {
       Authorization: token,
     },
   };
-  const { VITE_API_URL } = import.meta.env;
+  const { VITE_API_URL } = process.env;
 
   const goToFirst = () => {
     if (pageInfo.currentPage > 0) {
