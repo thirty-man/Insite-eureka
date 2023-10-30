@@ -87,7 +87,7 @@ function ModifyRoom() {
 
     const roomModifyReqDto = {
       roomTitle: roomName,
-      password: roomPassword,
+      password: boxChecked ? roomPassword : null,
     };
 
     axios
