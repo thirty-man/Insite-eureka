@@ -20,6 +20,7 @@ function CreateRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
+  const { VITE_API_URL } = import.meta.env;
 
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,
@@ -140,7 +141,7 @@ function CreateRoom() {
       };
 
       const response = await axios.post(
-        `http://localhost:8080/api/v1/rooms/create`,
+        `${VITE_API_URL}/api/v1/rooms/create`,
         postData,
         config,
       );

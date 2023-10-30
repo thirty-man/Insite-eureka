@@ -19,6 +19,7 @@ function SearchRoom() {
   const [selectedPage, setSelectedPage] =
     useRecoilState<PageType>(selectedPageState);
   const [beforeSearch, setBeforeSearch] = useState<string>("");
+  const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
     const config = {
@@ -29,27 +30,24 @@ function SearchRoom() {
 
     axios
       .get(
-        // `http://localhost:8080/api/v1/rooms?${title}&${selectedPage}`,
-        `http://localhost:8080/api/v1/rooms?title=${title}&page=${selectedPage.currentPage}`,
+        `${VITE_API_URL}/api/v1/rooms?title=${title}&page=${selectedPage.currentPage}`,
         config,
       )
       .then((response) => {
         const { data } = response;
         const getRoomList = data.roomSearchDtoList;
-        console.log(response.data);
 
         // Recoil 상태 업데이트
         if (getRoomList.length > 0) {
-          console.log("여기 : ", getRoomList);
           setRoomList(getRoomList);
         } else {
           setRoomList([]);
         }
-      })
-      .catch((error) => {
-        console.error("Err:", error);
       });
-  }, [selectedPage, setRoomList, title, token]);
+    // .catch((error) => {
+    //   console.error("Err:", error);
+    // });
+  }, [selectedPage, setRoomList, title, token, VITE_API_URL]);
 
   const searchRoom = () => {
     const resetPage: PageType = {

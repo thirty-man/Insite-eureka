@@ -21,6 +21,7 @@ function Cupboard() {
   const maxCupboardIndex: number = potList.length - 1;
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const token = sessionStorage.getItem("Authorization");
+  const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
     if (selectedRoom) {
@@ -32,20 +33,26 @@ function Cupboard() {
 
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms/${selectedRoom.id}/message-list`,
+          `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/message-list`,
           config,
         )
         .then((response) => {
           const { data } = response;
           const getMessageList = data.messageListDtoList;
           setTotalPotList(getMessageList);
-          console.log(getMessageList);
-        })
-        .catch((error) => {
-          console.error("Error fetching room list:", error);
         });
+      // .catch((error) => {
+      //   console.error("Error fetching room list:", error);
+      // });
     }
-  }, [selectedRoom, token, setTotalPotList, currentPage, selectedPot]);
+  }, [
+    selectedRoom,
+    token,
+    setTotalPotList,
+    currentPage,
+    selectedPot,
+    VITE_API_URL,
+  ]);
 
   function potClick(pot: PotType) {
     setSelectedPot(pot);
@@ -56,7 +63,7 @@ function Cupboard() {
     };
 
     axios
-      .get(`http://localhost:8080/api/v1/messages/${pot.id}`, config)
+      .get(`${VITE_API_URL}/api/v1/messages/${pot.id}`, config)
       .then((response) => {
         const { data } = response;
         if (!data) {
@@ -65,10 +72,10 @@ function Cupboard() {
           setSelectedPot(data);
           setPotOpen(true);
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching room list:", error);
       });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
   }
 
   function goToBack() {

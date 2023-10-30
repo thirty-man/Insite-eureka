@@ -23,6 +23,7 @@ function ButtomMenu() {
   const [memberList] = useRecoilState<UserType[]>(memberListState);
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const token = sessionStorage.getItem("Authorization");
+  const { VITE_API_URL } = import.meta.env;
 
   function showMemberList(): void {
     setMemberOpen(true);
@@ -46,7 +47,7 @@ function ButtomMenu() {
 
     axios
       .patch(
-        `http://localhost:8080/api/v1/rooms/${selectedRoom.id}/out`,
+        `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/out`,
         null,
         config,
       )

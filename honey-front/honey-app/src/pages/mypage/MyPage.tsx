@@ -18,6 +18,7 @@ function MyPage() {
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
+  const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
@@ -27,20 +28,18 @@ function MyPage() {
       },
     };
 
-    axios
-      .get(`http://localhost:8080/api/v1/rooms/list`, config)
-      .then((response) => {
-        const { data } = response;
-        const getRoomList = data.roomDtoList;
-        // Recoil 상태 업데이트
-        if (getRoomList.length > 0) {
-          setRoomList(() => [...data.roomDtoList]);
-        }
-      });
+    axios.get(`${VITE_API_URL}/api/v1/rooms/list`, config).then((response) => {
+      const { data } = response;
+      const getRoomList = data.roomDtoList;
+      // Recoil 상태 업데이트
+      if (getRoomList.length > 0) {
+        setRoomList(() => [...data.roomDtoList]);
+      }
+    });
     // .catch((error) => {
     //   console.error("Error fetching room list:", error);
     // });
-  }, [setRoomList, token]);
+  }, [setRoomList, token, VITE_API_URL]);
 
   useEffect(() => {
     if (selectedRoom) {
@@ -52,7 +51,7 @@ function MyPage() {
 
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms/${selectedRoom.id}/member-list`,
+          `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/member-list`,
           config,
         )
         .then((response) => {
@@ -64,7 +63,7 @@ function MyPage() {
       //   console.error("Error fetching room list:", error);
       // });
     }
-  }, [selectedRoom, token, setMemberList]);
+  }, [selectedRoom, token, VITE_API_URL, setMemberList]);
 
   return (
     <>

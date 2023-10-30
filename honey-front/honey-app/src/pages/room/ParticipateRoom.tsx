@@ -14,6 +14,7 @@ function ParticipateRoom() {
   const [selectedRoom, setSelectedRoom] = useRecoilState(selectedRoomState);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const { VITE_API_URL } = import.meta.env;
 
   function enterRoom() {
     const roomParticipateReqDto = {
@@ -26,20 +27,18 @@ function ParticipateRoom() {
         Authorization: token,
       },
     };
-    console.log(roomPassword);
 
     axios
       .post(
-        `http://localhost:8080/api/v1/rooms/participate`,
+        `${VITE_API_URL}/api/v1/rooms/participate`,
         roomParticipateReqDto,
         config,
       )
       .then(() => {
-        console.log("참여 됐음");
         routeTo("/");
       })
       .catch((error) => {
-        console.log(error.response.data.errorCode);
+        // console.log(error.response.data.errorCode);
         if (error.response.data.errorCode === "001") {
           alert("이미 참가중인 방입니다.");
           return;
@@ -62,19 +61,18 @@ function ParticipateRoom() {
     };
 
     axios
-      .get(`http://localhost:8080/api/v1/rooms/${roomId}`, config)
+      .get(`${VITE_API_URL}/api/v1/rooms/${roomId}`, config)
       .then((response) => {
         setSelectedRoom(response.data);
         setIsOpen(response.data.isOpen);
-        console.log(isOpen);
         const parts = response.data.showTime.split("T");
         setDate(parts[0]);
         setTime(parts[1]);
-      })
-      .catch((error) => {
-        console.log("part Err : ", error.response);
       });
-  }, [roomId, token, setSelectedRoom, isOpen, setDate, setTime]);
+    // .catch((error) => {
+    //   console.log("part Err : ", error.response);
+    // });
+  }, [roomId, token, setSelectedRoom, isOpen, setDate, setTime, VITE_API_URL]);
 
   return (
     selectedRoom && (

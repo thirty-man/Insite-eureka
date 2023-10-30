@@ -19,6 +19,7 @@ function MypageTitle() {
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
   const token = sessionStorage.getItem("Authorization");
+  const { VITE_API_URL } = import.meta.env;
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
@@ -91,7 +92,7 @@ function MypageTitle() {
     };
 
     axios
-      .post(`http://localhost:8080/api/v1/members/logout`, null, config)
+      .post(`${VITE_API_URL}/api/v1/members/logout`, null, config)
       .then(() => {
         alert("로그아웃 됐습니다.");
         sessionStorage.clear();
