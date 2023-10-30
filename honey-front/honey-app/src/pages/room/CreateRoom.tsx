@@ -4,7 +4,7 @@ import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";
 import moment from "moment";
 import axios, { AxiosError } from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 
 type ValuePiece = Date | null;
@@ -25,9 +25,22 @@ function CreateRoom() {
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
 
-  const setSuccessCreateRoom = useSetRecoilState<boolean>(
+  const successCreateRoomValue = useRecoilValue<boolean>(
     successCreateRoomState,
   );
+
+  const setSuccessCreateRoomValue = useSetRecoilState<boolean>(
+    successCreateRoomState,
+  );
+  const [successCreateRoom, setSuccessCreateRoom] = useState<boolean>(
+    successCreateRoomValue,
+  );
+
+  useEffect(() => {
+    if (successCreateRoomValue) {
+      routeTo("/");
+    }
+  });
 
   useEffect(() => {
     setToday(new Date());
@@ -152,7 +165,6 @@ function CreateRoom() {
       );
       console.log(response.data);
       setSuccessCreateRoom(true);
-      routeTo("/");
     } catch (error: unknown) {
       if ((error as AxiosError).response) {
         const axiosError = error as AxiosError;
@@ -340,6 +352,18 @@ function CreateRoom() {
             </button>
           </div>
         </Modal>
+      )}
+      {successCreateRoom && (
+        <Alert
+          openModal={successCreateRoom}
+          closeButton="확인"
+          overz="z-[200]"
+          text={alertText}
+          closeAlert={() => {
+            setSuccessCreateRoomValue(false);
+            routeTo("/");
+          }}
+        />
       )}
       {alertModal && (
         <Alert

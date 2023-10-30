@@ -92,7 +92,7 @@ function MypageTitle() {
   }
 
   function goToBack(): void {
-    navi(-1);
+    navi("/");
   }
 
   function logout(): void {

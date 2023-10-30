@@ -18,6 +18,7 @@ function ParticipateRoom() {
   const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
+  const [participation, setParticipation] = useState<boolean>(false);
 
   function enterRoom() {
     const roomParticipateReqDto = {
@@ -38,9 +39,10 @@ function ParticipateRoom() {
         config,
       )
       .then(() => {
+        // setAlertText("방 참여가 완료되었습니다.");
+        // setCompleteParticipate(true);
         setAlertText("방 참여가 완료되었습니다.");
-        setAlertModal(true);
-        routeTo("/");
+        setParticipation(true);
       })
       .catch((error) => {
         // console.log(error.response.data.errorCode);
@@ -149,7 +151,13 @@ function ParticipateRoom() {
             closeButton="확인"
             overz="z-[200]"
             text={alertText}
-            closeAlert={() => setAlertModal(false)}
+            closeAlert={() => {
+              setAlertModal(false);
+              if (participation) {
+                setParticipation(false);
+                routeTo("/");
+              }
+            }}
           />
         )}
       </>
