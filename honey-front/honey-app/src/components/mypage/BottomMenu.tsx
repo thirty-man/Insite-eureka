@@ -24,7 +24,6 @@ function ButtomMenu() {
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const token = sessionStorage.getItem("Authorization");
   const { VITE_API_URL } = import.meta.env;
-  const { VITE_URL } = import.meta.env;
 
   function showMemberList(): void {
     setMemberOpen(true);
@@ -35,7 +34,7 @@ function ButtomMenu() {
   }
 
   function roomPaste(): void {
-    const link = `${VITE_URL}/room/participate/${selectedRoom.id}`;
+    const link = `http://rollinghoney.com/room/participate/${selectedRoom.id}`;
     navigator.clipboard.writeText(link);
     alert("링크가 클립보드에 복사되었습니다.");
   }

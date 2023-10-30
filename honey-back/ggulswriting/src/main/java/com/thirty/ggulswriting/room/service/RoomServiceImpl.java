@@ -78,9 +78,7 @@ public class RoomServiceImpl implements RoomService {
 		}
 		String inputPassword = roomParticipateReqDto.getPassword();
 		//비밀번호 검증
-		System.out.println("동현아 나 여기 없어 밖이야");
-		if(inputPassword != null || !inputPassword.isEmpty()) {
-			System.out.println("동현아 나 여기있어");
+		if(inputPassword != null) {
 			String password = SALT + roomParticipateReqDto.getPassword();
 			byte[] encoding = Base64.getEncoder().encode(password.getBytes());
 			String encodedPassword = new String(encoding);
@@ -263,7 +261,7 @@ public class RoomServiceImpl implements RoomService {
 		byte[] encoding = Base64.getEncoder().encode(password.getBytes());
 		String encodedPassword = new String(encoding);
 
-		byte[] salting = Base64.getEncoder().encode(password.getBytes());
+		byte[] salting = Base64.getEncoder().encode(SALT.getBytes());
 		String salt = new String(salting);
 
 		room.modify(
