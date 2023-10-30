@@ -3,7 +3,7 @@ import { ImageButton, TextButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
-import { selectedRoomState } from "@recoil/atom";
+// import { selectedRoomState } from "@recoil/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
@@ -15,8 +15,8 @@ import { Alert } from "@components/common/modal";
 function MypageTitle() {
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const [title, setTitle] = useState<string>("방이 없습니다.");
-  const [selectedRoom, setSelectedRoom] =
-    useRecoilState<RoomType>(selectedRoomState);
+  // const [selectedRoom, setSelectedRoom] =
+  // useRecoilState<RoomType>(selectedRoomState);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
