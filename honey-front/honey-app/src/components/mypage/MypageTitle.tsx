@@ -32,11 +32,11 @@ function MypageTitle() {
 
   useEffect(() => {
     // selectedRoom이 변경될 때 title 업데이트
-    if (selectedRoom !== undefined) {
-      setTitle(selectedRoom.roomTitle);
-    } else if (roomList.length > 0) {
-      setTitle(roomList[0].roomTitle);
-      setSelectedRoom(roomList[0]);
+    if (roomList) {
+      if (roomList.length > 0) {
+        setTitle(roomList[0].roomTitle);
+        setSelectedRoom(roomList[0]);
+      }
     } else {
       setTitle("방을 선택하세요");
     }
