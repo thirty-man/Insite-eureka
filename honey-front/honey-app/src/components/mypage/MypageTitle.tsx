@@ -24,23 +24,24 @@ function MypageTitle() {
   const [, setLoggedOut] = useRecoilState<boolean>(logoutState);
   const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
   const { VITE_API_URL } = import.meta.env;
+  const [nowRoom, setNowRoom] = useState<RoomType>();
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
-    setSelectedRoom(room);
+    setNowRoom(room);
   }
 
   useEffect(() => {
     // selectedRoom이 변경될 때 title 업데이트
-    if (roomList) {
-      if (roomList.length > 0) {
-        setTitle(roomList[0].roomTitle);
-        setSelectedRoom(roomList[0]);
-      }
+    if (nowRoom !== undefined) {
+      setTitle(nowRoom.roomTitle);
+    } else if (roomList.length > 0) {
+      setTitle(roomList[0].roomTitle);
+      setNowRoom(roomList[0]);
     } else {
       setTitle("방을 선택하세요");
     }
-  }, [selectedRoom, roomList, setSelectedRoom]);
+  }, [nowRoom, roomList, setNowRoom]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -74,20 +75,20 @@ function MypageTitle() {
   function beforePage(): void {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setSelectedRoom(roomList[currentIndex - 1]);
+      setNowRoom(roomList[currentIndex - 1]);
     } else {
       setCurrentIndex(roomList.length - 1);
-      setSelectedRoom(roomList[roomList.length - 1]);
+      setNowRoom(roomList[roomList.length - 1]);
     }
   }
 
   function nextPage(): void {
     if (currentIndex < roomList.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setSelectedRoom(roomList[currentIndex + 1]);
+      setNowRoom(roomList[currentIndex + 1]);
     } else {
       setCurrentIndex(0);
-      setSelectedRoom(roomList[0]);
+      setNowRoom(roomList[0]);
     }
   }
 
