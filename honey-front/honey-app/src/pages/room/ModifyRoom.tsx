@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useRouter from "@hooks/useRouter";
 import { useRecoilState } from "recoil";
-import { selectedRoomState } from "@recoil/atom";
+import { mypageSelectedRoom } from "@recoil/atom";
 import axios from "axios";
 import { Alert } from "@components/common/modal";
 import modifyState from "@recoil/atom/modifyState";
@@ -19,7 +19,7 @@ function ModifyRoom() {
   const [, setModified] = useRecoilState<boolean>(modifyState);
 
   const token = sessionStorage.getItem("Authorization");
-  const [selectedRoom] = useRecoilState(selectedRoomState);
+  const [selectedRoom] = useRecoilState(mypageSelectedRoom);
   const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {

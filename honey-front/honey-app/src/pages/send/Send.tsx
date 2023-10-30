@@ -5,7 +5,7 @@ import { TextInput } from "@components/common/input";
 import { Modal } from "@components/common/modal";
 import { RoomType, UserType } from "@customtype/dataTypes";
 // import { AccessError } from "@pages/error";
-import { selectedMemberState, selectedRoomState } from "@recoil/atom";
+import { mypageSelectedRoom, selectedMemberState } from "@recoil/atom";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ function Send() {
   const token = sessionStorage.getItem("Authorization");
   const [content, setContent] = useState("");
   const [nickName, setNickName] = useState("");
-  const selectedRoom = useRecoilValue<RoomType>(selectedRoomState);
+  const selectedRoom = useRecoilValue<RoomType>(mypageSelectedRoom);
   const { VITE_API_URL } = import.meta.env;
 
   const messageSendReqDto = {
