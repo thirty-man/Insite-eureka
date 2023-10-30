@@ -24,31 +24,27 @@ function MypageTitle() {
   const [, setLoggedOut] = useRecoilState<boolean>(logoutState);
   const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
   const { VITE_API_URL } = import.meta.env;
-  const [getIn, setGetIn] = useState<boolean>(true);
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
     setSelectedRoom(room);
   }
 
+  // useEffect(() => {
+  //   // selectedRoom이 변경될 때 title 업데이트
+  //   if (selectedRoom !== undefined) {
+  //     setTitle(selectedRoom.roomTitle);
+  //   } else if (roomList.length > 0) {
+  //     setTitle(roomList[0].roomTitle);
+  //     setSelectedRoom(roomList[0]);
+  //   } else {
+  //     setTitle("방을 선택하세요");
+  //   }
+  // }, [selectedRoom, roomList, setSelectedRoom, setTitle]);
+
   useEffect(() => {
-    // selectedRoom이 변경될 때 title 업데이트
-    // if (selectedRoom !== undefined) {
-    //   setTitle(selectedRoom.roomTitle);
-    // } else
-    if (roomList.length > 0) {
-      if (getIn) {
-        setTitle(roomList[0].roomTitle);
-        setSelectedRoom(roomList[0]);
-        setGetIn(false);
-      } else {
-        setTitle(selectedRoom.roomTitle);
-        setSelectedRoom(roomList[0]);
-      }
-    } else {
-      setTitle("방을 선택하세요");
-    }
-  }, [selectedRoom, roomList, setSelectedRoom, setTitle, getIn]);
+    setTitle(selectedRoom.roomTitle);
+  }, [selectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
