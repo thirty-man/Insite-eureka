@@ -19,7 +19,7 @@ function MypageTitle() {
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
   const token = sessionStorage.getItem("Authorization");
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);

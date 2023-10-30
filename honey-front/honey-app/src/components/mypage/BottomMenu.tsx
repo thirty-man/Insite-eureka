@@ -23,8 +23,8 @@ function ButtomMenu() {
   const [memberList] = useRecoilState<UserType[]>(memberListState);
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const token = sessionStorage.getItem("Authorization");
-  const { VITE_API_URL } = process.env;
-  const { VITE_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
+  const { VITE_URL } = import.meta.env;
 
   function showMemberList(): void {
     setMemberOpen(true);

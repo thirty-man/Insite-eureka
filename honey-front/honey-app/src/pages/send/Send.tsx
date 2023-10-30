@@ -21,7 +21,7 @@ function Send() {
   const [content, setContent] = useState("");
   const [nickName, setNickName] = useState("");
   const selectedRoom = useRecoilValue<RoomType>(selectedRoomState);
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   const messageSendReqDto = {
     member_id_to: selectedMember.id,

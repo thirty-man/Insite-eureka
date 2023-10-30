@@ -25,7 +25,7 @@ function RoomList() {
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,
   );
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
     const config = {

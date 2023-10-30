@@ -19,7 +19,7 @@ function SearchRoom() {
   const [selectedPage, setSelectedPage] =
     useRecoilState<PageType>(selectedPageState);
   const [beforeSearch, setBeforeSearch] = useState<string>("");
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
     const config = {

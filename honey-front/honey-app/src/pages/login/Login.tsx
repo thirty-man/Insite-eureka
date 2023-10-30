@@ -8,9 +8,9 @@ import { useLocation } from "react-router-dom";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
-  const { VITE_KAKAO_CLIENT_ID } = process.env;
-  const { VITE_KAKAO_REDIRECT_URI } = process.env;
-  const { VITE_API_URL } = process.env;
+  const { VITE_KAKAO_CLIENT_ID } = import.meta.env;
+  const { VITE_KAKAO_REDIRECT_URI } = import.meta.env;
+  const { VITE_API_URL } = import.meta.env;
   const { routeTo } = useRouter();
   const location = useLocation();
 
