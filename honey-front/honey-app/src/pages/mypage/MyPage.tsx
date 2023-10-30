@@ -5,7 +5,7 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import {
   memberListState,
   myRoomListState,
-  selectedRoomState,
+  mypageSelectedRoom,
 } from "@recoil/atom";
 import modifyState from "@recoil/atom/modifyState";
 import axios from "axios";
@@ -15,7 +15,7 @@ import { Alert } from "@components/common/modal";
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
   const token = sessionStorage.getItem("Authorization");
-  const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
+  const [selectedRoom] = useRecoilState<RoomType>(mypageSelectedRoom);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
   const { VITE_API_URL } = import.meta.env;
 
