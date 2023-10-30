@@ -23,6 +23,7 @@ function MypageTitle() {
   const token = sessionStorage.getItem("Authorization");
   const [, setLoggedOut] = useRecoilState<boolean>(logoutState);
   const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
+  const { VITE_API_URL } = import.meta.env;
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
@@ -102,7 +103,7 @@ function MypageTitle() {
     };
 
     axios
-      .post(`http://localhost:8080/api/v1/members/logout`, null, config)
+      .post(`${VITE_API_URL}/api/v1/members/logout`, null, config)
       .then(() => {
         // alert("로그아웃 됐습니다.");
         setLoggedOut(true);

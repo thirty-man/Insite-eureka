@@ -21,6 +21,7 @@ function Send() {
   const [content, setContent] = useState("");
   const [nickName, setNickName] = useState("");
   const selectedRoom = useRecoilValue<RoomType>(selectedRoomState);
+  const { VITE_API_URL } = import.meta.env;
 
   const messageSendReqDto = {
     member_id_to: selectedMember.id,
@@ -38,19 +39,18 @@ function Send() {
     };
 
     axios
-      .post(`http://localhost:8080/api/v1/messages`, messageSendReqDto, config)
-      .then((response) => {
-        console.log("response : ", response);
+      .post(`${VITE_API_URL}/api/v1/messages`, messageSendReqDto, config)
+      .then(() => {
         navi("/mypage");
-      })
-      .catch((error) => {
-        if (error.response.data.errorCode === "000") {
-          console.error("Error Send:", error.response.data.errorCode);
-          // 000에러를 받았을 때 JWT에서 리프래쉬토큰을 다시 호출하는 axios를 작성
-          // 그런데 여기서 no를 반환받으면 다시 로그인을 시켜야 한다
-        }
-        console.error("Error Send:", error.response.data.errorCode);
       });
+    // .catch((error) => {
+    //   if (error.response.data.errorCode === "000") {
+    //     console.error("Error Send:", error.response.data.errorCode);
+    //     // 000에러를 받았을 때 JWT에서 리프래쉬토큰을 다시 호출하는 axios를 작성
+    //     // 그런데 여기서 no를 반환받으면 다시 로그인을 시켜야 한다
+    //   }
+    //   console.error("Error Send:", error.response.data.errorCode);
+    // });
   }
 
   function goToBack() {

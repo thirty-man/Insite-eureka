@@ -24,6 +24,8 @@ function RoomList() {
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,
   );
+  const { VITE_API_URL } = import.meta.env;
+
   useEffect(() => {
     const config = {
       headers: {
@@ -32,15 +34,10 @@ function RoomList() {
     };
 
     axios
-      .get(
-        // `http://localhost:8080/api/v1/rooms?${title}&${selectedPage}`,
-        `http://localhost:8080/api/v1/rooms?title=&page=0`,
-        config,
-      )
+      .get(`${VITE_API_URL}/api/v1/rooms?title=&page=0`, config)
       .then((response) => {
         const { data } = response;
         const getRoomList = data.roomSearchDtoList;
-
         // Recoil 상태 업데이트
         if (getRoomList.length > 0) {
           setRoomList(getRoomList);
@@ -50,13 +47,12 @@ function RoomList() {
           totalPages: data.totalPages,
           hasNext: data.hasNext,
         };
-
         setSelectedPage(newPage);
-      })
-      .catch((error) => {
-        console.error("Err:", error);
       });
-  }, [token, setRoomList, setSelectedPage]);
+    // .catch((error) => {
+    //   console.error("Err:", error);
+    // });
+  }, [token, setRoomList, setSelectedPage, VITE_API_URL]);
 
   return (
     <>

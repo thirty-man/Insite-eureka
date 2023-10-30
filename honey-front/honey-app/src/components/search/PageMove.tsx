@@ -34,16 +34,14 @@ function PageMove() {
       Authorization: token,
     },
   };
+  const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
 
   const goToFirst = () => {
     if (pageInfo.currentPage > 0) {
       axios
-        .get(
-          `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=0`,
-          config,
-        )
+        .get(`${VITE_API_URL}/api/v1/rooms?title=${inputSearch}&page=0`, config)
         .then((response) => {
           const { data } = response;
           const getRoomList = data.roomSearchDtoList;
@@ -59,10 +57,10 @@ function PageMove() {
           };
 
           setPageInfo(newPage);
-        })
-        .catch((error) => {
-          console.error("PageMove : goToFirst Err:", error);
         });
+      // .catch((error) => {
+      //   console.error("PageMove : goToFirst Err:", error);
+      // });
     } else {
       setAlertText("첫 페이지입니다.");
       setAlertModal(true);
@@ -74,7 +72,7 @@ function PageMove() {
     if (pageInfo.currentPage > 0) {
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=${
+          `${VITE_API_URL}/api/v1/rooms?title=${inputSearch}&page=${
             pageInfo.currentPage - 1
           }`,
           config,
@@ -82,7 +80,6 @@ function PageMove() {
         .then((response) => {
           const { data } = response;
           const getRoomList = data.roomSearchDtoList;
-          console.log(data);
 
           // Recoil 상태 업데이트
           if (getRoomList.length > 0) {
@@ -96,10 +93,10 @@ function PageMove() {
           };
 
           setPageInfo(newPage);
-        })
-        .catch((error) => {
-          console.error("PageMove : goToBefore Err:", error);
         });
+      // .catch((error) => {
+      //   console.error("PageMove : goToBefore Err:", error);
+      // });
     } else {
       setAlertText("첫 페이지입니다.");
       setAlertModal(true);
@@ -111,7 +108,7 @@ function PageMove() {
     if (pageInfo.hasNext) {
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=${
+          `${VITE_API_URL}/api/v1/rooms?title=${inputSearch}&page=${
             pageInfo.currentPage + 1
           }`,
           config,
@@ -119,7 +116,6 @@ function PageMove() {
         .then((response) => {
           const { data } = response;
           const getRoomList = data.roomSearchDtoList;
-          console.log(data);
 
           // Recoil 상태 업데이트
           if (getRoomList.length > 0) {
@@ -133,10 +129,10 @@ function PageMove() {
           };
 
           setPageInfo(newPage);
-        })
-        .catch((error) => {
-          console.error("PageMove : goToBefore Err:", error);
         });
+      // .catch((error) => {
+      //   console.error("PageMove : goToBefore Err:", error);
+      // });
     } else {
       setAlertText("마지막 페이지입니다.");
       setAlertModal(true);
@@ -146,10 +142,9 @@ function PageMove() {
 
   const goToLast = () => {
     if (pageInfo.currentPage < pageInfo.totalPages - 1) {
-      console.log(pageInfo.totalPages);
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=${
+          `${VITE_API_URL}/api/v1/rooms?title=${inputSearch}&page=${
             pageInfo.totalPages - 1
           }`,
           config,
@@ -169,10 +164,10 @@ function PageMove() {
           };
 
           setPageInfo(newPage);
-        })
-        .catch((error) => {
-          console.error("PageMove : goToLast Err:", error);
         });
+      // .catch((error) => {
+      //   console.error("PageMove : goToLast Err:", error);
+      // });
     } else {
       setAlertText("마지막 페이지입니다.");
       setAlertModal(true);
@@ -186,13 +181,11 @@ function PageMove() {
       setAlertModal(true);
       // alert("0이상의 수를 입력해주세요");
     } else if (num === pageInfo.currentPage + 1) {
-      console.log("현재 페이지입니다.");
+      alert("현재 페이지입니다.");
     } else {
       axios
         .get(
-          `http://localhost:8080/api/v1/rooms?title=${inputSearch}&page=${
-            num - 1
-          }`,
+          `${VITE_API_URL}/api/v1/rooms?title=${inputSearch}&page=${num - 1}`,
           config,
         )
         .then((response) => {
@@ -210,10 +203,10 @@ function PageMove() {
           };
 
           setPageInfo(newPage);
-        })
-        .catch((error) => {
-          console.error("PageMove : goToTarget Err:", error);
         });
+      // .catch((error) => {
+      //   console.error("PageMove : goToTarget Err:", error);
+      // });
     }
   };
 

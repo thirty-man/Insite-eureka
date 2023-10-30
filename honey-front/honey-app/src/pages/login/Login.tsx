@@ -10,8 +10,9 @@ import { logoutState } from "@recoil/atom";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
-  const VITE_KAKAO_CLIENT_ID = "367be5f2a1031bc9fb556dd456869c88";
-  const VITE_KAKAO_REDIRECT_URI = "http://localhost:3000/login";
+  const { VITE_KAKAO_CLIENT_ID } = import.meta.env;
+  const { VITE_KAKAO_REDIRECT_URI } = import.meta.env;
+  const { VITE_API_URL } = import.meta.env;
   const { routeTo } = useRouter();
   const location = useLocation();
   const logout = useRecoilValue(logoutState);
@@ -19,7 +20,8 @@ function Login() {
 
   const authenticateUser = (code: string) => {
     axios
-      .post("http://localhost:8080/api/v1/members/login", { code })
+      // .post(`${VITE_API_URL}/api/v1/members/login`, { code })
+      .post(`${VITE_API_URL}/api/v1/members/login`, { code })
       .then((response) => {
         const authToken = response.headers.authorization;
         const refreshToken = response.headers.refreshtoken;

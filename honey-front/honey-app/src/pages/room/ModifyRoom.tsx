@@ -14,6 +14,7 @@ function ModifyRoom() {
     useState<boolean>(false);
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState(selectedRoomState);
+  const { VITE_API_URL } = import.meta.env;
 
   const handleInputFocus = () => {
     setRoomNameFocused(true);
@@ -91,16 +92,16 @@ function ModifyRoom() {
 
     axios
       .patch(
-        `http://localhost:8080/api/v1/rooms/${selectedRoom.id}/update`,
+        `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/update`,
         roomModifyReqDto,
         config,
       )
       .then(() => {
         routeTo("/mypage");
-      })
-      .catch((error) => {
-        console.error("Error fetching room list:", error);
       });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
   };
 
   return (
