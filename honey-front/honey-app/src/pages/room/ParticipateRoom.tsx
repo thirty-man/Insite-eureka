@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useRouter from "@hooks/useRouter";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
 import { Alert } from "@components/common/modal";
 
@@ -19,6 +19,8 @@ function ParticipateRoom() {
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
   const [participation, setParticipation] = useState<boolean>(false);
+
+  useResetRecoilState(selectedRoomState);
 
   function enterRoom() {
     const roomParticipateReqDto = {
@@ -50,6 +52,7 @@ function ParticipateRoom() {
           setAlertText("이미 참여 중인 방입니다.");
           setAlertModal(true);
           // alert("이미 참가중인 방입니다.");
+
           return;
         }
 
