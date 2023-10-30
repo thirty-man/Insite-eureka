@@ -19,27 +19,31 @@ function MyPage() {
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    };
+    if (selectedRoom) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
 
-    axios.get(`${VITE_API_URL}/api/v1/rooms/list`, config).then((response) => {
-      const { data } = response;
-      const getRoomList = data.roomDtoList;
-      // Recoil 상태 업데이트
-      if (getRoomList.length > 0) {
-        setRoomList(() => [...data.roomDtoList]);
-      }
-    });
-    // .catch((error) => {
-    //   console.error("Error fetching room list:", error);
-    // });
-  }, [setRoomList, token, VITE_API_URL]);
+      axios
+        .get(`${VITE_API_URL}/api/v1/rooms/list`, config)
+        .then((response) => {
+          const { data } = response;
+          const getRoomList = data.roomDtoList;
+          // Recoil 상태 업데이트
+          if (getRoomList.length > 0) {
+            setRoomList(() => [...data.roomDtoList]);
+          }
+        });
+      // .catch((error) => {
+      //   console.error("Error fetching room list:", error);
+      // });
+    }
+  }, [setRoomList, token, VITE_API_URL, selectedRoom]);
 
   useEffect(() => {
-    if (selectedRoom) {
+    if (selectedRoom !== undefined) {
       const config = {
         headers: {
           Authorization: token,

@@ -25,7 +25,7 @@ function Cupboard() {
   const [alertModal, setAlertModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedRoom) {
+    if (selectedRoom !== undefined) {
       const config = {
         headers: {
           Authorization: token,

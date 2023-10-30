@@ -119,11 +119,8 @@ function ModifyRoom() {
       )
       .then(() => {
         setModified(true);
-        routeTo("/");
+        routeTo("/mypage");
       });
-    // .catch((error) => {
-    //   console.error("Error fetching room list:", error);
-    // });
   };
 
   return (
