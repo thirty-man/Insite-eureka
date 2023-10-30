@@ -8,7 +8,7 @@ import {
 } from "@recoil/atom";
 import axios from "axios";
 import { useEffect } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
@@ -17,35 +17,29 @@ function MyPage() {
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
   const { VITE_API_URL } = import.meta.env;
 
-  useResetRecoilState(selectedRoomState);
-
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
-    if (selectedRoom) {
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
 
-      axios
-        .get(`${VITE_API_URL}/api/v1/rooms/list`, config)
-        .then((response) => {
-          const { data } = response;
-          const getRoomList = data.roomDtoList;
-          // Recoil 상태 업데이트
-          if (getRoomList.length > 0) {
-            setRoomList(() => [...data.roomDtoList]);
-          }
-        });
-      // .catch((error) => {
-      //   console.error("Error fetching room list:", error);
-      // });
-    }
-  }, [setRoomList, token, VITE_API_URL, selectedRoom]);
+    axios.get(`${VITE_API_URL}/api/v1/rooms/list`, config).then((response) => {
+      const { data } = response;
+      const getRoomList = data.roomDtoList;
+      // Recoil 상태 업데이트
+      if (getRoomList.length > 0) {
+        setRoomList(() => [...data.roomDtoList]);
+      }
+    });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
+  }, [setRoomList, token, VITE_API_URL]);
 
   useEffect(() => {
-    if (selectedRoom !== undefined) {
+    if (selectedRoom) {
       const config = {
         headers: {
           Authorization: token,
