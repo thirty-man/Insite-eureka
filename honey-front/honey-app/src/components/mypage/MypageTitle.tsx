@@ -42,8 +42,8 @@ function MypageTitle() {
       } else {
         setTitle(selectedRoom.roomTitle);
         setGetIn(false);
+        setSelectedRoom(roomList[0]);
       }
-      setSelectedRoom(roomList[0]);
     } else {
       setTitle("방을 선택하세요");
     }
