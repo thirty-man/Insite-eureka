@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
 import axios from "axios";
 import { Alert } from "@components/common/modal";
+import modifyState from "@recoil/atom/modifyState";
 
 function ModifyRoom() {
   const { routeTo } = useRouter();
@@ -15,7 +16,7 @@ function ModifyRoom() {
     useState<boolean>(false);
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
-  const [modify, setModify] = useState<boolean>(false);
+  const [, setModified] = useRecoilState<boolean>(modifyState);
 
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState(selectedRoomState);
@@ -96,8 +97,6 @@ function ModifyRoom() {
         // alert(
         //   "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         // );
-
-        setAlertModal(true);
       }
     }
 
@@ -119,16 +118,9 @@ function ModifyRoom() {
         config,
       )
       .then(() => {
-        setModify(true);
+        setModified(true);
         routeTo("/mypage");
-      })
-      .catch((error) => {
-        if (error.response.data.errorCode === "003") {
-          setAlertText("수정할 수 없습니다.");
-        }
       });
-
-    setAlertText("수정이 완료되었습니다.");
   };
 
   return (
@@ -217,13 +209,7 @@ function ModifyRoom() {
           closeButton="확인"
           overz="z-[100]"
           text={alertText}
-          closeAlert={() => {
-            setAlertModal(false);
-            if (modify) {
-              setModify(false);
-              routeTo("/mypage");
-            }
-          }}
+          closeAlert={() => setAlertModal(false)}
         />
       )}
     </>

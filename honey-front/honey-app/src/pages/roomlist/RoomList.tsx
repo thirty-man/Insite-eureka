@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-// import { Alert } from "@components/common/modal";
+import { useEffect, useState } from "react";
+import { Alert } from "@components/common/modal";
 import TitleText from "@components/common/textbox/TitleText";
 import {
   ButtomButton,
@@ -9,9 +9,11 @@ import {
 } from "@components/search/index";
 import { PageType, RoomType } from "@customtype/dataTypes";
 import { roomListState, selectedPageState } from "@recoil/atom";
-// import successCreateRoomState from "@recoil/atom/successCreateRoomState";
+import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import modifyState from "@recoil/atom/modifyState";
+import participateState from "@recoil/atom/participateState";
 
 function RoomList() {
   // 방 목록 가져오기
@@ -21,10 +23,17 @@ function RoomList() {
 
   const token = sessionStorage.getItem("Authorization");
 
-  // const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
-  // const setSuccessCreateRoom = useSetRecoilState<boolean>(
-  //   successCreateRoomState,
-  // );
+  const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
+  const setSuccessCreateRoom = useSetRecoilState<boolean>(
+    successCreateRoomState,
+  );
+
+  const modified = useRecoilValue<boolean>(modifyState);
+  const [successModifyRoom, setSuccessModifyRoom] = useState<boolean>(modified);
+
+  const participated = useRecoilValue<boolean>(participateState);
+  const [successParticipated, setSuccessParticipated] =
+    useState<boolean>(participated);
 
   const { VITE_API_URL } = import.meta.env;
 
@@ -67,7 +76,7 @@ function RoomList() {
         </div>
         <ButtomButton />
       </div>
-      {/* {successCreateRoom && (
+      {successCreateRoom && (
         <Alert
           openModal={successCreateRoom}
           closeButton="확인"
@@ -75,7 +84,25 @@ function RoomList() {
           text="방 생성이 완료되었습니다."
           closeAlert={() => setSuccessCreateRoom(false)}
         />
-      )} */}
+      )}
+      {successModifyRoom && (
+        <Alert
+          openModal={successModifyRoom}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방 수정이 완료되었습니다."
+          closeAlert={() => setSuccessModifyRoom(false)}
+        />
+      )}
+      {successParticipated && (
+        <Alert
+          openModal={successModifyRoom}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방 참여가 완료되었습니다."
+          closeAlert={() => setSuccessParticipated(false)}
+        />
+      )}
     </>
   );
 }
