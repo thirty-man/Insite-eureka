@@ -96,7 +96,7 @@ function ModifyRoom() {
         // alert(
         //   "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         // );
-        setAlertText("수정이 완료되었습니다.");
+
         setAlertModal(true);
       }
     }
@@ -121,10 +121,14 @@ function ModifyRoom() {
       .then(() => {
         setModify(true);
         routeTo("/mypage");
+      })
+      .catch((error) => {
+        if (error.response.data.errorCode === "003") {
+          setAlertText("수정할 수 없습니다.");
+        }
       });
-    // .catch((error) => {
-    //   console.error("Error fetching room list:", error);
-    // });
+
+    setAlertText("수정이 완료되었습니다.");
   };
 
   return (
