@@ -39,6 +39,7 @@ function MypageTitle() {
     if (roomList.length > 0) {
       if (getIn) {
         setTitle(roomList[0].roomTitle);
+        setSelectedRoom(roomList[0]);
         setGetIn(false);
       } else {
         setTitle(selectedRoom.roomTitle);
