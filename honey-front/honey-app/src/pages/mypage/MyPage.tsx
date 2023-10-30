@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ButtomMenu, Cupboard } from "@components/mypage";
 import MypageTitle from "@components/mypage/MypageTitle";
 import { RoomType, UserType } from "@customtype/dataTypes";
@@ -6,9 +7,10 @@ import {
   myRoomListState,
   selectedRoomState,
 } from "@recoil/atom";
+import modifyState from "@recoil/atom/modifyState";
 import axios from "axios";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { Alert } from "@components/common/modal";
 
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
@@ -16,6 +18,10 @@ function MyPage() {
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
   const { VITE_API_URL } = import.meta.env;
+
+  const modified = useRecoilValue<boolean>(modifyState);
+  const setModified = useSetRecoilState<boolean>(modifyState);
+  const [successModifyRoom, setSuccessModifyRoom] = useState<boolean>(modified);
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
@@ -67,6 +73,18 @@ function MyPage() {
       <MypageTitle />
       <Cupboard />
       <ButtomMenu />
+      {successModifyRoom && (
+        <Alert
+          openModal={successModifyRoom}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방 수정이 완료되었습니다."
+          closeAlert={() => {
+            setModified(false);
+            setSuccessModifyRoom(false);
+          }}
+        />
+      )}
     </>
   );
 }

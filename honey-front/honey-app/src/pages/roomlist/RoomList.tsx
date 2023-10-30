@@ -12,7 +12,6 @@ import { roomListState, selectedPageState } from "@recoil/atom";
 import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import modifyState from "@recoil/atom/modifyState";
 import participateState from "@recoil/atom/participateState";
 
 function RoomList() {
@@ -29,10 +28,6 @@ function RoomList() {
   );
   const [successCreated, setSuccessCreated] =
     useState<boolean>(successCreateRoom);
-
-  const modified = useRecoilValue<boolean>(modifyState);
-  const setModified = useSetRecoilState<boolean>(modifyState);
-  const [successModifyRoom, setSuccessModifyRoom] = useState<boolean>(modified);
 
   const participated = useRecoilValue<boolean>(participateState);
   const setParticipated = useSetRecoilState<boolean>(participateState);
@@ -92,21 +87,9 @@ function RoomList() {
           }}
         />
       )}
-      {successModifyRoom && (
-        <Alert
-          openModal={successModifyRoom}
-          closeButton="확인"
-          overz="z-[100]"
-          text="방 수정이 완료되었습니다."
-          closeAlert={() => {
-            setModified(false);
-            setSuccessModifyRoom(false);
-          }}
-        />
-      )}
       {successParticipated && (
         <Alert
-          openModal={successModifyRoom}
+          openModal={successParticipated}
           closeButton="확인"
           overz="z-[100]"
           text="방 참여가 완료되었습니다."
