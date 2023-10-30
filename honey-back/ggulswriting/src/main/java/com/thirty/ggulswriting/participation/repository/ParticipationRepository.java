@@ -20,7 +20,7 @@ public interface ParticipationRepository extends JpaRepository<Participation, In
 
 	List<Participation> findAllByMemberAndIsOutIsFalse(Member member);
 
-	@Query("SELECT p FROM Participation p WHERE p.isOut = false AND p.member <> :excludeMemberId")
+	@Query("SELECT p FROM Participation p WHERE p.isOut = false AND p.member <> :excludeMember")
 	Optional<Participation> findTopOneByIsOutIsFalseAndExcludeMember(@Param("excludeMember") Member excludeMember);
 
 	int countAllByRoomAndIsOutIsFalse(Room room);
