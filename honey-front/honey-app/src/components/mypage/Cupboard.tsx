@@ -7,7 +7,7 @@ import { potGroupSelector } from "@recoil/selector";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { leftArrow, rightArrow } from "@assets/images";
-import { selectedRoomState } from "@recoil/atom";
+import { mypageSelectedRoom } from "@recoil/atom";
 import axios from "axios";
 
 function Cupboard() {
@@ -19,7 +19,7 @@ function Cupboard() {
   const [selectedPot, setSelectedPot] = useState<PotType | null>(null);
   const totalPotCnt: number = totalPotList.length;
   const maxCupboardIndex: number = potList.length - 1;
-  const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
+  const [selectedRoom] = useRecoilState<RoomType>(mypageSelectedRoom);
   const token = sessionStorage.getItem("Authorization");
   const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);

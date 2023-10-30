@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useRouter from "@hooks/useRouter";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
 import { Alert } from "@components/common/modal";
 import participateState from "@recoil/atom/participateState";
@@ -21,8 +21,6 @@ function ParticipateRoom() {
   const [alertText, setAlertText] = useState<string>("");
   const [isAlready, setIsAlready] = useState<boolean>(false);
   const [, setParticipated] = useRecoilState<boolean>(participateState);
-
-  useResetRecoilState(selectedRoomState);
 
   function enterRoom() {
     const roomParticipateReqDto = {

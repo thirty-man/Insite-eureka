@@ -3,7 +3,6 @@ import { ImageButton, TextButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
-// import { selectedRoomState } from "@recoil/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
@@ -11,12 +10,13 @@ import { getMyRoomlistSelector } from "@recoil/selector";
 import axios from "axios";
 import logoutState from "@recoil/atom/logoutState";
 import { Alert } from "@components/common/modal";
+import { mypageSelectedRoom } from "@recoil/atom";
 
 function MypageTitle() {
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const [title, setTitle] = useState<string>("방이 없습니다.");
-  // const [selectedRoom, setSelectedRoom] =
-  // useRecoilState<RoomType>(selectedRoomState);
+  const [selectedRoom, setSelectedRoom] =
+    useRecoilState<RoomType>(mypageSelectedRoom);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
@@ -24,24 +24,23 @@ function MypageTitle() {
   const [, setLoggedOut] = useRecoilState<boolean>(logoutState);
   const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
   const { VITE_API_URL } = import.meta.env;
-  const [nowRoom, setNowRoom] = useState<RoomType>();
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
-    setNowRoom(room);
+    setSelectedRoom(room);
   }
 
   useEffect(() => {
     // selectedRoom이 변경될 때 title 업데이트
-    if (nowRoom !== undefined) {
-      setTitle(nowRoom.roomTitle);
+    if (selectedRoom !== undefined) {
+      setTitle(selectedRoom.roomTitle);
     } else if (roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
-      setNowRoom(roomList[0]);
+      setSelectedRoom(roomList[0]);
     } else {
       setTitle("방을 선택하세요");
     }
-  }, [nowRoom, roomList, setNowRoom, setTitle]);
+  }, [selectedRoom, roomList, setSelectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -75,20 +74,20 @@ function MypageTitle() {
   function beforePage(): void {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setNowRoom(roomList[currentIndex - 1]);
+      setSelectedRoom(roomList[currentIndex - 1]);
     } else {
       setCurrentIndex(roomList.length - 1);
-      setNowRoom(roomList[roomList.length - 1]);
+      setSelectedRoom(roomList[roomList.length - 1]);
     }
   }
 
   function nextPage(): void {
     if (currentIndex < roomList.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setNowRoom(roomList[currentIndex + 1]);
+      setSelectedRoom(roomList[currentIndex + 1]);
     } else {
       setCurrentIndex(0);
-      setNowRoom(roomList[0]);
+      setSelectedRoom(roomList[0]);
     }
   }
 

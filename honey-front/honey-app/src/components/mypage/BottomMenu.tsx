@@ -4,8 +4,8 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import useRouter from "@hooks/useRouter";
 import {
   memberListState,
+  mypageSelectedRoom,
   selectedMemberState,
-  selectedRoomState,
 } from "@recoil/atom";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -18,7 +18,7 @@ function ButtomMenu() {
   const sendPotImg = sendPot;
   const buttonStyle: string =
     "flex rounded-xl sm:h-[17%] h-[15%] m-2 p-3 sm:w-[50%] w-[60%] sm:text-[20px] text-[13px] justify-center items-center";
-  const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
+  const [selectedRoom] = useRecoilState<RoomType>(mypageSelectedRoom);
   const [memberOpen, setMemberOpen] = useState<boolean>(false);
   const [memberList] = useRecoilState<UserType[]>(memberListState);
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
