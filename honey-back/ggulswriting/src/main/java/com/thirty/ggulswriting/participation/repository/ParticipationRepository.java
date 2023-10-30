@@ -3,6 +3,7 @@ package com.thirty.ggulswriting.participation.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.thirty.ggulswriting.member.entity.Member;
@@ -20,8 +21,10 @@ public interface ParticipationRepository extends JpaRepository<Participation, In
 
 	List<Participation> findAllByMemberAndIsOutIsFalse(Member member);
 
-	@Query("SELECT p FROM Participation p WHERE p.isOut = false AND p.member <> :excludeMember")
-	Optional<Participation> findTopOneByIsOutIsFalseAndExcludeMember(@Param("excludeMember") Member excludeMember);
+//	@Query("SELECT p FROM Participation p WHERE p.isOut = false AND p.member <> :excludeMember")
+	Optional<Participation> findFirstByIsOutIsFalseAndMemberNot(
+//			@Param("excludeMember")
+			Member member, Sort sort);
 
 	int countAllByRoomAndIsOutIsFalse(Room room);
 }
