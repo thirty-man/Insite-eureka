@@ -41,7 +41,7 @@ function MypageTitle() {
     } else {
       setTitle("방을 선택하세요");
     }
-  }, [nowRoom, roomList, setNowRoom]);
+  }, [nowRoom, roomList, setNowRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
