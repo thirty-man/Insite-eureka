@@ -5,6 +5,7 @@ import com.thirty.insitememberservice.application.dto.request.ApplicationCreateR
 import com.thirty.insitememberservice.application.dto.request.ApplicationDeleteReqDto;
 import com.thirty.insitememberservice.application.dto.request.ApplicationModifyReqDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
+import com.thirty.insitememberservice.application.dto.response.ApplicationResDto;
 import com.thirty.insitememberservice.application.service.ApplicationService;
 import com.thirty.insitememberservice.application.service.ApplicationServiceImpl;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
@@ -23,6 +24,17 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
+    @GetMapping("/{applicationId}/list")
+    public ResponseEntity<ApplicationResDto> getApplicationList(
+            @AuthenticationPrincipal LoginUser loginUser
+    ){
+        ApplicationResDto applicationResDto = applicationService.getMyApplicationList(loginUser.getMember().getMemberId());
+        return new ResponseEntity<>(applicationResDto,HttpStatus.OK);
+    }
+
+//    @GetMapping("/{applicationId}/token") 토큰 조회 만들어야 함
+    
+    
     @PostMapping("/regist")
     public ResponseEntity<ApplicationCreateResDto> regist(@Valid @RequestBody ApplicationCreateReqDto applicationCreateReqDto,
                                                           @AuthenticationPrincipal LoginUser loginUser){
