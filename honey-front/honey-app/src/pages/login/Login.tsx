@@ -69,10 +69,18 @@ function Login() {
           overlay
           openModal={helpOpen}
         >
-          <div className="w-[100%] h-[100%] overflow-y-auto z-[20] rounded-[30px] bg-cg-7 text-white text-[20px] px-[15px] py-[15px]">
-            <span>사용하는 </span>
-            <span className="text-cg-1 text-[24px]">방법</span>
-            <span>은 다음과 같습니다.</span>
+          <div className="w-[100%] h-[100%] overflow-y-auto z-[20] rounded-[30px] bg-cg-7 text-white sm:text-[24px] text-[15px] px-[15px] py-[15px]">
+            <span>친구들을 방에 초대해서 서로</span>
+            <br />
+            <span className="text-cg-1 sm:text-[26px] text-[20px]">꿀단지</span>
+            <span>를 써보세요!</span>
+            <br />
+            <span className="text-cg-1 sm:text-[26px] text-[20px]">꿀단지</span>
+            <span>는</span>
+            <span className="text-cg-1 sm:text-[26px] text-[20px]">개봉일</span>
+            <span>이 지나야</span>
+            <br />
+            <span>확인할 수 있어요!</span>
           </div>
           <Modal
             className="fixed w-[120px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[120] bg-transparent flex items-center justify-center"
