@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CustomResponseUtil customResponseUtil) {
 		super(authenticationManager);
 		this.customResponseUtil = customResponseUtil;
-		setFilterProcessesUrl("/member/login"); //주소 변경 기본은  /login
+		setFilterProcessesUrl("/members/login"); //주소 변경 기본은  /login
 		this.authenticationManager = authenticationManager;
 	}
 

@@ -1,0 +1,32 @@
+package com.thirty.insitememberservice.application.controller;
+
+
+import com.thirty.insitememberservice.application.dto.request.ApplicationCreateReqDto;
+import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
+import com.thirty.insitememberservice.application.service.ApplicationService;
+import com.thirty.insitememberservice.application.service.ApplicationServiceImpl;
+import com.thirty.insitememberservice.global.config.auth.LoginUser;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/application")
+public class ApplicationController {
+
+    private final ApplicationService applicationService;
+
+    @PostMapping("/regist")
+    public ResponseEntity<ApplicationCreateResDto> regist(@Valid @RequestBody ApplicationCreateReqDto applicationCreateReqDto,
+                                                          @AuthenticationPrincipal LoginUser loginUser){
+        ApplicationCreateResDto applicationCreateResDto = applicationService.regist(applicationCreateReqDto,loginUser.getMember().getMemberId());
+        return new ResponseEntity<>(applicationCreateResDto, HttpStatus.OK);
+    }
+
+
+}
