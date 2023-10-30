@@ -25,7 +25,6 @@ function ButtomMenu() {
   const token = sessionStorage.getItem("Authorization");
 
   function showMemberList(): void {
-    console.log(selectedRoom.id);
     setMemberOpen(true);
   }
 
@@ -35,7 +34,6 @@ function ButtomMenu() {
 
   function roomPaste(): void {
     const link = `http://localhost:3000/room/participate/${selectedRoom.id}`;
-    console.log(link);
     navigator.clipboard.writeText(link);
     alert("링크가 클립보드에 복사되었습니다.");
   }
@@ -45,8 +43,6 @@ function ButtomMenu() {
       "Content-Type": "application/json",
       headers: { Authorization: token },
     };
-
-    console.log("delete 선택 방: ", selectedRoom.id);
 
     axios
       .patch(
@@ -61,14 +57,13 @@ function ButtomMenu() {
         if (error.response.data.errorCode === "002") {
           alert("참가되어있지 않은 방입니다.");
         }
-        console.error("Error Delete:", error.response.data.errorCode);
+        // console.error("Error Delete:", error.response.data.errorCode);
       });
 
     routeTo("/");
   }
 
   function sendMessage(member: UserType) {
-    console.log("BottomMenu/선택된 멤버는? : ", member.name);
     setSelectedMember(member);
     routeTo("/send");
   }

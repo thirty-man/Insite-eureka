@@ -17,11 +17,8 @@ function Login() {
     axios
       .post("http://localhost:8080/api/v1/members/login", { code })
       .then((response) => {
-        console.log(response);
         const authToken = response.headers.authorization;
         const refreshToken = response.headers.refreshtoken;
-        console.log("헤더 auth", authToken);
-        console.log("헤더 ref", refreshToken);
 
         // const refreshToken = response.headers.authorization;
         if (authToken) {
@@ -29,16 +26,15 @@ function Login() {
           sessionStorage.setItem("RefreshToken", refreshToken);
         }
         routeTo("/");
-      })
-      .catch((error) => {
-        console.log("Error:", error);
       });
+    // .catch((error) => {
+    //   console.log("Error:", error);
+    // });
   };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const code = params.get("code");
-    console.log(code);
 
     // If code exists, authenticate the user
     if (code) {
