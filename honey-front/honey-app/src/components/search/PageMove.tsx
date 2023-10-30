@@ -181,7 +181,9 @@ function PageMove() {
       setAlertModal(true);
       // alert("0이상의 수를 입력해주세요");
     } else if (num === pageInfo.currentPage + 1) {
-      alert("현재 페이지입니다.");
+      setAlertText("현재 페이지입니다.");
+      setAlertModal(true);
+      // alert("현재 페이지입니다.");
     } else {
       axios
         .get(
