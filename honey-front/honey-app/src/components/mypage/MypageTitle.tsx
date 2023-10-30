@@ -30,6 +30,8 @@ function MypageTitle() {
     setSelectedRoom(room);
   }
 
+  console.log("오자마자 선택된 방 확인: ", selectedRoom);
+
   useEffect(() => {
     // selectedRoom이 변경될 때 title 업데이트
     // if (selectedRoom !== undefined) {
@@ -38,6 +40,8 @@ function MypageTitle() {
     //   setTitle(roomList[0].roomTitle);
     //   setSelectedRoom(roomList[0]);
     if (selectedRoom !== undefined && roomList.length > 0) {
+      console.log("useEffect 선택된 방 확인: ", selectedRoom);
+      console.log("roomList 반환값", roomList);
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
     } else {
