@@ -8,7 +8,7 @@ import {
 } from "@recoil/atom";
 import axios from "axios";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
@@ -16,6 +16,8 @@ function MyPage() {
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
   const { VITE_API_URL } = import.meta.env;
+
+  useResetRecoilState(selectedRoomState);
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
