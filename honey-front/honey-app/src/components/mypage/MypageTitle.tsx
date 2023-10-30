@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ImageButton } from "@components/common/button";
+import { ImageButton, TextButton } from "@components/common/button";
 import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
@@ -8,20 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
 import { getMyRoomlistSelector } from "@recoil/selector";
+import axios from "axios";
 
 function MypageTitle() {
-  // const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
-  // const [selectedNum, setSelectedNum] = useRecoilState<number>(roomNumState);
   const [title, setTitle] = useState<string>("방이 없습니다.");
-
   const [selectedRoom, setSelectedRoom] =
     useRecoilState<RoomType>(selectedRoomState);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
-
-  // console.log("마이페이지타이틀 : ", selectedRoom);
+  const token = sessionStorage.getItem("Authorization");
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
@@ -29,12 +26,9 @@ function MypageTitle() {
   }
 
   useEffect(() => {
-    console.log("Selected Room:", selectedRoom);
     // selectedRoom이 변경될 때 title 업데이트
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
-
-      console.log("Selected Room Title:", selectedRoom.roomTitle);
     } else if (roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
@@ -89,13 +83,29 @@ function MypageTitle() {
     navi(-1);
   }
 
+  function logout(): void {
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    axios
+      .post(`http://localhost:8080/api/v1/members/logout`, null, config)
+      .then(() => {
+        alert("로그아웃 됐습니다.");
+        sessionStorage.clear();
+        navi("/login");
+      });
+  }
+
   return (
     <>
       <div className="flex justify-center items-center w-full">
         <ImageButton
           image={leftArrow}
           alt="뒤로가기"
-          className="flex w-[10%] justify-center items-center"
+          className="flex w-[15%] justify-center items-center"
           onClick={() => goToBack()}
         />
         <div className="flex flex-col justify-center items-center w-full pr-10 ">
@@ -122,14 +132,6 @@ function MypageTitle() {
               ) : (
                 <Dropdown
                   className=""
-                  // items={roomList.map((room) => ({
-                  //   ...room,
-                  //   roomTitle:
-                  //     room.title.length > 10
-                  //       ? `${room.title.slice(0, 10)}...`
-                  //       : room.title,
-                  //   roomId: room.id,
-                  // }))}
                   items={roomList}
                   onClick={(room) => goToRoom(room)}
                 />
@@ -137,6 +139,12 @@ function MypageTitle() {
             </div>
           )}
         </div>
+        <TextButton
+          text="로그아웃"
+          color="2"
+          className="w-[15%] mr-2 sm:text-[20px] text-[15px]"
+          onClick={() => logout()}
+        />
       </div>
       <div className="flex justify-center items-center">
         <button

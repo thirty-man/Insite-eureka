@@ -32,18 +32,15 @@ function MyPage() {
       .then((response) => {
         const { data } = response;
         const getRoomList = data.roomDtoList;
-        console.log("겟 룸: ", getRoomList);
         // Recoil 상태 업데이트
         if (getRoomList.length > 0) {
           setRoomList(() => [...data.roomDtoList]);
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching room list:", error);
       });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
   }, [setRoomList, token]);
-
-  console.log("마이페이지 홈 - 선택된 방 : ", selectedRoom);
 
   useEffect(() => {
     if (selectedRoom) {
@@ -60,29 +57,14 @@ function MyPage() {
         )
         .then((response) => {
           const { data } = response;
-          console.log("멤버 리스트: ", data.memberDtoList);
           const getMemberList = data.memberDtoList;
           setMemberList(getMemberList);
-        })
-        .catch((error) => {
-          console.error("Error fetching room list:", error);
         });
+      // .catch((error) => {
+      //   console.error("Error fetching room list:", error);
+      // });
     }
   }, [selectedRoom, token, setMemberList]);
-
-  // useEffect(() => {
-  //   if (roomNum !== undefined) {
-  //     console.log("선택된 방: ", selectedRoom);
-  //     if (roomNum >= 0 && roomNum < roomList.length) {
-  //       setSelectedRoom(roomList[roomNum]);
-  //     } else if (roomNum >= roomList.length) {
-  //       setRoomNum(0);
-  //     } else if (roomNum < 0) {
-  //       setRoomNum(roomList.length - 1);
-  //     }
-  //   }
-  //   console.log("roomNum: ", roomNum);
-  // }, [roomNum, roomList, setSelectedRoom, selectedRoom, setRoomNum]);
 
   return (
     <>
