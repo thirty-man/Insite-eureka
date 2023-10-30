@@ -11,6 +11,7 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 function CreateRoom() {
   const { routeTo } = useRouter();
+  const { VITE_API_URL } = import.meta.env;
   const [roomName, setRoomName] = useState<string>("");
   const [today, setToday] = useState<Date>(new Date());
   const [releaseDate, setReleaseDate] = useState<string>("날짜 설정");
@@ -144,7 +145,7 @@ function CreateRoom() {
       };
 
       const response = await axios.post(
-        `http://localhost:8080/api/v1/rooms/create`,
+        `${VITE_API_URL}/api/v1/rooms/create`,
         postData,
         config,
       );

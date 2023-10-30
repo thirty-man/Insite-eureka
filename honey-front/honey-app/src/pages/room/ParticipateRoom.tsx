@@ -19,6 +19,7 @@ function ParticipateRoom() {
   const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
+  const [isAlready, setIsAlready] = useState<boolean>(false);
   const [, setParticipated] = useRecoilState<boolean>(participateState);
 
   useResetRecoilState(selectedRoomState);
@@ -50,6 +51,7 @@ function ParticipateRoom() {
       .catch((error) => {
         // console.log(error.response.data.errorCode);
         if (error.response.data.errorCode === "001") {
+          setIsAlready(true);
           setAlertText("이미 참여 중인 방입니다.");
           setAlertModal(true);
           // alert("이미 참가중인 방입니다.");
@@ -155,7 +157,13 @@ function ParticipateRoom() {
             closeButton="확인"
             overz="z-[200]"
             text={alertText}
-            closeAlert={() => setAlertModal(false)}
+            closeAlert={() => {
+              setAlertModal(false);
+              if (isAlready) {
+                setIsAlready(false);
+                routeTo("/");
+              }
+            }}
           />
         )}
       </>
