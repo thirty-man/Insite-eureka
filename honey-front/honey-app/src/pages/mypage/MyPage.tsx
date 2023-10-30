@@ -67,13 +67,11 @@ function MyPage() {
   }, [selectedRoom, token, VITE_API_URL, setMemberList]);
 
   return (
-    selectedRoom && (
-      <>
-        <MypageTitle />
-        <Cupboard />
-        <ButtomMenu />
-      </>
-    )
+    <>
+      <MypageTitle />
+      <Cupboard />
+      <ButtomMenu />
+    </>
   );
 }
 
