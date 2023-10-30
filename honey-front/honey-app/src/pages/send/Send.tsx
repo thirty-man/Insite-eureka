@@ -118,6 +118,7 @@ function Send() {
         <Modal
           className="fixed w-[360px] h-[360px] bottom-[50%] left-[50%] rounded-[8px] bg-[#BAB2B2] -translate-x-[180px] translate-y-[120px] z-[150]"
           overlay
+          overz="z-[100]"
           openModal={openPotModal}
         >
           <div className="w-full h-full flex flex-col items-center justify-evenly">

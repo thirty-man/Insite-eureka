@@ -1,4 +1,4 @@
-import { Modal } from "@components/common/modal";
+import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";
@@ -20,6 +20,9 @@ function CreateRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
+
+  const [alertModal, setAlertModal] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>("");
 
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,
@@ -94,7 +97,9 @@ function CreateRoom() {
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     if (compareDate(value)) {
-      alert("종료일은 오늘 이후의 날짜만 선택할 수 있습니다.");
+      setAlertText("종료일은 오늘 이후의 날짜만 선택할 수 있습니다.");
+      setAlertModal(true);
+      // alert("종료일은 오늘 이후의 날짜만 선택할 수 있습니다."); alert 0
     } else {
       const eventTarget = event.target as HTMLElement;
       const aria = eventTarget.getAttribute("aria-label");
@@ -170,14 +175,20 @@ function CreateRoom() {
     const newRoomName = roomName.replace(/^\s+|\s+$|\n/g, "");
     setRoomName(newRoomName);
     if (newRoomName.trim() === "") {
-      alert("방제목을 입력하세요.");
+      setAlertText("방제목을 입력하세요.");
+      setAlertModal(true);
+      // alert("방제목을 입력하세요."); alert1
       return;
     }
     if (releaseDate === null || releaseDate === "날짜 설정") {
-      alert("날짜를 설정해주세요.");
+      setAlertText("날짜를 설정해주세요.");
+      setAlertModal(true);
+      // alert("날짜를 설정해주세요."); alert 2
     }
     if (newRoomName.trim().length >= 50) {
-      alert("방제목은 50자 이하로 작성되어야합니다.");
+      setAlertText("방제목은 50자 이하로 작성되어야합니다.");
+      setAlertModal(true);
+      // alert("방제목은 50자 이하로 작성되어야합니다."); alert 3
       return;
     }
 
@@ -188,12 +199,18 @@ function CreateRoom() {
         setRoomPassword(password);
       } else {
         if (password === null || password === "") {
-          alert("비밀번호를 설정해주세요.");
+          setAlertText("비밀번호를 설정해주세요.");
+          setAlertModal(true);
+          // alert("비밀번호를 설정해주세요."); alert 4
           return;
         }
-        alert(
+        setAlertText(
           "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         );
+        setAlertModal(true);
+        // alert(
+        //   "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
+        // ); alert 5
         return;
       }
     }
@@ -301,6 +318,7 @@ function CreateRoom() {
         <Modal
           className="fixed w-[320px] h-[320px] bottom-[50%] left-[50%] -translate-x-[160px] translate-y-[100px] z-[150]"
           overlay
+          overz="z-[110]"
           openModal={openCalendar}
         >
           <CustomCalendar onChange={handleDateChange} value={today} />
@@ -321,6 +339,15 @@ function CreateRoom() {
             </button>
           </div>
         </Modal>
+      )}
+      {alertModal && (
+        <Alert
+          openModal={alertModal}
+          closeButton="확인"
+          overz="z-[200]"
+          text={alertText}
+          closeAlert={() => setAlertModal(false)}
+        />
       )}
     </>
   );

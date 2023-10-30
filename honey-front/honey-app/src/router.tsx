@@ -26,7 +26,11 @@ const routePaths: RouteObject[] = [
       {
         id: "login",
         path: "/login",
-        element: <Login />,
+        element: (
+          <ProtectedRoute>
+            <Login />
+          </ProtectedRoute>
+        ),
       },
       {
         id: "mypage",

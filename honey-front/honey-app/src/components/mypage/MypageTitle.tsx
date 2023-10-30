@@ -9,16 +9,20 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { leftArrow } from "@assets/images";
 import { getMyRoomlistSelector } from "@recoil/selector";
 import axios from "axios";
+import logoutState from "@recoil/atom/logoutState";
+import { Alert } from "@components/common/modal";
 
 function MypageTitle() {
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const [title, setTitle] = useState<string>("방이 없습니다.");
   const [selectedRoom, setSelectedRoom] =
     useRecoilState<RoomType>(selectedRoomState);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const navi = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 선택된 방의 인덱스
   const token = sessionStorage.getItem("Authorization");
+  const [, setLoggedOut] = useRecoilState<boolean>(logoutState);
+  const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
 
   function goToRoom(room: RoomType) {
     // console.log(room.id);
@@ -59,6 +63,13 @@ function MypageTitle() {
     };
   }, []);
 
+  const handleDropdown = () => {
+    if (!isDropdownOpen && roomList.length === 0) {
+      setAlertNoRoom(true);
+    }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   function beforePage(): void {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
@@ -93,7 +104,8 @@ function MypageTitle() {
     axios
       .post(`http://localhost:8080/api/v1/members/logout`, null, config)
       .then(() => {
-        alert("로그아웃 됐습니다.");
+        // alert("로그아웃 됐습니다.");
+        setLoggedOut(true);
         sessionStorage.clear();
         navi("/login");
       });
@@ -108,12 +120,12 @@ function MypageTitle() {
           className="flex w-[15%] justify-center items-center"
           onClick={() => goToBack()}
         />
-        <div className="flex flex-col justify-center items-center w-full pr-10 ">
+        <div className="flex flex-col justify-center items-center w-full pr-10 relative">
           <button
             ref={buttonRef}
             type="button"
             className="w-[70%] mt-5 mb-2 relative"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onClick={handleDropdown}
           >
             <TitleText
               text={title}
@@ -127,13 +139,14 @@ function MypageTitle() {
               onClick={(e) => e.stopPropagation()}
               aria-hidden
             >
-              {roomList.length === 0 ? (
-                <div>방이 없습니다</div>
-              ) : (
+              {roomList.length === 0 ? null : (
                 <Dropdown
                   className=""
                   items={roomList}
-                  onClick={(room) => goToRoom(room)}
+                  onClick={(room) => {
+                    goToRoom(room);
+                    setIsDropdownOpen(false);
+                  }}
                 />
               )}
             </div>
@@ -166,6 +179,15 @@ function MypageTitle() {
           다음
         </button>
       </div>
+      {alertNoRoom && (
+        <Alert
+          openModal={alertNoRoom}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방이 없습니다."
+          closeAlert={() => setAlertNoRoom(false)}
+        />
+      )}
     </>
   );
 }

@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { pageButton1, pageButton2 } from "@assets/images";
 import { PageType, RoomType } from "@customtype/dataTypes";
 import axios from "axios";
+import { Alert } from "@components/common/modal";
 
 type PageButtonType = {
   id: number;
@@ -33,6 +34,8 @@ function PageMove() {
       Authorization: token,
     },
   };
+  const [alertModal, setAlertModal] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>("");
 
   const goToFirst = () => {
     if (pageInfo.currentPage > 0) {
@@ -61,7 +64,9 @@ function PageMove() {
           console.error("PageMove : goToFirst Err:", error);
         });
     } else {
-      alert("첫 페이지입니다.");
+      setAlertText("첫 페이지입니다.");
+      setAlertModal(true);
+      // alert("첫 페이지입니다.");
     }
   };
 
@@ -96,7 +101,9 @@ function PageMove() {
           console.error("PageMove : goToBefore Err:", error);
         });
     } else {
-      alert("첫 페이지입니다.");
+      setAlertText("첫 페이지입니다.");
+      setAlertModal(true);
+      // alert("첫 페이지입니다.");
     }
   };
 
@@ -131,7 +138,9 @@ function PageMove() {
           console.error("PageMove : goToBefore Err:", error);
         });
     } else {
-      alert("마지막 페이지입니다.");
+      setAlertText("마지막 페이지입니다.");
+      setAlertModal(true);
+      // alert("마지막 페이지입니다.");
     }
   };
 
@@ -165,13 +174,17 @@ function PageMove() {
           console.error("PageMove : goToLast Err:", error);
         });
     } else {
-      alert("마지막 페이지입니다.");
+      setAlertText("마지막 페이지입니다.");
+      setAlertModal(true);
+      // alert("마지막 페이지입니다.");
     }
   };
 
   const goToTargetPage = () => {
     if (num === 0) {
-      alert("0이상의 수를 입력해주세요");
+      setAlertText("0이상의 수를 입력해주세요.");
+      setAlertModal(true);
+      // alert("0이상의 수를 입력해주세요");
     } else if (num === pageInfo.currentPage + 1) {
       console.log("현재 페이지입니다.");
     } else {
@@ -211,7 +224,9 @@ function PageMove() {
       const parsedNum = parseInt(input, 10);
 
       if (parsedNum > pageInfo.totalPages) {
-        alert(`입력한 숫자는 최대 페이지 수를 초과합니다.`);
+        setAlertText("입력한 숫자는 최대 페이지 수를 초과합니다.");
+        setAlertModal(true);
+        // alert(`입력한 숫자는 최대 페이지 수를 초과합니다.`);
       } else {
         setStrNum(input);
         setNum(parsedNum);
@@ -219,7 +234,9 @@ function PageMove() {
     } else {
       setStrNum("");
       setNum(0);
-      alert("숫자를 입력하세요.");
+      setAlertText("숫자를 입력하세요.");
+      setAlertModal(true);
+      // alert("숫자를 입력하세요.");
     }
   };
 
@@ -239,45 +256,56 @@ function PageMove() {
   ];
 
   return (
-    <div className="flex justify-center">
-      {pageButtons.map((button) => (
-        <div key={button.id} className="flex w-full justify-around">
-          {button.id === 3 ? (
-            <div className="flex justify-center items-center">
-              <TextInput
-                value={strNum}
-                holder=""
-                readonly={false}
-                className="w-[60%] bg-cg-2 h-[30px] sm:text-[15px] text-[10px] overflow-x-auto"
-                onChange={handleNum}
-                onKeyDown={(e) => e.key === "Enter" && goToTargetPage()}
-              />
-              <div className="w-[80%] sm:text-[15px] text-[10px]">
-                {pageInfo.currentPage + 1} / {pageInfo.totalPages}
+    <>
+      <div className="flex justify-center">
+        {pageButtons.map((button) => (
+          <div key={button.id} className="flex w-full justify-around">
+            {button.id === 3 ? (
+              <div className="flex justify-center items-center">
+                <TextInput
+                  value={strNum}
+                  holder=""
+                  readonly={false}
+                  className="w-[60%] bg-cg-2 h-[30px] sm:text-[15px] text-[10px] overflow-x-auto"
+                  onChange={handleNum}
+                  onKeyDown={(e) => e.key === "Enter" && goToTargetPage()}
+                />
+                <div className="w-[80%] sm:text-[15px] text-[10px]">
+                  {pageInfo.currentPage + 1} / {pageInfo.totalPages}
+                </div>
+                <TextButton
+                  text="이동"
+                  color="3"
+                  className="rounded-xl sm:text-[15px] text-[10px] w-[60%] h-[30px] m-1"
+                  onClick={() => goToTargetPage()}
+                />
               </div>
-              <TextButton
-                text="이동"
-                color="3"
-                className="rounded-xl sm:text-[15px] text-[10px] w-[60%] h-[30px] m-1"
-                onClick={() => goToTargetPage()}
+            ) : (
+              <ImageButton
+                key={button.id}
+                image={button.image}
+                alt={button.alt}
+                className={
+                  button.id === 4 || button.id === 5
+                    ? "w-[30%] rotate-180"
+                    : "w-[30%]"
+                }
+                onClick={button.onClick}
               />
-            </div>
-          ) : (
-            <ImageButton
-              key={button.id}
-              image={button.image}
-              alt={button.alt}
-              className={
-                button.id === 4 || button.id === 5
-                  ? "w-[30%] rotate-180"
-                  : "w-[30%]"
-              }
-              onClick={button.onClick}
-            />
-          )}
-        </div>
-      ))}
-    </div>
+            )}
+          </div>
+        ))}
+      </div>
+      {alertModal && (
+        <Alert
+          openModal={alertModal}
+          closeButton="확인"
+          overz="z-[100]"
+          text={alertText}
+          closeAlert={() => setAlertModal(false)}
+        />
+      )}
+    </>
   );
 }
 

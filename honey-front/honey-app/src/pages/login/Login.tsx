@@ -1,10 +1,12 @@
 import HelpIcon from "@assets/icons";
 import { KakaoLoginButton, PoohHelpModal, PoohLogin } from "@assets/images";
-import { Modal } from "@components/common/modal";
+import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useRouter from "@hooks/useRouter";
 import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { logoutState } from "@recoil/atom";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
@@ -12,6 +14,8 @@ function Login() {
   const VITE_KAKAO_REDIRECT_URI = "http://localhost:3000/login";
   const { routeTo } = useRouter();
   const location = useLocation();
+  const logout = useRecoilValue(logoutState);
+  const [logoutModal, setLogoutModal] = useState<boolean>(logout);
 
   const authenticateUser = (code: string) => {
     axios
@@ -63,24 +67,35 @@ function Login() {
         <Modal
           className="fixed w-[340px] h-[350px] bottom-[50%] left-[50%] -translate-x-[170px] translate-y-[140px] z-[120] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
           overlay
+          overz="z-[100]"
           openModal={helpOpen}
         >
-          <div className="w-[100%] h-[100%] overflow-y-auto z-[20] rounded-[30px] bg-cg-7 text-white sm:text-[24px] text-[15px] px-[15px] py-[15px]">
-            <span>친구들을 방에 초대해서 서로</span>
-            <br />
-            <span className="text-cg-1 sm:text-[26px] text-[20px]">꿀단지</span>
-            <span>를 써보세요!</span>
-            <br />
-            <span className="text-cg-1 sm:text-[26px] text-[20px]">꿀단지</span>
-            <span>는</span>
-            <span className="text-cg-1 sm:text-[26px] text-[20px]">개봉일</span>
-            <span>이 지나야</span>
-            <br />
-            <span>확인할 수 있어요!</span>
+          <div className="w-[100%] h-[100%] overflow-y-auto z-[20] rounded-[30px] bg-cg-7 text-white sm:text-[24px] text-[15px] px-[15px] py-[15px] flex items-center justify-center">
+            <div className="text-[20px]">
+              <span>친구들을 방에 초대해서 서로</span>
+              <br />
+              <span className="text-cg-1 sm:text-[26px] text-[26px]">
+                꿀단지
+              </span>
+              <span>를 써보세요!</span>
+              <br />
+              <br />
+              <span className="text-cg-1 sm:text-[26px] text-[26px]">
+                꿀단지
+              </span>
+              <span>는</span>
+              <span className="text-cg-1 sm:text-[26px] text-[26px]">
+                개봉일
+              </span>
+              <span>이 지나야</span>
+              <br />
+              <span>확인할 수 있어요!</span>
+            </div>
           </div>
           <Modal
             className="fixed w-[120px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[120] bg-transparent flex items-center justify-center"
             overlay={false}
+            overz=""
             openModal
           >
             <img
@@ -92,6 +107,7 @@ function Login() {
           <Modal
             className="fixed w-[100px] h-[35px] bottom-1/2 left-1/2 -translate-x-[50px] translate-y-[170px] z-[120] rounded-[60px] bg-cg-1 flex items-center justify-center"
             overlay={false}
+            overz=""
             openModal
           >
             <button
@@ -104,11 +120,12 @@ function Login() {
           </Modal>
         </Modal>
       )}
-      <h1 className="h-1/6">
-        <span className="text-cg-3">꿀</span>&apos;s Writing
-      </h1>
+      <div className="flex h-2/6 items-center justify-center text-[48px]">
+        <span className="text-cg-3">꿀</span>&apos;
+        <span>s Writing</span>
+      </div>
 
-      <div className="flex h-4/6 justify-center items-center">
+      <div className="flex h-3/6 justify-center items-center">
         <div className="flex flex-col h-full items-center justify-center">
           <img src={PoohLogin} alt="mainpooh" />
           <button type="button" onClick={handleLoginClick}>
@@ -116,6 +133,15 @@ function Login() {
           </button>
         </div>
       </div>
+      {logoutModal && (
+        <Alert
+          openModal={logoutModal}
+          closeButton="확인"
+          overz="z-[100]"
+          text="로그아웃 되었습니다."
+          closeAlert={() => setLogoutModal(false)}
+        />
+      )}
     </>
   );
 }

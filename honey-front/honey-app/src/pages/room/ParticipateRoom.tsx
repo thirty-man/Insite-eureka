@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useRouter from "@hooks/useRouter";
 import { useRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
+import { Alert } from "@components/common/modal";
 
 function ParticipateRoom() {
   const { roomId } = useParams();
@@ -14,6 +15,8 @@ function ParticipateRoom() {
   const [selectedRoom, setSelectedRoom] = useRecoilState(selectedRoomState);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [alertModal, setAlertModal] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>("");
 
   function enterRoom() {
     const roomParticipateReqDto = {
@@ -41,12 +44,16 @@ function ParticipateRoom() {
       .catch((error) => {
         console.log(error.response.data.errorCode);
         if (error.response.data.errorCode === "001") {
-          alert("이미 참가중인 방입니다.");
+          setAlertText("이미 참가중인 방입니다.");
+          setAlertModal(true);
+          // alert("이미 참가중인 방입니다.");
           return;
         }
 
         if (error.response.data.errorCode === "003") {
-          alert("비밀번호가 틀렸습니다.");
+          setAlertText("비밀번호가 틀렸습니다.");
+          setAlertModal(true);
+          // alert("비밀번호가 틀렸습니다.");
           return;
         }
         if (error.response.data.errorCode === "")
@@ -136,6 +143,15 @@ function ParticipateRoom() {
             닫기
           </button>
         </div>
+        {alertModal && (
+          <Alert
+            openModal={alertModal}
+            closeButton="확인"
+            overz="z-[200]"
+            text={alertText}
+            closeAlert={() => setAlertModal(false)}
+          />
+        )}
       </>
     )
   );

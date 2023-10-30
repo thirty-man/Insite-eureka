@@ -7,6 +7,7 @@ import selectedMemberState from "./selectedMemberState";
 import roomNumState from "./roomNumState";
 import selectedPageState from "./selectedPageState";
 import inputSearchState from "./inputSearchState";
+import logoutState from "./logoutState";
 
 export {
   loginUserState,
@@ -18,4 +19,5 @@ export {
   roomNumState,
   selectedPageState,
   inputSearchState,
+  logoutState,
 };

@@ -16,7 +16,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [navi, location, token]);
 
-  return isVerified ? <>{children}</> : null;
+  return isVerified ? children : null;
 }
 
 export default ProtectedRoute;

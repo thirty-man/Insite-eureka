@@ -1,5 +1,4 @@
 import { ImageButton } from "@components/common/button";
-import { TextInput } from "@components/common/input";
 import { searchImg } from "@assets/images";
 import { useRecoilState } from "recoil";
 import {
@@ -19,6 +18,7 @@ function SearchRoom() {
   const [selectedPage, setSelectedPage] =
     useRecoilState<PageType>(selectedPageState);
   const [beforeSearch, setBeforeSearch] = useState<string>("");
+  const [searchFocused, setSearchFocused] = useState<boolean>(false);
 
   useEffect(() => {
     const config = {
@@ -62,16 +62,29 @@ function SearchRoom() {
     setTitle(beforeSearch);
     setBeforeSearch("");
   };
+  const handleSearchFocus = () => {
+    setSearchFocused(true);
+  };
 
+  const handleSearchBlur = () => {
+    if (!title.trim()) {
+      setSearchFocused(false);
+    }
+  };
   return (
     <div className="flex w-full h-[70px] items-center justify-center relative z-[50] top-6 ">
       <div className="flex w-[70%] justify-end">
-        <TextInput
+        <input
           value={beforeSearch}
-          holder="방을 검색하세요"
-          readonly={false}
-          className="h-12 w-full m-5 p-1"
-          onChange={(e) => setBeforeSearch(e.target.value)}
+          placeholder={searchFocused ? "" : "방을 검색하세요"}
+          className="bg-cg-3 rounded-2xl h-12 w-full m-5 p-1"
+          onFocus={handleSearchFocus}
+          onBlur={handleSearchBlur}
+          onChange={(e) => {
+            setBeforeSearch(e.target.value);
+            handleSearchFocus();
+            handleSearchBlur();
+          }}
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
             e.key === "Enter" && searchRoom()
           }
