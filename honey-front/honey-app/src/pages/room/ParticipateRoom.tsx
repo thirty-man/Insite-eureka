@@ -18,9 +18,11 @@ function ParticipateRoom() {
 
   function enterRoom() {
     const roomParticipateReqDto = {
-      room_id: selectedRoom.id,
+      room_id: roomId,
       password: isOpen ? null : roomPassword,
     };
+
+    console.log(roomId);
 
     const config = {
       headers: {
