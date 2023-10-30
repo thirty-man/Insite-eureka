@@ -38,7 +38,7 @@ function ParticipateRoom() {
         config,
       )
       .then(() => {
-        setAlertText("방 참여 완료되었습니다.");
+        setAlertText("방 참여가 완료되었습니다.");
         setAlertModal(true);
         routeTo("/");
       })
