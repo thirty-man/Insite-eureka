@@ -39,9 +39,9 @@ function MypageTitle() {
     if (roomList.length > 0) {
       if (getIn) {
         setTitle(roomList[0].roomTitle);
+        setGetIn(false);
       } else {
         setTitle(selectedRoom.roomTitle);
-        setGetIn(false);
         setSelectedRoom(roomList[0]);
       }
     } else {
