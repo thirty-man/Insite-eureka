@@ -5,6 +5,7 @@ import useRouter from "@hooks/useRouter";
 import { useRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
 import { Alert } from "@components/common/modal";
+import participateState from "@recoil/atom/participateState";
 
 function ParticipateRoom() {
   const { roomId } = useParams();
@@ -18,7 +19,7 @@ function ParticipateRoom() {
   const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
-  const [participation, setParticipation] = useState<boolean>(false);
+  const [, setParticipated] = useRecoilState<boolean>(participateState);
 
   function enterRoom() {
     const roomParticipateReqDto = {
@@ -41,8 +42,8 @@ function ParticipateRoom() {
       .then(() => {
         // setAlertText("방 참여가 완료되었습니다.");
         // setCompleteParticipate(true);
-        setAlertText("방 참여가 완료되었습니다.");
-        setParticipation(true);
+        setParticipated(true);
+        routeTo("/");
       })
       .catch((error) => {
         // console.log(error.response.data.errorCode);
@@ -151,13 +152,7 @@ function ParticipateRoom() {
             closeButton="확인"
             overz="z-[200]"
             text={alertText}
-            closeAlert={() => {
-              setAlertModal(false);
-              if (participation) {
-                setParticipation(false);
-                routeTo("/");
-              }
-            }}
+            closeAlert={() => setAlertModal(false)}
           />
         )}
       </>

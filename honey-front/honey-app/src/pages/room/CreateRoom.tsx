@@ -4,7 +4,7 @@ import useRouter from "@hooks/useRouter";
 import CustomCalendar from "@components/common/calendar";
 import moment from "moment";
 import axios, { AxiosError } from "axios";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 
 type ValuePiece = Date | null;
@@ -20,27 +20,12 @@ function CreateRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
-  const { VITE_API_URL } = import.meta.env;
 
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
-
-  const successCreateRoomValue = useRecoilValue<boolean>(
+  const [, setSuccessCreateRoom] = useRecoilState<boolean>(
     successCreateRoomState,
   );
-
-  const setSuccessCreateRoomValue = useSetRecoilState<boolean>(
-    successCreateRoomState,
-  );
-  const [successCreateRoom, setSuccessCreateRoom] = useState<boolean>(
-    successCreateRoomValue,
-  );
-
-  useEffect(() => {
-    if (successCreateRoomValue) {
-      routeTo("/");
-    }
-  });
 
   useEffect(() => {
     setToday(new Date());
@@ -159,12 +144,13 @@ function CreateRoom() {
       };
 
       const response = await axios.post(
-        `${VITE_API_URL}/api/v1/rooms/create`,
+        `http://localhost:8080/api/v1/rooms/create`,
         postData,
         config,
       );
       console.log(response.data);
       setSuccessCreateRoom(true);
+      routeTo("/");
     } catch (error: unknown) {
       if ((error as AxiosError).response) {
         const axiosError = error as AxiosError;
@@ -352,18 +338,6 @@ function CreateRoom() {
             </button>
           </div>
         </Modal>
-      )}
-      {successCreateRoom && (
-        <Alert
-          openModal={successCreateRoom}
-          closeButton="확인"
-          overz="z-[200]"
-          text={alertText}
-          closeAlert={() => {
-            setSuccessCreateRoomValue(false);
-            routeTo("/");
-          }}
-        />
       )}
       {alertModal && (
         <Alert
