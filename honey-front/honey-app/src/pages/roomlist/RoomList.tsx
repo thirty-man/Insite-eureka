@@ -1,4 +1,5 @@
-import { Alert } from "@components/common/modal";
+import { useEffect } from "react";
+// import { Alert } from "@components/common/modal";
 import TitleText from "@components/common/textbox/TitleText";
 import {
   ButtomButton,
@@ -8,22 +9,23 @@ import {
 } from "@components/search/index";
 import { PageType, RoomType } from "@customtype/dataTypes";
 import { roomListState, selectedPageState } from "@recoil/atom";
-import successCreateRoomState from "@recoil/atom/successCreateRoomState";
+// import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 import axios from "axios";
-import { useEffect } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 function RoomList() {
   // 방 목록 가져오기
   const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
   const [, setSelectedPage] = useRecoilState<PageType>(selectedPageState);
   // const [title] = useRecoilState<string>(inputSearchState);
+
   const token = sessionStorage.getItem("Authorization");
 
-  const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
-  const setSuccessCreateRoom = useSetRecoilState<boolean>(
-    successCreateRoomState,
-  );
+  // const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
+  // const setSuccessCreateRoom = useSetRecoilState<boolean>(
+  //   successCreateRoomState,
+  // );
+
   const { VITE_API_URL } = import.meta.env;
 
   useEffect(() => {
@@ -65,7 +67,7 @@ function RoomList() {
         </div>
         <ButtomButton />
       </div>
-      {successCreateRoom && (
+      {/* {successCreateRoom && (
         <Alert
           openModal={successCreateRoom}
           closeButton="확인"
@@ -73,7 +75,7 @@ function RoomList() {
           text="방 생성이 완료되었습니다."
           closeAlert={() => setSuccessCreateRoom(false)}
         />
-      )}
+      )} */}
     </>
   );
 }

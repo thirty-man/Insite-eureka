@@ -1,5 +1,5 @@
 import { ImageButton } from "@components/common/button";
-import { PotModal } from "@components/common/modal";
+import { Alert, PotModal } from "@components/common/modal";
 import Pot from "@components/pot";
 import { PotType, RoomType } from "@customtype/dataTypes";
 import potListState from "@recoil/atom/potListState";
@@ -22,6 +22,7 @@ function Cupboard() {
   const [selectedRoom] = useRecoilState<RoomType>(selectedRoomState);
   const token = sessionStorage.getItem("Authorization");
   const { VITE_API_URL } = import.meta.env;
+  const [alertModal, setAlertModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedRoom) {
@@ -67,7 +68,8 @@ function Cupboard() {
       .then((response) => {
         const { data } = response;
         if (!data) {
-          alert("개봉일이 안됐어요");
+          setAlertModal(true);
+          // alert("개봉일이 안됐어요");
         } else {
           setSelectedPot(data);
           setPotOpen(true);
@@ -164,6 +166,15 @@ function Cupboard() {
       <div className="sm:text-[20px] text-[10px]">
         내 항아리 수: {totalPotCnt}개
       </div>
+      {alertModal && (
+        <Alert
+          openModal={alertModal}
+          closeButton="확인"
+          overz="z-[100]"
+          text="개봉일이 안됐어요"
+          closeAlert={() => setAlertModal(false)}
+        />
+      )}
     </>
   );
 }

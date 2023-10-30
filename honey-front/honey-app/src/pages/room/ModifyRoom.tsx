@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useRouter from "@hooks/useRouter";
 import { useRecoilState } from "recoil";
 import { selectedRoomState } from "@recoil/atom";
 import axios from "axios";
+import { Alert } from "@components/common/modal";
 
 function ModifyRoom() {
   const { routeTo } = useRouter();
@@ -12,9 +13,17 @@ function ModifyRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
+  const [alertModal, setAlertModal] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>("");
+  const [modify, setModify] = useState<boolean>(false);
+
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState(selectedRoomState);
   const { VITE_API_URL } = import.meta.env;
+
+  useEffect(() => {
+    setRoomName(selectedRoom.roomTitle);
+  }, [setRoomName, selectedRoom]);
 
   const handleInputFocus = () => {
     setRoomNameFocused(true);
@@ -51,15 +60,19 @@ function ModifyRoom() {
     setRoomPasswordFocused(false);
   };
 
-  const submitCreateRoom = () => {
+  const submitModifyRoom = () => {
     const newRoomName = roomName.replace(/^\s+|\s+$|\n/g, "");
     setRoomName(newRoomName);
     if (newRoomName.trim() === "") {
-      alert("방제목을 입력하세요.");
+      setAlertText("방제목을 입력하세요.");
+      setAlertModal(true);
+      // alert("방제목을 입력하세요.");
       return;
     }
     if (newRoomName.trim().length >= 50) {
-      alert("방제목은 50자 이하로 작성되어야합니다.");
+      setAlertText("방제목은 50자 이하로 작성되어야합니다.");
+      setAlertModal(true);
+      // alert("방제목은 50자 이하로 작성되어야합니다.");
       return;
     }
 
@@ -70,12 +83,21 @@ function ModifyRoom() {
         setRoomPassword(password);
       } else {
         if (password === null || password === "") {
-          alert("비밀번호를 설정해주세요.");
+          setAlertText("비밀번호를 설정해주세요.");
+          setAlertModal(true);
+          // alert("비밀번호를 설정해주세요.");
           return;
         }
-        alert(
+        setAlertText(
           "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         );
+        setAlertModal(true);
+
+        // alert(
+        //   "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
+        // );
+        setAlertText("수정이 완료되었습니다.");
+        setAlertModal(true);
       }
     }
 
@@ -97,6 +119,7 @@ function ModifyRoom() {
         config,
       )
       .then(() => {
+        setModify(true);
         routeTo("/mypage");
       });
     // .catch((error) => {
@@ -172,7 +195,7 @@ function ModifyRoom() {
         <button
           type="button"
           className="w-[30%] h-[45px] bg-cg-1 text-[24px] rounded-[60px] text-center"
-          onClick={submitCreateRoom}
+          onClick={submitModifyRoom}
         >
           수정하기
         </button>
@@ -184,6 +207,21 @@ function ModifyRoom() {
           닫기
         </button>
       </div>
+      {alertModal && (
+        <Alert
+          openModal={alertModal}
+          closeButton="확인"
+          overz="z-[100]"
+          text={alertText}
+          closeAlert={() => {
+            setAlertModal(false);
+            if (modify) {
+              setModify(false);
+              routeTo("/mypage");
+            }
+          }}
+        />
+      )}
     </>
   );
 }
