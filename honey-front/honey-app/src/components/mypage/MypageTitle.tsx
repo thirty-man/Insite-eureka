@@ -43,7 +43,9 @@ function MypageTitle() {
   // }, [selectedRoom, roomList, setSelectedRoom, setTitle]);
 
   useEffect(() => {
-    setTitle(selectedRoom.roomTitle);
+    if (selectedRoom !== undefined) {
+      setTitle(selectedRoom.roomTitle);
+    }
   }, [selectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
