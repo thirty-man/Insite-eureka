@@ -11,7 +11,7 @@ import { PageType, RoomType } from "@customtype/dataTypes";
 import { roomListState, selectedPageState } from "@recoil/atom";
 import successCreateRoomState from "@recoil/atom/successCreateRoomState";
 import axios from "axios";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import modifyState from "@recoil/atom/modifyState";
 import participateState from "@recoil/atom/participateState";
 
@@ -24,9 +24,9 @@ function RoomList() {
   const token = sessionStorage.getItem("Authorization");
 
   const successCreateRoom = useRecoilValue<boolean>(successCreateRoomState);
-  const setSuccessCreateRoom = useSetRecoilState<boolean>(
-    successCreateRoomState,
-  );
+
+  const [successCreated, setSuccessCreated] =
+    useState<boolean>(successCreateRoom);
 
   const modified = useRecoilValue<boolean>(modifyState);
   const [successModifyRoom, setSuccessModifyRoom] = useState<boolean>(modified);
@@ -76,13 +76,13 @@ function RoomList() {
         </div>
         <ButtomButton />
       </div>
-      {successCreateRoom && (
+      {successCreated && (
         <Alert
-          openModal={successCreateRoom}
+          openModal={successCreated}
           closeButton="확인"
           overz="z-[100]"
           text="방 생성이 완료되었습니다."
-          closeAlert={() => setSuccessCreateRoom(false)}
+          closeAlert={() => setSuccessCreated(false)}
         />
       )}
       {successModifyRoom && (
