@@ -20,7 +20,7 @@ function CreateRoom() {
   const [roomPassword, setRoomPassword] = useState<string>("");
   const [roomPasswordFocused, setRoomPasswordFocused] =
     useState<boolean>(false);
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   const setSuccessCreateRoom = useSetRecoilState<boolean>(
     successCreateRoomState,

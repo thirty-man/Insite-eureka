@@ -14,7 +14,7 @@ function ModifyRoom() {
     useState<boolean>(false);
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState(selectedRoomState);
-  const { VITE_API_URL } = process.env;
+  const { VITE_API_URL } = import.meta.env;
 
   const handleInputFocus = () => {
     setRoomNameFocused(true);
