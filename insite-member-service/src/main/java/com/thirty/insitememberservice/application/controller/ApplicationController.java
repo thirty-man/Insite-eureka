@@ -2,6 +2,8 @@ package com.thirty.insitememberservice.application.controller;
 
 
 import com.thirty.insitememberservice.application.dto.request.ApplicationCreateReqDto;
+import com.thirty.insitememberservice.application.dto.request.ApplicationDeleteReqDto;
+import com.thirty.insitememberservice.application.dto.request.ApplicationModifyReqDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
 import com.thirty.insitememberservice.application.service.ApplicationService;
 import com.thirty.insitememberservice.application.service.ApplicationServiceImpl;
@@ -28,5 +30,25 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationCreateResDto, HttpStatus.OK);
     }
 
+    @PatchMapping("/{applicationId}/modify")
+    public ResponseEntity<Void> modifyApplication(
+            @Valid @PathVariable int applicationId,
+            @AuthenticationPrincipal LoginUser loginUser,
+            @Valid @RequestBody ApplicationModifyReqDto applicationModifyReqDto
+            ){
+        applicationService.modifyApplication(applicationModifyReqDto,loginUser.getMember().getMemberId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @PatchMapping("/{applicationId}/remove")
+    public ResponseEntity<Void> deleteApplication(
+            @Valid @PathVariable int applicationId,
+            @AuthenticationPrincipal LoginUser loginUser,
+            @Valid @RequestBody ApplicationDeleteReqDto applicationDeleteReqDto
+            ){
+        applicationService.deleteApplication(applicationDeleteReqDto,loginUser.getMember().getMemberId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    
 }
