@@ -25,8 +25,6 @@ function ParticipateRoom() {
       password: isOpen ? null : roomPassword,
     };
 
-    console.log(roomId);
-
     const config = {
       headers: {
         Authorization: token,
@@ -40,12 +38,14 @@ function ParticipateRoom() {
         config,
       )
       .then(() => {
+        setAlertText("방 참여 완료되었습니다.");
+        setAlertModal(true);
         routeTo("/");
       })
       .catch((error) => {
         // console.log(error.response.data.errorCode);
         if (error.response.data.errorCode === "001") {
-          setAlertText("이미 참가중인 방입니다.");
+          setAlertText("이미 참여 중인 방입니다.");
           setAlertModal(true);
           // alert("이미 참가중인 방입니다.");
           return;
