@@ -15,6 +15,7 @@ function Room() {
       <Modal
         className="relative bottom-[15%] left-[0%] w-[30%] h-[25%] z-[20]"
         overlay={false}
+        overz=""
         openModal
       >
         <img src={Pen} className="w-full h-full" alt="펜" />
