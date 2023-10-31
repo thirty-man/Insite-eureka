@@ -120,6 +120,13 @@ function ModifyRoom() {
       .then(() => {
         setModified(true);
         routeTo("/mypage");
+      })
+      .catch((error) => {
+        if (error.response.data.errorCode === "003") {
+          setAlertText("방장만 수정 가능합니다.");
+          setAlertModal(true);
+          routeTo("/mypage");
+        }
       });
   };
 

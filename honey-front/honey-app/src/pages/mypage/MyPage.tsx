@@ -11,6 +11,7 @@ import modifyState from "@recoil/atom/modifyState";
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Alert } from "@components/common/modal";
+import completeSendState from "@recoil/atom/completeSendState";
 
 function MyPage() {
   const [, setRoomList] = useRecoilState<RoomType[]>(myRoomListState);
@@ -18,6 +19,10 @@ function MyPage() {
   const [selectedRoom] = useRecoilState<RoomType>(mypageSelectedRoom);
   const [, setMemberList] = useRecoilState<UserType[]>(memberListState);
   const { VITE_API_URL } = import.meta.env;
+
+  const send = useRecoilValue(completeSendState);
+  const setSend = useSetRecoilState(completeSendState);
+  const [successSend, setSuccessSend] = useState<boolean>(send);
 
   const modified = useRecoilValue<boolean>(modifyState);
   const setModified = useSetRecoilState<boolean>(modifyState);
@@ -82,6 +87,18 @@ function MyPage() {
           closeAlert={() => {
             setModified(false);
             setSuccessModifyRoom(false);
+          }}
+        />
+      )}
+      {successSend && (
+        <Alert
+          openModal={successSend}
+          closeButton="확인"
+          overz="z-[100]"
+          text="꿀단지 전송이 완료되었습니다."
+          closeAlert={() => {
+            setSend(false);
+            setSuccessSend(false);
           }}
         />
       )}

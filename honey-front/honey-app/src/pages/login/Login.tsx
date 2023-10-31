@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import useRouter from "@hooks/useRouter";
 import { useLocation } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { logoutState } from "@recoil/atom";
 
 function Login() {
@@ -16,6 +16,7 @@ function Login() {
   const { routeTo } = useRouter();
   const location = useLocation();
   const logout = useRecoilValue(logoutState);
+  const setLogout = useSetRecoilState(logoutState);
   const [logoutModal, setLogoutModal] = useState<boolean>(logout);
 
   const authenticateUser = (code: string) => {
@@ -141,7 +142,10 @@ function Login() {
           closeButton="확인"
           overz="z-[100]"
           text="로그아웃 되었습니다."
-          closeAlert={() => setLogoutModal(false)}
+          closeAlert={() => {
+            setLogout(false);
+            setLogoutModal(false);
+          }}
         />
       )}
     </>

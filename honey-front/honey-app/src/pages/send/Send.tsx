@@ -6,10 +6,11 @@ import { Modal } from "@components/common/modal";
 import { RoomType, UserType } from "@customtype/dataTypes";
 // import { AccessError } from "@pages/error";
 import { mypageSelectedRoom, selectedMemberState } from "@recoil/atom";
+import completeSendState from "@recoil/atom/completeSendState";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function Send() {
   const selectedMember = useRecoilValue<UserType>(selectedMemberState);
@@ -21,6 +22,7 @@ function Send() {
   const [content, setContent] = useState("");
   const [nickName, setNickName] = useState("");
   const selectedRoom = useRecoilValue<RoomType>(mypageSelectedRoom);
+  const [, setCompleteSend] = useRecoilState<boolean>(completeSendState);
   const { VITE_API_URL } = import.meta.env;
 
   const messageSendReqDto = {
@@ -41,6 +43,7 @@ function Send() {
     axios
       .post(`${VITE_API_URL}/api/v1/messages`, messageSendReqDto, config)
       .then(() => {
+        setCompleteSend(true);
         navi("/mypage");
       });
     // .catch((error) => {

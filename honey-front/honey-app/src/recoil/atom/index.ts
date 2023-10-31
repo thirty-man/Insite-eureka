@@ -9,6 +9,7 @@ import selectedPageState from "./selectedPageState";
 import inputSearchState from "./inputSearchState";
 import logoutState from "./logoutState";
 import mypageSelectedRoom from "./mypageSelectedRoom";
+import completeSend from "./completeSendState";
 
 export {
   loginUserState,
@@ -22,4 +23,5 @@ export {
   inputSearchState,
   logoutState,
   mypageSelectedRoom,
+  completeSend,
 };
