@@ -114,9 +114,6 @@
   line-height: 16px;
   font: inherit;
   font-size: 0.833em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .react-calendar__tile abbr {
@@ -139,7 +136,6 @@
 
 .react-calendar__tile:disabled {
   background-color: #f0f0f0;
-  itmems: center;
 }
 
 .react-calendar__tile:enabled:hover,
@@ -177,4 +173,10 @@
 
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
+}
+
+.react-calendar__tile.react-calendar__year-view__months__month {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
