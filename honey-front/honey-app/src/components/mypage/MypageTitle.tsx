@@ -134,10 +134,14 @@ function MypageTitle() {
             className="w-[70%] mt-5 mb-2 relative"
             onClick={handleDropdown}
           >
-            <TitleText
-              text={title}
-              className="p-1 pr-5 pl-5 rounded-xl sm:h-[90px] h-[38px] bg-cg-9 overflow-x-auto items-start"
-            />
+            {title ? (
+              <TitleText
+                text={title}
+                className="p-1 pr-5 pl-5 rounded-xl sm:h-[90px] h-[38px] bg-cg-9 overflow-x-auto items-start"
+              />
+            ) : (
+              <div>방이 없습니다.</div>
+            )}
           </button>
           {isDropdownOpen && (
             <div
