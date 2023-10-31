@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useRouter from "@hooks/useRouter";
 import { useRecoilState } from "recoil";
-import { mypageSelectedRoom } from "@recoil/atom";
+import { mypageSelectedRoom, notHostModifyState } from "@recoil/atom";
 import axios from "axios";
 import { Alert } from "@components/common/modal";
 import modifyState from "@recoil/atom/modifyState";
@@ -17,6 +17,7 @@ function ModifyRoom() {
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
   const [, setModified] = useRecoilState<boolean>(modifyState);
+  const [, setNotHostModified] = useRecoilState<boolean>(notHostModifyState);
 
   const token = sessionStorage.getItem("Authorization");
   const [selectedRoom] = useRecoilState(mypageSelectedRoom);
@@ -123,8 +124,7 @@ function ModifyRoom() {
       })
       .catch((error) => {
         if (error.response.data.errorCode === "003") {
-          setAlertText("방장만 수정 가능합니다.");
-          setAlertModal(true);
+          setNotHostModified(true);
           routeTo("/mypage");
         }
       });

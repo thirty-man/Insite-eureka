@@ -10,6 +10,7 @@ import inputSearchState from "./inputSearchState";
 import logoutState from "./logoutState";
 import mypageSelectedRoom from "./mypageSelectedRoom";
 import completeSend from "./completeSendState";
+import notHostModifyState from "./notHostModifyState";
 
 export {
   loginUserState,
@@ -24,4 +25,5 @@ export {
   logoutState,
   mypageSelectedRoom,
   completeSend,
+  notHostModifyState,
 };

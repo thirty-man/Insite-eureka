@@ -18,7 +18,7 @@ function Alert({
 }: AlertProps) {
   return (
     <Modal
-      className="fixed w-[340px] h-[250px] bottom-[50%] left-[50%] -translate-x-[170px] translate-y-[0px] z-[220] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
+      className="fixed w-[340px] h-[250px] bottom-[50%] left-[50%] -translate-x-[125px] translate-y-[0px] z-[220] rounded-[36px] shadow-lg flex items-center justify-center px-[15px] py-[15px] bg-cg-6"
       overlay
       overz={overz}
       openModal={openModal}

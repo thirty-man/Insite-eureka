@@ -6,6 +6,7 @@ import {
   memberListState,
   myRoomListState,
   mypageSelectedRoom,
+  notHostModifyState,
 } from "@recoil/atom";
 import modifyState from "@recoil/atom/modifyState";
 import axios from "axios";
@@ -27,6 +28,11 @@ function MyPage() {
   const modified = useRecoilValue<boolean>(modifyState);
   const setModified = useSetRecoilState<boolean>(modifyState);
   const [successModifyRoom, setSuccessModifyRoom] = useState<boolean>(modified);
+
+  const notHostModified = useRecoilValue<boolean>(notHostModifyState);
+  const setNotHostModified = useSetRecoilState<boolean>(notHostModifyState);
+  const [notHostModifyError, setNotHostModifyError] =
+    useState<boolean>(notHostModified);
 
   useEffect(() => {
     // Axios를 사용하여 데이터 가져오기
@@ -99,6 +105,18 @@ function MyPage() {
           closeAlert={() => {
             setSend(false);
             setSuccessSend(false);
+          }}
+        />
+      )}
+      {notHostModifyError && (
+        <Alert
+          openModal={notHostModifyError}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방장만 수정 가능합니다."
+          closeAlert={() => {
+            setNotHostModified(false);
+            setNotHostModifyError(false);
           }}
         />
       )}

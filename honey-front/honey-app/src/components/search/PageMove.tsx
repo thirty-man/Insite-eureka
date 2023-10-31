@@ -252,7 +252,7 @@ function PageMove() {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex w-full justify-center">
         {pageButtons.map((button) => (
           <div key={button.id} className="flex w-full justify-around">
             {button.id === 3 ? (
