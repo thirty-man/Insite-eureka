@@ -93,7 +93,7 @@ function ModifyRoom() {
           "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         );
         setAlertModal(true);
-
+        return;
         // alert(
         //   "8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 입력해야 합니다.",
         // );
