@@ -31,17 +31,6 @@ function MypageTitle() {
     setSelectedRoom(room);
   }
 
-  // useEffect(() => {
-  //   // selectedRoom이 변경될 때 title 업데이트
-  //   if (selectedRoom !== undefined) {
-  //     setTitle(selectedRoom.roomTitle);
-  //   } else if (roomList.length > 0) {
-  //     setTitle(roomList[0].roomTitle);
-  //     setSelectedRoom(roomList[0]);
-  //   } else {
-  //     setTitle("방을 선택하세요");
-  //   }
-  // }, [selectedRoom, roomList, setSelectedRoom, setTitle]);
   useEffect(() => {
     if (roomList && roomList.length > 0) {
       setTitle(roomList[0].roomTitle);

@@ -56,73 +56,71 @@ function MyPage() {
   }, [setRoomList, token, VITE_API_URL]);
 
   useEffect(() => {
-    if (selectedRoom) {
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
+    if (selectedRoom === undefined) return;
 
-      axios
-        .get(
-          `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/member-list`,
-          config,
-        )
-        .then((response) => {
-          const { data } = response;
-          const getMemberList = data.memberDtoList;
-          setMemberList(getMemberList);
-        });
-      // .catch((error) => {
-      //   console.error("Error fetching room list:", error);
-      // });
-    }
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    axios
+      .get(
+        `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/member-list`,
+        config,
+      )
+      .then((response) => {
+        const { data } = response;
+        const getMemberList = data.memberDtoList;
+        setMemberList(getMemberList);
+      });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
   }, [selectedRoom, token, VITE_API_URL, setMemberList]);
 
   return (
-    selectedRoom && (
-      <>
-        <MypageTitle />
-        <Cupboard />
-        <ButtomMenu />
-        {successModifyRoom && (
-          <Alert
-            openModal={successModifyRoom}
-            closeButton="확인"
-            overz="z-[100]"
-            text="방 수정이 완료되었습니다."
-            closeAlert={() => {
-              setModified(false);
-              setSuccessModifyRoom(false);
-            }}
-          />
-        )}
-        {successSend && (
-          <Alert
-            openModal={successSend}
-            closeButton="확인"
-            overz="z-[100]"
-            text="꿀단지 전송이 완료되었습니다."
-            closeAlert={() => {
-              setSend(false);
-              setSuccessSend(false);
-            }}
-          />
-        )}
-        {notHostModifyError && (
-          <Alert
-            openModal={notHostModifyError}
-            closeButton="확인"
-            overz="z-[100]"
-            text="방장만 수정 가능합니다."
-            closeAlert={() => {
-              setNotHostModified(false);
-              setNotHostModifyError(false);
-            }}
-          />
-        )}
-      </>
-    )
+    <>
+      <MypageTitle />
+      <Cupboard />
+      <ButtomMenu />
+      {successModifyRoom && (
+        <Alert
+          openModal={successModifyRoom}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방 수정이 완료되었습니다."
+          closeAlert={() => {
+            setModified(false);
+            setSuccessModifyRoom(false);
+          }}
+        />
+      )}
+      {successSend && (
+        <Alert
+          openModal={successSend}
+          closeButton="확인"
+          overz="z-[100]"
+          text="꿀단지 전송이 완료되었습니다."
+          closeAlert={() => {
+            setSend(false);
+            setSuccessSend(false);
+          }}
+        />
+      )}
+      {notHostModifyError && (
+        <Alert
+          openModal={notHostModifyError}
+          closeButton="확인"
+          overz="z-[100]"
+          text="방장만 수정 가능합니다."
+          closeAlert={() => {
+            setNotHostModified(false);
+            setNotHostModifyError(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
