@@ -3,8 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import store from "./store";
 import { persistStore } from "redux-persist";
+import "@config/axios.config";
+import { Provider } from "react-redux";
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
