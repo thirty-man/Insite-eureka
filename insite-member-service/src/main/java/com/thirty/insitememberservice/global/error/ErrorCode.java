@@ -8,6 +8,7 @@ public enum ErrorCode {
 	//회원
 	ALREADY_WITHDRAWAL_MEMBER(HttpStatus.UNAUTHORIZED, "001", "탈퇴한 회원입니다."),
 	NOT_EXIST_MEMBER(HttpStatus.UNAUTHORIZED, "002", "존재하지 않는 회원입니다."),
+	NOT_OWNER_MEMBER(HttpStatus.UNAUTHORIZED,"003","해당 어플리케이션에 권한이 없습니다."),
 	//room
 	NOT_EXIST_ROOM(HttpStatus.BAD_REQUEST, "001", "존재하지 않는 방입니다."),
 	//참가자
@@ -15,7 +16,9 @@ public enum ErrorCode {
 	//토큰
 	EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "001", "만료된 토큰입니다."),
 	NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "002", "유효하지 않은 토큰입니다."),
-
+	//어플리케이션
+	NOT_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"001","존재하지 않는 어플리케이션입니다."),
+	ALREADY_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"002","이미 존재하는 어플리케이션입니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {

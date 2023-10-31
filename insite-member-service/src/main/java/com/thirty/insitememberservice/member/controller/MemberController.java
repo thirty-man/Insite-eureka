@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RestController
 public class MemberController {
 
@@ -35,7 +35,6 @@ public class MemberController {
 	@PostMapping("/reissue")
 	public ResponseEntity<String> reissue(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-		System.out.println("token" + token);
 		LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
 		Member member = loginUser.getMember();
 		String JWT = memberService.reissue(member, token, response);

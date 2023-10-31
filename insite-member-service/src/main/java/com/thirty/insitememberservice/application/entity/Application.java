@@ -24,18 +24,41 @@ public class Application {
 	private int applicationId;
 
 	@Column(nullable = false)
-	private String serviceUrl;
+	private String applicationUrl;
+
+	@Column(nullable = false)
+	private String name;
 
 	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-
 	@Column(nullable = false, length = 60)
-	private String serviceToken;
+	private String applicationToken;
 
 	@Column(nullable = false)
 	@CreatedDate
 	private LocalDateTime createdTime;
+
+	@Column(nullable = false)
+	private Boolean isDeleted;
+
+	public void delete(){this.isDeleted=true;}
+
+	public void modify(String name){
+		this.name=name;
+	}
+
+	public static Application create(Member member, String name, String applicationUrl, String applicationToken){
+		return Application.builder()
+				.member(member)
+				.name(name)
+				.applicationUrl(applicationUrl)
+				.applicationToken(applicationToken)
+				.isDeleted(false)
+				.createdTime(LocalDateTime.now())
+				.build();
+	}
+
 
 }
