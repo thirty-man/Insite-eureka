@@ -15,12 +15,12 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "src"),
       },
       {
-        find: "@api",
-        replacement: path.resolve(__dirname, "src/api"),
+        find: "@action",
+        replacement: path.resolve(__dirname, "src/action"),
       },
       {
-        find: "@assets",
-        replacement: path.resolve(__dirname, "src/assets"),
+        find: "@api",
+        replacement: path.resolve(__dirname, "src/api"),
       },
       {
         find: "@components",
