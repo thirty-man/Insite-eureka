@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -16,10 +18,13 @@ public class RoomDto {
 
     private String roomTitle;
 
+    private LocalDateTime showTime;
+
     public static RoomDto from(Room room){
         return RoomDto.builder()
             .id(room.getRoomId())
             .roomTitle(room.getRoomTitle())
+            .showTime(room.getShowTime())
             .build();
     }
 }
