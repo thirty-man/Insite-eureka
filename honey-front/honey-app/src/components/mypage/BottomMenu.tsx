@@ -38,9 +38,21 @@ function ButtomMenu() {
 
   function roomPaste(): void {
     const link = `http://rollinghoney.com/room/participate/${selectedRoom.id}`;
-    document.execCommand(link);
-    setAlertText("링크가 클립보드에 복사되었습니다.");
-    setAlertModal(true);
+    const tempInput = document.createElement("input");
+    tempInput.value = link;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    const copySuccessful = document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    if (copySuccessful) {
+      setAlertText("링크가 클립보드에 복사되었습니다.");
+      setAlertModal(true);
+    } else {
+      setAlertText("복사에 실패하였습니다.");
+      setAlertModal(true);
+    }
+
     // alert("링크가 클립보드에 복사되었습니다.");
   }
 
