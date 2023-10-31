@@ -26,7 +26,7 @@ public class RedisConfig {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 		redisStandaloneConfiguration.setHostName(redisHost);
 		redisStandaloneConfiguration.setPort(Integer.parseInt(redisPort));
-//		redisStandaloneConfiguration.setPassword(redisPassword);
+		redisStandaloneConfiguration.setPassword(redisPassword);
 		LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
 		return lettuceConnectionFactory;
 	}
