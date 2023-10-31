@@ -1,11 +1,11 @@
 package com.thirty.insitememberservice.button.controller;
 
+import com.thirty.insitememberservice.button.dto.response.ButtonCreateResDto;
+import com.thirty.insitememberservice.button.dto.response.ButtonListResDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonCreateReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonDeleteReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonListReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonModifyReqDto;
-import com.thirty.insitememberservice.button.dto.response.ButtonCreateResDto;
-import com.thirty.insitememberservice.button.dto.response.ButtonListResDto;
 import com.thirty.insitememberservice.button.service.ButtonService;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -67,14 +68,15 @@ public class ButtonController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/list")
+    @GetMapping
     public ResponseEntity<ButtonListResDto> getMyButtonList(
-        @Valid @RequestBody ButtonListReqDto buttonListreqDto,
+        @Valid @RequestParam("applicationId") int applicationId,
+        @Valid @RequestParam("page") int page,
         HttpServletRequest request
     ){
         String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
-        ButtonListResDto buttonListResDto = buttonService.getMyButtonList(loginUser.getMember().getMemberId(), buttonListreqDto);
+        ButtonListResDto buttonListResDto = buttonService.getMyButtonList(loginUser.getMember().getMemberId(), applicationId, page);
         return new ResponseEntity<>(buttonListResDto, HttpStatus.OK);
     }
 }
