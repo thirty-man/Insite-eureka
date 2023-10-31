@@ -35,7 +35,7 @@ function ButtomMenu() {
 
   function roomPaste(): void {
     const link = `http://rollinghoney.com/room/participate/${selectedRoom.id}`;
-    navigator.clipboard.writeText(link);
+    document.execCommand(link);
     alert("링크가 클립보드에 복사되었습니다.");
   }
 
