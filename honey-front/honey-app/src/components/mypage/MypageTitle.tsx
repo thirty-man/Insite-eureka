@@ -36,6 +36,11 @@ function MypageTitle() {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
       setShowTime(roomList[0].showTime.split("T")[0]);
+      return;
+    }
+
+    if (roomList.length === 0) {
+      setTitle("방이 없습니다.");
     }
   }, [roomList, setSelectedRoom]);
 
