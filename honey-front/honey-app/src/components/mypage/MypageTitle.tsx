@@ -53,7 +53,7 @@ function MypageTitle() {
   useEffect(() => {
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
-      setShowTime(selectedRoom.showTime);
+      setShowTime(selectedRoom.showTime.split("T")[0]);
     }
   }, [selectedRoom, setTitle]);
 
