@@ -5,6 +5,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   retry?: boolean;
 }
+const { VITE_API_URL } = import.meta.env;
 
 axios.interceptors.response.use(
   (response: AxiosResponse) => response,
@@ -20,7 +21,7 @@ axios.interceptors.response.use(
 
         // headers를 설정 객체 내에 포함시켜야 합니다.
         const response = await axios.post(
-          "http://localhost:8080/api/v1/members/reissue",
+          `${VITE_API_URL}/api/v1/members/reissue`,
           {},
           {
             headers: {
@@ -31,7 +32,7 @@ axios.interceptors.response.use(
 
         // 서버에서 "no"를 반환하는 경우 로그인 페이지로 리디렉션
         if (response.data === "no") {
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = `${VITE_API_URL}/login`;
           return;
         }
 
