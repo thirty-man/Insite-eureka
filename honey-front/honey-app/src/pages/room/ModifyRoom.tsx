@@ -110,7 +110,6 @@ function ModifyRoom() {
       roomTitle: roomName,
       password: boxChecked ? roomPassword : null,
     };
-    console.log(roomModifyReqDto.password);
 
     axios
       .patch(
