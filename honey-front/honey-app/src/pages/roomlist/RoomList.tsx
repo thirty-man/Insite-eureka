@@ -70,7 +70,7 @@ function RoomList() {
         <TitleText text="방 목록" className="mt-5" />
         <SearchRoom />
         <ShowRoom />
-        <div className="flex z-[50] relative bottom-10 w-[85%] items-center justify-center">
+        <div className="flex z-[50] relative bottom-10 w-[85%] min-w-[400px] items-center justify-center">
           <PageMove />
         </div>
         <ButtomButton />

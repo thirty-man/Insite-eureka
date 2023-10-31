@@ -126,7 +126,7 @@ function MypageTitle() {
 
   return (
     <>
-      <div className="flex justify-center items-center w-full">
+      <div className="flex justify-evenly items-center w-full">
         <ImageButton
           image={leftArrow}
           alt="뒤로가기"
@@ -172,7 +172,7 @@ function MypageTitle() {
         <TextButton
           text="로그아웃"
           color="2"
-          className="w-[15%] mr-2 sm:text-[20px] text-[15px]"
+          className="w-[15%] mr-2 sm:text-[20px] text-[15px] p-[2px] min-w-[65px]"
           onClick={() => logout()}
         />
       </div>
