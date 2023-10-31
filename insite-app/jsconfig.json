@@ -11,5 +11,5 @@
       "@styles/*": ["src/styles/*"]
     }
   },
-  "include": ["src", "**/*.js", "**/*.jsx"]
+  "include": ["src", "**/*.js", "**/*.jsx", ".eslintrc.json"]
 }
