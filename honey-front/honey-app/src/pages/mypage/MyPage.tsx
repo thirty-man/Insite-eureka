@@ -80,47 +80,49 @@ function MyPage() {
   }, [selectedRoom, token, VITE_API_URL, setMemberList]);
 
   return (
-    <>
-      <MypageTitle />
-      <Cupboard />
-      <ButtomMenu />
-      {successModifyRoom && (
-        <Alert
-          openModal={successModifyRoom}
-          closeButton="확인"
-          overz="z-[100]"
-          text="방 수정이 완료되었습니다."
-          closeAlert={() => {
-            setModified(false);
-            setSuccessModifyRoom(false);
-          }}
-        />
-      )}
-      {successSend && (
-        <Alert
-          openModal={successSend}
-          closeButton="확인"
-          overz="z-[100]"
-          text="꿀단지 전송이 완료되었습니다."
-          closeAlert={() => {
-            setSend(false);
-            setSuccessSend(false);
-          }}
-        />
-      )}
-      {notHostModifyError && (
-        <Alert
-          openModal={notHostModifyError}
-          closeButton="확인"
-          overz="z-[100]"
-          text="방장만 수정 가능합니다."
-          closeAlert={() => {
-            setNotHostModified(false);
-            setNotHostModifyError(false);
-          }}
-        />
-      )}
-    </>
+    selectedRoom && (
+      <>
+        <MypageTitle />
+        <Cupboard />
+        <ButtomMenu />
+        {successModifyRoom && (
+          <Alert
+            openModal={successModifyRoom}
+            closeButton="확인"
+            overz="z-[100]"
+            text="방 수정이 완료되었습니다."
+            closeAlert={() => {
+              setModified(false);
+              setSuccessModifyRoom(false);
+            }}
+          />
+        )}
+        {successSend && (
+          <Alert
+            openModal={successSend}
+            closeButton="확인"
+            overz="z-[100]"
+            text="꿀단지 전송이 완료되었습니다."
+            closeAlert={() => {
+              setSend(false);
+              setSuccessSend(false);
+            }}
+          />
+        )}
+        {notHostModifyError && (
+          <Alert
+            openModal={notHostModifyError}
+            closeButton="확인"
+            overz="z-[100]"
+            text="방장만 수정 가능합니다."
+            closeAlert={() => {
+              setNotHostModified(false);
+              setNotHostModifyError(false);
+            }}
+          />
+        )}
+      </>
+    )
   );
 }
 

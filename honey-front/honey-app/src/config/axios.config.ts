@@ -13,7 +13,7 @@ axios.interceptors.response.use(
     // CustomAxiosRequestConfig을 사용합니다.
     const originalRequest: CustomAxiosRequestConfig = error.config;
 
-    if (error.response?.data.errorCode === "000" && !originalRequest.retry) {
+    if (error.response?.status === 401 && !originalRequest.retry) {
       originalRequest.retry = true;
 
       try {

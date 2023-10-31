@@ -25,27 +25,25 @@ function Cupboard() {
   const [alertModal, setAlertModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedRoom !== undefined) {
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
 
-      axios
-        .get(
-          `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/message-list`,
-          config,
-        )
-        .then((response) => {
-          const { data } = response;
-          const getMessageList = data.messageListDtoList;
-          setTotalPotList(getMessageList);
-        });
-      // .catch((error) => {
-      //   console.error("Error fetching room list:", error);
-      // });
-    }
+    axios
+      .get(
+        `${VITE_API_URL}/api/v1/rooms/${selectedRoom.id}/message-list`,
+        config,
+      )
+      .then((response) => {
+        const { data } = response;
+        const getMessageList = data.messageListDtoList;
+        setTotalPotList(getMessageList);
+      });
+    // .catch((error) => {
+    //   console.error("Error fetching room list:", error);
+    // });
   }, [
     selectedRoom,
     token,
