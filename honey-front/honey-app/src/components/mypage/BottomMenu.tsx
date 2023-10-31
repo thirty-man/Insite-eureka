@@ -4,11 +4,12 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import useRouter from "@hooks/useRouter";
 import {
   memberListState,
+  myRoomListState,
   mypageSelectedRoom,
   selectedMemberState,
 } from "@recoil/atom";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { greedyPooh, sendPot } from "@assets/images";
 import axios from "axios";
 
@@ -24,6 +25,7 @@ function ButtomMenu() {
   const [, setSelectedMember] = useRecoilState<UserType>(selectedMemberState);
   const token = sessionStorage.getItem("Authorization");
   const { VITE_API_URL } = import.meta.env;
+  const myRoomList = useRecoilValue<RoomType[]>(myRoomListState);
 
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
@@ -33,7 +35,9 @@ function ButtomMenu() {
   }
 
   function modifyRoom(): void {
-    routeTo("/room/modify");
+    if (myRoomList.length > 0) {
+      routeTo("/room/modify");
+    }
   }
 
   function roomPaste(): void {
