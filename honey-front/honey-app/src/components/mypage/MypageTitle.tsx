@@ -46,14 +46,14 @@ function MypageTitle() {
     if (roomList && roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
-      setShowTime(roomList[0].showTime);
+      setShowTime(roomList[0].showTime.split("T")[0]);
     }
   }, [roomList, setSelectedRoom]);
 
   useEffect(() => {
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
-      setShowTime(selectedRoom.showTime);
+      setShowTime(selectedRoom.showTime.split("T")[0]);
     }
   }, [selectedRoom, setTitle]);
 
@@ -179,7 +179,7 @@ function MypageTitle() {
           onClick={() => logout()}
         />
       </div>
-      <div>{showTime || ""}</div>
+      <div>개봉일 : {showTime || ""}</div>
       <div className="flex justify-center items-center">
         <button
           className="bg-cg-3 rounded-xl p-2 m-2"
