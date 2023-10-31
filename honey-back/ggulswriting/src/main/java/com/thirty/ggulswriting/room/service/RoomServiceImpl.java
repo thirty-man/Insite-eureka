@@ -264,6 +264,9 @@ public class RoomServiceImpl implements RoomService {
 		byte[] salting = Base64.getEncoder().encode(SALT.getBytes());
 		String salt = new String(salting);
 		log.info("pw={}", roomModifyReqDto.getPassword());
+		log.info("encodedPassword.equals(salt)={}", encodedPassword.equals(salt));
+		log.info("encodedPassword = {}", encodedPassword);
+		log.info("salt = {}", salt);
 		room.modify(
 			roomModifyReqDto.getRoomTitle(),
 			encodedPassword,

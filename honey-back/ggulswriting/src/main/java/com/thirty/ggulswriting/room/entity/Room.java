@@ -82,6 +82,8 @@ public class Room extends BaseEntity {
 
         if(!isOpen){
             this.password = password;
+        }else{
+            this.password = null;
         }
     }
 }
