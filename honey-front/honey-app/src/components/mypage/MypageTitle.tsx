@@ -15,6 +15,7 @@ import { mypageSelectedRoom } from "@recoil/atom";
 function MypageTitle() {
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const [title, setTitle] = useState<string>("방이 없습니다.");
+  const [showTime, setShowTime] = useState<string>("");
   const [selectedRoom, setSelectedRoom] =
     useRecoilState<RoomType>(mypageSelectedRoom);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -45,12 +46,14 @@ function MypageTitle() {
     if (roomList && roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
+      setShowTime(roomList[0].showTime);
     }
   }, [roomList, setSelectedRoom]);
 
   useEffect(() => {
     if (selectedRoom !== undefined) {
       setTitle(selectedRoom.roomTitle);
+      setShowTime(selectedRoom.showTime);
     }
   }, [selectedRoom, setTitle]);
 
@@ -176,6 +179,7 @@ function MypageTitle() {
           onClick={() => logout()}
         />
       </div>
+      <div>{showTime || ""}</div>
       <div className="flex justify-center items-center">
         <button
           className="bg-cg-3 rounded-xl p-2 m-2"
