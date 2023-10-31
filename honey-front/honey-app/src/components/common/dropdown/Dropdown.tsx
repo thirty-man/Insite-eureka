@@ -19,7 +19,7 @@ function Dropdown({ className, items, onClick }: DropdwonProps) {
             <p className="sm:text-2xl p-2">{item.roomTitle}</p>
           </button>
           {index !== items.length - 1 && (
-            <hr className="w-[90%] border border-black" />
+            <hr className="w-full border border-black" />
           )}
         </div>
       ))}
