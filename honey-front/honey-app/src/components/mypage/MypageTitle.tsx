@@ -41,6 +41,11 @@ function MypageTitle() {
   //     setTitle("방을 선택하세요");
   //   }
   // }, [selectedRoom, roomList, setSelectedRoom, setTitle]);
+  useEffect(() => {
+    if (roomList && roomList.length > 0) {
+      setTitle(roomList[0].roomTitle);
+    }
+  }, [roomList]);
 
   useEffect(() => {
     if (selectedRoom !== undefined) {
