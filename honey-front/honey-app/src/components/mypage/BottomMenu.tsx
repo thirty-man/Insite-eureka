@@ -81,9 +81,9 @@ function ButtomMenu() {
         config,
       )
       .then(() => {
+        window.location.replace("/mypage");
         setAlertText("탈퇴되었습니다.");
         setAlertModal(true);
-        window.location.replace("/mypage");
       })
       .catch((error) => {
         if (error.response.data.errorCode === "002") {
