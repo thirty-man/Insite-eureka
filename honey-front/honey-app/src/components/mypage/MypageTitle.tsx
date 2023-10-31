@@ -4,7 +4,7 @@ import Dropdown from "@components/common/dropdown/Dropdown";
 import TitleText from "@components/common/textbox/TitleText";
 import { RoomType } from "@customtype/dataTypes";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { leftArrow } from "@assets/images";
 import { getMyRoomlistSelector } from "@recoil/selector";
 import axios from "axios";
@@ -25,6 +25,7 @@ function MypageTitle() {
   const [alertNoRoom, setAlertNoRoom] = useState<boolean>(false);
   const { VITE_API_URL } = import.meta.env;
 
+  useResetRecoilState(mypageSelectedRoom);
   function goToRoom(room: RoomType) {
     // console.log(room.id);
     setSelectedRoom(room);
