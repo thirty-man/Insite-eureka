@@ -63,8 +63,8 @@ function ParticipateRoom() {
           // alert("비밀번호가 틀렸습니다.");
           return;
         }
-        // if (error.response.data.errorCode === "")
-        //   console.log("참가요청 오류 : ", error);
+        if (error.response.data.errorCode === "")
+          console.log("참가요청 오류 : ", error);
       });
   }
 
