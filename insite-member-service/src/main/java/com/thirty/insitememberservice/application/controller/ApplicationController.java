@@ -9,14 +9,12 @@ import com.thirty.insitememberservice.application.dto.response.ApplicationCreate
 import com.thirty.insitememberservice.application.dto.response.ApplicationResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationTokenResDto;
 import com.thirty.insitememberservice.application.service.ApplicationService;
-import com.thirty.insitememberservice.application.service.ApplicationServiceImpl;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
 import com.thirty.insitememberservice.global.config.jwt.JwtVO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +44,7 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationResDto,HttpStatus.OK);
     }
 
-    @GetMapping("/{applicationId}/token")
+    @GetMapping("/token")
     public ResponseEntity<ApplicationTokenResDto> readToken(@Valid @RequestBody ApplicationTokenReqDto applicationTokenReqDto,
                                                             HttpServletRequest request
                                                           ){
@@ -67,9 +65,8 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationCreateResDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{applicationId}/modify")
+    @PatchMapping("/modify")
     public ResponseEntity<Void> modifyApplication(
-            @Valid @PathVariable int applicationId,
             @Valid @RequestBody ApplicationModifyReqDto applicationModifyReqDto,HttpServletRequest request
     ){
         String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
@@ -78,9 +75,8 @@ public class ApplicationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("/{applicationId}/remove")
+    @PatchMapping("/remove")
     public ResponseEntity<Void> deleteApplication(
-            @Valid @PathVariable int applicationId,
             @Valid @RequestBody ApplicationDeleteReqDto applicationDeleteReqDto,
             HttpServletRequest request
     ){
