@@ -133,7 +133,7 @@ function MypageTitle() {
           className="flex w-[15%] justify-center items-center"
           onClick={() => goToBack()}
         />
-        <div className="flex flex-col justify-center items-center w-full pr-10 relative">
+        <div className="flex flex-col justify-center items-center w-full relative">
           <button
             ref={buttonRef}
             type="button"
