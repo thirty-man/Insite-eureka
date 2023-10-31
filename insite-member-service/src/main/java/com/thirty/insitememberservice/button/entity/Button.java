@@ -25,7 +25,7 @@ public class Button {
 
     @ManyToOne
     @JoinColumn(name= "application_id", nullable = false)
-    private Application apllication;
+    private Application application;
 
     @Column(nullable = false)
     private String name;
@@ -37,7 +37,17 @@ public class Button {
     @Column
     private boolean isDeleted;
 
-    public void deleteButton(){this.isDeleted= true;}
+    public static Button create(Application application, String name){
+        return Button.builder()
+            .application(application)
+            .name(name)
+            .isDeleted(false)
+            .build();
+    }
+
+    public void modify(String name){this.name = name;}
+
+    public void delete(){this.isDeleted= true;}
 
 
 
