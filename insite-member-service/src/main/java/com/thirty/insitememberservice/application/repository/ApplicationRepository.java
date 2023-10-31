@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApplicationRepository extends JpaRepository<Application,Integer> {
-    List<Application> findAllByMemberAAndIsDeletedIsFalse(Member member);
+    List<Application> findAllByMemberAndIsDeletedIsFalse(Member member);
     Optional<Application> findApplicationByApplicationIdAndIsDeletedIsFalse(int applicationId);
+    Optional<Application> findApplicationByApplicationUrlAndIsDeletedIsFalse(String applicationUrl);
 
 }

@@ -52,9 +52,11 @@ public class Application {
 	public static Application create(Member member, String name, String applicationUrl, String applicationToken){
 		return Application.builder()
 				.member(member)
+				.name(name)
 				.applicationUrl(applicationUrl)
 				.applicationToken(applicationToken)
 				.isDeleted(false)
+				.createdTime(LocalDateTime.now())
 				.build();
 	}
 

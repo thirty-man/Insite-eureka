@@ -19,7 +19,6 @@ public class ApplicationCreateReqDto {
     @NotNull
     private String name;
 
-    private String applicationToken;
 
 
 

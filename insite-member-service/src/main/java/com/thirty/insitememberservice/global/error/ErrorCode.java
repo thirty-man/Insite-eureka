@@ -18,6 +18,7 @@ public enum ErrorCode {
 	NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "002", "유효하지 않은 토큰입니다."),
 	//어플리케이션
 	NOT_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"001","존재하지 않는 어플리케이션입니다."),
+	ALREADY_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"002","이미 존재하는 어플리케이션입니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {

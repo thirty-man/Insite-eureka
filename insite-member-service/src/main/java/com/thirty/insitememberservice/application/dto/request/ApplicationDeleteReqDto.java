@@ -12,6 +12,4 @@ import javax.validation.constraints.NotNull;
 public class ApplicationDeleteReqDto {
     @NotNull
     private int applicationId;
-    @NotNull
-    private String applicationToken;
 }
