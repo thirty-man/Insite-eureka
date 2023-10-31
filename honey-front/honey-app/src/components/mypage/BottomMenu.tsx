@@ -31,6 +31,11 @@ function ButtomMenu() {
   const [alertText, setAlertText] = useState<string>("");
 
   function showMemberList(): void {
+    if (myRoomList.length === 0) {
+      setAlertText("참여한 방이 없습니다.");
+      setAlertModal(true);
+      return;
+    }
     setMemberOpen(true);
   }
 
@@ -61,6 +66,11 @@ function ButtomMenu() {
   }
 
   function exitRoom(): void {
+    if (myRoomList.length === 0) {
+      setAlertText("참여한 방이 없습니다.");
+      setAlertModal(true);
+      return;
+    }
     const config = {
       "Content-Type": "application/json",
       headers: { Authorization: token },
