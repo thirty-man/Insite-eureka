@@ -1,5 +1,5 @@
 import { ImageButton, TextButton } from "@components/common/button";
-import { PotModal } from "@components/common/modal";
+import { Alert, PotModal } from "@components/common/modal";
 import { RoomType, UserType } from "@customtype/dataTypes";
 import useRouter from "@hooks/useRouter";
 import {
@@ -25,6 +25,9 @@ function ButtomMenu() {
   const token = sessionStorage.getItem("Authorization");
   const { VITE_API_URL } = import.meta.env;
 
+  const [alertModal, setAlertModal] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>("");
+
   function showMemberList(): void {
     setMemberOpen(true);
   }
@@ -34,9 +37,12 @@ function ButtomMenu() {
   }
 
   function roomPaste(): void {
+    console.log(selectedRoom.id);
     const link = `http://rollinghoney.com/room/participate/${selectedRoom.id}`;
     navigator.clipboard.writeText(link);
-    alert("링크가 클립보드에 복사되었습니다.");
+    setAlertText("링크가 클립보드에 복사되었습니다.");
+    setAlertModal(true);
+    // alert("링크가 클립보드에 복사되었습니다.");
   }
 
   function exitRoom(): void {
@@ -52,11 +58,15 @@ function ButtomMenu() {
         config,
       )
       .then(() => {
-        alert("탈퇴되었습니다.");
+        setAlertText("탈퇴되었습니다.");
+        setAlertModal(true);
+        // alert("탈퇴되었습니다.");
       })
       .catch((error) => {
         if (error.response.data.errorCode === "002") {
-          alert("참가되어있지 않은 방입니다.");
+          setAlertText("참가되어있지 않은 방입니다.");
+          setAlertModal(true);
+          // alert("참가되어있지 않은 방입니다.");
         }
         // console.error("Error Delete:", error.response.data.errorCode);
       });
@@ -70,79 +80,90 @@ function ButtomMenu() {
   }
 
   return (
-    <div className="flex w-full">
-      <div className="flex flex-col w-[50%] h-[247px] items-center justify-center">
-        <TextButton
-          text="참가자 보기"
-          color="3"
-          className={buttonStyle}
-          onClick={() => showMemberList()}
-        />
-        {memberOpen && (
-          <PotModal
-            className=" w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[250px] rounded-[36px] shadow-lg flex flex-col items-center px-[15px] py-[15px] bg-cg-6"
-            overlay
-            openModal={memberOpen}
-          >
-            <div className="flex h-[8%] mb-4 sm:text-[30px] text-[20px] rounded-xl bg-cg-1 p-4 justify-center text-center items-center">
-              참가자 목록
-            </div>
-            <div className="flex flex-col justify-start items-center w-[100%] h-[80%] overflow-y-auto rounded-[30px] bg-cg-7  text-[20px] px-[15px] py-[15px]">
-              {memberList.map((member) => (
-                <div
-                  key={member.id}
-                  className="flex w-[80%] bg-cg-1 m-2 rounded-xl items-center justify-center"
-                >
-                  <div className="w-[100%] flex justify-center items-center">
-                    <div className="w-[70%]">{member.name}</div>
-                    <ImageButton
-                      image={sendPotImg}
-                      alt="보내기"
-                      className="flex items-center justify-center w-[30%] h-[40px]text-[16px] rounded-md"
-                      onClick={() => sendMessage(member)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+    <>
+      <div className="flex w-full">
+        <div className="flex flex-col w-[50%] h-[247px] items-center justify-center">
+          <TextButton
+            text="참가자 보기"
+            color="3"
+            className={buttonStyle}
+            onClick={() => showMemberList()}
+          />
+          {memberOpen && (
             <PotModal
-              className="w-[80px] h-[25px] -translate-x-[40px] translate-y-[190px] sm:w-[100px] sm:h-[35px] sm:-translate-x-[50px] sm:translate-y-[280px] rounded-[60px] bg-cg-1 flex items-center justify-center hover:scale-125 hover:bg-cg-3"
-              overlay={false}
-              openModal
+              className=" w-[300px] h-[400px] -translate-x-[150px] translate-y-[150px] sm:w-[500px] sm:h-[600px] sm:-translate-x-[250px] sm:translate-y-[250px] rounded-[36px] shadow-lg flex flex-col items-center px-[15px] py-[15px] bg-cg-6"
+              overlay
+              openModal={memberOpen}
             >
-              <button
-                type="button"
-                className="sm:w-[100%] sm:h-[100%] sm:text-[24px] text-[15px]"
-                onClick={() => setMemberOpen(false)}
+              <div className="flex h-[8%] mb-4 sm:text-[30px] text-[20px] rounded-xl bg-cg-1 p-4 justify-center text-center items-center">
+                참가자 목록
+              </div>
+              <div className="flex flex-col justify-start items-center w-[100%] h-[80%] overflow-y-auto rounded-[30px] bg-cg-7  text-[20px] px-[15px] py-[15px]">
+                {memberList.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex w-[80%] bg-cg-1 m-2 rounded-xl items-center justify-center"
+                  >
+                    <div className="w-[100%] flex justify-center items-center">
+                      <div className="w-[70%]">{member.name}</div>
+                      <ImageButton
+                        image={sendPotImg}
+                        alt="보내기"
+                        className="flex items-center justify-center w-[30%] h-[40px]text-[16px] rounded-md"
+                        onClick={() => sendMessage(member)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <PotModal
+                className="w-[80px] h-[25px] -translate-x-[40px] translate-y-[190px] sm:w-[100px] sm:h-[35px] sm:-translate-x-[50px] sm:translate-y-[280px] rounded-[60px] bg-cg-1 flex items-center justify-center hover:scale-125 hover:bg-cg-3"
+                overlay={false}
+                openModal
               >
-                닫기
-              </button>
+                <button
+                  type="button"
+                  className="sm:w-[100%] sm:h-[100%] sm:text-[24px] text-[15px]"
+                  onClick={() => setMemberOpen(false)}
+                >
+                  닫기
+                </button>
+              </PotModal>
             </PotModal>
-          </PotModal>
-        )}
-        <TextButton
-          text="초대 링크 복사"
-          color="3"
-          className={buttonStyle}
-          onClick={() => roomPaste()}
-        />
-        <TextButton
-          text="방 수정"
-          color="3"
-          className={buttonStyle}
-          onClick={() => modifyRoom()}
-        />
-        <TextButton
-          text="방 탈퇴"
-          color="3"
-          className={buttonStyle}
-          onClick={() => exitRoom()}
-        />
+          )}
+          <TextButton
+            text="초대 링크 복사"
+            color="3"
+            className={buttonStyle}
+            onClick={() => roomPaste()}
+          />
+          <TextButton
+            text="방 수정"
+            color="3"
+            className={buttonStyle}
+            onClick={() => modifyRoom()}
+          />
+          <TextButton
+            text="방 탈퇴"
+            color="3"
+            className={buttonStyle}
+            onClick={() => exitRoom()}
+          />
+        </div>
+        <div className="flex w-[50%] justify-center items">
+          <img src={greedyPoohImg} alt="푸" className="" />
+        </div>
       </div>
-      <div className="flex w-[50%] justify-center items">
-        <img src={greedyPoohImg} alt="푸" className="" />
-      </div>
-    </div>
+      {alertModal && (
+        <Alert
+          openModal={alertModal}
+          closeButton="확인"
+          overz="z-[200]"
+          text={alertText}
+          closeAlert={() => setAlertModal(false)}
+        />
+      )}
+    </>
   );
 }
 
