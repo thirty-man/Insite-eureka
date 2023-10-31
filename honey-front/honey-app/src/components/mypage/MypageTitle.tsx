@@ -36,19 +36,13 @@ function MypageTitle() {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
       setShowTime(roomList[0].showTime.split("T")[0]);
-      return;
-    }
-
-    if (roomList.length === 0) {
-      setTitle("방이 없습니다.");
     }
   }, [roomList, setSelectedRoom]);
 
   useEffect(() => {
-    if (selectedRoom !== undefined) {
-      setTitle(selectedRoom.roomTitle);
-      setShowTime(selectedRoom.showTime.split("T")[0]);
-    }
+    if (selectedRoom === undefined) return;
+    setTitle(selectedRoom.roomTitle);
+    setShowTime(selectedRoom.showTime.split("T")[0]);
   }, [selectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);

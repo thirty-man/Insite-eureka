@@ -61,8 +61,6 @@ function ButtomMenu() {
       setAlertText("복사에 실패하였습니다.");
       setAlertModal(true);
     }
-
-    // alert("링크가 클립보드에 복사되었습니다.");
   }
 
   function exitRoom(): void {
@@ -85,18 +83,15 @@ function ButtomMenu() {
       .then(() => {
         setAlertText("탈퇴되었습니다.");
         setAlertModal(true);
-        // alert("탈퇴되었습니다.");
+        window.location.replace("/mypage");
       })
       .catch((error) => {
         if (error.response.data.errorCode === "002") {
           setAlertText("참가되어있지 않은 방입니다.");
           setAlertModal(true);
-          // alert("참가되어있지 않은 방입니다.");
         }
         // console.error("Error Delete:", error.response.data.errorCode);
       });
-
-    routeTo("/");
   }
 
   function sendMessage(member: UserType) {

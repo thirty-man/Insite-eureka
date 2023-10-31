@@ -15,10 +15,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import participateState from "@recoil/atom/participateState";
 
 function RoomList() {
-  // 방 목록 가져오기
   const [, setRoomList] = useRecoilState<RoomType[]>(roomListState);
   const [, setSelectedPage] = useRecoilState<PageType>(selectedPageState);
-  // const [title] = useRecoilState<string>(inputSearchState);
 
   const token = sessionStorage.getItem("Authorization");
 
