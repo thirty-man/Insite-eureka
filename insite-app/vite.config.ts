@@ -37,7 +37,7 @@ export default defineConfig({
       },
       {
         find: "@customtypes",
-        replacement: path.resolve(__dirname, "src/customtype"),
+        replacement: path.resolve(__dirname, "src/customtypes"),
       },
       {
         find: "@hooks",
@@ -47,7 +47,10 @@ export default defineConfig({
         find: "@pages",
         replacement: path.resolve(__dirname, "src/pages"),
       },
-
+      {
+        find: "@reducer",
+        replacement: path.resolve(__dirname, "src/reducer"),
+      },
       {
         find: "@styles",
         replacement: path.resolve(__dirname, "src/styles"),
