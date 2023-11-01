@@ -57,7 +57,6 @@ public class PageServiceImpl implements PageService {
     @Override
     public PageViewResDto getPageView(PageViewReqDto pageViewReqDto) {
 
-
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal(pageViewReqDto.getApplicationToken()),
@@ -66,7 +65,6 @@ public class PageServiceImpl implements PageService {
         Flux query = Flux.from(bucket)
                 .range(-30L, ChronoUnit.DAYS)
                 .filter(restrictions)
-                .groupBy("_time")
                 .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
                 .yield();
 
@@ -84,6 +82,10 @@ public class PageServiceImpl implements PageService {
                 System.out.println(fluxRecord.getValueByKey("isNew"));
                 System.out.println(fluxRecord.getValueByKey("osId"));
                 System.out.println(fluxRecord.getValueByKey("responseTime"));
+                System.out.println(fluxRecord.getValueByKey("cookieId"));
+                System.out.println(fluxRecord.getValueByKey("applicationToken"));
+                System.out.println(fluxRecord.getValueByKey("activityId"));
+                System.out.println(fluxRecord.getValueByKey("currentUrl"));
 
             }
         }
