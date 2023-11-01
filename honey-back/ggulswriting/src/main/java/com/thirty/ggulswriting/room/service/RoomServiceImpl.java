@@ -130,7 +130,7 @@ public class RoomServiceImpl implements RoomService {
 
 		//방장이면 권한을 넘김
 		if(member.equals(room.getMember())){
-			Optional<Participation> optionalOtherParticipation = participationRepository.findFirstByIsOutIsFalseAndMemberNot(member, Sort.by(Sort.Order.asc("participationId")));
+			Optional<Participation> optionalOtherParticipation = participationRepository.findFirstByRoomAndIsOutIsFalseAndMemberNot(room, member, Sort.by(Sort.Order.asc("participationId")));
 
 			//다른 참여자가 없으면 방 삭제 아니면 방장을 넘김
 			if(optionalOtherParticipation.isEmpty()){

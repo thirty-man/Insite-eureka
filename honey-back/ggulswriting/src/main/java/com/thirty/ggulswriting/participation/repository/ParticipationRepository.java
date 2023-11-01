@@ -21,8 +21,7 @@ public interface ParticipationRepository extends JpaRepository<Participation, In
 
 	List<Participation> findAllByMemberAndIsOutIsFalse(Member member);
 
-	Optional<Participation> findFirstByIsOutIsFalseAndMemberNot(
-			Member member, Sort sort);
+	Optional<Participation> findFirstByRoomAndIsOutIsFalseAndMemberNot(Room room, Member member, Sort sort);
 
 	int countAllByRoomAndIsOutIsFalse(Room room);
 }
