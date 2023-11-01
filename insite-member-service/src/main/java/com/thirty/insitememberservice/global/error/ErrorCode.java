@@ -19,6 +19,9 @@ public enum ErrorCode {
 	//어플리케이션
 	NOT_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"001","존재하지 않는 어플리케이션입니다."),
 	ALREADY_EXIST_APPLICATION(HttpStatus.BAD_REQUEST,"002","이미 존재하는 어플리케이션입니다."),
+	//버튼
+	ALREADY_EXIST_BUTTON_NAME(HttpStatus.BAD_REQUEST,"001","이미 존재하는 버튼이름입니다."),
+	NOT_EXIST_BUTTON(HttpStatus.BAD_REQUEST,"002","존재하지 않는 버튼입니다.")
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
