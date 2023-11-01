@@ -68,41 +68,16 @@ public class PageServiceImpl implements PageService {
                 .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
                 .yield();
 
-        DataDto dataDto = new DataDto();
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
-        System.out.println(tables);
-        System.out.println(tables.size());
+        int count=0;
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             System.out.println(records.size());
-            for (FluxRecord fluxRecord : records) {
-                System.out.println(fluxRecord.getValueByKey("beforeUrl"));
-                System.out.println(fluxRecord.getValueByKey("deviceId"));
-                System.out.println(fluxRecord.getValueByKey("isNew"));
-                System.out.println(fluxRecord.getValueByKey("osId"));
-                System.out.println(fluxRecord.getValueByKey("responseTime"));
-                System.out.println(fluxRecord.getValueByKey("cookieId"));
-                System.out.println(fluxRecord.getValueByKey("applicationToken"));
-                System.out.println(fluxRecord.getValueByKey("activityId"));
-                System.out.println(fluxRecord.getValueByKey("currentUrl"));
+            count = records.size();
 
-            }
         }
-//        String flux = "from(bucket: \"insite\")"
-//                + " |> range(start:-12h)"
-//                + " |>filter(fn: (r) =>r._measurement == \"data\" and r.applicationToken == \"token1\")";
-//        List<FluxTable> tables = influxDBClient.getQueryApi().query(flux);
-//        int pageView=0;
-//        for(FluxTable fluxTable:tables){
-//            List<FluxRecord> records = fluxTable.getRecords();
-//            for(FluxRecord record:records){
-//                System.out.println(record.getValueByKey("applicationToken").toString());
-//                ++pageView;
-//
-//            }
-//        }
-            PageViewResDto pageViewResDto = PageViewResDto.builder().pageView(0).build();
+            PageViewResDto pageViewResDto = PageViewResDto.builder().pageView(count).build();
 
             return pageViewResDto;
         }
