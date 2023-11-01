@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios from "axios";
 
 const { VITE_API_URL } = import.meta.env;

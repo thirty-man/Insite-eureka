@@ -9,8 +9,8 @@ const routePath = [
     element: <MainPage />,
   },
   {
-    id: "main-page",
-    path: "",
+    id: "muser-page",
+    path: "/user",
     element: <UserPage />,
   },
 ];
