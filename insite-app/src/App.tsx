@@ -1,7 +1,15 @@
-import "./App.css";
+import BackgroundDiv from "@components/common/BackgroundDiv";
+import Header from "@components/common/header/Header";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  return <div>App</div>;
+  return (
+    <BackgroundDiv>
+      <Header />
+      {/* <SIdebar /> */}
+      <Outlet />
+    </BackgroundDiv>
+  );
 }
 
 export default App;

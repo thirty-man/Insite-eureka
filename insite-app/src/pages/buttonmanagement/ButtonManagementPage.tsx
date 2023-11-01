@@ -1,9 +1,5 @@
 function ButtonManagementPage() {
-  return (
-    <>
-      <div>ButtonManagementPage</div>
-    </>
-  );
+  return <div>ButtonManagementPage</div>;
 }
 
 export default ButtonManagementPage;

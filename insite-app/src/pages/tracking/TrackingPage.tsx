@@ -1,9 +1,5 @@
 function TrackingPage() {
-  return (
-    <>
-      <div>TrackingPage</div>
-    </>
-  );
+  return <div>TrackingPage</div>;
 }
 
 export default TrackingPage;

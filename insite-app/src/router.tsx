@@ -1,17 +1,17 @@
-import MainPage from "@pages/main/MainPage";
-import UserPage from "@pages/user/UserPage";
-import { createBrowserRouter } from "react-router-dom";
+import App from "@App";
+import LoginPage from "@pages/login/LoginPage";
+import { RouteObject, createBrowserRouter } from "react-router-dom";
 
-const routePath = [
+const routePath: RouteObject[] = [
+  {
+    id: "login-page",
+    path: "/login",
+    element: <LoginPage />,
+  },
   {
     id: "main-page",
     path: "",
-    element: <MainPage />,
-  },
-  {
-    id: "muser-page",
-    path: "/user",
-    element: <UserPage />,
+    element: <App />,
   },
 ];
 

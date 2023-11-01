@@ -1,9 +1,8 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import persistedReducer from "./reducer.js";
+import { configureStore } from "@reduxjs/toolkit";
 
-// const store = configureStore({
-//   reducer: persistedReducer,
-//   devTools: true,
-// });
+const store = configureStore({
+  reducer: {},
+  devTools: true,
+});
 
-// export default store;
+export default store;
