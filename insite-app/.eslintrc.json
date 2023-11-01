@@ -14,7 +14,7 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./jsconfig.json"
+    "project": "./vite.config.js"
   },
   "plugins": ["react", "prettier"],
   "rules": {
@@ -22,5 +22,21 @@
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   },
-  "ignorePatterns": ["vite.config.js", ".eslintrc.json"]
+  "ignorePatterns": ["vite.config.js", ".eslintrc.json"],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"],
+          ["@action", "./src/action"],
+          ["@api", "./src/api"],
+          ["@components", "./src/components"],
+          ["@config", "./src/config"],
+          ["@pages", "./src/pages"],
+          ["@styles", "./src/styles"]
+        ],
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
 }
