@@ -1,9 +1,5 @@
 function ApiTestPage() {
-  return (
-    <>
-      <div>ApiTestPage</div>
-    </>
-  );
+  return <div>ApiTestPage</div>;
 }
 
 export default ApiTestPage;

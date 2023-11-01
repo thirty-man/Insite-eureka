@@ -1,9 +1,5 @@
 function GuidPage() {
-  return (
-    <>
-      <div>GuidPage</div>
-    </>
-  );
+  return <div>GuidPage</div>;
 }
 
 export default GuidPage;

@@ -1,8 +1,10 @@
+import Header from "@components/common/header/Header";
+
 function MainPage() {
   return (
-    <>
-      <div>메인페이지</div>
-    </>
+    <div>
+      <Header />
+    </div>
   );
 }
 
