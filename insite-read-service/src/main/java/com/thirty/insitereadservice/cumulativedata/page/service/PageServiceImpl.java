@@ -67,17 +67,23 @@ public class PageServiceImpl implements PageService {
                 .range(-30L, ChronoUnit.DAYS)
                 .filter(restrictions)
                 .groupBy("_time")
+                .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
                 .yield();
 
         DataDto dataDto = new DataDto();
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+        System.out.println(tables);
         System.out.println(tables.size());
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             System.out.println(records.size());
             for (FluxRecord fluxRecord : records) {
-                System.out.println(fluxRecord.getValueByKey("_value"));
+                System.out.println(fluxRecord.getValueByKey("beforeUrl"));
+                System.out.println(fluxRecord.getValueByKey("deviceId"));
+                System.out.println(fluxRecord.getValueByKey("isNew"));
+                System.out.println(fluxRecord.getValueByKey("osId"));
+                System.out.println(fluxRecord.getValueByKey("responseTime"));
 
             }
         }
