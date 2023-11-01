@@ -93,6 +93,7 @@ public class SecurityConfig {
 		configuration.addAllowedOriginPattern("*"); // 모든 IP 주소 허용 (프론트 앤드 IP만 허용 react 나중에 바꺼야함)
 		configuration.setAllowCredentials(true); // 클라이언트에서 쿠키 요청 허용
 		configuration.addExposedHeader("Authorization"); // 옛날에는 디폴트 였다. 지금은 아닙니다.
+		configuration.addExposedHeader("RefreshToken");
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);//모든 주소 요청에 위 설정을 적용하겠다.
 		return source;
