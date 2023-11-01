@@ -24,10 +24,5 @@
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }]
   },
-  "ignorePatterns": [
-    "vite.config.ts",
-    ".eslintrc.json",
-    "tailwind.config.js",
-    "postcss.config.js"
-  ]
+  "ignorePatterns": ["vite.config.ts", ".eslintrc.json"]
 }
