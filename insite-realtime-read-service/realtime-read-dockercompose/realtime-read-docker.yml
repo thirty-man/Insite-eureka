@@ -1,0 +1,17 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    volumes:
+      - "./influxdb/data:/var/lib/influxdb2"
+      - "./influxdb/config:/etc/influxdb2"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=thirtyman
+      - DOCKER_INFLUXDB_INIT_PASSWORD=behappy1234
+      - DOCKER_INFLUXDB_INIT_ORG=thirty
+      - DOCKER_INFLUXDB_INIT_BUCKET=insite
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=behappy1234
+    container_name: influxdb-insite
