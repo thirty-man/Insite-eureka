@@ -23,6 +23,7 @@ const DefaultBoxStyle = styled.div<DefaultBoxProps>`
     0 10px 10px rgba(0, 0, 0, 0.22);
 `;
 
+/** 너비, 높이 */
 function DefaultBox({ children, width, height }: DefaultBoxProps) {
   return (
     <DefaultBoxStyle width={width} height={height}>

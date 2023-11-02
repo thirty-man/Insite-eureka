@@ -20,6 +20,7 @@ const TextBoxStyle = styled.div<TextBoxProps>`
     0 10px 10px rgba(0, 0, 0, 0.22);
 `;
 
+/** 검정색 테스트 박스: 너비, 높이 */
 function TextBox({ children, width, height }: TextBoxProps) {
   return (
     <TextBoxStyle width={width} height={height}>
