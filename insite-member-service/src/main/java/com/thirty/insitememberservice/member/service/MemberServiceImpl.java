@@ -1,10 +1,16 @@
 package com.thirty.insitememberservice.member.service;
 
 
+import com.thirty.insitememberservice.application.entity.Application;
+import com.thirty.insitememberservice.application.repository.ApplicationRepository;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
 import com.thirty.insitememberservice.global.config.jwt.JwtVO;
 import com.thirty.insitememberservice.global.config.service.RedisService;
+import com.thirty.insitememberservice.global.error.ErrorCode;
+import com.thirty.insitememberservice.global.error.exception.ApplicationException;
+import com.thirty.insitememberservice.global.error.exception.MemberException;
+import com.thirty.insitememberservice.member.dto.request.MemberValidReqDto;
 import com.thirty.insitememberservice.member.entity.Member;
 import com.thirty.insitememberservice.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +25,8 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+	private final ApplicationRepository applicationRepository;
 	private final MemberRepository memberRepository;
 	private final RedisService redisService;
 
@@ -57,4 +65,15 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
+	@Override
+	@Transactional
+	public void validationMemberAndApplication(int memberId, MemberValidReqDto memberValidReqDto) {
+		Member member = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId)
+			.orElseThrow(() -> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
+
+		Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(
+				member,
+				memberValidReqDto.getToken()
+			).orElseThrow(() -> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
+	}
 }

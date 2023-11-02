@@ -4,13 +4,16 @@ package com.thirty.insitememberservice.member.controller;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
 import com.thirty.insitememberservice.global.config.jwt.JwtVO;
+import com.thirty.insitememberservice.member.dto.request.MemberValidReqDto;
 import com.thirty.insitememberservice.member.entity.Member;
 import com.thirty.insitememberservice.member.service.MemberService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,5 +42,14 @@ public class MemberController {
 		Member member = loginUser.getMember();
 		String JWT = memberService.reissue(member, token, response);
 		return ResponseEntity.status(HttpStatus.OK).body(JWT);
+	}
+
+	@PostMapping("/{memberId}/valid")
+	public ResponseEntity<Void> validationMemberAndApplication(
+		@Valid @PathVariable int memberId,
+		@Valid @RequestBody MemberValidReqDto memberValidReqDto
+	){
+		memberService.validationMemberAndApplication(memberId, memberValidReqDto);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
