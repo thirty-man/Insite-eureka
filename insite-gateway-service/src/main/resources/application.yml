@@ -44,6 +44,14 @@ spring:
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-write-service #writeService
+          uri: lb://INSITE-WRITE-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/write-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
 
 ##ex http://localhost:8000/member-service/api/v1/member/reissue
 ## http://localhost:8000/member-service/api/v1/health/check
