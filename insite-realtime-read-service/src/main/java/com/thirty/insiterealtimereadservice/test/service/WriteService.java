@@ -5,6 +5,7 @@ import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import com.thirty.insiterealtimereadservice.button.dto.request.ButtonReqDto;
+import com.thirty.insiterealtimereadservice.test.dto.AbnormalReqDto;
 import com.thirty.insiterealtimereadservice.test.dto.DataReqDto;
 import java.time.Instant;
 import javax.annotation.Resource;
@@ -47,14 +48,14 @@ public class WriteService {
 	 			.addTag("cookieId", dataReqDto.getCookieId())
 	 			.addTag("currentUrl", dataReqDto.getCurrentUrl())
 	 			.addTag("activityId", dataReqDto.getActivityId())
-	 			.addTag("serviceToken", dataReqDto.getServiceToken())
-	 			.addField("beforeUrl", dataReqDto.getBeforeUrl())
-	 			.addField("responseTime", dataReqDto.getResponseTime())
-	 			.addField("deviceId", dataReqDto.getDeviceId())
-	 			.addField("osId", dataReqDto.getOsId())
-	 			.addField("isNew", dataReqDto.getIsNew())
+	 			.addTag("applicationToken", dataReqDto.getApplicationToken())
+	 			.addTag("beforeUrl", dataReqDto.getBeforeUrl())
+	 			.addTag("responseTime", String.valueOf(dataReqDto.getResponseTime()))
+	 			.addTag("osId", dataReqDto.getOsId())
+	 			.addTag("isNew", dataReqDto.getIsNew().toString())
+				.addField("createTime",dataReqDto.getCreateTime().toString())
 	 			.time(Instant.now(), WritePrecision.MS);
-
+			System.out.println("data={}"+ dataReqDto);
 	 		writeApi.writePoint(bucket, org, point);
 	 	}
 	 }
@@ -64,11 +65,25 @@ public class WriteService {
 		try (WriteApi writeApi = influxDBClient.getWriteApi()) {
 			Point point = Point.measurement("button")
 				.addTag("cookieId", buttonReqDto.getCookieId())
-				.addTag("serviceToken", buttonReqDto.getServiceToken())
+				.addTag("applicationToken", buttonReqDto.getApplicationToken())
 				.addTag("name", buttonReqDto.getName())
 				.addField("currentUrl", buttonReqDto.getCurrentUrl())
 				.time(Instant.now(), WritePrecision.MS);
-			System.out.println("button= "+buttonReqDto.toString());
+			System.out.println("button= "+buttonReqDto);
+			writeApi.writePoint(bucket, org, point);
+		}
+	}
+
+	public void writeDataToAbnormal(AbnormalReqDto abnormalReqDto) {
+
+		try (WriteApi writeApi = influxDBClient.getWriteApi()) {
+			Point point = Point.measurement("abnormal")
+				.addTag("cookieId", abnormalReqDto.getCookieId())
+				.addTag("applicationToken", abnormalReqDto.getApplicationToken())
+				.addTag("isRead", abnormalReqDto.getIsRead())
+				.addField("createTime", abnormalReqDto.getCreateTime().toString())
+				.time(Instant.now(), WritePrecision.MS);
+			System.out.println("abnormal= "+abnormalReqDto);
 			writeApi.writePoint(bucket, org, point);
 		}
 	}

@@ -2,6 +2,7 @@ package com.thirty.insiterealtimereadservice.test.controller;
 
 import com.thirty.insiterealtimereadservice.button.dto.request.ButtonReqDto;
 import com.thirty.insiterealtimereadservice.test.dto.DataReqDto;
+import com.thirty.insiterealtimereadservice.test.dto.AbnormalReqDto;
 import com.thirty.insiterealtimereadservice.test.service.WriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,14 @@ public class WriteController {
         @RequestBody ButtonReqDto buttonReqDto
     ){
         writeService.writeDataToButton(buttonReqDto);
+        return new ResponseEntity<>("Ok", HttpStatus.OK);
+    }
+
+    @PostMapping("/abnormal")
+    public ResponseEntity<String> writeToAbnormal(
+        @RequestBody AbnormalReqDto abnormalReqDto
+    ){
+        writeService.writeDataToAbnormal(abnormalReqDto);
         return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
 }

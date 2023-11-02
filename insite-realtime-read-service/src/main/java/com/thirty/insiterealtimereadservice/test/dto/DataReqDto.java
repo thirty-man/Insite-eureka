@@ -7,9 +7,11 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataReqDto {
@@ -22,8 +24,6 @@ public class DataReqDto {
 
     private int responseTime;
 
-    private String deviceId;
-
     private String osId;
 
     @Default
@@ -31,7 +31,7 @@ public class DataReqDto {
 
     private Boolean isNew;
 
-    private String serviceToken;
+    private String applicationToken;
 
     private String activityId;
 }
