@@ -1,0 +1,29 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: insite-write-service
+  config:
+    import: optional:file:.env[.properties]
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
+
+
+influxdb:
+  url: ${INFLUX_HOST}
+  token: ${INFLUX_TOKEN}
+  org: ${INFLUX_ORG}
+  bucket: ${INFLUX_BUCKET}
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    server-url:
+      defaultZone: http://localhost:8761/eureka
+
