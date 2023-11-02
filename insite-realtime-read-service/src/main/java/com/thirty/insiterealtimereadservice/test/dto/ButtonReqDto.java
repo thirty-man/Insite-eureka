@@ -1,4 +1,4 @@
-package com.thirty.insiterealtimereadservice.button.dto.request;
+package com.thirty.insiterealtimereadservice.test.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
