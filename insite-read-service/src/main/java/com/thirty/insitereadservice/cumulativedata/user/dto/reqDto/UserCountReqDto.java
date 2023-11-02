@@ -1,14 +1,16 @@
-package com.thirty.insitereadservice.cumulativedata.page.dto.reqDto;
+package com.thirty.insitereadservice.cumulativedata.user.dto.reqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationTokenReqDto {
+@Builder
+public class UserCountReqDto {
+
     private String applicationToken;
+
 }
