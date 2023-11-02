@@ -8,9 +8,6 @@ spring:
     name: insite-write-service
   config:
     import: optional:file:.env[.properties]
-  data:
-    mongodb:
-      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
 
 
 influxdb:
@@ -20,10 +17,10 @@ influxdb:
   bucket: ${INFLUX_BUCKET}
 
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    server-url:
-      defaultZone: http://localhost:8761/eureka
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    server-url:
+#      defaultZone: http://localhost:8761/eureka
 

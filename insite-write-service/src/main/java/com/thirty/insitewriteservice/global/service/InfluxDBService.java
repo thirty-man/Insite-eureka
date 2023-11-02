@@ -31,15 +31,15 @@ public class InfluxDBService {
 			Point point = Point.measurement("data")
 				.addTag("cookieId", dataReqDto.getCookieId())
 				.addTag("currentUrl", dataReqDto.getCurrentUrl())
-				.addTag("activityId", dataReqDto.getActivityId())
-				.addTag("serviceToken", dataReqDto.getServiceToken())
 				.addField("beforeUrl", dataReqDto.getBeforeUrl())
+				.addField("referrer", dataReqDto.getReferrer())
+				.addField("language", dataReqDto.getLanguage())
 				.addField("responseTime", dataReqDto.getResponseTime())
-				.addField("deviceId", dataReqDto.getDeviceId())
 				.addField("osId", dataReqDto.getOsId())
 				.addField("isNew", dataReqDto.isNew())
+				.addTag("serviceToken", dataReqDto.getServiceToken())
+				.addTag("activityId", dataReqDto.getActivityId())
 				.time(Instant.now(), WritePrecision.MS);
-
 			writeApi.writePoint(bucket, org, point);
 		}
 	}
