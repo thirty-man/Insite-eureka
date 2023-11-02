@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BackgroundDiv from "@components/common/BackgroudDiv";
+import BackgroundDiv from "@components/common/BackgroundDiv";
 
 const HeaderContainer = styled.div`
   position: fixed;
