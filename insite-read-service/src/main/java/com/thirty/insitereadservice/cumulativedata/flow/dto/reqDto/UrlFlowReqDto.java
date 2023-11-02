@@ -1,4 +1,4 @@
-package com.thirty.insitereadservice.cumulativedata.page.dto.reqDto;
+package com.thirty.insitereadservice.cumulativedata.flow.dto.reqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageViewReqDto {
+public class UrlFlowReqDto {
     private String applicationToken;
-
     private String currentUrl;
-
 }

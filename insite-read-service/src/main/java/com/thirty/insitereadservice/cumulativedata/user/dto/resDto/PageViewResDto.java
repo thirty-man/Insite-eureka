@@ -1,4 +1,4 @@
-package com.thirty.insitereadservice.cumulativedata.page.dto.resDto;
+package com.thirty.insitereadservice.cumulativedata.user.dto.resDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
