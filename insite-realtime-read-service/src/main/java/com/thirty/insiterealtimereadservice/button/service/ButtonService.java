@@ -1,10 +1,11 @@
 package com.thirty.insiterealtimereadservice.button.service;
 
-import com.thirty.insiterealtimereadservice.button.dto.response.RealTimeCountResDto;
-import com.thirty.insiterealtimereadservice.button.measurement.Button;
-import java.util.List;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 
 public interface ButtonService {
 
-    RealTimeCountResDto readRealTimeCount(String serviceToken, String name);
+    CountResDto count(int memberId, String token);
+
+    CountPerUserResDto countPerUser(int memberId, String token);
 }

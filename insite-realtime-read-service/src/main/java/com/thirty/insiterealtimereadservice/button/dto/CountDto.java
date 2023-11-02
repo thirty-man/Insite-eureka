@@ -1,4 +1,4 @@
-package com.thirty.insiterealtimereadservice.button.dto.response;
+package com.thirty.insiterealtimereadservice.button.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RealTimeCountResDto {
+public class CountDto {
+
+    private String name;
+
     private int count;
 
-    public static RealTimeCountResDto create(int count){
-        return RealTimeCountResDto.builder()
+    public static CountDto create(String name, int count){
+        return CountDto.builder()
+            .name(name)
             .count(count)
             .build();
     }

@@ -2,54 +2,161 @@ package com.thirty.insiterealtimereadservice.button.service;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.QueryApi;
-import com.influxdb.client.domain.Query;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
-import com.thirty.insiterealtimereadservice.button.dto.response.RealTimeCountResDto;
+import com.influxdb.query.dsl.Flux;
+import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insiterealtimereadservice.button.dto.CountDto;
+import com.thirty.insiterealtimereadservice.button.dto.CountPerUserDto;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.button.measurement.Button;
+import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
+import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
+import feign.FeignException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ButtonServiceImpl implements ButtonService{
+    private final MemberServiceClient memberServiceClient;
 
     @Resource
     private InfluxDBClient influxDBClient;
 
 
     @Override
-    public RealTimeCountResDto readRealTimeCount(String serviceToken, String name) {
+    public CountResDto count(int memberId, String token) {
+        try{
+            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+        }catch (FeignException fe){
+            log.error(fe.getMessage());
+            //TODO 에러던지기
+        }
+
+        //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
-        StringBuilder queryBuilder = new StringBuilder();
+        Restrictions restrictions = Restrictions.and(
+            Restrictions.measurement().equal("button"),
+            Restrictions.tag("serviceToken").equal(token)
+        );
+        Flux query = Flux.from("insite")
+            .range(0L)
+            .filter(restrictions)
+            .groupBy("name")
+            .count();
 
-        queryBuilder
-            .append("from(bucket: \"insite\")")
-            .append(" |> range(start: -30m)")  // 현재로부터 30분 이전
-            .append(" |> filter(fn: (r) => r._measurement == \"button\" and r.serviceToken == \"")
-            .append(serviceToken)
-            .append("\" and r.name == \"")
-            .append(name)
-            .append("\")")
-            .append(" |> count()");
+        log.info("query = {}" ,query);
 
-        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
-        int count = 0;
+        //해당 값 가져와 이름별로 각 숫자 저장
+        List<FluxTable> tables = queryApi.query(query.toString());
+        Map<String, Integer> nameCounts = new HashMap<>();
+
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
-            if (records.size() > 0) {
-                FluxRecord record = records.get(0);
+
+            for (FluxRecord record : records) {
+                String name = record.getValueByKey("name").toString();
                 String countStringValue = record.getValueByKey("_value").toString();
-                count = Integer.valueOf(countStringValue);
+                int count = Integer.valueOf(countStringValue);
+
+                // Map에 이름(name)과 해당 이름의 카운트 값을 저장
+                nameCounts.put(name, count);
             }
         }
-        return RealTimeCountResDto.create(count);
+
+        //response 형식으로 변환
+        List<CountDto> countDtoList = new ArrayList<>();
+        for(String name : nameCounts.keySet()){
+                countDtoList.add(CountDto.create(name, nameCounts.get(name)));
+        }
+
+        return CountResDto.create(countDtoList);
     }
 
+    @Override
+    public CountPerUserResDto countPerUser(int memberId, String token) {
+        try{
+            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+        }catch (FeignException fe){
+            log.error(fe.getMessage());
+            //TODO 에러던지기
+        }
 
+        QueryApi queryApi = influxDBClient.getQueryApi();
 
+        //쿼리 생성
+//        queryBuilder
+//            .append("from(bucket: \"insite\")")
+//            .append(" |> range(start: 0)")  // 현재로부터 30분 이전
+//            .append(" |> filter(fn: (r) => r._measurement == \"button\" and r.serviceToken == \"")
+//            .append(token)
+//            .append("\")")
+//            .append(" |> group(columns: [\"name\"])") // 이름(name)으로 그룹화
+//            .append(" |> count(column: \"cookieId\")"); // 각 그룹에서 쿠키 아이디(cookieId) 종류 수 계산
 
+        Restrictions restrictions = Restrictions.and(
+            Restrictions.measurement().equal("button"),
+            Restrictions.tag("serviceToken").equal(token)
+        );
+        Flux query = Flux.from("insite")
+            .range(0L)
+            .filter(restrictions)
+            .groupBy(new String[]{"name","cookieId"})
+            .count();
+
+        // 쿼리 결과 매핑
+        List<FluxTable> tables = queryApi.query(query.toString());
+        Map<String, Map<String, Integer>> nameCookieIdCountMap = new HashMap<>();
+
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+            for (FluxRecord record : records) {
+                String name = record.getValueByKey("name").toString();
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String count = record.getValueByKey("_value").toString();
+                int cookieCount = Integer.valueOf(count);
+
+                // 1차 그룹화: 이름(name)으로 그룹화
+                nameCookieIdCountMap.computeIfAbsent(name, k -> new HashMap<>());
+                // 2차 그룹화: 쿠키 아이디(cookieId)로 그룹화
+                nameCookieIdCountMap.get(name)
+                    .compute(cookieId, (k, v) -> (v == null) ? cookieCount : v+cookieCount);
+            }
+
+        }
+
+        // 결과 출력
+        List<CountPerUserDto> countPerUserDtoList = new ArrayList<>();
+        for (Map.Entry<String, Map<String, Integer>> entry : nameCookieIdCountMap.entrySet()) {
+            String name = entry.getKey();
+
+            Map<String, Integer> cookieIdCounts = entry.getValue();
+            int size = cookieIdCounts.size(); // 맵의 크기를 가져옴
+
+            Double sum = 0.0;
+            for (Map.Entry<String, Integer> cookieIdEntry : cookieIdCounts.entrySet()) {
+                sum += cookieIdEntry.getValue();
+            }
+
+            log.info("name={}", name);
+            log.info("sum={}", sum);
+            log.info("size={}", size);
+
+            Double average = (size == 0) ? 0.0 : sum / size;
+            countPerUserDtoList.add(CountPerUserDto.create(name, average));
+        }
+        return CountPerUserResDto.create(countPerUserDtoList);
+    }
 
     private List<Button> readAll(){
         QueryApi queryApi = influxDBClient.getQueryApi();

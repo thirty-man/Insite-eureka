@@ -1,14 +1,11 @@
 package com.thirty.insiterealtimereadservice.button.controller;
 
-import com.thirty.insiterealtimereadservice.button.dto.response.ButtonResDto;
-import com.thirty.insiterealtimereadservice.button.dto.response.RealTimeCountResDto;
-import com.thirty.insiterealtimereadservice.button.measurement.Button;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
+import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.button.service.ButtonService;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +21,21 @@ public class ButtonController {
     private final ButtonService buttonService;
 
     @GetMapping("/click-counts")
-    public ResponseEntity<RealTimeCountResDto> readRealTimeCount(
-        @Valid @RequestParam("token") String serviceToken,
-        @Valid @RequestParam("name") String name
+    public ResponseEntity<CountResDto> clickCount(
+        @Valid @RequestParam("memberId") int memberId,
+        @Valid @RequestParam("token") String token
     ){
-        RealTimeCountResDto realTimeCountResDto = buttonService.readRealTimeCount(serviceToken, name);
-        return new ResponseEntity<>(realTimeCountResDto, HttpStatus.OK);
+        CountResDto countResDto = buttonService.count(memberId, token);
+        return new ResponseEntity<>(countResDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/click-counts-per-user")
+    public ResponseEntity<CountPerUserResDto> clickCountPerUser(
+        @Valid @RequestParam("memberId") int memberId,
+        @Valid @RequestParam("token") String token
+    ){
+        CountPerUserResDto countPerUserResDto = buttonService.countPerUser(memberId, token);
+        return new ResponseEntity<>(countPerUserResDto, HttpStatus.OK);
     }
 }
 
