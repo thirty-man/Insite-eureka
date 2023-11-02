@@ -4,7 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import lombok.*;
 
 @Builder
@@ -12,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DataReqDto {
 	@NotNull
 	private String cookieId;
@@ -30,7 +30,7 @@ public class DataReqDto {
 	@NotNull
 	private boolean isNew;
 	@NotNull
-	private String serviceToken;
+	private String applicationToken;
 	@NotNull
 	private String activityId; // dummy 값 받아서 추후 계산해야합니다.
 

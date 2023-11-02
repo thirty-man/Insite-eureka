@@ -1,6 +1,7 @@
 package com.thirty.insitewriteservice.global.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
@@ -31,14 +32,15 @@ public class InfluxDBService {
 			Point point = Point.measurement("data")
 				.addTag("cookieId", dataReqDto.getCookieId())
 				.addTag("currentUrl", dataReqDto.getCurrentUrl())
-				.addField("beforeUrl", dataReqDto.getBeforeUrl())
-				.addField("referrer", dataReqDto.getReferrer())
-				.addField("language", dataReqDto.getLanguage())
-				.addField("responseTime", dataReqDto.getResponseTime())
-				.addField("osId", dataReqDto.getOsId())
-				.addField("isNew", dataReqDto.isNew())
-				.addTag("serviceToken", dataReqDto.getServiceToken())
+				.addTag("beforeUrl", dataReqDto.getBeforeUrl())
+				.addTag("referrer", dataReqDto.getReferrer())
+				.addTag("language", dataReqDto.getLanguage())
+				.addTag("responseTime", dataReqDto.getResponseTime())
+				.addTag("osId", dataReqDto.getOsId())
+				.addTag("isNew", Boolean.toString(dataReqDto.isNew()))
+				.addTag("applicationToken", dataReqDto.getApplicationToken())
 				.addTag("activityId", dataReqDto.getActivityId())
+				.addField("createTime", LocalDateTime.now().toString())
 				.time(Instant.now(), WritePrecision.MS);
 			writeApi.writePoint(bucket, org, point);
 		}
