@@ -1,5 +1,5 @@
-import { insiteText, insitepanda, kakaoLoginButton } from "@assets/images";
-import { BackgroundDiv } from "@components/common";
+import { insiteText, insitePanda, kakaoLoginButton } from "@assets/images";
+import BackgroundDiv from "@components/common/BackgroundDiv";
 import DefaultBox from "@components/common/DefaultBox";
 import { ImageButton } from "@components/common/button";
 import axios from "axios";
@@ -77,7 +77,7 @@ function LoginPage() {
       <DefaultBox width="500px" height="500px">
         <Container>
           <TitleContainer>
-            <ImagePanda src={insitepanda} alt="인사이트 판다" />
+            <ImagePanda src={insitePanda} alt="인사이트 판다" />
             <ImageName src={insiteText} alt="인사이트 이름" />
           </TitleContainer>
           <ImageButton
