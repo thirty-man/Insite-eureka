@@ -1,7 +1,7 @@
 import { insiteText, insitepanda, kakaoLoginButton } from "@assets/images";
-import BackgroudDiv from "@components/common/BackgroudDiv";
+import { BackgroundDiv } from "@components/common";
 import DefaultBox from "@components/common/DefaultBox";
-import ImageButton from "@components/common/button/ImageButton";
+import { ImageButton } from "@components/common/button";
 import axios from "axios";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -73,7 +73,7 @@ function LoginPage() {
   };
 
   return (
-    <BackgroudDiv>
+    <BackgroundDiv>
       <DefaultBox width="500px" height="500px">
         <Container>
           <TitleContainer>
@@ -84,13 +84,12 @@ function LoginPage() {
             width="50%"
             height="8%"
             onClick={handleLoginClick}
-            borderRadius="0px"
             src={kakaoLoginButton}
             alt="kakao Login Btn"
           />
         </Container>
       </DefaultBox>
-    </BackgroudDiv>
+    </BackgroundDiv>
   );
 }
 

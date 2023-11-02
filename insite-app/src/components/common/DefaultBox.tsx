@@ -12,6 +12,7 @@ const DefaultBoxStyle = styled.div<DefaultBoxProps>`
   padding: 0;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
