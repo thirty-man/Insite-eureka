@@ -1,9 +1,11 @@
 package com.thirty.insiterealtimereadservice.button.controller;
 
+import com.influxdb.client.InfluxDBClient;
 import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
 import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.button.service.ButtonService;
 import java.util.Map;
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ButtonController {
 
     private final ButtonService buttonService;
+
+
 
     @GetMapping("/click-counts")
     public ResponseEntity<CountResDto> clickCount(

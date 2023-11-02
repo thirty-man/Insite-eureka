@@ -24,5 +24,5 @@ public class ButtonReqDto {
 
     private String cookieId;
 
-    private String serviceToken;
+    private String applicationToken;
 }

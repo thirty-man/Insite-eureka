@@ -14,7 +14,6 @@ import com.thirty.insiterealtimereadservice.button.measurement.Button;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
 import feign.FeignException;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,16 +92,6 @@ public class ButtonServiceImpl implements ButtonService{
         }
 
         QueryApi queryApi = influxDBClient.getQueryApi();
-
-        //쿼리 생성
-//        queryBuilder
-//            .append("from(bucket: \"insite\")")
-//            .append(" |> range(start: 0)")  // 현재로부터 30분 이전
-//            .append(" |> filter(fn: (r) => r._measurement == \"button\" and r.serviceToken == \"")
-//            .append(token)
-//            .append("\")")
-//            .append(" |> group(columns: [\"name\"])") // 이름(name)으로 그룹화
-//            .append(" |> count(column: \"cookieId\")"); // 각 그룹에서 쿠키 아이디(cookieId) 종류 수 계산
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
