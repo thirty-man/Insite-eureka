@@ -19,6 +19,7 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   background-color: transparent;
 `;
 
+/** 너비, 높이, 폰트 사이즈 */
 function TitleBox({ children, width, height, fontSize }: TitleBoxProps) {
   return (
     <TitleBoxStyle width={width} height={height} fontSize={fontSize}>
