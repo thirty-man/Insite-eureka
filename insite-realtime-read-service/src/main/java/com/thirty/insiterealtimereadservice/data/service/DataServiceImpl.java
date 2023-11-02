@@ -14,7 +14,6 @@ import com.thirty.insiterealtimereadservice.data.dto.response.ResponseTimeResDto
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
-import feign.FeignException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +37,9 @@ public class DataServiceImpl implements DataService{
     @Override
     public ResponseTimeResDto getResponseTime(int memberId, String token) {
 
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-        }
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -75,11 +72,9 @@ public class DataServiceImpl implements DataService{
 
     @Override
     public ReferrerResDto getReferrer(int memberId, String token) {
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-        }
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -123,11 +118,9 @@ public class DataServiceImpl implements DataService{
 
     @Override
     public UserCountResDto getUserCount(int memberId, String token) {
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-        }
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -171,11 +164,8 @@ public class DataServiceImpl implements DataService{
 
     @Override
     public AbnormalResDto getAbnormal(int memberId, String token) {
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-        }
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
