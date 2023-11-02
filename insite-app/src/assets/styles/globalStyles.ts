@@ -66,7 +66,6 @@ const GlobalStyles = createGlobalStyle`
   }
   * {
     font-family: "Pretendard", sans-serif;
-    font-size: 16px;
   }
 
   ::-webkit-scrollbar-track {

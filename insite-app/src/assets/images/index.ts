@@ -1,5 +1,6 @@
-import kakaoLoginButton from "./kakaoLoginButton.png";
-import insitepanda from "./insitepanda.png";
-import insiteText from "./insiteText.png";
+import kakaoLoginButton from "./kakaoLoginButton.svg";
+import insitePanda from "./insitePanda.svg";
+import insiteText from "./insiteText.svg";
+import homeLogo from "./homeLogo.svg";
 
-export { kakaoLoginButton, insitepanda, insiteText };
+export { kakaoLoginButton, insitePanda, insiteText, homeLogo };
