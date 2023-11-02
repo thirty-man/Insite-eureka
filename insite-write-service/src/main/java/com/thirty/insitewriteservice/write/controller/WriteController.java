@@ -27,6 +27,7 @@ public class WriteController {
 	@PostMapping("/page")
 	public ResponseEntity<String> data(@RequestBody @Valid DataReqDto dataReqDto) {
 		realtimeService.writeRealData(dataReqDto);
+
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 
