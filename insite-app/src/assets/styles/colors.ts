@@ -10,6 +10,8 @@ const theme: DefaultTheme = {
     b3: "#1E1F23",
 
     c1: "#6746ED",
+
+    d1: "#D31738",
   },
 };
 

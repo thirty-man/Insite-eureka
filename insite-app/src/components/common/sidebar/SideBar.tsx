@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 import { homeLogo } from "@assets/images";
+import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
 import { SideBarMenu, icons } from "./SideBarMenu";
 import ImageButton from "../button/ImageButton";
@@ -28,10 +29,6 @@ const LogoImgWrapper = styled.div`
   justify-content: center;
 `;
 
-const LogoImg = styled.img`
-  width: 100%;
-`;
-
 const SideBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,8 +50,8 @@ const MenuWrapper = styled.button<{ isActive: boolean }>`
   align-items: center;
   justify-content: space-around;
   background-color: ${(props) =>
-    props.isActive ? props.theme.colors.a1 : "black"};
-  color: ${(props) => (props.isActive ? "black" : "white")};
+    props.isActive ? props.theme.colors.d1 : "black"};
+  color: white;
   width: 100%;
   height: 100%;
   max-width: 100%;
@@ -64,10 +61,13 @@ const MenuWrapper = styled.button<{ isActive: boolean }>`
     color 0.3s transform 0.3s;
 
   &:hover {
-    background-color: gray;
+    background-color: ${(props) => props.theme.colors.d1};
+    color: white;
+    font-weight: 600;
+    filter: invert(100%);
   }
 
-  ${({ isActive }) => isActive && `font-weight:600;`}
+  ${({ isActive }) => isActive && `font-weight:600; filter: invert(100%);`}
 `;
 const MenuItem = styled.div`
   display: flex;
@@ -112,12 +112,19 @@ const ContactImgWrapper = styled.div`
 
 function SideBar() {
   const [selectedMenuId, setSelectedMenuId] = useState<number>(1);
+  const navi = useNavigate();
 
   return (
     <SideBarContainer>
       <LogoContainer>
         <LogoImgWrapper>
-          <LogoImg src={homeLogo} alt="insite Home Logo" />
+          <ImageButton
+            width="100%"
+            height="100%"
+            src={homeLogo}
+            alt="insite Home Logo"
+            onClick={() => navi("/main")}
+          />
         </LogoImgWrapper>
       </LogoContainer>
       <SideBarWrapper>
@@ -125,7 +132,10 @@ function SideBar() {
           <MenuContainer key={item.id}>
             <MenuWrapper
               isActive={item.id === selectedMenuId}
-              onClick={() => setSelectedMenuId(item.id)}
+              onClick={() => {
+                setSelectedMenuId(item.id);
+                navi(item.route);
+              }}
             >
               <MenuItem>
                 <img src={icons[item.image]} alt={item.menu} />
