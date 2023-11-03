@@ -1,6 +1,5 @@
-package com.thirty.insiterealtimereadservice.button.dto;
+package com.thirty.insiterealtimereadservice.buttons.dto;
 
-import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

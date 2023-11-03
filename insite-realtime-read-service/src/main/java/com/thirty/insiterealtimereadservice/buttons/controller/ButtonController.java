@@ -1,10 +1,10 @@
-package com.thirty.insiterealtimereadservice.button.controller;
+package com.thirty.insiterealtimereadservice.buttons.controller;
 
-import com.thirty.insiterealtimereadservice.button.dto.request.ClickCountPerUserReqDto;
-import com.thirty.insiterealtimereadservice.button.dto.request.CountReqDto;
-import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
-import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
-import com.thirty.insiterealtimereadservice.button.service.ButtonService;
+import com.thirty.insiterealtimereadservice.buttons.dto.request.ClickCountPerUserReqDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.request.CountReqDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.response.CountPerUserResDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.response.CountResDto;
+import com.thirty.insiterealtimereadservice.buttons.service.ButtonService;
 import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
 import com.thirty.insiterealtimereadservice.global.jwt.JwtVO;
 import javax.servlet.http.HttpServletRequest;

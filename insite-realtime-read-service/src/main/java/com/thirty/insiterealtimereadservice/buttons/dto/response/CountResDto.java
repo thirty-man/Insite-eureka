@@ -1,6 +1,6 @@
-package com.thirty.insiterealtimereadservice.button.dto.response;
+package com.thirty.insiterealtimereadservice.buttons.dto.response;
 
-import com.thirty.insiterealtimereadservice.button.dto.CountDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.CountDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

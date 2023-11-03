@@ -1,4 +1,4 @@
-package com.thirty.insiterealtimereadservice.button.measurement;
+package com.thirty.insiterealtimereadservice.buttons.measurement;
 
 import com.influxdb.annotations.Column;
 import com.influxdb.annotations.Measurement;

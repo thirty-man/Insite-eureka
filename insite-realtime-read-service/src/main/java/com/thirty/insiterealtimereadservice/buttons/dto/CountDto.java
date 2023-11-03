@@ -1,4 +1,4 @@
-package com.thirty.insiterealtimereadservice.button.dto;
+package com.thirty.insiterealtimereadservice.buttons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
