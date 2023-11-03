@@ -10,7 +10,7 @@ import com.thirty.insitereadservice.cumulativedata.activeuser.dto.resDto.OsActiv
 import java.text.ParseException;
 
 public interface ActiveUserService {
-    ActiveUserResDto getActiveUserCount(ActiveUserReqDto activeUserReqDto);
-    AverageActiveTimeResDto getAverageActiveTime(AverageActiveTimeReqDto averageActiveTimeReqDto) throws ParseException;
-    OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto);
+    ActiveUserResDto getActiveUserCount(ActiveUserReqDto activeUserReqDto,int memberId);
+    AverageActiveTimeResDto getAverageActiveTime(AverageActiveTimeReqDto averageActiveTimeReqDto,int memberId) throws ParseException;
+    OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto,int memberId);
 }

@@ -10,9 +10,9 @@ import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.ReferrerFlowR
 import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.UrlFlowResDto;
 
 public interface FlowService {
-    UrlFlowResDto getUrlFlow(UrlFlowReqDto urlFlowReqDto);
-    ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto);
-    ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto);
-    BounceResDto getBounceCounts(BounceReqDto bounceReqDto);
+    UrlFlowResDto getUrlFlow(UrlFlowReqDto urlFlowReqDto,int memberId);
+    ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto,int memberId);
+    ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto,int memberId);
+    BounceResDto getBounceCounts(BounceReqDto bounceReqDto,int memberId);
 
 }

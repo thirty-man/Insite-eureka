@@ -17,6 +17,8 @@ import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.BounceResDto;
 import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.ExitFlowResDto;
 import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.ReferrerFlowResDto;
 import com.thirty.insitereadservice.cumulativedata.flow.dto.resDto.UrlFlowResDto;
+import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FlowServiceImpl implements FlowService {
+    private final MemberServiceClient memberServiceClient;
+
     @Value("${influxdb.org}")
     private String org;
 
@@ -44,7 +48,9 @@ public class FlowServiceImpl implements FlowService {
 
 
     @Override
-    public UrlFlowResDto getUrlFlow(UrlFlowReqDto urlFlowReqDto) {
+    public UrlFlowResDto getUrlFlow(UrlFlowReqDto urlFlowReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(urlFlowReqDto.getApplicationToken(),memberId));
+
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+urlFlowReqDto.getApplicationToken()+"\""),
@@ -77,7 +83,9 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto) {
+    public ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(referrerFlowReqDto.getApplicationToken(),memberId));
+
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+referrerFlowReqDto.getApplicationToken()+"\""),
@@ -109,7 +117,9 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto) {
+    public ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(exitFlowReqDto.getApplicationToken(),memberId));
+
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+exitFlowReqDto.getApplicationToken()+"\""),
@@ -126,11 +136,13 @@ public class FlowServiceImpl implements FlowService {
         List<FluxTable> tables = queryApi.query(query.toString());
         int size= tables.size();
 
-        return ExitFlowResDto.builder().exitcount(size).build();
+        return ExitFlowResDto.builder().exitCount(size).build();
     }
 
     @Override
-    public BounceResDto getBounceCounts(BounceReqDto bounceReqDto) {
+    public BounceResDto getBounceCounts(BounceReqDto bounceReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
+
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+bounceReqDto.getApplicationToken()+"\""),

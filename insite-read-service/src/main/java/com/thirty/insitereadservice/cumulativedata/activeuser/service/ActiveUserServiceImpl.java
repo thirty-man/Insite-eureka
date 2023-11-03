@@ -15,6 +15,8 @@ import com.thirty.insitereadservice.cumulativedata.activeuser.dto.OsActiveUserDt
 import com.thirty.insitereadservice.cumulativedata.activeuser.dto.resDto.AverageActiveTimeResDto;
 import com.thirty.insitereadservice.cumulativedata.activeuser.dto.resDto.OsActiveUserResDto;
 import com.thirty.insitereadservice.cumulativedata.user.service.UserService;
+import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ import java.util.StringTokenizer;
 @RequiredArgsConstructor
 public class ActiveUserServiceImpl implements ActiveUserService{
 
+    private final MemberServiceClient memberServiceClient;
+
     @Value("${influxdb.org}")
     private String org;
 
@@ -44,7 +48,8 @@ public class ActiveUserServiceImpl implements ActiveUserService{
 
     private final UserService userService;
     @Override
-    public ActiveUserResDto getActiveUserCount(ActiveUserReqDto activeUserReqDto) {
+    public ActiveUserResDto getActiveUserCount(ActiveUserReqDto activeUserReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+activeUserReqDto.getApplicationToken()+"\"")
@@ -65,7 +70,8 @@ public class ActiveUserServiceImpl implements ActiveUserService{
     }
 
     @Override
-    public AverageActiveTimeResDto getAverageActiveTime(AverageActiveTimeReqDto averageActiveTimeReqDto) {
+    public AverageActiveTimeResDto getAverageActiveTime(AverageActiveTimeReqDto averageActiveTimeReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+averageActiveTimeReqDto.getApplicationToken()+"\"")
@@ -113,7 +119,8 @@ public class ActiveUserServiceImpl implements ActiveUserService{
 
 
     @Override
-    public OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto) {
+    public OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+osActiveUserReqDto.getApplicationToken()+"\"")

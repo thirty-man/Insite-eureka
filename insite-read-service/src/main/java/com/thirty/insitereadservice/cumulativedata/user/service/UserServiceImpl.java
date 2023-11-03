@@ -11,6 +11,8 @@ import com.thirty.insitereadservice.cumulativedata.user.dto.reqDto.PageViewReqDt
 import com.thirty.insitereadservice.cumulativedata.user.dto.reqDto.UserCountReqDto;
 import com.thirty.insitereadservice.cumulativedata.user.dto.resDto.PageViewResDto;
 import com.thirty.insitereadservice.cumulativedata.user.dto.resDto.UserCountResDto;
+import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final MemberServiceClient memberServiceClient;
 
     @Value("${influxdb.org}")
     private String org;
@@ -37,7 +40,9 @@ public class UserServiceImpl implements UserService {
     private InfluxDBClient influxDBClient = InfluxDBClientFactory.create("http://localhost:8086", token, org);
 
     @Override
-    public PageViewResDto getPageView(PageViewReqDto pageViewReqDto) {
+    public PageViewResDto getPageView(PageViewReqDto pageViewReqDto,int memberId) {
+        //탈퇴 멤버인지 검증 -> 입력한 토큰이 그 멤버의 소유인지 확인
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(),memberId));
 
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
@@ -68,7 +73,8 @@ public class UserServiceImpl implements UserService {
         }
 
     @Override
-    public UserCountResDto getUserCount(UserCountReqDto userCountReqDto) {
+    public UserCountResDto getUserCount(UserCountReqDto userCountReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+userCountReqDto.getApplicationToken()+"\"")

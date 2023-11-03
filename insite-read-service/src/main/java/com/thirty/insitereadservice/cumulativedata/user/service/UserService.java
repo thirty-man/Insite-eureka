@@ -7,9 +7,9 @@ import com.thirty.insitereadservice.cumulativedata.user.dto.resDto.PageViewResDt
 import com.thirty.insitereadservice.cumulativedata.user.dto.resDto.UserCountResDto;
 
 public interface UserService {
-    PageViewResDto getPageView(PageViewReqDto pageViewReqDto);
+    PageViewResDto getPageView(PageViewReqDto pageViewReqDto,int memberId);
 
-    UserCountResDto getUserCount(UserCountReqDto userCountReqDto);
+    UserCountResDto getUserCount(UserCountReqDto userCountReqDto,int memberId);
 
 
 
