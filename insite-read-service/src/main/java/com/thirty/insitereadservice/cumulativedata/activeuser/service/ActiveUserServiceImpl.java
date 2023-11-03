@@ -20,8 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
@@ -74,15 +78,37 @@ public class ActiveUserServiceImpl implements ActiveUserService{
         List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+        double size = tables.size();
+        double time=0;
         for(FluxTable fluxTable:tables){
             List<FluxRecord> records = fluxTable.getRecords();
             if(records.size()<=1)
                 continue;
-            System.out.println(records.get(0).getValueByKey("_time"));
-            System.out.println(records.get(records.size()-1).getValueByKey("_time"));
-            System.out.println();
+            try {
+                StringTokenizer st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
+                String from ="";
+                from+=st.nextToken();
+                from+=" ";
+                from+=st.nextToken();
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+                Date fromDate = transFormat.parse(from);
+                st = new StringTokenizer(records.get(records.size() - 1).getValueByKey("_time").toString(),"T");
+                String to="";
+                to+=st.nextToken();
+                to+=" ";
+                to+=st.nextToken();
+                Date toDate = transFormat.parse(to);
+                long sec =(toDate.getTime()-fromDate.getTime())/1000;
+                time+=sec;
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
-        return null;
+        AverageActiveTimeResDto averageActiveTimeResDto = AverageActiveTimeResDto.builder()
+                .averageActiveTime(time/size).build();
+        return averageActiveTimeResDto;
     }
 
 
