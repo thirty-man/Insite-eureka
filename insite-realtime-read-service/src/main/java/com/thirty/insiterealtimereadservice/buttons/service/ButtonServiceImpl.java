@@ -13,6 +13,7 @@ import com.thirty.insiterealtimereadservice.buttons.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.buttons.measurement.Button;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class ButtonServiceImpl implements ButtonService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("name")
             .count();
@@ -87,7 +88,7 @@ public class ButtonServiceImpl implements ButtonService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy(new String[]{"name","cookieId"})
             .count();

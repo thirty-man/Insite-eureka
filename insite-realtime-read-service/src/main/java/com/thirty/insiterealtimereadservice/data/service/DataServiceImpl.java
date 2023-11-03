@@ -14,6 +14,7 @@ import com.thirty.insiterealtimereadservice.data.dto.response.ResponseTimeResDto
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
@@ -80,7 +81,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("beforeUrl")
             .count();
@@ -126,7 +127,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("currentUrl")
             .count();
@@ -171,7 +172,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(-30L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .pivot(new String[]{"_time"}, new String[]{"_field"},"isRead")
             .sort(new String[]{"_time"});
