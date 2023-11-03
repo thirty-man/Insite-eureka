@@ -13,7 +13,6 @@ const useAxios = (initialConfig: AxiosRequestConfig) => {
   const [error, setError] = useState<AxiosError | undefined>();
   const [loading, setLoading] = useState(true);
   const token = sessionStorage.getItem("Authorization");
-
   const fetchData = useCallback(
     async (params: AxiosRequestConfig) => {
       try {
@@ -40,7 +39,8 @@ const useAxios = (initialConfig: AxiosRequestConfig) => {
 
   useEffect(() => {
     fetchData(initialConfig);
-  }, [initialConfig, fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { response, error, loading, fetchData: sendData };
 };
