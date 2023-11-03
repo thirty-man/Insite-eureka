@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "insite-member-service")
 public interface MemberServiceClient {
 
-    @PostMapping(value = "api/v1/members/{memberId}/valid")
+    @PostMapping(value = "api/v1/members/valid")
     void validationMemberAndApplication(
-        @Valid @PathVariable(value = "memberId") int memberId,
         @Valid @RequestBody MemberValidReqDto memberValidReqDto
     );
 }
