@@ -38,8 +38,7 @@ public class DataServiceImpl implements DataService{
     public ResponseTimeResDto getResponseTime(int memberId, String token) {
 
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -47,7 +46,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
@@ -66,15 +65,14 @@ public class DataServiceImpl implements DataService{
                 sum+= time;
             }
         }
-        double avg = sum/size;
+        double avg = (size == 0) ? 0.0 : sum / size;
         return ResponseTimeResDto.create(avg);
     }
 
     @Override
     public ReferrerResDto getReferrer(int memberId, String token) {
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -82,7 +80,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .groupBy("beforeUrl")
             .count();
@@ -110,7 +108,7 @@ public class DataServiceImpl implements DataService{
             referrerDtoList.add(ReferrerDto.create(
                 url,
                 (int)curCount,
-                curCount/sum
+                (sum == 0) ? 0.0 : curCount/sum
             ));
         }
         return ReferrerResDto.create(referrerDtoList);
@@ -119,7 +117,7 @@ public class DataServiceImpl implements DataService{
     @Override
     public UserCountResDto getUserCount(int memberId, String token) {
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
 
         QueryApi queryApi = influxDBClient.getQueryApi();
@@ -128,7 +126,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .groupBy("currentUrl")
             .count();
@@ -156,7 +154,7 @@ public class DataServiceImpl implements DataService{
             userCountDtoList.add(UserCountDto.create(
                 url,
                 (int)curCount,
-                curCount/sum
+                (sum == 0)? 0.0 : curCount/sum
             ));
         }
         return UserCountResDto.create(userCountDtoList);
@@ -165,7 +163,7 @@ public class DataServiceImpl implements DataService{
     @Override
     public AbnormalResDto getAbnormal(int memberId, String token) {
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -173,7 +171,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .pivot(new String[]{"_time"}, new String[]{"_field"},"isRead")
             .sort(new String[]{"_time"});

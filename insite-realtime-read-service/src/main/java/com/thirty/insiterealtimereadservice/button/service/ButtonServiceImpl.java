@@ -13,7 +13,6 @@ import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.button.measurement.Button;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
-import feign.FeignException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,21 +34,16 @@ public class ButtonServiceImpl implements ButtonService{
 
     @Override
     public CountResDto count(int memberId, String token) {
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-            //TODO 에러던지기
-        }
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
-            Restrictions.tag("serviceToken").equal(token)
+            Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .groupBy("name")
             .count();
@@ -84,21 +78,16 @@ public class ButtonServiceImpl implements ButtonService{
 
     @Override
     public CountPerUserResDto countPerUser(int memberId, String token) {
-        try{
-            memberServiceClient.validationMemberAndApplication(memberId, MemberValidReqDto.create(token));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
-            //TODO 에러던지기
-        }
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
-            Restrictions.tag("serviceToken").equal(token)
+            Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L)
             .filter(restrictions)
             .groupBy(new String[]{"name","cookieId"})
             .count();
