@@ -20,6 +20,7 @@ const useAxios = (initialConfig: AxiosRequestConfig) => {
           ...params,
           headers: {
             Authorization: token,
+            "Content-Type": "application/json",
           },
         });
         setResponse(res);
