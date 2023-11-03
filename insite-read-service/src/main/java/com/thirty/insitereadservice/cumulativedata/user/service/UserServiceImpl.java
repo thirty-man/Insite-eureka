@@ -41,9 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageViewResDto getPageView(PageViewReqDto pageViewReqDto,int memberId) {
-        //탈퇴 멤버인지 검증 -> 입력한 토큰이 그 멤버의 소유인지 확인
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(),memberId));
-
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
         Restrictions restrictions = Restrictions.and(
                 Restrictions.measurement().equal("data"),
                 Restrictions.tag("applicationToken").equal("\""+pageViewReqDto.getApplicationToken()+"\""),

@@ -18,9 +18,9 @@ public class MemberValidReqDto {
     private int memberId;
 
     public static MemberValidReqDto create(String applicationToken, int memberId){
+
         return MemberValidReqDto.builder()
                 .applicationToken(applicationToken)
-                .memberId(memberId)
-                .build();
+                .memberId(memberId).build();
     }
 }
