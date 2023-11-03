@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 Restrictions.tag("currentUrl").equal("\""+pageViewReqDto.getCurrentUrl()+"\"")
         );
         Flux query = Flux.from(bucket)
-                .range(-30L, ChronoUnit.DAYS)
+                .range(0L)
                 .filter(restrictions)
                 .groupBy("applicationToken")
                 .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
                 Restrictions.tag("applicationToken").equal("\""+userCountReqDto.getApplicationToken()+"\"")
         );
         Flux query = Flux.from(bucket)
-                .range(-30L, ChronoUnit.DAYS)
+                .range(0L)
                 .filter(restrictions)
                 .groupBy("cookieId")
                 .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
