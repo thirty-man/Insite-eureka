@@ -1,18 +1,20 @@
 package com.thirty.insiterealtimereadservice.button.controller;
 
-import com.influxdb.client.InfluxDBClient;
+import com.thirty.insiterealtimereadservice.button.dto.request.ClickCountPerUserReqDto;
+import com.thirty.insiterealtimereadservice.button.dto.request.CountReqDto;
 import com.thirty.insiterealtimereadservice.button.dto.response.CountPerUserResDto;
 import com.thirty.insiterealtimereadservice.button.dto.response.CountResDto;
 import com.thirty.insiterealtimereadservice.button.service.ButtonService;
-import java.util.Map;
-import javax.annotation.Resource;
+import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
+import com.thirty.insiterealtimereadservice.global.jwt.JwtVO;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,23 +24,25 @@ public class ButtonController {
 
     private final ButtonService buttonService;
 
-
-
-    @GetMapping("/click-counts")
+    @PostMapping("/click-counts")
     public ResponseEntity<CountResDto> clickCount(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody CountReqDto countReqDto,
+        HttpServletRequest request
     ){
-        CountResDto countResDto = buttonService.count(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        CountResDto countResDto = buttonService.count(memberId, countReqDto.getToken());
         return new ResponseEntity<>(countResDto, HttpStatus.OK);
     }
 
-    @GetMapping("/click-counts-per-user")
+    @PostMapping("/click-counts-per-user")
     public ResponseEntity<CountPerUserResDto> clickCountPerUser(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody ClickCountPerUserReqDto clickCountPerUserReqDto,
+        HttpServletRequest request
     ){
-        CountPerUserResDto countPerUserResDto = buttonService.countPerUser(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        CountPerUserResDto countPerUserResDto = buttonService.countPerUser(memberId, clickCountPerUserReqDto.getToken());
         return new ResponseEntity<>(countPerUserResDto, HttpStatus.OK);
     }
 }

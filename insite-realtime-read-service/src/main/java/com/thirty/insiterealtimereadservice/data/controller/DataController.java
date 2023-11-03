@@ -1,17 +1,24 @@
 package com.thirty.insiterealtimereadservice.data.controller;
 
+import com.thirty.insiterealtimereadservice.data.dto.request.AbnormalReqDto;
+import com.thirty.insiterealtimereadservice.data.dto.request.ReferrerReqDto;
+import com.thirty.insiterealtimereadservice.data.dto.request.ResponseTimeReqDto;
+import com.thirty.insiterealtimereadservice.data.dto.request.UserCountReqDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.AbnormalResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.ResponseTimeResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.data.service.DataService;
+import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
+import com.thirty.insiterealtimereadservice.global.jwt.JwtVO;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,39 +28,49 @@ public class DataController {
 
     private final DataService dataService;
 
-    @GetMapping("/response-time")
+    @PostMapping("/response-time")
     public ResponseEntity<ResponseTimeResDto> getResponseTime(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody ResponseTimeReqDto responseTimeReqDto,
+        HttpServletRequest request
     ){
-        ResponseTimeResDto responseTimeResDto = dataService.getResponseTime(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        ResponseTimeResDto responseTimeResDto = dataService.getResponseTime(memberId,
+            responseTimeReqDto.getToken());
         return new ResponseEntity<>(responseTimeResDto, HttpStatus.OK);
     }
 
-    @GetMapping("/referrer")
+    @PostMapping("/referrer")
     public ResponseEntity<ReferrerResDto> getReferrer(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody ReferrerReqDto referrerReqDto,
+        HttpServletRequest request
     ){
-        ReferrerResDto referrerResDto = dataService.getReferrer(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        ReferrerResDto referrerResDto = dataService.getReferrer(memberId, referrerReqDto.getToken());
         return new ResponseEntity<>(referrerResDto, HttpStatus.OK);
     }
 
-    @GetMapping("/user-counts")
+    @PostMapping("/user-counts")
     public ResponseEntity<UserCountResDto> getUserCount(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody UserCountReqDto userCountReqDto,
+        HttpServletRequest request
     ){
-        UserCountResDto userCountResDto = dataService.getUserCount(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        UserCountResDto userCountResDto = dataService.getUserCount(memberId,
+            userCountReqDto.getToken());
         return new ResponseEntity<>(userCountResDto, HttpStatus.OK);
     }
 
-    @GetMapping("/abnormality")
+    @PostMapping("/abnormality")
     public ResponseEntity<AbnormalResDto> getAbnormal(
-        @Valid @RequestParam("memberId") int memberId,
-        @Valid @RequestParam("token") String token
+        @Valid @RequestBody AbnormalReqDto abnormalReqDto,
+        HttpServletRequest request
     ){
-        AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, token);
+        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getToken());
         return new ResponseEntity<>(abnormalResDto, HttpStatus.OK);
     }
 }
