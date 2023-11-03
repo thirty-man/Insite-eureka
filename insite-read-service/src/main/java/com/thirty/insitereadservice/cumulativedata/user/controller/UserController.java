@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<PageViewResDto> getPageView(@Valid @RequestBody PageViewReqDto pageViewReqDto,
                                                       HttpServletRequest request
                                                       ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         PageViewResDto pageViewResDto= userService.getPageView(pageViewReqDto,memberId);
         return new ResponseEntity<>(pageViewResDto, HttpStatus.OK);
@@ -33,7 +33,7 @@ public class UserController {
     public ResponseEntity<UserCountResDto> getUserCounts(@Valid @RequestBody UserCountReqDto userCountReqDto,
                                                          HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         UserCountResDto userCountResDto = userService.getUserCount(userCountReqDto,memberId);
         return new ResponseEntity<>(userCountResDto,HttpStatus.OK);
@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<ViewCountsPerUserResDto> getViewCountsPerUser(@Valid @RequestBody ViewCountsPerUserReqDto viewCountsPerUserReqDto,
                                                                         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
 
         PageViewResDto pageViewResDto = userService.getPageView(PageViewReqDto.builder().applicationToken(viewCountsPerUserReqDto.getApplicationToken())

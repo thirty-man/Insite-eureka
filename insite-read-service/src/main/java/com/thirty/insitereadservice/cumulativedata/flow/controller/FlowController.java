@@ -32,7 +32,7 @@ public class FlowController {
     public ResponseEntity<UrlFlowResDto> getUrlFlow(@Valid @RequestBody UrlFlowReqDto urlFlowReqDto,
                                                     HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         UrlFlowResDto urlFlowResDto = flowService.getUrlFlow(urlFlowReqDto,memberId);
         return new ResponseEntity<>(urlFlowResDto, HttpStatus.OK);
@@ -42,7 +42,7 @@ public class FlowController {
     public ResponseEntity<ReferrerFlowResDto> getReferrerFlow(@Valid @RequestBody ReferrerFlowReqDto referrerFlowReqDto,
                                                               HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         ReferrerFlowResDto referrerFlowResDto= flowService.getReferrerFlow(referrerFlowReqDto,memberId);
         return new ResponseEntity<>(referrerFlowResDto,HttpStatus.OK);
@@ -52,7 +52,7 @@ public class FlowController {
     public ResponseEntity<BounceResDto> getBounceCounts(@Valid @RequestBody BounceReqDto bounceReqDto,
                                                         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
 
         BounceResDto bounceResDto= flowService.getBounceCounts(bounceReqDto,memberId);
@@ -63,7 +63,7 @@ public class FlowController {
     public ResponseEntity<ExitFlowResDto> getExitCounts(@Valid @RequestBody ExitFlowReqDto exitFlowReqDto,
                                                         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         ExitFlowResDto exitFlowResDto=flowService.getExitFlow(exitFlowReqDto,memberId);
         return new ResponseEntity<>(exitFlowResDto,HttpStatus.OK);
