@@ -32,6 +32,8 @@ public class DataReqDto {
 	@NotNull
 	private String applicationToken;
 	@NotNull
+	private String applicationUrl;
+	@NotNull
 	private String activityId; // dummy 값 받아서 추후 계산해야합니다.
 
 	//마이에스큐엘 검증과정도 추가하기

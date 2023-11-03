@@ -39,8 +39,8 @@ public class InfluxDBService {
 				.addTag("osId", dataReqDto.getOsId())
 				.addTag("isNew", Boolean.toString(dataReqDto.isNew()))
 				.addTag("applicationToken", dataReqDto.getApplicationToken())
+				.addField("applicationUrl", dataReqDto.getApplicationUrl())
 				.addTag("activityId", dataReqDto.getActivityId())
-				.addField("createTime", LocalDateTime.now().toString())
 				.time(Instant.now(), WritePrecision.MS);
 			writeApi.writePoint(bucket, org, point);
 		}

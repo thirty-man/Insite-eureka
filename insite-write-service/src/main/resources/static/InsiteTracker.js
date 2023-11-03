@@ -42,9 +42,9 @@
             language: navigator.language,
             response_time: responseTime,
             os_id: navigator.platform,
-            create_time: new Date().toISOString(),
             is_new: isNew,
             application_token: "",
+            application_url: window.location.origin,
             activity_id: "",
         };
 
