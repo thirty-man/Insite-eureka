@@ -24,7 +24,10 @@ public class Button {
     private String cookieId;
 
     @Column
-    private String serviceToken;
+    private String applicationToken;
+
+    @Column
+    private String applicationUrl;
 
     public static Button create(String name
         , String currentUrl
@@ -33,7 +36,7 @@ public class Button {
             .name(name)
             .currentUrl(currentUrl)
             .cookieId(cookieId)
-            .serviceToken(serviceToken)
+            .applicationToken(serviceToken)
             .build();
     }
 }
