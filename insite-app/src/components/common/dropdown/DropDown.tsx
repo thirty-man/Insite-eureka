@@ -2,6 +2,10 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { dropdownArrow } from "@assets/icons";
 
+type ItemTypes = {
+  id: number;
+  name: string;
+};
 interface ComponentProps {
   width: string;
 }
@@ -12,7 +16,7 @@ interface ButtonProps {
 
 interface DropDownProps extends ComponentProps, ButtonProps {
   // todo type 추후에 지정해주기
-  items: any;
+  items: ItemTypes[];
 }
 
 const Component = styled.div<ComponentProps>`
@@ -110,7 +114,7 @@ function DropDown({ items, width, height }: DropDownProps) {
   const onClickOption = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsDropDown(false);
     const themeValue = e.currentTarget.value;
-    const selectedThemeObj = items.find((item) => item.value === themeValue);
+    const selectedThemeObj = items.find((item) => item.name === themeValue);
     if (selectedThemeObj) {
       setSelectedItem(selectedThemeObj.name);
     }
@@ -131,7 +135,7 @@ function DropDown({ items, width, height }: DropDownProps) {
       {isDropdown && (
         <DropDownStyle>
           {items.map((item) => (
-            <Option value={item.value} key={item.value} onClick={onClickOption}>
+            <Option value={item.id} key={item.id} onClick={onClickOption}>
               {item.name}
             </Option>
           ))}
