@@ -29,7 +29,7 @@ public class ButtonController {
         @Valid @RequestBody CountReqDto countReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         CountResDto countResDto = buttonService.count(memberId, countReqDto.getToken());
         return new ResponseEntity<>(countResDto, HttpStatus.OK);
@@ -40,7 +40,7 @@ public class ButtonController {
         @Valid @RequestBody ClickCountPerUserReqDto clickCountPerUserReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         CountPerUserResDto countPerUserResDto = buttonService.countPerUser(memberId, clickCountPerUserReqDto.getToken());
         return new ResponseEntity<>(countPerUserResDto, HttpStatus.OK);

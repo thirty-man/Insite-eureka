@@ -33,7 +33,7 @@ public class DataController {
         @Valid @RequestBody ResponseTimeReqDto responseTimeReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         ResponseTimeResDto responseTimeResDto = dataService.getResponseTime(memberId,
             responseTimeReqDto.getToken());
@@ -45,7 +45,7 @@ public class DataController {
         @Valid @RequestBody ReferrerReqDto referrerReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         ReferrerResDto referrerResDto = dataService.getReferrer(memberId, referrerReqDto.getToken());
         return new ResponseEntity<>(referrerResDto, HttpStatus.OK);
@@ -56,7 +56,7 @@ public class DataController {
         @Valid @RequestBody UserCountReqDto userCountReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         UserCountResDto userCountResDto = dataService.getUserCount(memberId,
             userCountReqDto.getToken());
@@ -68,7 +68,7 @@ public class DataController {
         @Valid @RequestBody AbnormalReqDto abnormalReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getToken());
         return new ResponseEntity<>(abnormalResDto, HttpStatus.OK);
