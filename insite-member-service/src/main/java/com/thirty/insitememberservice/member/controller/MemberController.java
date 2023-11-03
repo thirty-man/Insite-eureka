@@ -44,12 +44,11 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(JWT);
 	}
 
-	@PostMapping("/{memberId}/valid")
+	@PostMapping("/valid")
 	public ResponseEntity<Void> validationMemberAndApplication(
-		@Valid @PathVariable int memberId,
 		@Valid @RequestBody MemberValidReqDto memberValidReqDto
 	){
-		memberService.validationMemberAndApplication(memberId, memberValidReqDto);
+		memberService.validationMemberAndApplication(memberValidReqDto.getMemberId(), memberValidReqDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

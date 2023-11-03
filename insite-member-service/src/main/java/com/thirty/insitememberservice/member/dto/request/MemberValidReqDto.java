@@ -11,4 +11,7 @@ import lombok.NoArgsConstructor;
 public class MemberValidReqDto {
     @NotNull(message = "토큰값을 기입해주세요")
     private String token;
+
+    @NotNull(message = "멤버 아이디를 기입해주세요")
+    private int memberId;
 }
