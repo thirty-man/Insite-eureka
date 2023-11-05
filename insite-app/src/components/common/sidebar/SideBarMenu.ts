@@ -32,7 +32,7 @@ const SideBarMenu: SideBarMenuType[] = [
     id: 1,
     image: "IconTime",
     menu: "실시간",
-    route: "/realtime",
+    route: "",
   },
   {
     id: 2,

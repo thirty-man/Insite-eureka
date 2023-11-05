@@ -22,6 +22,15 @@ const SideBarContainer = styled.div`
 const MainContainer = styled.div`
   width: 100%;
 `;
+const OutletContainer = styled.div`
+  position: fixed;
+  overflow-y: auto;
+  top: 4rem;
+  left: 16.6rem;
+  width: 70rem;
+  height: 35rem;
+  color: white;
+`;
 
 function App() {
   return (
@@ -32,7 +41,9 @@ function App() {
         </SideBarContainer>
         <MainContainer>
           <Header />
-          <Outlet />
+          <OutletContainer>
+            <Outlet />
+          </OutletContainer>
         </MainContainer>
       </HorizontalContainer>
     </BackgroundDiv>
