@@ -1,5 +1,4 @@
-import API from "@api/Api";
-import DonutChart from "@components/chart/DonutChart";
+import DonutChart from "@components/chart/RealTimeUserDonutChart";
 import { BackgroundDiv, DefaultBox } from "@components/common";
 import Header from "@components/common/header/Header";
 

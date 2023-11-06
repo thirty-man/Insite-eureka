@@ -9,7 +9,7 @@ import ImageButton from "../button/ImageButton";
 
 const SideBarContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 96%;
   color: white;
 `;
 

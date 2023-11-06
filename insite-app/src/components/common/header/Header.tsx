@@ -6,8 +6,8 @@ import Modal from "../modal/Modal";
 import DropDown from "../dropdown/DropDown";
 
 const HeaderContainer = styled.div`
-  position: fixed;
-  width: 82%;
+  /* position: fixed; */
+  width: 100%;
   height: 10%;
   top: 0;
   right: 0;

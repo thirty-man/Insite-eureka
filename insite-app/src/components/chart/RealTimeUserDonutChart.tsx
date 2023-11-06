@@ -1,27 +1,12 @@
 // import useGetRealTimeData from "@api/useGetRealTimeData";
 import API from "@api/Api";
+import { ChartDto, UserCountDto } from "@customtypes/dataTypes";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useState } from "react";
 
-type UserCountDto = {
-  count: number;
-  percentage: number;
-  currentPage: string;
-};
-
-type ChartDto = {
-  name: string;
-  y: number;
-  dataLables: {
-    enabled: boolean;
-    format: string;
-  };
-};
-
-function DonutChart() {
+function RealTimeUserDonutChart() {
   const [data, setData] = useState<ChartDto[]>([]);
-  console.log("data: ", data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,18 +15,22 @@ function DonutChart() {
           token: "a951dd18-d5b5-4c15-a3ba-062198c45807",
         });
         const userCountDto = response.data.userCountDtoList;
-        console.log(userCountDto);
         const seriesData = userCountDto.map((item: UserCountDto) => ({
           name: item.currentPage,
           y: Math.round(item.percentage * 100),
           dataLabels: {
             enabled: true,
             format: `{point.name}:<br> 횟수: ${item.count}`,
+            style: {
+              fontSize: "15px",
+              textOutline: "2px 2px white",
+            },
           },
         }));
 
         setData(seriesData);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
       }
     };
@@ -59,8 +48,8 @@ function DonutChart() {
     chart: {
       type: "pie",
       backgroundColor: "transparent",
-      width: 500, // 차트의 너비 설정
-      height: 300, // 차트의 높이 설정
+      width: 480, // 차트의 너비 설정
+      height: 350, // 차트의 높이 설정
     },
     title: {
       text: null,
@@ -71,6 +60,12 @@ function DonutChart() {
         depth: 45,
       },
     },
+    tooltip: {
+      style: {
+        fontSize: "18px",
+      },
+      padding: 15,
+    },
     series: [
       {
         name: "사용량(%)",
@@ -79,7 +74,11 @@ function DonutChart() {
     ],
   };
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return (
+    data.length > 0 && (
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    )
+  );
 }
 
-export default DonutChart;
+export default RealTimeUserDonutChart;
