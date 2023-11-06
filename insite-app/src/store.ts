@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import persistedReducer from "@reducer";
 
 const store = configureStore({
-  reducer: {},
+  reducer: persistedReducer,
   devTools: true,
 });
 

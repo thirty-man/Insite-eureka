@@ -11,7 +11,6 @@ const HorizontalContainer = styled.div`
   height: 100%;
 `;
 const SideBarContainer = styled.div`
-  /* position: fixed; */
   top: 0;
   left: 0;
   width: 20%;
@@ -24,10 +23,7 @@ const MainContainer = styled.div`
   height: 94%;
 `;
 const OutletContainer = styled.div`
-  /* position: fixed; */
   overflow-y: auto;
-  /* top: 5rem;
-  left: 10rem; */
   width: 100%;
   height: 90%;
   color: white;

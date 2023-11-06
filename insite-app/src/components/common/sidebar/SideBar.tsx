@@ -44,13 +44,13 @@ const MenuContainer = styled.div`
   width: 100%;
   height: 90%;
 `;
-const MenuWrapper = styled.button<{ isActive: boolean }>`
+const MenuWrapper = styled.button<{ $isActive: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   background-color: ${(props) =>
-    props.isActive ? props.theme.colors.d1 : "black"};
+    props.$isActive ? props.theme.colors.d1 : "black"};
   color: white;
   width: 100%;
   height: 100%;
@@ -67,7 +67,7 @@ const MenuWrapper = styled.button<{ isActive: boolean }>`
     filter: invert(100%);
   }
 
-  ${({ isActive }) => isActive && `font-weight:600; filter: invert(100%);`}
+  ${({ $isActive }) => $isActive && `font-weight:600; filter: invert(100%);`}
 `;
 const MenuItem = styled.div`
   display: flex;
@@ -131,7 +131,7 @@ function SideBar() {
         {SideBarMenu.map((item: SideBarMenuType) => (
           <MenuContainer key={item.id}>
             <MenuWrapper
-              isActive={item.id === selectedMenuId}
+              $isActive={item.id === selectedMenuId}
               onClick={() => {
                 setSelectedMenuId(item.id);
                 navi(item.route);

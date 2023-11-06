@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "@reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenProfile } from "@reducer/HeaderModalStateInfo";
 import { myprofile } from "@assets/icons";
 import styled from "styled-components";
-import { ItemTypes } from "@customtypes/dataTypes";
 import Modal from "../modal/Modal";
 import DropDown from "../dropdown/DropDown";
+import SiteList from "../dropdown/SiteList";
 
 const HeaderContainer = styled.div`
-  /* position: fixed; */
   width: 100%;
   height: 10%;
   top: 0;
@@ -55,63 +58,79 @@ const Option = styled.button`
 `;
 
 function Header() {
-  const [openProfile, setOpenProfile] = useState<boolean>(false);
-  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
-  const reduxStateValue: string | null = "moduo.kr";
-  const sites: ItemTypes[] = [
-    { id: 0, name: "moduo.kr" },
-    { id: 1, name: "naver.com" },
-    { id: 2, name: "google.com" },
-    { id: 3, name: "moduo.kr" },
-    { id: 4, name: "moduo.kr" },
-    { id: 5, name: "moduo.kr" },
-    { id: 6, name: "moduo.kr" },
-    { id: 7, name: "moduo.kr" },
-    { id: 8, name: "moduo.kr" },
-    { id: 9, name: "moduo.kr" },
-  ];
+  const navi = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const openDropdown = useSelector(
+    (state: RootState) => state.HeaderModalStateInfo.openDropdown,
+  );
+  const [isProfile, setIsProfile] = useState<boolean>(false);
+  const [currentPathname, setCurrentPathname] = useState<string>("");
+  useEffect(() => {
+    if (openDropdown) {
+      setIsProfile(false);
+      dispatch(setOpenProfile(false));
+    }
+  }, [openDropdown, dispatch, setIsProfile]);
 
-  const handleProfileClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpenProfile(!openProfile);
-    setOpenDropdown(false);
-  };
+  useEffect(() => {
+    setCurrentPathname(location.pathname);
+  }, [location]);
 
-  const handleDropdownClick = (e: React.MouseEvent) => {
+  const handleOpenProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setOpenProfile(false);
+    const newIsProfile = !isProfile;
+    setIsProfile(newIsProfile);
+    dispatch(setOpenProfile(newIsProfile));
   };
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <DropDown
-          items={sites}
+          items={SiteList}
           width="15rem"
           height="1rem"
           placeholder="사이트를 설정해주세요."
-          initialValue={reduxStateValue}
-          openDropdown={openDropdown}
-          setOpenDropdown={setOpenDropdown}
-          onClickProfile={handleDropdownClick}
         />
         <ProfileWrapper>
           <ProfileImg
             src={myprofile}
             alt="my profile"
-            onClick={handleProfileClick}
+            onClick={handleOpenProfile}
           />
-          {openProfile && (
+          {isProfile && (
             <Modal
               width="15rem"
               height="6.5rem"
-              posX="-50%"
-              posY="80%"
-              close={() => setOpenProfile(false)}
-              position="absolute" // absolute 포지션을 설정합니다.
+              $posX="-50%"
+              $posY="80%"
+              close={() => setIsProfile(false)}
+              position="absolute"
             >
-              <Option>로그인 / 로그아웃</Option>
-              <Option>메인으로 가기</Option>
+              <Option
+                onClick={() => {
+                  navi("/login");
+                  setIsProfile(false);
+                }}
+              >
+                로그인 / 로그아웃
+              </Option>
+              <Option
+                onClick={() => {
+                  if (currentPathname !== "/main") {
+                    navi("/main");
+                  } else {
+                    navi("/mysite");
+                  }
+
+                  setIsProfile(false);
+                }}
+              >
+                {currentPathname === "/main"
+                  ? "사이트 선택하러 가기"
+                  : "메인으로 가기"}
+              </Option>
             </Modal>
           )}
         </ProfileWrapper>
