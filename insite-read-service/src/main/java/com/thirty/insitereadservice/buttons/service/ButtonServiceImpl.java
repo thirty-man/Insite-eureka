@@ -127,7 +127,9 @@ public class ButtonServiceImpl implements ButtonService{
 
         List<FluxTable> activeTables = queryApi.query(activityQuery.toString());
         double activitySum = activeTables.size();
-
+        if(activitySum == 0.0){
+            return ClickCountsPerActiveUserResDto.create(0.0);
+        }
         //버튼 누른 횟수 조회
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
@@ -154,7 +156,7 @@ public class ButtonServiceImpl implements ButtonService{
 
         log.info("activitySum={}", activitySum);
         log.info("buttonCLicks={}",buttonCLicks);
-        return ClickCountsPerActiveUserResDto.create((activitySum == 0) ? 0.0 : buttonCLicks/activitySum);
+        return ClickCountsPerActiveUserResDto.create(buttonCLicks/activitySum);
     }
 
     @Override
