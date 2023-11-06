@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thirty.insitewriteservice.longtime.LongtimeService;
 import com.thirty.insitewriteservice.realtime.service.RealtimeService;
+import com.thirty.insitewriteservice.write.dto.ButtonReqDto;
 import com.thirty.insitewriteservice.write.dto.DataReqDto;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/data")
@@ -26,13 +29,13 @@ public class WriteController {
 
 	@PostMapping("/page")
 	public ResponseEntity<String> data(@RequestBody @Valid DataReqDto dataReqDto) {
-		realtimeService.writeRealData(dataReqDto);
+		longtimeService.writeLongData(dataReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 
 	@PostMapping("/button")
-	public ResponseEntity<String> button(@RequestBody @Valid DataReqDto dataReqDto) {
-		longtimeService.writeLongData(dataReqDto);
+	public ResponseEntity<String> button(@RequestBody @Valid ButtonReqDto buttonReqDto) {
+		longtimeService.writeLongButton(buttonReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 }
