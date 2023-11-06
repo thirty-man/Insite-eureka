@@ -8,9 +8,10 @@ interface DefaultBoxProps {
 }
 
 const DefaultBoxStyle = styled.div<DefaultBoxProps>`
-  margin: 0;
+  margin: 1%;
   padding: 0;
   display: flex;
+  /* flex: 1; */
   align-items: center;
   flex-direction: column;
   justify-content: center;

@@ -18,4 +18,33 @@ type ItemTypes = {
   name: string;
 };
 
-export type { SideBarMenuType, IconsType, LogosType, ItemTypes };
+type UserCountDto = {
+  count: number;
+  percentage: number;
+  currentPage: string;
+};
+
+type Style = {
+  fontSize: string;
+};
+
+type ChartDto = {
+  name: string;
+  y: number;
+  dataLables: {
+    enabled: boolean;
+    format: string;
+    style?: Style;
+    textOutline?: string;
+  };
+};
+
+export type {
+  SideBarMenuType,
+  IconsType,
+  LogosType,
+  ItemTypes,
+  UserCountDto,
+  ChartDto,
+  Style,
+};

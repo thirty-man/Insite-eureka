@@ -11,24 +11,25 @@ const HorizontalContainer = styled.div`
   height: 100%;
 `;
 const SideBarContainer = styled.div`
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
-  width: 18%;
+  width: 20%;
   height: 100%;
   background-color: black;
   z-index: 10;
 `;
 const MainContainer = styled.div`
-  width: 100%;
+  width: 80%;
+  height: 94%;
 `;
 const OutletContainer = styled.div`
-  position: fixed;
+  /* position: fixed; */
   overflow-y: auto;
-  top: 4rem;
-  left: 16.6rem;
-  width: 70rem;
-  height: 35rem;
+  /* top: 5rem;
+  left: 10rem; */
+  width: 100%;
+  height: 90%;
   color: white;
 `;
 
