@@ -48,7 +48,7 @@ public class MemberController {
 	public ResponseEntity<Void> validationMemberAndApplication(
 		@Valid @RequestBody MemberValidReqDto memberValidReqDto
 	){
-		memberService.validationMemberAndApplication(memberValidReqDto.getMemberId(), memberValidReqDto);
+		memberService.validationMemberAndApplication(memberValidReqDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

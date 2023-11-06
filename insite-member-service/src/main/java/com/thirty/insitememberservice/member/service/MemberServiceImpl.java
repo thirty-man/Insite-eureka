@@ -67,8 +67,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public void validationMemberAndApplication(int memberId, MemberValidReqDto memberValidReqDto) {
-		Member member = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId)
+	public void validationMemberAndApplication( MemberValidReqDto memberValidReqDto) {
+		Member member = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberValidReqDto.getMemberId())
 			.orElseThrow(() -> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
 
 		Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(

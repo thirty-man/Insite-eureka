@@ -14,5 +14,5 @@ public interface MemberService {
 
 	String reissue(Member member, String token, HttpServletResponse response);
 
-	void validationMemberAndApplication(int memberId, MemberValidReqDto memberValidReqDto);
+	void validationMemberAndApplication(MemberValidReqDto memberValidReqDto);
 }
