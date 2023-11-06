@@ -3,6 +3,8 @@ package com.thirty.insitereadservice.flow.controller;
 import com.thirty.insitereadservice.flow.dto.request.ExitFlowReqDto;
 import com.thirty.insitereadservice.flow.dto.response.ExitFlowResDto;
 import com.thirty.insitereadservice.flow.service.FlowService;
+import com.thirty.insitereadservice.global.jwt.JwtProcess;
+import com.thirty.insitereadservice.global.jwt.JwtVO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,8 @@ public class FlowController {
         @Valid @RequestBody ExitFlowReqDto exitFlowReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         ExitFlowResDto exitFlowResDto = flowService.getExitFlow(exitFlowReqDto, memberId);
         return new ResponseEntity<>(exitFlowResDto, HttpStatus.OK);
     }

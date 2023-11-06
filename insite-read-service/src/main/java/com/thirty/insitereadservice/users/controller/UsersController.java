@@ -1,5 +1,7 @@
 package com.thirty.insitereadservice.users.controller;
 
+import com.thirty.insitereadservice.global.jwt.JwtProcess;
+import com.thirty.insitereadservice.global.jwt.JwtVO;
 import com.thirty.insitereadservice.users.dto.request.AbnormalHistoryReqDto;
 import com.thirty.insitereadservice.users.dto.response.AbnormalHistoryResDto;
 import com.thirty.insitereadservice.users.service.UsersService;
@@ -25,9 +27,8 @@ public class UsersController {
         @Valid @RequestBody AbnormalHistoryReqDto abnormalHistoryReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         AbnormalHistoryResDto exitFlowResDto = usersService.getAbnormalHistory(abnormalHistoryReqDto, memberId);
         return new ResponseEntity<>(exitFlowResDto, HttpStatus.OK);
     }
