@@ -1,13 +1,11 @@
 package com.thirty.insitememberservice.application.controller;
 
 
-import com.thirty.insitememberservice.application.dto.request.ApplicationCreateReqDto;
-import com.thirty.insitememberservice.application.dto.request.ApplicationDeleteReqDto;
-import com.thirty.insitememberservice.application.dto.request.ApplicationModifyReqDto;
-import com.thirty.insitememberservice.application.dto.request.ApplicationTokenReqDto;
+import com.thirty.insitememberservice.application.dto.request.*;
 import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationTokenResDto;
+import com.thirty.insitememberservice.application.dto.response.ApplicationVerifyResDto;
 import com.thirty.insitememberservice.application.service.ApplicationService;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
@@ -44,7 +42,7 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationResDto,HttpStatus.OK);
     }
 
-    @GetMapping("/token")
+    @PostMapping("/token")
     public ResponseEntity<ApplicationTokenResDto> readToken(@Valid @RequestBody ApplicationTokenReqDto applicationTokenReqDto,
                                                             HttpServletRequest request
                                                           ){
@@ -84,6 +82,15 @@ public class ApplicationController {
         LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
         applicationService.deleteApplication(applicationDeleteReqDto,loginUser.getMember().getMemberId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<ApplicationVerifyResDto> verifyIsValid(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto,
+                                                                 HttpServletRequest request){
+        String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
+        ApplicationVerifyResDto applicationVerifyResDto=applicationService.verifyIsValid(applicationVerifyReqDto,loginUser.getMember().getMemberId());
+        return new ResponseEntity<>(applicationVerifyResDto,HttpStatus.OK);
     }
 
     

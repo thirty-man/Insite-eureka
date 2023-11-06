@@ -14,4 +14,5 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
     Optional<Application> findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(int applicationId, Member member);
     Optional<Application> findByMemberAndApplicationTokenAndIsDeletedIsFalse(Member member, String applicationToken);
 
+    Optional<Application> findApplicationByApplicationTokenAndIsDeletedIsFalse(String applicationToken);
 }
