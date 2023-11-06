@@ -1,10 +1,14 @@
 import RealTimeUserDonutChart from "@components/chart/RealTimeUserDonutChart";
+import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import TextBox from "@components/common/TextBox";
 import TitleBox from "@components/common/TitleBox";
 import PageUsageStatistics from "@components/realtime/PageUsageStatistics";
 import TrafficAttack from "@components/realtime/TrafficAttack";
-import styled from "styled-components";
+import { RootState } from "@reducer";
+import { useSelector } from "react-redux";
+import { CalendarButton } from "@components/common/button";
+
 
 const FirstCol = styled.div`
   display: flex;
@@ -32,9 +36,46 @@ const SecondCol = styled.div`
   background-color: ${(props) => props.theme.colors.b2};
 `;
 
+const CalendarContainer = styled.div`
+  top: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+`;
+const CalendarWrapper = styled.div`
+  width: 30%;
+  height: 10%;
+  margin-right: 20px;
+  cursor: pointer;
+`;
+
 function RealTimePage() {
+  const realtimeStartDate = useSelector(
+    (state: RootState) => state.DateSelectionInfo.realtimeDate.start,
+  );
+
+    const formatDateString = (dateString: string): string => {
+    const parts = dateString.split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+    return `${year}년 ${month}월 ${day}일`;
+  };
+
+  const formattedDate = formatDateString(realtimeStartDate);
   return (
     <>
+    <CalendarContainer>
+      <CalendarWrapper>
+        <CalendarButton
+          width="100%"
+          height="100%"
+          startDate={formattedDate}
+          endDate={formattedDate}
+        />
+      </CalendarWrapper>
+    </CalendarContainer>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%" fontSize="30px">

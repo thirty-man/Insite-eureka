@@ -18,6 +18,12 @@ type ItemTypes = {
   name: string;
 };
 
+
+type DateSelectionType = {
+  start: string;
+  end: string;
+};
+
 type UserCountDto = {
   count: number;
   percentage: number;
@@ -44,6 +50,7 @@ export type {
   IconsType,
   LogosType,
   ItemTypes,
+  DateSelectionType,
   UserCountDto,
   ChartDto,
   Style,
