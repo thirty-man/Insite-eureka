@@ -14,3 +14,6 @@ public interface MemberServiceClient {
         @Valid @RequestBody MemberValidReqDto memberValidReqDto
     );
 }
+
+
+>>>>>>> de2480eaabdf04b33847e7b3c0cd93914e9ee90b
