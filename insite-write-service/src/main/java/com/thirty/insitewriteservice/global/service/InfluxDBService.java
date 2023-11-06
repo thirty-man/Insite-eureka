@@ -32,7 +32,7 @@ public class InfluxDBService {
 				.addTag("cookieId", dataReqDto.getCookieId())
 				.addTag("currentUrl", dataReqDto.getCurrentUrl())
 				.addTag("activityId", dataReqDto.getActivityId())
-				.addTag("serviceToken", dataReqDto.getServiceToken())
+				.addTag("serviceToken", dataReqDto.getApplicationToken())
 				.addField("beforeUrl", dataReqDto.getBeforeUrl())
 				.addField("responseTime", dataReqDto.getResponseTime())
 				.addField("deviceId", dataReqDto.getDeviceId())
