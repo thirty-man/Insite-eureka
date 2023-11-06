@@ -6,6 +6,7 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insiterealtimereadservice.data.dto.AbnormalDto;
 import com.thirty.insiterealtimereadservice.data.dto.ReferrerDto;
 import com.thirty.insiterealtimereadservice.data.dto.UserCountDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.AbnormalResDto;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -168,30 +168,31 @@ public class DataServiceImpl implements DataService{
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("abnormal"),
-            Restrictions.tag("applicationToken").equal(token)
+            Restrictions.measurement().equal("data"),
+            Restrictions.tag("applicationToken").equal(token),
+            Restrictions.tag("requestCnt").greaterOrEqual("30")
         );
         Flux query = Flux.from("insite")
             .range(-30L, ChronoUnit.MINUTES)
-            .filter(restrictions)
-            .pivot(new String[]{"_time"}, new String[]{"_field"},"isRead")
-            .sort(new String[]{"_time"});
+            .filter(restrictions);
 
         log.info("query= {}",query);
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        Stack<String> stack= new Stack<>();
+        List<AbnormalDto> abnormalDtoList = new ArrayList<>();
+
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord record : records) {
-                String isRead = record.getValueByKey("createTime").toString();
-                log.info(isRead);
-                stack.push(isRead);
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String time = record.getValueByKey("_time").toString();
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String language = record.getValueByKey("language").toString();
+                String osId = record.getValueByKey("osId").toString();
+
+                abnormalDtoList.add(AbnormalDto.create(cookieId,time,currentUrl,language,osId));
             }
         }
-        if(stack.pop().equals("true")){
-            return AbnormalResDto.create(true);
-        }
-        return AbnormalResDto.create(false);
+        return AbnormalResDto.create(abnormalDtoList);
     }
 }
