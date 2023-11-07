@@ -13,45 +13,73 @@ type LogosType = {
   [key: string]: string;
 };
 
-type ItemTypes = {
+type ItemType = {
   id: number;
   name: string;
 };
-
 
 type DateSelectionType = {
   start: string;
   end: string;
 };
 
-type UserCountDto = {
+type UserCountDtoType = {
+  id: number;
   count: number;
   percentage: number;
   currentPage: string;
+  responseTime: string;
 };
 
-type Style = {
+type StyleType = {
   fontSize: string;
 };
 
-type ChartDto = {
+type ChartDtoType = {
   name: string;
   y: number;
   dataLables: {
     enabled: boolean;
     format: string;
-    style?: Style;
+    style?: StyleType;
     textOutline?: string;
   };
+};
+
+type UserRefDtoType = {
+  id: number;
+  beforeUrl: string;
+  rank: number;
+  count: number;
+  percentage: number;
+};
+
+type ButtonCountDtoType = {
+  id: number;
+  name: string;
+  count: number;
+  countPerUser: number;
+};
+
+type AbnormalType = {
+  id: number;
+  cookieId: string;
+  time: string;
+  currentUrl: string;
+  language: string;
+  osId: string;
 };
 
 export type {
   SideBarMenuType,
   IconsType,
   LogosType,
-  ItemTypes,
+  ItemType,
   DateSelectionType,
-  UserCountDto,
-  ChartDto,
-  Style,
+  UserCountDtoType,
+  ChartDtoType,
+  StyleType,
+  UserRefDtoType,
+  ButtonCountDtoType,
+  AbnormalType,
 };

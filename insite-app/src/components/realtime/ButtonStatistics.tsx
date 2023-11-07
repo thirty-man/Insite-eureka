@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { UserCountDtoType } from "@customtypes/dataTypes";
-import { getUserCount } from "@api/realtimeApi";
+import { getButtonCount } from "@api/realtimeApi";
+import { ButtonCountDtoType } from "@customtypes/dataTypes";
 
 const Border = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  padding: 8px;
+  padding: 4px;
 `;
 
 const TableBody = styled.tbody`
@@ -41,15 +41,14 @@ const TableBody = styled.tbody`
   max-height: 200px;
 `;
 
-function PageUsageStatistics() {
-  const [data, setData] = useState<UserCountDtoType[]>([]);
+function ButtonStatistics() {
+  const [data, setData] = useState<ButtonCountDtoType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getUserCount();
-        const userCountDto = response.userCountDtoList;
-        setData(userCountDto);
+        const response = await getButtonCount(); // await를 사용하여 Promise를 기다립니다.
+        setData(response.countPerUserDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
@@ -66,19 +65,17 @@ function PageUsageStatistics() {
       <StyledTable>
         <TableHeader>
           <TableRow>
-            <th>순위</th>
-            <th>URL</th>
-            <th>사용자 수</th>
-            <th>랜더링 시간</th>
+            <th>버튼</th>
+            <th>누른 횟수</th>
+            <th>차지 비율</th>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((item, index) => (
+          {data.map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{item.currentPage}</TableCell>
+              <TableCell>{item.name}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{item.responseTime}s</TableCell>
+              <TableCell>{item.countPerUser}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -89,4 +86,4 @@ function PageUsageStatistics() {
   );
 }
 
-export default PageUsageStatistics;
+export default ButtonStatistics;

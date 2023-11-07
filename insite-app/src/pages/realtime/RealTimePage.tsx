@@ -3,12 +3,15 @@ import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import TextBox from "@components/common/TextBox";
 import TitleBox from "@components/common/TitleBox";
-import PageUsageStatistics from "@components/realtime/PageUsageStatistics";
-import TrafficAttack from "@components/realtime/TrafficAttack";
 import { RootState } from "@reducer";
 import { useSelector } from "react-redux";
 import { CalendarButton } from "@components/common/button";
-
+import {
+  ButtonStatistics,
+  PageUsageStatistics,
+  TrafficAttack,
+  UrlFlowStatstics,
+} from "@components/realtime";
 
 const FirstCol = styled.div`
   display: flex;
@@ -37,15 +40,16 @@ const SecondCol = styled.div`
 `;
 
 const CalendarContainer = styled.div`
-  top: 0;
+  margin-bottom: 1%;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 5%;
   justify-content: flex-end;
 `;
+
 const CalendarWrapper = styled.div`
   width: 30%;
-  height: 10%;
+  height: 100%;
   margin-right: 20px;
   cursor: pointer;
 `;
@@ -55,7 +59,7 @@ function RealTimePage() {
     (state: RootState) => state.DateSelectionInfo.realtimeDate.start,
   );
 
-    const formatDateString = (dateString: string): string => {
+  const formatDateString = (dateString: string): string => {
     const parts = dateString.split("-");
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10);
@@ -66,16 +70,16 @@ function RealTimePage() {
   const formattedDate = formatDateString(realtimeStartDate);
   return (
     <>
-    <CalendarContainer>
-      <CalendarWrapper>
-        <CalendarButton
-          width="100%"
-          height="100%"
-          startDate={formattedDate}
-          endDate={formattedDate}
-        />
-      </CalendarWrapper>
-    </CalendarContainer>
+      <CalendarContainer>
+        <CalendarWrapper>
+          <CalendarButton
+            width="100%"
+            height="100%"
+            startDate={formattedDate}
+            endDate={formattedDate}
+          />
+        </CalendarWrapper>
+      </CalendarContainer>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%" fontSize="30px">
@@ -89,7 +93,7 @@ function RealTimePage() {
           <TitleBox width="" height="10%" fontSize="30px">
             페이지 이용 통계
           </TitleBox>
-          <TextBox width="90%" height="70%">
+          <TextBox width="90%" height="80%">
             <PageUsageStatistics />
           </TextBox>
         </DefaultBox>
@@ -99,11 +103,17 @@ function RealTimePage() {
           <TitleBox width="" height="10%" fontSize="30px">
             유입 경로 통계
           </TitleBox>
+          <TextBox width="90%" height="80%">
+            <UrlFlowStatstics />
+          </TextBox>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%" fontSize="30px">
             버튼 통계
           </TitleBox>
+          <TextBox width="90%" height="80%">
+            <ButtonStatistics />
+          </TextBox>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%" fontSize="30px">

@@ -11,15 +11,16 @@ import SiteList from "../dropdown/SiteList";
 
 const HeaderContainer = styled.div`
   width: 100%;
-  height: 10%;
+  height: 5%;
   top: 0;
   right: 0;
+  margin-bottom: 1%;
   background-color: ${(props) => props.theme.colors.b2};
 `;
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  height: 50%;
+  height: 100%;
   margin-top: 15px;
   display: flex;
   flex-direction: row;
