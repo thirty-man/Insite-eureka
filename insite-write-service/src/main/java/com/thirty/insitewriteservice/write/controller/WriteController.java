@@ -26,16 +26,14 @@ public class WriteController {
 
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/page")
-
 	public ResponseEntity<String> data(@RequestBody DataReqDto dataReqDto) {
 		writeService.writeData(dataReqDto);
-		// longtimeService.writeLongData(dataReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 
 	@PostMapping("/button")
 	public ResponseEntity<String> button(@RequestBody ButtonReqDto buttonReqDto) {
-		longtimeService.writeLongButton(buttonReqDto);
+		writeService.writeButton(buttonReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 }

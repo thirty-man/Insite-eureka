@@ -86,6 +86,7 @@ public class KafkaProducer {
 		sb.append(",activityId=").append(buttonReqDto.getActivityId());
 		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken());
 		sb.append(",name=").append(buttonReqDto.getName());
+		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt());
 
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");

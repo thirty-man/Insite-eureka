@@ -9,6 +9,7 @@ import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insitewriteservice.feignclient.ApplicationServiceClient;
 import com.thirty.insitewriteservice.feignclient.dto.request.ApplicationVerifyReqDto;
+import com.thirty.insitewriteservice.write.dto.ButtonReqDto;
 import com.thirty.insitewriteservice.write.dto.DataReqDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,6 @@ import java.util.UUID;
 public class WriteServiceImpl implements WriteService {
     @Resource
     private InfluxDBClient influxDBClient;
-    @Value("${influxdb.org}")
-    private String org;
     @Value("${influxdb.bucket}")
     private String bucket;
 
@@ -40,7 +39,7 @@ public class WriteServiceImpl implements WriteService {
         ApplicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
 
         // activityId 및 abnormal requestCnt 갱신
-        String[] activityId_requestCnt = getActivityIdAndRequestId(dataReqDto.getCookieId());
+        String[] activityId_requestCnt = getActivityIdAndRequestCnt(dataReqDto.getCookieId(), "data");
         dataReqDto.updateActivityId(activityId_requestCnt[0]);
         dataReqDto.updateRequestCnt(activityId_requestCnt[1]);
 
@@ -48,29 +47,43 @@ public class WriteServiceImpl implements WriteService {
         kafkaProducer.sendData("data", dataReqDto);
     }
 
+    @Override
+    public void writeButton(ButtonReqDto buttonReqDto) {
+        // applicationToken 과 applicationUrl 유효성 검증
+        ApplicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(buttonReqDto.getApplicationToken(), buttonReqDto.getApplicationUrl()));
+
+        // activityId 및 abnormal requestCnt 갱신
+        String[] activityId_requestCnt = getActivityIdAndRequestCnt(buttonReqDto.getCookieId(), "button");
+        buttonReqDto.updateActivityId(activityId_requestCnt[0]);
+        buttonReqDto.updateRequestCnt(activityId_requestCnt[1]);
+
+        // kafka 전송
+        kafkaProducer.sendButton("button", buttonReqDto);
+    }
+
     public String generateNewActivityId() {
         return UUID.randomUUID().toString();
     }
-    public String[] getActivityIdAndRequestId(String cookieId) {
+    public String[] getActivityIdAndRequestCnt(String cookieId, String measurementType) {
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
-                Restrictions.measurement().equal("data"),
+                Restrictions.measurement().equal(measurementType),
                 Restrictions.tag("cookieId").equal(cookieId)
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
                 .range(-30L, ChronoUnit.MINUTES)
                 .filter(restrictions)
                 .groupBy("_time")
                 .sort(new String[] {"_time"}, false);
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        String[] activityId_requestId;
+        String[] activityId_requestCnt;
 
         if(tables.size() == 0) return new String[] {generateNewActivityId(), "1"};
         List<FluxRecord> records = tables.get(tables.size() - 1).getRecords();
         if(tables.isEmpty() || records.isEmpty()){
-            activityId_requestId = new String[] {generateNewActivityId(), "1"};
-            return activityId_requestId;
+            activityId_requestCnt = new String[] {generateNewActivityId(), "1"};
+            return activityId_requestCnt;
         }
 
         FluxRecord lastActivity = records.get(0);
@@ -79,11 +92,11 @@ public class WriteServiceImpl implements WriteService {
 
         if (duration.getSeconds() < 5) { // 5초 내 다시 request 발생할 때
             int currentRequestCnt = Integer.parseInt(lastActivity.getValueByKey("requestCnt").toString());
-            activityId_requestId = new String[] {lastActivity.getValueByKey("activityId").toString(), String.valueOf(currentRequestCnt + 1)};
+            activityId_requestCnt = new String[] {lastActivity.getValueByKey("activityId").toString(), String.valueOf(currentRequestCnt + 1)};
         } else {
-            activityId_requestId = new String[] {lastActivity.getValueByKey("activityId").toString(), "1"};
+            activityId_requestCnt = new String[] {lastActivity.getValueByKey("activityId").toString(), "1"};
         }
-        return activityId_requestId;
+        return activityId_requestCnt;
     }
 }
 

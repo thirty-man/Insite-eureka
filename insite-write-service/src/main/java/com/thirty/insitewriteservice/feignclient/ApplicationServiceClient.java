@@ -7,10 +7,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import javax.validation.Valid;
 
-@FeignClient(name = "insite-member-service")
+@FeignClient(name = "applicationServiceClient", url = "http://localhost:8081")
 public interface ApplicationServiceClient {
 
-    @PostMapping(value = "api/v1/application/verify")
+    @PostMapping(value = "/api/v1/application/verify")
     static void validationApplication(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto) {}
 }
 
