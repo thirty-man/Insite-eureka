@@ -6,6 +6,10 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insitereadservice.users.dto.request.PageViewReqDto;
+import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
+import com.thirty.insitereadservice.users.dto.response.PageViewResDto;
+import com.thirty.insitereadservice.users.dto.response.UserCountResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.users.dto.AbnormalDto;
@@ -20,6 +24,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -28,6 +33,9 @@ import org.springframework.stereotype.Service;
 public class UsersServiceImpl implements UsersService {
 
     private final MemberServiceClient memberServiceClient;
+
+    @Value("${influxdb.bucket}")
+    private String bucket;
 
     @Resource
     private InfluxDBClient influxDBClient;
@@ -44,10 +52,11 @@ public class UsersServiceImpl implements UsersService {
         //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("abnormal"),
-            Restrictions.tag("applicationToken").equal(token)
+            Restrictions.measurement().equal("data"),
+            Restrictions.tag("applicationToken").equal(token),
+            Restrictions.tag("requestCnt").greaterOrEqual("30")
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
             .range(0L)
             .filter(restrictions)
             .groupBy("currentUrl");
@@ -83,4 +92,59 @@ public class UsersServiceImpl implements UsersService {
         }
         return AbnormalHistoryResDto.create(abnormalDtoList);
     }
+
+    //
+    @Override
+    public PageViewResDto getPageView(PageViewReqDto pageViewReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
+        Restrictions restrictions = Restrictions.and(
+            Restrictions.measurement().equal("data"),
+            Restrictions.tag("applicationToken").equal("\""+pageViewReqDto.getApplicationToken()+"\""),
+            Restrictions.tag("currentUrl").equal("\""+pageViewReqDto.getCurrentUrl()+"\"")
+        );
+        Flux query = Flux.from(bucket)
+            .range(0L)
+            .filter(restrictions)
+            .groupBy("applicationToken")
+            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
+            .yield();
+        System.out.println(query.toString());
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> tables = queryApi.query(query.toString());
+        int count=0;
+        System.out.println(tables.size());
+        for (FluxTable fluxTable : tables) {
+
+            List<FluxRecord> records = fluxTable.getRecords();
+            System.out.println(records.size());
+            count+= records.size();
+
+        }
+        PageViewResDto pageViewResDto = PageViewResDto.builder().pageView(count).build();
+
+        return pageViewResDto;
+    }
+
+    @Override
+    public UserCountResDto getUserCount(UserCountReqDto userCountReqDto,int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
+        Restrictions restrictions = Restrictions.and(
+            Restrictions.measurement().equal("data"),
+            Restrictions.tag("applicationToken").equal("\""+userCountReqDto.getApplicationToken()+"\"")
+        );
+        Flux query = Flux.from(bucket)
+            .range(0L)
+            .filter(restrictions)
+            .groupBy("cookieId")
+            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
+            .yield();
+        System.out.println(query.toString());
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> tables = queryApi.query(query.toString());
+        int count=tables.size();
+
+
+        return UserCountResDto.builder().userCount(count).build();
+    }
+
 }

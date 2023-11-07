@@ -1,4 +1,5 @@
-package com.thirty.insitereadservice.flow.dto.request;
+package com.thirty.insitereadservice.flow.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExitFlowReqDto {
-    private String applicationToken;
-    private String currentUrl;
-
+public class ReferrerFlowDto {
+    private String referrer;
+    private int count;
 }

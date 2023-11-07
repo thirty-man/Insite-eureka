@@ -1,14 +1,15 @@
-package com.thirty.insitereadservice.flow.dto.response;
+package com.thirty.insitereadservice.users.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class ExitFlowResDto {
-    private int exitCount;
+@NoArgsConstructor
+public class PageViewResDto {
+    private int pageView;
+
 }

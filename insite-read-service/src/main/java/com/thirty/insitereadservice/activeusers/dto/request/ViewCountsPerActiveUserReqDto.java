@@ -1,4 +1,5 @@
-package com.thirty.insitereadservice.flow.dto.request;
+package com.thirty.insitereadservice.activeusers.dto.request;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExitFlowReqDto {
+public class ViewCountsPerActiveUserReqDto {
+
     private String applicationToken;
     private String currentUrl;
 

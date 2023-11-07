@@ -1,16 +1,15 @@
-package com.thirty.insitereadservice.flow.dto.request;
+package com.thirty.insitereadservice.users.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExitFlowReqDto {
-    private String applicationToken;
-    private String currentUrl;
+public class UserCountResDto {
 
+    private int userCount;
 }

@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class ExitFlowReqDto {
+@NoArgsConstructor
+public class UrlFlowReqDto {
     private String applicationToken;
     private String currentUrl;
-
 }
