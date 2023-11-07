@@ -14,6 +14,7 @@ import com.thirty.insiterealtimereadservice.data.dto.response.AbnormalResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
+import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class DataServiceImpl implements DataService{
     @Override
     public ReferrerResDto getReferrer(int memberId, String token) {
         //멤버 및 application 유효성검사
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -91,7 +92,7 @@ public class DataServiceImpl implements DataService{
     @Override
     public UserCountResDto getUserCount(int memberId, String token) {
         //멤버 및 application 유효성검사
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
 
         QueryApi queryApi = influxDBClient.getQueryApi();
@@ -152,7 +153,7 @@ public class DataServiceImpl implements DataService{
     @Override
     public AbnormalResDto getAbnormal(int memberId, String token) {
         //멤버 및 application 유효성검사
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
