@@ -14,15 +14,15 @@ public class ReferrerDto implements Comparable<ReferrerDto>{
 
     private int id;
 
-    private String beforeUrl;
+    private String referrer;
 
     private int count;
 
     private double percentage;
 
-    public static ReferrerDto create(String beforeUrl, int count, double percentage){
+    public static ReferrerDto create(String referrer, int count, double percentage){
         return ReferrerDto.builder()
-            .beforeUrl(beforeUrl)
+            .referrer(referrer)
             .count(count)
             .percentage(percentage)
             .build();
