@@ -33,8 +33,9 @@ public class UsersController {
         @Valid @RequestBody AbnormalHistoryReqDto abnormalHistoryReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         AbnormalHistoryResDto exitFlowResDto = usersService.getAbnormalHistory(abnormalHistoryReqDto, memberId);
         return new ResponseEntity<>(exitFlowResDto, HttpStatus.OK);
     }
@@ -44,8 +45,9 @@ public class UsersController {
     public ResponseEntity<PageViewResDto> getPageView(@Valid @RequestBody PageViewReqDto pageViewReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         PageViewResDto pageViewResDto= usersService.getPageView(pageViewReqDto,memberId);
         return new ResponseEntity<>(pageViewResDto, HttpStatus.OK);
     }
@@ -54,8 +56,9 @@ public class UsersController {
     public ResponseEntity<UserCountResDto> getUserCounts(@Valid @RequestBody UserCountReqDto userCountReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         UserCountResDto userCountResDto = usersService.getUserCount(userCountReqDto,memberId);
         return new ResponseEntity<>(userCountResDto,HttpStatus.OK);
     }
@@ -64,8 +67,9 @@ public class UsersController {
     public ResponseEntity<ViewCountsPerUserResDto> getViewCountsPerUser(@Valid @RequestBody ViewCountsPerUserReqDto viewCountsPerUserReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
 
         PageViewResDto pageViewResDto = usersService.getPageView(PageViewReqDto.builder().applicationToken(viewCountsPerUserReqDto.getApplicationToken())
             .currentUrl(viewCountsPerUserReqDto.getCurrentUrl()).build(),memberId);

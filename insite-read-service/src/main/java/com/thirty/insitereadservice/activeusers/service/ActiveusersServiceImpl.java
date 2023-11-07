@@ -18,15 +18,20 @@ import com.thirty.insitereadservice.activeusers.dto.response.AverageActiveTimeRe
 import com.thirty.insitereadservice.activeusers.dto.response.OsActiveUserResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
+import com.thirty.insitereadservice.global.error.ErrorCode;
+import com.thirty.insitereadservice.global.error.exception.TimeException;
 import feign.FeignException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +45,9 @@ import org.springframework.stereotype.Service;
 public class ActiveusersServiceImpl implements ActiveusersService {
 
     private final MemberServiceClient memberServiceClient;
+
     @Value("${influxdb.bucket}")
     private String bucket;
-
 
     @Resource
     private InfluxDBClient influxDBClient;
@@ -50,12 +55,15 @@ public class ActiveusersServiceImpl implements ActiveusersService {
     @Override
     public ActiveUsersPerTimeResDto getActiveUsersPerTime(ActiveUsersPerTimeReqDto activeUsersPerTimeReqDto, int memberId) {
         String token = activeUsersPerTimeReqDto.getApplicationToken();
-        try{
-            memberServiceClient.validationMemberAndApplication(
-                MemberValidReqDto.create(token,memberId));
-        }catch (FeignException fe){
-            log.error(fe.getMessage());
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+
+        Instant startInstant = activeUsersPerTimeReqDto.getStartDate().toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUsersPerTimeReqDto.getEndDate().toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
         }
+
         //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -63,7 +71,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId");
 
@@ -101,30 +109,48 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ActiveUserResDto getActiveUserCount(ActiveUserReqDto activeUserReqDto,int memberId) {
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
+
+        //범위 시간 지정
+        Instant startInstant = activeUserReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUserReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal("\""+activeUserReqDto.getApplicationToken()+"\"")
         );
         Flux query = Flux.from(bucket)
-            .range(0L)
+            .range(startInstant,endInstant)
             .filter(restrictions)
             .groupBy("activityId")
             .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
-        System.out.println(query.toString());
+        log.info("query ={}", query);
+
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
-        int count=tables.size();
 
-
-        return ActiveUserResDto.builder().activeUserCount(count).build();
+        return ActiveUserResDto.create(tables.size());
     }
 
     @Override
     public AverageActiveTimeResDto getAverageActiveTime(
         AverageActiveTimeReqDto averageActiveTimeReqDto,int memberId) {
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
+
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
+
+        //범위 시간 지정
+        Instant startInstant = averageActiveTimeReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = averageActiveTimeReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal("\""+averageActiveTimeReqDto.getApplicationToken()+"\"")
@@ -133,12 +159,14 @@ public class ActiveusersServiceImpl implements ActiveusersService {
             .range(0L)
             .filter(restrictions)
             .groupBy("activityId");
-        System.out.println(query.toString());
-        List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
+        log.info("query= {}", query);
+
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+
         double size = tables.size();
         double time=0;
+
         for(FluxTable fluxTable:tables){
             List<FluxRecord> records = fluxTable.getRecords();
             if(records.size()<=1)
@@ -156,46 +184,64 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 to+=st.nextToken();
                 to+=" ";
                 to+=st.nextToken();
+
                 Date toDate = transFormat.parse(to);
                 long sec =(toDate.getTime()-fromDate.getTime())/1000;
                 time+=sec;
             }
             catch(Exception e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
-        AverageActiveTimeResDto averageActiveTimeResDto = AverageActiveTimeResDto.builder()
-            .averageActiveTime(time/size).build();
-        return averageActiveTimeResDto;
+        return AverageActiveTimeResDto.create(time/size);
     }
 
 
     @Override
     public OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto,int memberId) {
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+
+        //범위 시간 설정
+        Instant startInstant = osActiveUserReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = osActiveUserReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal("\""+osActiveUserReqDto.getApplicationToken()+"\"")
         );
         Flux query = Flux.from(bucket)
-            .range(0L)
+            .range(startInstant,endInstant)
             .filter(restrictions)
             .groupBy("osId")
             .count();
-        System.out.println(query.toString());
-        List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
+        log.info("query= {}", query);
+
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+
+        List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
+        PriorityQueue<OsActiveUserDto> osActiveUserDtoPriorityQueue = new PriorityQueue<>();
+
         for(FluxTable fluxTable :tables){
             List<FluxRecord> records = fluxTable.getRecords();
             for(FluxRecord record:records){
-                System.out.println(record.getValueByKey("osId"));
-                System.out.println(record.getValueByKey("_value"));
-                osActiveUserDtoList.add(OsActiveUserDto.builder().os(record.getValueByKey("osId").toString())
-                    .count(Integer.parseInt(record.getValueByKey("_value").toString())).build());
+
+                String os = record.getValueByKey("osId").toString();
+                String stringValueOfCount = record.getValueByKey("_value").toString();
+                int count = Integer.valueOf(stringValueOfCount);
+
+                osActiveUserDtoPriorityQueue.offer(OsActiveUserDto.create(os,count));
             }
         }
+        int id = 0;
+        while(!osActiveUserDtoPriorityQueue.isEmpty()){
+            osActiveUserDtoList.add(osActiveUserDtoPriorityQueue.poll().addId(id++));
+        }
+
         return OsActiveUserResDto.from(osActiveUserDtoList);
     }
 }

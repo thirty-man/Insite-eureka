@@ -1,5 +1,7 @@
 package com.thirty.insitereadservice.users.dto.request;
 
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageViewReqDto {
+    @NotNull(message = "시작시간을 기입해 주세요")
+    private LocalDateTime startDate;
+
+    @NotNull(message = "끝 시간을 기입해 주세요")
+    private LocalDateTime endDate;
+
+    @NotNull(message = "앱 토큰을 기입해 주세요")
     private String applicationToken;
 
+    @NotNull(message = "url을 기입해 주세요")
     private String currentUrl;
 
 }

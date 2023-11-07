@@ -12,4 +12,10 @@ import lombok.NoArgsConstructor;
 public class UserCountResDto {
 
     private int userCount;
+
+    public static UserCountResDto create(int userCount){
+        return UserCountResDto.builder()
+            .userCount(userCount)
+            .build();
+    }
 }

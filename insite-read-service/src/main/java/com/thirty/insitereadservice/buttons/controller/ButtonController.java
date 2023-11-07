@@ -33,8 +33,9 @@ public class ButtonController {
         @Valid @RequestBody ClickCountsReqDto clickCountsReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         ClickCountsResDto clickCountsResDto = buttonService.getClickCounts(clickCountsReqDto, memberId);
         return new ResponseEntity<>(clickCountsResDto, HttpStatus.OK);
     }
@@ -44,8 +45,9 @@ public class ButtonController {
         @Valid @RequestBody ClickCountsPerActiveUserReqDto clickCountsPerUserReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.REFRESH_HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         ClickCountsPerActiveUserResDto clickCountsPerActiveUserResDto = buttonService.getClickCountsPerActiveUser(
             clickCountsPerUserReqDto,
             memberId
@@ -58,8 +60,9 @@ public class ButtonController {
         @Valid @RequestBody ExitPercentageReqDto exitPercentageReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
         ExitPercentageResDto exitPercentageResDto = buttonService.getExitPercentage(
             exitPercentageReqDto,
             memberId

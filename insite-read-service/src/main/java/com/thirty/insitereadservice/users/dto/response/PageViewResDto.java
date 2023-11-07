@@ -12,4 +12,9 @@ import lombok.NoArgsConstructor;
 public class PageViewResDto {
     private int pageView;
 
+    public static PageViewResDto create(int pageView){
+        return PageViewResDto.builder()
+            .pageView(pageView)
+            .build();
+    }
 }
