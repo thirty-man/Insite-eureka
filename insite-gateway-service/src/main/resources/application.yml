@@ -1,0 +1,85 @@
+server:
+  port: 8000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    server-url:
+      defaultZone: http://insite-eureka-server:8761/eureka
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: insite-gateway-service
+  cloud: # it can register by java code
+    gateway:
+      routes:
+        - id: insite-member-service-login #memberlogin
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/member/login
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service-reissue #memberreissue
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/member/reissue
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service-health #memberhealth
+          uri: lb://INSITE-MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/api/v1/health/check
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-member-service #insitemember
+          uri: lb://INSITE-MEMBER-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/member-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-write-service #writeService
+          uri: lb://INSITE-WRITE-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/write-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-read-service #writeService
+          uri: lb://INSITE-READ-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/read-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/read-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-realtime-read-service #writeService
+          uri: lb://INSITE-REALTIME-READ-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/realtime-read-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/realtime-read-service/(?<segment>.*)$, /$\{segment}
+##ex http://localhost:8000/member-service/api/v1/member/reissue
+## http://localhost:8000/member-service/api/v1/health/check
+
+
+##localhost:8000/first-service/ ->
+#http://localhost:8081/first-service/**
+
+
+jwt:
+  secret: "insiteinsiteinsiteinsiteinsiteinsiteinsiteinsiteinsite"
+  expirationTime: 3600000 # 1?? (1000 * 60 * 60)
+  tokenPrefix: "Bearer "
+  header: "Authorization"
+  refreshHeader: "RefreshToken"
+
