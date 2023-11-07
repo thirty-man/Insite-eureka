@@ -9,6 +9,7 @@ import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insiterealtimereadservice.buttons.dto.CountPerUserDto;
 import com.thirty.insiterealtimereadservice.buttons.dto.response.CountPerUserResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
+import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class ButtonServiceImpl implements ButtonService{
 
     @Override
     public CountPerUserResDto countPerUser(int memberId, String token) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
 
