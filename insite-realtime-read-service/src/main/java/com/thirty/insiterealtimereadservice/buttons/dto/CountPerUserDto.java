@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CountPerUserDto {
+public class CountPerUserDto implements Comparable<CountPerUserDto>{
 
     private String name;
 
@@ -23,5 +24,10 @@ public class CountPerUserDto {
             .count(count)
             .countPerUser(countPerUser)
             .build();
+    }
+
+    @Override
+    public int compareTo(@NotNull CountPerUserDto o) {
+        return o.count - this.getCount();
     }
 }
