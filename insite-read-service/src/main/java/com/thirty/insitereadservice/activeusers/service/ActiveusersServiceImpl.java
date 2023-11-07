@@ -24,8 +24,10 @@ import feign.FeignException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,8 +59,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         String token = activeUsersPerTimeReqDto.getApplicationToken();
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
-        Instant startInstant = activeUsersPerTimeReqDto.getStartDate().toInstant(ZoneOffset.UTC);
-        Instant endInstant = activeUsersPerTimeReqDto.getEndDate().toInstant(ZoneOffset.UTC);
+        Instant startInstant = activeUsersPerTimeReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUsersPerTimeReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -112,19 +114,19 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
 
         //범위 시간 지정
-        Instant startInstant = activeUserReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
-        Instant endInstant = activeUserReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+        Instant startInstant = activeUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
-        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+        if(startInstant.isAfter(endInstant)  || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
         }
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal("\""+activeUserReqDto.getApplicationToken()+"\"")
+            Restrictions.tag("applicationToken").equal(activeUserReqDto.getApplicationToken())
         );
         Flux query = Flux.from(bucket)
-            .range(startInstant,endInstant)
+            .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId")
             .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
@@ -144,8 +146,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
 
         //범위 시간 지정
-        Instant startInstant = averageActiveTimeReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
-        Instant endInstant = averageActiveTimeReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+        Instant startInstant = averageActiveTimeReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = averageActiveTimeReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -153,7 +155,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal("\""+averageActiveTimeReqDto.getApplicationToken()+"\"")
+            Restrictions.tag("applicationToken").equal(averageActiveTimeReqDto.getApplicationToken())
         );
         Flux query = Flux.from(bucket)
             .range(0L)
@@ -202,8 +204,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
 
         //범위 시간 설정
-        Instant startInstant = osActiveUserReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
-        Instant endInstant = osActiveUserReqDto.getEndDateTime().toInstant(ZoneOffset.UTC);
+        Instant startInstant = osActiveUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = osActiveUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -211,13 +213,15 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal("\""+osActiveUserReqDto.getApplicationToken()+"\"")
+            Restrictions.tag("applicationToken").equal(osActiveUserReqDto.getApplicationToken())
         );
+
         Flux query = Flux.from(bucket)
             .range(startInstant,endInstant)
             .filter(restrictions)
             .groupBy("osId")
             .count();
+
         log.info("query= {}", query);
 
         QueryApi queryApi = influxDBClient.getQueryApi();

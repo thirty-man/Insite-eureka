@@ -53,8 +53,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
-        Instant startInstant = abnormalHistoryReqDto.getStartDate().toInstant(ZoneOffset.UTC);
-        Instant endInstant = abnormalHistoryReqDto.getEndDate().toInstant(ZoneOffset.UTC);
+        Instant startInstant = abnormalHistoryReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = abnormalHistoryReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -121,8 +121,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
 
         //통계 시간 설정
-        Instant startInstant = pageViewReqDto.getStartDate().toInstant(ZoneOffset.UTC);
-        Instant endInstant = pageViewReqDto.getEndDate().toInstant(ZoneOffset.UTC);
+        Instant startInstant = pageViewReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = pageViewReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -159,8 +159,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = userCountReqDto.getStartDate().toInstant(ZoneOffset.UTC);
-        Instant endInstant = userCountReqDto.getEndDate().toInstant(ZoneOffset.UTC);
+        Instant startInstant = userCountReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = userCountReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
