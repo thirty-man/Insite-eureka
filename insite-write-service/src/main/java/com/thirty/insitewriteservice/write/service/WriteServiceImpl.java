@@ -1,12 +1,14 @@
 package com.thirty.insitewriteservice.write.service;
 
+import com.thirty.insitewriteservice.global.service.KafkaProducer;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import com.thirty.insitewriteservice.global.service.InfluxDBService;
+import com.thirty.insitewriteservice.feignclient.ApplicationServiceClient;
+import com.thirty.insitewriteservice.feignclient.dto.request.ApplicationVerifyReqDto;
 import com.thirty.insitewriteservice.write.dto.DataReqDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,26 +32,20 @@ public class WriteServiceImpl implements WriteService {
     @Value("${influxdb.bucket}")
     private String bucket;
 
-    private final InfluxDBService influxDBService;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public void writeData(DataReqDto dataReqDto) {
-
         // applicationToken 과 applicationUrl 유효성 검증
-        if(!verifyApplicationToken(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl())) return;
+        ApplicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
 
         // activityId 및 abnormal requestCnt 갱신
         String[] activityId_requestCnt = getActivityIdAndRequestId(dataReqDto.getCookieId());
         dataReqDto.updateActivityId(activityId_requestCnt[0]);
         dataReqDto.updateRequestCnt(activityId_requestCnt[1]);
 
-        // 데이터 쓰기
-        influxDBService.writeDataToData(dataReqDto);
-    }
-
-    public boolean verifyApplicationToken(String ApplicationToken, String ApplicationUrl){
-
-        return true;
+        // kafka 전송
+        kafkaProducer.sendData("data", dataReqDto);
     }
 
     public String generateNewActivityId() {
