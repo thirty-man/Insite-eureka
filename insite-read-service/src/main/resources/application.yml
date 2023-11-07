@@ -20,3 +20,7 @@ eureka:
     fetch-registry: true
     server-url:
       defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    com.thirty.insitereadservice.client: DEBUG

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //eureka 키면 name으로 통신 가능해서 지워줄 것
 @FeignClient(name = "insite-member-service",url = "http://localhost:8081")
 public interface MemberServiceClient {
-    
+
     @PostMapping(value = "/api/v1/members/valid")
     void validationMemberAndApplication(
             @Valid @RequestBody MemberValidReqDto memberValidReqDto
