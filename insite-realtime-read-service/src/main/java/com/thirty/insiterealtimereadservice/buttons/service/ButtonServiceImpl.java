@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,7 @@ public class ButtonServiceImpl implements ButtonService{
 
         // 결과 출력
         List<CountPerUserDto> countPerUserDtoList = new ArrayList<>();
+        PriorityQueue<CountPerUserDto> ranking = new PriorityQueue();
         for (Map.Entry<String, Map<String, Integer>> entry : nameCookieIdCountMap.entrySet()) {
             String name = entry.getKey();
 
@@ -84,7 +86,11 @@ public class ButtonServiceImpl implements ButtonService{
             log.info("size={}", size);
 
             double average = (size == 0) ? 0.0 : sum / size;
-            countPerUserDtoList.add(CountPerUserDto.create(name, sum, average));
+            ranking.offer(CountPerUserDto.create(name, sum, average));
+        }
+
+        while (!ranking.isEmpty()){
+            countPerUserDtoList.add(ranking.poll());
         }
         return CountPerUserResDto.create(countPerUserDtoList);
     }

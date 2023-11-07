@@ -2,11 +2,9 @@ package com.thirty.insiterealtimereadservice.data.controller;
 
 import com.thirty.insiterealtimereadservice.data.dto.request.AbnormalReqDto;
 import com.thirty.insiterealtimereadservice.data.dto.request.ReferrerReqDto;
-import com.thirty.insiterealtimereadservice.data.dto.request.ResponseTimeReqDto;
 import com.thirty.insiterealtimereadservice.data.dto.request.UserCountReqDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.AbnormalResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
-import com.thirty.insiterealtimereadservice.data.dto.response.ResponseTimeResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.data.service.DataService;
 import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
@@ -27,18 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataController {
 
     private final DataService dataService;
-
-    @PostMapping("/response-time")
-    public ResponseEntity<ResponseTimeResDto> getResponseTime(
-        @Valid @RequestBody ResponseTimeReqDto responseTimeReqDto,
-        HttpServletRequest request
-    ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        ResponseTimeResDto responseTimeResDto = dataService.getResponseTime(memberId,
-            responseTimeReqDto.getToken());
-        return new ResponseEntity<>(responseTimeResDto, HttpStatus.OK);
-    }
 
     @PostMapping("/referrer")
     public ResponseEntity<ReferrerResDto> getReferrer(
