@@ -22,9 +22,8 @@ public class WriteController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/page")
 	public ResponseEntity<String> data(@RequestBody DataReqDto dataReqDto) {
-		System.out.println(dataReqDto.toString());
-		writeService.writeLongData(dataReqDto);
-		writeService.writeRealData(dataReqDto);
+
+		writeService.writeData(dataReqDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
