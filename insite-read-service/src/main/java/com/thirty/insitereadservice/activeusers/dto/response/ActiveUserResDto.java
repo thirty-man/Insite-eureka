@@ -12,4 +12,9 @@ import lombok.NoArgsConstructor;
 public class ActiveUserResDto {
     private int activeUserCount;
 
+    public static ActiveUserResDto create (int activeUserCount){
+        return ActiveUserResDto.builder()
+            .activeUserCount(activeUserCount)
+            .build();
+    }
 }

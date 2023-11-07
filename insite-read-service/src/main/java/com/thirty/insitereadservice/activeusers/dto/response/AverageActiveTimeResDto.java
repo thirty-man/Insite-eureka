@@ -12,4 +12,9 @@ import lombok.NoArgsConstructor;
 public class AverageActiveTimeResDto {
     private double averageActiveTime;
 
+    public static AverageActiveTimeResDto create(double averageActiveTime){
+        return  AverageActiveTimeResDto.builder()
+            .averageActiveTime(averageActiveTime)
+            .build();
+    }
 }

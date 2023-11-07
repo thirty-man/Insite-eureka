@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClickCountsReqDto {
 
-    @NotNull(message = "시작시간을 기입해 주세요")
+    @NotNull(message = "통계 시작시간을 기입해 주세요")
     private LocalDateTime startDate;
 
-    @NotNull(message = "끝 시간을 기입해 주세요")
+    @NotNull(message = "통계 끝 시간을 기입해 주세요")
     private LocalDateTime endDate;
 
     @NotNull(message = "버튼이름을 기입해 주세요")

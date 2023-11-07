@@ -11,4 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ExitFlowResDto {
     private int exitCount;
+
+    public static ExitFlowResDto create(int exitCount){
+        return ExitFlowResDto.builder()
+            .exitCount(exitCount)
+            .build();
+    }
 }
