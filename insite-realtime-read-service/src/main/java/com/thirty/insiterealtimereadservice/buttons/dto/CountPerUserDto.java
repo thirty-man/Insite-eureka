@@ -13,11 +13,14 @@ public class CountPerUserDto {
 
     private String name;
 
-    private Double countPerUser;
+    private int count;
 
-    public static CountPerUserDto create(String name, Double countPerUser){
+    private double countPerUser;
+
+    public static CountPerUserDto create(String name, int count, double countPerUser){
         return CountPerUserDto.builder()
             .name(name)
+            .count(count)
             .countPerUser(countPerUser)
             .build();
     }
