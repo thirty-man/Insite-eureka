@@ -5,7 +5,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     server-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://insite-eureka-server:8761/eureka
 
 spring:
   config:
@@ -52,7 +52,22 @@ spring:
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
-
+        - id: insite-read-service #writeService
+          uri: lb://INSITE-READ-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/read-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/read-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-realtime-read-service #writeService
+          uri: lb://INSITE-REALTIME-READ-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/realtime-read-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/realtime-read-service/(?<segment>.*)$, /$\{segment}
 ##ex http://localhost:8000/member-service/api/v1/member/reissue
 ## http://localhost:8000/member-service/api/v1/health/check
 
