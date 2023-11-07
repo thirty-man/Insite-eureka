@@ -11,6 +11,6 @@ import javax.validation.Valid;
 public interface ApplicationServiceClient {
 
     @PostMapping(value = "/api/v1/application/verify")
-    static void validationApplication(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto) {}
+    void validationApplication(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto);
 }
 

@@ -11,6 +11,7 @@ import com.thirty.insitewriteservice.feignclient.ApplicationServiceClient;
 import com.thirty.insitewriteservice.feignclient.dto.request.ApplicationVerifyReqDto;
 import com.thirty.insitewriteservice.write.dto.ButtonReqDto;
 import com.thirty.insitewriteservice.write.dto.DataReqDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class WriteServiceImpl implements WriteService {
@@ -32,11 +34,12 @@ public class WriteServiceImpl implements WriteService {
     private String bucket;
 
     private final KafkaProducer kafkaProducer;
+    private final ApplicationServiceClient applicationServiceClient;
 
     @Override
     public void writeData(DataReqDto dataReqDto) {
         // applicationToken 과 applicationUrl 유효성 검증
-        ApplicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
+        applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
 
         // activityId 및 abnormal requestCnt 갱신
         String[] activityId_requestCnt = getActivityIdAndRequestCnt(dataReqDto.getCookieId(), "data");
@@ -50,7 +53,7 @@ public class WriteServiceImpl implements WriteService {
     @Override
     public void writeButton(ButtonReqDto buttonReqDto) {
         // applicationToken 과 applicationUrl 유효성 검증
-        ApplicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(buttonReqDto.getApplicationToken(), buttonReqDto.getApplicationUrl()));
+        applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(buttonReqDto.getApplicationToken(), buttonReqDto.getApplicationUrl()));
 
         // activityId 및 abnormal requestCnt 갱신
         String[] activityId_requestCnt = getActivityIdAndRequestCnt(buttonReqDto.getCookieId(), "button");
