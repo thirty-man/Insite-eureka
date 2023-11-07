@@ -29,7 +29,10 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+<<<<<<< HEAD
 //    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+=======
+>>>>>>> e89db21a758423cce18912674c1cf883b06cc152
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'

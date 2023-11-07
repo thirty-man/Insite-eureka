@@ -55,8 +55,19 @@ public class InfluxDBService {
 				.addTag("applicationToken", dataReqDto.getApplicationToken())
 				.addField("applicationUrl", dataReqDto.getApplicationUrl())
 				.addTag("activityId", dataReqDto.getActivityId())
+<<<<<<< HEAD
 				.addTag("requestCnt", dataReqDto.getRequestCnt())
 				.time(Instant.now(), WritePrecision.NS);
+=======
+				.addTag("serviceToken", dataReqDto.getApplicationToken())
+				.addField("beforeUrl", dataReqDto.getBeforeUrl())
+				.addField("responseTime", dataReqDto.getResponseTime())
+				.addField("deviceId", dataReqDto.getDeviceId())
+				.addField("osId", dataReqDto.getOsId())
+				.addField("isNew", dataReqDto.isNew())
+				.time(Instant.now(), WritePrecision.MS);
+
+>>>>>>> e89db21a758423cce18912674c1cf883b06cc152
 			writeApi.writePoint(bucket, org, point);
 		}
 	}

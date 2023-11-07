@@ -1,5 +1,7 @@
 package com.thirty.insitewriteservice.global.healcheck;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class HealthController {
 	@GetMapping("/check")
-	public ResponseEntity<String> check() {
-		return ResponseEntity.status(HttpStatus.OK).body("health check ok");
+	public ResponseEntity<String> check(HttpServletRequest request) {
+		int port = request.getServerPort();
+		return ResponseEntity.status(HttpStatus.OK).body("port : " + port);
 	}
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8082 #0
   servlet:
     context-path: /api/v1
 
@@ -9,15 +9,15 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
-
 influxdb:
-  url: ${INFLUX_HOST}
-  token: ${INFLUX_TOKEN}
-  org: ${INFLUX_ORG}
-  bucket: ${INFLUX_BUCKET}
-
+  url: http://localhost:8086
+  token: behappy1234
+  org: thirty
+  bucket: insite
 
 #eureka:
+#  instance:
+#    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
 #  client:
 #    register-with-eureka: true
 #    fetch-registry: true
