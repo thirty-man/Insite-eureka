@@ -14,7 +14,7 @@ const DefaultBoxStyle = styled.div<DefaultBoxProps>`
   /* flex: 1; */
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: ${(props) => props.theme.colors.b1};
