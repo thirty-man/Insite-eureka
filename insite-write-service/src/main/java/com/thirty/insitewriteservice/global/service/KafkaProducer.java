@@ -50,23 +50,23 @@ public class KafkaProducer {
 		sb.append("data");
 
 		// Tags 추가
-		sb.append(",cookieId=").append(escapeField(dataReqDto.getCookieId()));
-		sb.append(",currentUrl=").append(escapeField(dataReqDto.getCurrentUrl()));
-		sb.append(",beforeUrl=").append(escapeField(dataReqDto.getBeforeUrl()));
-		sb.append(",referrer=").append(escapeField(dataReqDto.getReferrer()));
-		sb.append(",language=").append(escapeField(dataReqDto.getLanguage()));
-		sb.append(",responseTime=").append(escapeField(dataReqDto.getResponseTime()));
-		sb.append(",osId=").append(escapeField(dataReqDto.getOsId()));
+		sb.append(",cookieId=").append(dataReqDto.getCookieId());
+		sb.append(",currentUrl=").append(dataReqDto.getCurrentUrl());
+		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl());
+		sb.append(",referrer=").append(dataReqDto.getReferrer().length() > 0 ? dataReqDto.getReferrer() : "null");
+		sb.append(",language=").append(dataReqDto.getLanguage());
+		sb.append(",responseTime=").append(dataReqDto.getResponseTime());
+		sb.append(",osId=").append(dataReqDto.getOsId());
 		sb.append(",isNew=").append(dataReqDto.isNew() ? "true" : "false");
-		sb.append(",applicationToken=").append(escapeField(dataReqDto.getApplicationToken()));
-		sb.append(",activityId=").append(escapeField(dataReqDto.getActivityId()));
-		sb.append(",requestCnt=").append(escapeField(dataReqDto.getRequestCnt()));
+		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken());
+		sb.append(",activityId=").append(dataReqDto.getActivityId());
+		sb.append(",requestCnt=").append(dataReqDto.getRequestCnt());
 
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");
 
 		// 필드 추가 (단일 필드인 경우)
-		sb.append("applicationUrl=\"").append(escapeField(dataReqDto.getApplicationUrl())).append("\"");
+		sb.append("applicationUrl=\"").append(dataReqDto.getApplicationUrl()).append("\"");
 
 		// Timestamp 추가 (나노초 단위로 변환)
 		sb.append(" ").append(System.currentTimeMillis() * 1000000);
@@ -74,9 +74,6 @@ public class KafkaProducer {
 		return sb.toString();
 	}
 
-	private String escapeField(String field) {
-		return field.replace(" ", "\\ ").replace(",", "\\,").replace("=", "\\=");
-	}
 
 	public String convertToInfluxLineProtocolButton(ButtonReqDto buttonReqDto) {
 		StringBuilder sb = new StringBuilder();
