@@ -5,7 +5,6 @@ import com.thirty.insitememberservice.application.dto.request.*;
 import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationTokenResDto;
-import com.thirty.insitememberservice.application.dto.response.ApplicationVerifyResDto;
 import com.thirty.insitememberservice.application.entity.Application;
 import com.thirty.insitememberservice.application.repository.ApplicationRepository;
 import com.thirty.insitememberservice.global.error.ErrorCode;
@@ -142,26 +141,13 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public ApplicationVerifyResDto verifyIsValid(ApplicationVerifyReqDto applicationVerifyReqDto,int memberId) {
-        Optional<Member> optionalMember = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId);
-        if(optionalMember.isEmpty()){
-            throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
-        }
+    public void verifyIsValid(ApplicationVerifyReqDto applicationVerifyReqDto) {
         Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationTokenAndIsDeletedIsFalse(applicationVerifyReqDto.getApplicationToken());
         if(optionalApplication.isEmpty()){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
         }
-        Member member=optionalMember.get();
-        Application application= optionalApplication.get();
-        if(!application.getMember().equals(member)){
-            throw new MemberException(ErrorCode.NOT_OWNER_MEMBER);
-        }
-        boolean isValid=false;
-        if(application.getApplicationUrl().equals(applicationVerifyReqDto.getApplicationUrl())){
-            isValid=true;
-        }
-
-
-        return ApplicationVerifyResDto.builder().isValid(isValid).build();
+        if(optionalApplication.get().getApplicationUrl().equals(applicationVerifyReqDto.getApplicationUrl())){
+            throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
+        };
     }
 }

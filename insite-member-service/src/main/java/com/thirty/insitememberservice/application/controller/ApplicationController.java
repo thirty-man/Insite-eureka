@@ -5,7 +5,6 @@ import com.thirty.insitememberservice.application.dto.request.*;
 import com.thirty.insitememberservice.application.dto.response.ApplicationCreateResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationResDto;
 import com.thirty.insitememberservice.application.dto.response.ApplicationTokenResDto;
-import com.thirty.insitememberservice.application.dto.response.ApplicationVerifyResDto;
 import com.thirty.insitememberservice.application.service.ApplicationService;
 import com.thirty.insitememberservice.global.config.auth.LoginUser;
 import com.thirty.insitememberservice.global.config.jwt.JwtProcess;
@@ -85,13 +84,8 @@ public class ApplicationController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<ApplicationVerifyResDto> verifyIsValid(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto,
-                                                                 HttpServletRequest request){
-        String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
-        ApplicationVerifyResDto applicationVerifyResDto=applicationService.verifyIsValid(applicationVerifyReqDto,loginUser.getMember().getMemberId());
-        return new ResponseEntity<>(applicationVerifyResDto,HttpStatus.OK);
+    public ResponseEntity<Void> verifyIsValid(@Valid @RequestBody ApplicationVerifyReqDto applicationVerifyReqDto){
+        applicationService.verifyIsValid(applicationVerifyReqDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    
 }

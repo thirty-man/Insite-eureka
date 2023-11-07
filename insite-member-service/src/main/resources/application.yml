@@ -39,6 +39,7 @@ eureka:
     fetch-registry: true
     server-url:
       defaultZone: http://localhost:8761/eureka
+
 kakao:
   url: ${KAKAO_URL}
   secret: ${KAKAO_SECRET}
