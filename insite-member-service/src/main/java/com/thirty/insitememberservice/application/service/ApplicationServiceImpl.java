@@ -146,7 +146,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         if(optionalApplication.isEmpty()){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
         }
-        if(optionalApplication.get().getApplicationUrl().equals(applicationVerifyReqDto.getApplicationUrl())){
+        if(!optionalApplication.get().getApplicationUrl().equals(applicationVerifyReqDto.getApplicationUrl())){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
         };
     }
