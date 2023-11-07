@@ -52,13 +52,15 @@ public class KafkaProducer {
 		// Tags 추가
 		sb.append(",cookieId=").append(dataReqDto.getCookieId());
 		sb.append(",currentUrl=").append(dataReqDto.getCurrentUrl());
-		sb.append(",activityId=").append(dataReqDto.getActivityId());
-		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken());
+		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl());
+		sb.append(",referrer=").append(dataReqDto.getReferrer());
+		sb.append(",language=").append(dataReqDto.getLanguage());
 		sb.append(",responseTime=").append(dataReqDto.getResponseTime());
-		sb.append(",deviceId=").append(dataReqDto.getDeviceId());
 		sb.append(",osId=").append(dataReqDto.getOsId());
 		sb.append(",isNew=").append(dataReqDto.isNew());
-		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl());
+		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken());
+		sb.append(",activityId=").append(dataReqDto.getActivityId());
+		sb.append(",requestCnt=").append(dataReqDto.getRequestCnt());
 
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");

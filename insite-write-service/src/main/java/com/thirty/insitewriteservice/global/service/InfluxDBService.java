@@ -40,9 +40,6 @@ public class InfluxDBService {
 	public void writeDataToData(DataReqDto dataReqDto) {
 
 		try (WriteApi writeApi = influxDBClient.getWriteApi()) {
-
-//			String[] activityId_requestCnt = getActivityIdAndRequestId(dataReqDto.getCookieId());
-
 			Point point = Point.measurement("data")
 				.addTag("cookieId", dataReqDto.getCookieId())
 				.addTag("currentUrl", dataReqDto.getCurrentUrl())
@@ -55,62 +52,12 @@ public class InfluxDBService {
 				.addTag("applicationToken", dataReqDto.getApplicationToken())
 				.addField("applicationUrl", dataReqDto.getApplicationUrl())
 				.addTag("activityId", dataReqDto.getActivityId())
-<<<<<<< HEAD
 				.addTag("requestCnt", dataReqDto.getRequestCnt())
 				.time(Instant.now(), WritePrecision.NS);
-=======
-				.addTag("serviceToken", dataReqDto.getApplicationToken())
-				.addField("beforeUrl", dataReqDto.getBeforeUrl())
-				.addField("responseTime", dataReqDto.getResponseTime())
-				.addField("deviceId", dataReqDto.getDeviceId())
-				.addField("osId", dataReqDto.getOsId())
-				.addField("isNew", dataReqDto.isNew())
-				.time(Instant.now(), WritePrecision.MS);
 
->>>>>>> e89db21a758423cce18912674c1cf883b06cc152
 			writeApi.writePoint(bucket, org, point);
 		}
 	}
-//
-//	public String[] getActivityIdAndRequestId(String cookieId) {
-//		QueryApi queryApi = influxDBClient.getQueryApi();
-//		Restrictions restrictions = Restrictions.and(
-//				Restrictions.measurement().equal("data"),
-//				Restrictions.tag("cookieId").equal(cookieId)
-//		);
-//		Flux query = Flux.from("insite")
-//				.range(-30L, ChronoUnit.MINUTES)
-//				.filter(restrictions)
-//				.groupBy("_time")
-//				.sort(new String[] {"_time"}, false);
-//
-//		List<FluxTable> tables = queryApi.query(query.toString());
-//		String[] activityId_requestId;
-//
-//		if(tables.size() == 0) return new String[] {generateNewActivityId(), "1"};
-//		List<FluxRecord> records = tables.get(tables.size() - 1).getRecords();
-//		if(tables.isEmpty() || records.isEmpty()){
-//			activityId_requestId = new String[] {generateNewActivityId(), "1"};
-//			return activityId_requestId;
-//		}
-//
-//		FluxRecord lastActivity = records.get(0);
-//		Instant lastActivityTime = Instant.parse(lastActivity.getValueByKey("_time").toString());
-//		Duration duration = Duration.between(lastActivityTime, Instant.now());
-//
-//		if (duration.getSeconds() < 5) { // 5초 내 다시 request 발생할 때
-//			int currentRequestCnt = Integer.parseInt(lastActivity.getValueByKey("requestCnt").toString());
-//			activityId_requestId = new String[] {lastActivity.getValueByKey("activityId").toString(), String.valueOf(currentRequestCnt + 1)};
-//		} else {
-//			activityId_requestId = new String[] {lastActivity.getValueByKey("activityId").toString(), "1"};
-//		}
-//		return activityId_requestId;
-//	}
-//
-//	// activityId 새롭게 부여
-//	public String generateNewActivityId() {
-//		return UUID.randomUUID().toString();
-//	}
 	
 	public void writeDataToAbnormal() {
 		try (WriteApi writeApi = influxDBClient.getWriteApi()) {
