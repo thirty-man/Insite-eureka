@@ -17,6 +17,7 @@ import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("beforeUrl")
             .count();
@@ -101,7 +102,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("currentUrl");
 //            .count();
@@ -162,7 +163,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("requestCnt").greaterOrEqual("20")
         );
         Flux query = Flux.from("insite")
-            .range(0L)
+            .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions);
 
         log.info("query= {}",query);
