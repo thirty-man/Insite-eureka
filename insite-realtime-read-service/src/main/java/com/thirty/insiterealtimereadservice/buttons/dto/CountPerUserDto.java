@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class CountPerUserDto implements Comparable<CountPerUserDto>{
 
+    private int id;
+
     private String name;
 
     private int count;
@@ -24,6 +26,11 @@ public class CountPerUserDto implements Comparable<CountPerUserDto>{
             .count(count)
             .countPerUser(countPerUser)
             .build();
+    }
+
+    public CountPerUserDto addId(int id){
+        this.id = id;
+        return this;
     }
 
     @Override

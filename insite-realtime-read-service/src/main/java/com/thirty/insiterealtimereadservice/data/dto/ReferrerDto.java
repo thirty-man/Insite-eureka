@@ -29,6 +29,7 @@ public class ReferrerDto implements Comparable<ReferrerDto>{
     }
 
     public ReferrerDto addId(int id){
+        this.id = id;
         return this;
     }
 

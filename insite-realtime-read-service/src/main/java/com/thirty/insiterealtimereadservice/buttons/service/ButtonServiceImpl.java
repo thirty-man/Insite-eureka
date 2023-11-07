@@ -89,8 +89,9 @@ public class ButtonServiceImpl implements ButtonService{
             ranking.offer(CountPerUserDto.create(name, sum, average));
         }
 
+        int id = 0;
         while (!ranking.isEmpty()){
-            countPerUserDtoList.add(ranking.poll());
+            countPerUserDtoList.add(ranking.poll().addId(id++));
         }
         return CountPerUserResDto.create(countPerUserDtoList);
     }
