@@ -1,18 +1,10 @@
 package com.thirty.insitereadservice.flow.controller;
 
-import com.thirty.insitereadservice.flow.dto.request.BounceReqDto;
-import com.thirty.insitereadservice.flow.dto.request.ExitFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.request.ReferrerFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.request.UrlFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.response.BounceResDto;
-import com.thirty.insitereadservice.flow.dto.response.ReferrerFlowResDto;
-import com.thirty.insitereadservice.flow.dto.response.UrlFlowResDto;
-import com.thirty.insitereadservice.flow.dto.request.EntryExitFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.response.EntryExitFlowResDto;
-import com.thirty.insitereadservice.flow.dto.response.ExitFlowResDto;
+import com.thirty.insitereadservice.flow.dto.request.*;
+import com.thirty.insitereadservice.flow.dto.BounceDto;
+import com.thirty.insitereadservice.flow.dto.response.*;
 import com.thirty.insitereadservice.flow.service.FlowService;
-import com.thirty.insitereadservice.global.jwt.JwtProcess;
-import com.thirty.insitereadservice.global.jwt.JwtVO;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,13 +36,13 @@ public class FlowController {
 
     //
     @PostMapping("/urlflow")
-    public ResponseEntity<UrlFlowResDto> getUrlFlow(@Valid @RequestBody UrlFlowReqDto urlFlowReqDto,
-        HttpServletRequest request
+    public ResponseEntity<CurrentUrlFlowResDto> getUrlFlow(@Valid @RequestBody CurrentUrlFlowReqDto urlFlowReqDto,
+                                                           HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
-        UrlFlowResDto urlFlowResDto = flowService.getUrlFlow(urlFlowReqDto,memberId);
+        CurrentUrlFlowResDto urlFlowResDto = flowService.getUrlFlow(urlFlowReqDto,memberId);
         return new ResponseEntity<>(urlFlowResDto, HttpStatus.OK);
     }
 
@@ -67,7 +59,7 @@ public class FlowController {
 
     @PostMapping("/bounce")
     public ResponseEntity<BounceResDto> getBounceCounts(@Valid @RequestBody BounceReqDto bounceReqDto,
-        HttpServletRequest request
+                                                     HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
@@ -87,5 +79,15 @@ public class FlowController {
 
         ExitFlowResDto exitFlowResDto=flowService.getExitFlow(exitFlowReqDto,memberId);
         return new ResponseEntity<>(exitFlowResDto,HttpStatus.OK);
+    }
+
+    @PostMapping("/beforeurl")
+    public ResponseEntity<BeforeUrlFlowResDto> getBeforeUrl(@Valid @RequestBody BeforeUrlFlowReqDto beforeUrlFlowReqDto,
+                                                            HttpServletRequest request){
+//           String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
+        BeforeUrlFlowResDto beforeUrlFlowResDto =flowService.getBeforeUrlFlow(beforeUrlFlowReqDto,memberId);
+        return new ResponseEntity<>(beforeUrlFlowResDto,HttpStatus.OK);
     }
 }

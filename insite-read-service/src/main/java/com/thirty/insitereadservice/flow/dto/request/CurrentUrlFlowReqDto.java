@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UrlFlowReqDto {
+public class CurrentUrlFlowReqDto {
     @NotNull(message = "시작시간을 기입해 주세요")
     private LocalDateTime startDate;
 

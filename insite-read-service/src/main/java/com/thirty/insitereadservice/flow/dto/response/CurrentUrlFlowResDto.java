@@ -12,11 +12,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UrlFlowResDto {
+public class CurrentUrlFlowResDto {
     private List<UrlFlowDto> urlFlowDtoList;
 
-    public static UrlFlowResDto from(List<UrlFlowDto> urlFlowDtoList){
-        return UrlFlowResDto.builder().urlFlowDtoList(urlFlowDtoList).build();
+    public static CurrentUrlFlowResDto from(List<UrlFlowDto> urlFlowDtoList){
+        return CurrentUrlFlowResDto.builder().urlFlowDtoList(urlFlowDtoList).build();
     }
 
 }
