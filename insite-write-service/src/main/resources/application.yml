@@ -22,7 +22,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     server-url:
-      defaultZone: http://k9a701.p.ssafy.io/eureka
+      defaultZone: http://k9a701.p.ssafy.io:8761/eureka
 
 logging:
   level:
