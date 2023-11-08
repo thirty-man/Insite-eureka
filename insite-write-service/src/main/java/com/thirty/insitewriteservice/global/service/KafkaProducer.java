@@ -100,5 +100,4 @@ public class KafkaProducer {
 
 		return sb.toString();
 	}
-
 }
