@@ -74,7 +74,7 @@ public class KafkaProducer {
 		// Tags 추가
 		sb.append(",cookieId=").append(buttonReqDto.getCookieId());
 		sb.append(",currentUrl=").append(buttonReqDto.getCurrentUrl());
-		sb.append(",name=").append(buttonReqDto.getName().replace(" ", ""));
+		sb.append(",name=").append(buttonReqDto.getName().replace(" ", "-"));
 		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken());
 		sb.append(",activityId=").append(buttonReqDto.getActivityId());
 		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt());
