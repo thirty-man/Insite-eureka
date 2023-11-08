@@ -37,18 +37,18 @@ public class ActiveUsersPerTimeResDto {
 
         for(String activityId : activeIdWithActiveTimeMap.keySet()){
 
-            LocalDateTime startDateTime = activeIdWithActiveTimeMap.get(activityId).getStartTime();
-            LocalDateTime endDateTime = activeIdWithActiveTimeMap.get(activityId).getEndTime();
+            LocalDateTime startDate = activeIdWithActiveTimeMap.get(activityId).getStartTime();
+            LocalDateTime endDate = activeIdWithActiveTimeMap.get(activityId).getEndTime();
 
             //두 시간
-            Duration duration = Duration.between(startDateTime, endDateTime);
+            Duration duration = Duration.between(startDate, endDate);
             if(duration.toDays() > 1){
                 for(int i = 0 ; i < 4; i++){
                     hourIndexMap.put(i,hourIndexMap.get(i)+1);
                 }
             }else{
-                int startTimeIndex = hourTo[startDateTime.toLocalTime().getHour()];
-                int endTimeIndex = hourTo[endDateTime.toLocalTime().getHour()];
+                int startTimeIndex = hourTo[startDate.toLocalTime().getHour()];
+                int endTimeIndex = hourTo[endDate.toLocalTime().getHour()];
 
                 if(duration.toDays() == 1){
 

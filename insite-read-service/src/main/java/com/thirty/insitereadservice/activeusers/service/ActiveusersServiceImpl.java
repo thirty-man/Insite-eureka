@@ -107,8 +107,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
 
         //범위 시간 지정
-        Instant startInstant = activeUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = activeUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = activeUserReqDto.getstartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUserReqDto.getendDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant)  || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -156,8 +156,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
 
         //범위 시간 지정
-        Instant startInstant = averageActiveTimeReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = averageActiveTimeReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = averageActiveTimeReqDto.getstartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = averageActiveTimeReqDto.getendDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -216,8 +216,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
 
         //범위 시간 설정
-        Instant startInstant = osActiveUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = osActiveUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = osActiveUserReqDto.getstartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = osActiveUserReqDto.getendDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -266,8 +266,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
 
         //범위 시간 설정
-        Instant startInstant = activeUserCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = activeUserCountReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = activeUserCountReqDto.getstartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUserCountReqDto.getendDate().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
