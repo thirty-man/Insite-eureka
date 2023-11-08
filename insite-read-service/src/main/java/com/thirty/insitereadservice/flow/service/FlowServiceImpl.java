@@ -6,24 +6,13 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import com.thirty.insitereadservice.flow.dto.ReferrerFlowDto;
-import com.thirty.insitereadservice.flow.dto.UrlFlowDto;
-import com.thirty.insitereadservice.flow.dto.request.BounceReqDto;
-import com.thirty.insitereadservice.flow.dto.request.ExitFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.request.ReferrerFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.request.UrlFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.response.BounceResDto;
-import com.thirty.insitereadservice.flow.dto.response.ExitFlowResDto;
-import com.thirty.insitereadservice.flow.dto.response.ReferrerFlowResDto;
-import com.thirty.insitereadservice.flow.dto.response.UrlFlowResDto;
+import com.thirty.insitereadservice.flow.dto.*;
+import com.thirty.insitereadservice.flow.dto.request.*;
+import com.thirty.insitereadservice.flow.dto.response.*;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
-import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
-import com.thirty.insitereadservice.flow.dto.EntryExitFlowDto;
-import com.thirty.insitereadservice.flow.dto.request.EntryExitFlowReqDto;
-import com.thirty.insitereadservice.flow.dto.response.EntryExitFlowResDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
-import feign.FeignException;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -116,7 +105,7 @@ public class FlowServiceImpl implements FlowService {
 
     //
     @Override
-    public UrlFlowResDto getUrlFlow(UrlFlowReqDto urlFlowReqDto,int memberId) {
+    public CurrentUrlFlowResDto getUrlFlow(CurrentUrlFlowReqDto urlFlowReqDto, int memberId) {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(urlFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
@@ -166,7 +155,7 @@ public class FlowServiceImpl implements FlowService {
             urlFlowDtoList.add(urlFlowDtoPriorityQueue.poll().addId(id++));
         }
 
-        return UrlFlowResDto.from(urlFlowDtoList);
+        return CurrentUrlFlowResDto.from(urlFlowDtoList);
     }
 
     @Override
@@ -183,8 +172,7 @@ public class FlowServiceImpl implements FlowService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(referrerFlowReqDto.getApplicationToken()),
-            Restrictions.tag("currentUrl").equal(referrerFlowReqDto.getCurrentUrl())
+            Restrictions.tag("applicationToken").equal(referrerFlowReqDto.getApplicationToken())
         );
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
@@ -198,12 +186,12 @@ public class FlowServiceImpl implements FlowService {
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
 
-        Collections.sort(tables, new Comparator<FluxTable>() {
-            @Override
-            public int compare(FluxTable o1, FluxTable o2){
-                return -(o1.getRecords().size()-o2.getRecords().size());
-            }
-        });
+//        Collections.sort(tables, new Comparator<FluxTable>() {
+//            @Override
+//            public int compare(FluxTable o1, FluxTable o2){
+//                return -(o1.getRecords().size()-o2.getRecords().size());
+//            }
+//        });
 
         List<ReferrerFlowDto> referrerFlowDtoList = new ArrayList<>();
         PriorityQueue<ReferrerFlowDto> referrerFlowDtoPriorityQueue = new PriorityQueue<>();
@@ -238,24 +226,46 @@ public class FlowServiceImpl implements FlowService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(exitFlowReqDto.getApplicationToken()),
-            Restrictions.tag("currentUrl").equal(exitFlowReqDto.getCurrentUrl())
+            Restrictions.tag("applicationToken").equal(exitFlowReqDto.getApplicationToken())
         );
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId")
-            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
+                .sort(new String[]{"_time"},true)
             .yield();
         System.out.println(query.toString());
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+        PriorityQueue<ExitFlowDto> exitFlowDtoPriorityQueue = new PriorityQueue<>();
+        List<ExitFlowDto>exitFlowDtoList= new ArrayList<>();
+        HashMap<String,ExitFlowDto> map = new HashMap<>();
+        int size=0;
+        int id=0;
+        for(FluxTable fluxTable:tables){
+            List<FluxRecord> records = fluxTable.getRecords();
+            String currentUrl=records.get(0).getValueByKey("currentUrl").toString();
+            ++size;
+            if(map.containsKey(currentUrl)){
+                map.get(currentUrl).addExitCount();
+            }
+            else{
+                map.put(currentUrl,ExitFlowDto.create(currentUrl,1));
+            }
 
-        return ExitFlowResDto.create(tables.size());
+        }
+        int s=size;
+        map.forEach((key,value)->{
+            exitFlowDtoPriorityQueue.add(value.addSize(s));
+        });
+        while (!exitFlowDtoPriorityQueue.isEmpty()) {
+            exitFlowDtoList.add(exitFlowDtoPriorityQueue.poll().addId(id++));
+        }
+        return ExitFlowResDto.create(exitFlowDtoList);
     }
 
     @Override
-    public BounceResDto getBounceCounts(BounceReqDto bounceReqDto,int memberId) {
+    public BounceResDto getBounceCounts(BounceReqDto bounceReqDto, int memberId) {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
@@ -268,30 +278,98 @@ public class FlowServiceImpl implements FlowService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(bounceReqDto.getApplicationToken()),
-            Restrictions.tag("currentUrl").equal(bounceReqDto.getCurrentUrl())
+            Restrictions.tag("applicationToken").equal(bounceReqDto.getApplicationToken())
         );
 
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId")
-            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
+                .sort(new String[] {"_time"},true)
+//            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
 
         log.info("query= {}", query);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
+        List<BounceDto> bounceDtoList = new ArrayList<>();
+        PriorityQueue<BounceDto> bounceDtoPriorityQueue = new PriorityQueue<>();
 
-        int count=0;
-
+        int id=0;
+        int size=0;
+        HashMap<String, BounceDto> map= new HashMap<>();
         for(FluxTable table: tables){
             List<FluxRecord> records = table.getRecords();
-            if(records.size()==1)
-                ++count;
+            if(records.size()==1){
+                ++size;
+                String currentUrl=records.get(0).getValueByKey("currentUrl").toString();
+
+                if(map.containsKey(currentUrl)){
+                    map.get(currentUrl).addCount();
+                }
+                else{
+                    map.put(currentUrl,BounceDto.create(currentUrl,1));
+                }
+
+            }
+
+        }
+        int s=size;
+        map.forEach((key,value)->{
+            bounceDtoPriorityQueue.add(value.addSize(s));
+        });
+        while (!bounceDtoPriorityQueue.isEmpty()){
+            bounceDtoList.add(bounceDtoPriorityQueue.poll().addId(id++));
+        }
+        return BounceResDto.create(bounceDtoList);
+    }
+
+    @Override
+    public BeforeUrlFlowResDto getBeforeUrlFlow(BeforeUrlFlowReqDto beforeUrlFlowReqDto, int memberId) {
+        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
+
+        //통계 시간 설정
+        Instant startInstant = beforeUrlFlowReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = beforeUrlFlowReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
         }
 
-        return BounceResDto.create(count);
+        Restrictions restrictions = Restrictions.and(
+                Restrictions.measurement().equal("data"),
+                Restrictions.tag("applicationToken").equal(beforeUrlFlowReqDto.getApplicationToken())
+        );
+        List<BeforeUrlFlowDto> beforeUrlFlowDtoList = new ArrayList<>();
+        Flux query = Flux.from(bucket)
+                .range(startInstant, endInstant)
+                .filter(restrictions)
+                .groupBy("beforeUrl")
+                .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
+                .yield();
+
+        log.info("query= {}", query);
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> tables = queryApi.query(query.toString());
+        PriorityQueue<BeforeUrlFlowDto> beforeUrlFlowDtoPriorityQueue = new PriorityQueue<>();
+        int id = 0;
+        for(FluxTable fluxTable:tables){
+            List<FluxRecord> records = fluxTable.getRecords();
+            String beforeUrl = records.get(0).getValueByKey("beforeUrl").toString();
+            int count = records.size();
+
+            beforeUrlFlowDtoPriorityQueue.offer(BeforeUrlFlowDto.create(beforeUrl,count));
+
+        }
+
+        while (!beforeUrlFlowDtoPriorityQueue.isEmpty()){
+            beforeUrlFlowDtoList.add(beforeUrlFlowDtoPriorityQueue.poll().addId(id++));
+        }
+
+
+
+        return BeforeUrlFlowResDto.create(beforeUrlFlowDtoList);
     }
 }

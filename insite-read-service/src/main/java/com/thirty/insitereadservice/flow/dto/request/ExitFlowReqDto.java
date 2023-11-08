@@ -21,7 +21,5 @@ public class ExitFlowReqDto {
     @NotNull(message = "앱 토큰을 기입해 주세요")
     private String applicationToken;
 
-    @NotNull(message = "url을 기입해 주세요")
-    private String currentUrl;
 
 }
