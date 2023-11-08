@@ -1,4 +1,4 @@
-package com.thirty.insitereadservice.flow.dto.request;
+package com.thirty.insitereadservice.users.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeforeUrlFlowReqDto {
+public class TotalUserCountReqDto {
     @NotNull(message = "시작시간을 기입해 주세요")
     private LocalDateTime startDateTime;
 

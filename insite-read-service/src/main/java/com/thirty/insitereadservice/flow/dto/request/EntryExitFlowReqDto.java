@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EntryExitFlowReqDto {
     @NotNull(message = "시작시간을 기입해 주세요")
-    private LocalDateTime startDate;
+    private LocalDateTime startDateTime;
 
     @NotNull(message = "끝 시간을 기입해 주세요")
-    private LocalDateTime endDate;
+    private LocalDateTime endDateTime;
 
     @NotNull(message = "앱 토큰을 기입해 주세요")
     private String applicationToken;

@@ -1,13 +1,12 @@
 package com.thirty.insitereadservice.activeusers.controller;
 
-import com.thirty.insitereadservice.activeusers.dto.ViewCountsPerActiveUserDto;
 import com.thirty.insitereadservice.activeusers.dto.request.*;
 import com.thirty.insitereadservice.activeusers.dto.response.*;
 import com.thirty.insitereadservice.activeusers.service.ActiveusersService;
-import com.thirty.insitereadservice.users.dto.request.PageViewReqDto;
+import com.thirty.insitereadservice.users.dto.request.TotalUserCountReqDto;
 import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
-import com.thirty.insitereadservice.users.dto.response.PageViewResDto;
-import com.thirty.insitereadservice.users.dto.response.UserCountResDto;
+import com.thirty.insitereadservice.users.dto.UserCountDto;
+import com.thirty.insitereadservice.users.dto.response.TotalUserCountResDto;
 import com.thirty.insitereadservice.users.service.UsersService;
 import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
@@ -82,11 +81,12 @@ public class ActiveUsersController {
         int memberId = 1;
 
 
-        UserCountResDto userCountResDto = usersService.getUserCount(UserCountReqDto.builder().applicationToken(activeUserPerUserReqDto.getApplicationToken()).build(),memberId);
+        TotalUserCountResDto totalUserCountResDto = usersService.getTotalUserCount(TotalUserCountReqDto.builder().endDateTime(activeUserPerUserReqDto.getEndDateTime())
+                .startDateTime(activeUserPerUserReqDto.getStartDateTime()).applicationToken(activeUserPerUserReqDto.getApplicationToken()).build(),memberId);
         ActiveUserCountResDto activeUserCountResDto= activeusersService.getActiveUserCount(ActiveUserCountReqDto.builder()
                 .applicationToken(activeUserPerUserReqDto.getApplicationToken()).startDateTime(activeUserPerUserReqDto.getStartDateTime())
                 .endDateTime(activeUserPerUserReqDto.getEndDateTime()).build(),memberId);
-        ActiveUserPerUserResDto activeUserPerUserResDto = ActiveUserPerUserResDto.builder().activeUserPerUser(activeUserCountResDto.getActiveUserCount()/ userCountResDto.getUserCount()).build();
+        ActiveUserPerUserResDto activeUserPerUserResDto = ActiveUserPerUserResDto.builder().activeUserPerUser(activeUserCountResDto.getActiveUserCount()/ totalUserCountResDto.getTotal()).build();
 
         return new ResponseEntity<>(activeUserPerUserResDto,HttpStatus.OK);
     }
