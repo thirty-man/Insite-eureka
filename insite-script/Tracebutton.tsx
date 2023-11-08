@@ -1,7 +1,17 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-useless-escape */
+/* eslint-disable object-shorthand */
+/* eslint-disable prefer-template */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/display-name */
+/* eslint-disable import/prefer-default-export */
+
 type AnalyticsData = {
-  name: string;
-  current_url: string;
   cookie_id: string;
+  current_url: string;
+  name: string;
   application_token: string;
   application_url: string;
   activity_id: string;
@@ -16,7 +26,7 @@ function generateUniqueId() {
 function getCookieId() {
   const cookieId = document.cookie.replace(
     /(?:(?:^|.*;\s*)analyticsId\s*\=\s*([^;]*).*$)|^.*$/,
-    "$1",
+    "$1"
   );
   return cookieId;
 }
@@ -25,25 +35,9 @@ function getCookieId() {
 function createCookieId() {
   const cookieId = generateUniqueId();
   document.cookie = `analyticsId=${cookieId};path=/;expires=${new Date(
-    new Date().setFullYear(new Date().getFullYear() + 1),
+    new Date().setFullYear(new Date().getFullYear() + 1)
   ).toUTCString()}`;
   return cookieId;
-}
-
-// Document의 정보를 집계하는 함수입니다.
-export function traceButton(name : string) {
-  const path = window.location.pathname;
-  const cookieId = getCookieId() || createCookieId();
-  const data = {
-    name : name,
-    current_url: path,
-    cookie_id: cookieId,
-    application_token: "test",
-    application_url: window.location.origin,
-    activity_id: "test",
-  };
-
-  sendData(data);
 }
 
 // 집계된 데이터를 전송하는 함수입니다.
@@ -65,7 +59,23 @@ function sendData(data: AnalyticsData) {
     .catch((error) => {
       console.error(
         "There has been a problem with your fetch operation:",
-        error,
+        error
       );
     });
+}
+
+// Document의 정보를 집계하는 함수입니다.
+export function traceButton(name: string) {
+  const path = window.location.pathname;
+  const cookieId = getCookieId() || createCookieId();
+  const data = {
+    cookie_id: cookieId,
+    current_url: path,
+    name: name,
+    application_token: "test",
+    application_url: window.location.origin,
+    activity_id: "test",
+  };
+
+  sendData(data);
 }
