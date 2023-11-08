@@ -120,7 +120,6 @@ public class UsersServiceImpl implements UsersService {
             .filter(restrictions)
             .groupBy("currentUrl")
                 .sort(new String[]{"_time"},true)
-            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
                 .count()
             .yield();
 
