@@ -74,7 +74,7 @@ public class KafkaProducer {
 		// Tags 추가
 		sb.append(",cookieId=").append(buttonReqDto.getCookieId());
 		sb.append(",currentUrl=").append(buttonReqDto.getCurrentUrl());
-		sb.append(",name=").append(buttonReqDto.getName());
+		sb.append(",name=").append(buttonReqDto.getName().replace(" ", ""));
 		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken());
 		sb.append(",activityId=").append(buttonReqDto.getActivityId());
 		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt());
@@ -83,7 +83,7 @@ public class KafkaProducer {
 		// 필드 추가 (단일 필드인 경우)
 		sb.append("applicationUrl=\"").append(buttonReqDto.getApplicationUrl()).append("\"");
 		// Timestamp 추가 (나노초 단위로 변환)
-		sb.append(" ").append(System.currentTimeMillis() * 1000000 + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L);
+		sb.append(" ").append((System.currentTimeMillis() + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L) * 1000000);
 		return sb.toString();
 	}
 }
