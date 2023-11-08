@@ -4,7 +4,6 @@ import com.thirty.insitewriteservice.write.service.WriteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.thirty.insitewriteservice.longtime.LongtimeService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/data")
 public class WriteController {
-	private final LongtimeService longtimeService;
 	private final WriteService writeService;
 
-	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/page")
 	public ResponseEntity<String> data(@RequestBody DataReqDto dataReqDto) {
 		writeService.writeData(dataReqDto);

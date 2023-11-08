@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 @EnableDiscoveryClient
 @EnableFeignClients
 public class InsiteWriteServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(InsiteWriteServiceApplication.class, args);
 	}
@@ -20,6 +19,4 @@ public class InsiteWriteServiceApplication {
 	public Logger.Level feignLoggerLevel(){
 		return Logger.Level.ALL;
 	}
-
-
 }
