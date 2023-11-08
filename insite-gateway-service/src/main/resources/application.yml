@@ -50,7 +50,7 @@ spring:
             - Path=/write-service/api/v1/health/check
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/write-service/(?<segment>.*)$, /api/v1/$\{segment}
+            - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
         - id: insite-write-service #writeService
           uri: lb://INSITE-WRITE-SERVICE  #lb : use eureka name
           predicates:
