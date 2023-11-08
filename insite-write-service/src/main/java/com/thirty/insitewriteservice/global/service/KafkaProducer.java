@@ -1,14 +1,10 @@
 package com.thirty.insitewriteservice.global.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
 import com.thirty.insitewriteservice.write.dto.ButtonReqDto;
 import com.thirty.insitewriteservice.write.dto.DataReqDto;
-
 import lombok.extern.slf4j.Slf4j;
-
 import java.time.ZoneOffset;
 
 @Service
@@ -47,15 +43,13 @@ public class KafkaProducer {
 
 	public String convertToInfluxLineProtocolData(DataReqDto dataReqDto) {
 		StringBuilder sb = new StringBuilder();
-		// 요청 시 data 구분
 		// Measurement 추가
 		sb.append("data");
-
 		// Tags 추가
 		sb.append(",cookieId=").append(dataReqDto.getCookieId());
 		sb.append(",currentUrl=").append(dataReqDto.getCurrentUrl());
-		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl());
-		sb.append(",referrer=").append(dataReqDto.getReferrer().length() > 0 ? dataReqDto.getReferrer() : "null");
+		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl() == null || dataReqDto.getBeforeUrl().length() <= 1 ? "null" : dataReqDto.getBeforeUrl());
+		sb.append(",referrer=").append(dataReqDto.getReferrer() == null || dataReqDto.getReferrer().length() <= 1 ? "null" : dataReqDto.getReferrer());
 		sb.append(",language=").append(dataReqDto.getLanguage());
 		sb.append(",responseTime=").append(dataReqDto.getResponseTime());
 		sb.append(",osId=").append(dataReqDto.getOsId());
@@ -63,26 +57,20 @@ public class KafkaProducer {
 		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken());
 		sb.append(",activityId=").append(dataReqDto.getActivityId());
 		sb.append(",requestCnt=").append(dataReqDto.getRequestCnt());
-
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");
-
 		// 필드 추가 (단일 필드인 경우)
 		sb.append("applicationUrl=\"").append(dataReqDto.getApplicationUrl()).append("\"");
-
-		// Timestamp 추가 (나노초 단위로 변환)
-		sb.append(" ").append(System.currentTimeMillis() * 1000000);
-
+		// Timestamp 추가 (나노초 단위로 변환) (UTC 변환 추가)
+		sb.append(" ").append((System.currentTimeMillis() + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L) * 1000000);
 		return sb.toString();
 	}
 
 
 	public String convertToInfluxLineProtocolButton(ButtonReqDto buttonReqDto) {
 		StringBuilder sb = new StringBuilder();
-		//요청 시 data 구분
 		// Measurement 추가
 		sb.append("button");
-
 		// Tags 추가
 		sb.append(",cookieId=").append(buttonReqDto.getCookieId());
 		sb.append(",currentUrl=").append(buttonReqDto.getCurrentUrl());
@@ -90,16 +78,12 @@ public class KafkaProducer {
 		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken());
 		sb.append(",name=").append(buttonReqDto.getName());
 		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt());
-
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");
-
 		// 필드 추가 (단일 필드인 경우)
 		sb.append("applicationUrl=\"").append(buttonReqDto.getApplicationUrl()).append("\"");
-
 		// Timestamp 추가 (나노초 단위로 변환)
 		sb.append(" ").append(System.currentTimeMillis() * 1000000 + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L);
-
 		return sb.toString();
 	}
 }
