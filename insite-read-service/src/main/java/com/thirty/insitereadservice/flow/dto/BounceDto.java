@@ -14,7 +14,6 @@ public class BounceDto implements Comparable<BounceDto>{
     private int id;
     private String currentUrl;
     private int count;
-    private int size;
     private double ratio;
     public static BounceDto create(String currentUrl,int count){
         return BounceDto.builder()
@@ -26,7 +25,6 @@ public class BounceDto implements Comparable<BounceDto>{
         ++this.count;
     }
     public BounceDto addSize(int size){
-        this.size=size;
         this.ratio=(double)count/(double)size;
         return this;
     }

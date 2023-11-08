@@ -1,6 +1,5 @@
 package com.thirty.insitereadservice.activeusers.dto.request;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActiveUserPerUserReqDto {
+public class ActiveUserCountReqDto {
     @NotNull(message = "통계 시작 시간을 기입해주세요.")
     private LocalDateTime startDateTime;
 
@@ -22,4 +21,5 @@ public class ActiveUserPerUserReqDto {
 
     @NotNull(message = "앱 토큰을 기입해주세요.")
     private String applicationToken;
+
 }
