@@ -112,11 +112,13 @@ public class DataServiceImpl implements DataService{
         List<FluxTable> tables = queryApi.query(query.toString());
         Map<String, CountWithResponseTime> urlWithCountAndResponseTime= new HashMap<>();
         double sum = 0.0;
+
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             String url = "";
             int sumResponseTime = 0;
             sum += records.size();
+
             for (FluxRecord record : records) {
                 url = record.getValueByKey("currentUrl").toString();
                 String stringValueOfResponseTime = record.getValueByKey("responseTime").toString();
@@ -163,14 +165,17 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("requestCnt").greaterOrEqual("20")
         );
         Flux query = Flux.from("insite")
-            .range(-30L, ChronoUnit.MINUTES)
-            .filter(restrictions);
+            .range(0L)
+            .filter(restrictions)
+            .groupBy(new String[]{""})
+            .sort(new String[]{"_time"}, true);
+
 
         log.info("query= {}",query);
 
         List<FluxTable> tables = queryApi.query(query.toString());
         List<AbnormalDto> abnormalDtoList = new ArrayList<>();
-        PriorityQueue<AbnormalDto> abnormalDtoPriorityQueue = new PriorityQueue<>();
+        int id = 0;
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord record : records) {
@@ -182,14 +187,13 @@ public class DataServiceImpl implements DataService{
                 String currentUrl = record.getValueByKey("currentUrl").toString();
                 String language = record.getValueByKey("language").toString();
                 String osId = record.getValueByKey("osId").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
 
-                abnormalDtoPriorityQueue.offer(AbnormalDto.create(cookieId,time,currentUrl,language,osId));
+                abnormalDtoList.add(AbnormalDto.create(cookieId,time,currentUrl,language,requestCnt,osId).addId(id++));
             }
         }
-        int id = 0;
-        while (!abnormalDtoPriorityQueue.isEmpty()){
-            abnormalDtoList.add(abnormalDtoPriorityQueue.poll().addId(id++));
-        }
+
         return AbnormalResDto.create(abnormalDtoList);
     }
 }

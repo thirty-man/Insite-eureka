@@ -1,18 +1,16 @@
 package com.thirty.insiterealtimereadservice.data.dto;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AbnormalDto implements Comparable<AbnormalDto>{
+public class AbnormalDto{
 
     private int id;
 
@@ -24,26 +22,23 @@ public class AbnormalDto implements Comparable<AbnormalDto>{
 
     private String language;
 
+    private int requestCnt;
+
     private String osId;
 
-    public static AbnormalDto create(String cookieId, LocalDateTime time, String currentUrl, String language, String osId){
+    public static AbnormalDto create(String cookieId, LocalDateTime time, String currentUrl, String language, int requestCnt,String osId){
         return AbnormalDto.builder()
             .cookieId(cookieId)
             .time(time)
             .currentUrl(currentUrl)
             .language(language)
             .osId(osId)
+            .requestCnt(requestCnt)
             .build();
     }
 
     public AbnormalDto addId(int id){
         this.id = id;
         return this;
-    }
-
-
-    @Override
-    public int compareTo(@NotNull AbnormalDto o) {
-        return o.getTime().compareTo(this.getTime());
     }
 }
