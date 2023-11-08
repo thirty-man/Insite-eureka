@@ -45,7 +45,7 @@ public class ButtonServiceImpl implements ButtonService{
             .orElseThrow(()-> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
 
         //어플 검증
-        Application application = applicationRepository.findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(buttonCreateReqDto.getApplicationId(),member)
+        Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(member, buttonCreateReqDto.getApplicationToken())
             .orElseThrow(()-> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
 
         //같은 이름 버튼 생성 불가
@@ -68,7 +68,7 @@ public class ButtonServiceImpl implements ButtonService{
             .orElseThrow(()-> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
 
         //어플 검증
-        Application application = applicationRepository.findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(buttonDeleteReqDto.getApplicationId(), member)
+        Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(member, buttonDeleteReqDto.getApplicationToken())
             .orElseThrow(()-> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
 
         //버튼 검증
@@ -85,7 +85,7 @@ public class ButtonServiceImpl implements ButtonService{
             .orElseThrow(()-> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
 
         //어플 검증
-        Application application = applicationRepository.findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(buttonModifyReqDto.getApplicationId(), member)
+        Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(member ,buttonModifyReqDto.getApplicationToken())
             .orElseThrow(()-> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
 
         //버튼 검증

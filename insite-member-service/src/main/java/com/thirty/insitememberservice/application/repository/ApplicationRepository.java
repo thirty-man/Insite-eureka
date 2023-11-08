@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface ApplicationRepository extends JpaRepository<Application,Integer> {
     List<Application> findAllByMemberAndIsDeletedIsFalse(Member member);
-    Optional<Application> findApplicationByApplicationIdAndIsDeletedIsFalse(int applicationId);
     Optional<Application> findApplicationByApplicationUrlAndIsDeletedIsFalse(String applicationUrl);
-    Optional<Application> findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(int applicationId, Member member);
     Optional<Application> findByMemberAndApplicationTokenAndIsDeletedIsFalse(Member member, String applicationToken);
 
     Optional<Application> findApplicationByApplicationTokenAndIsDeletedIsFalse(String applicationToken);

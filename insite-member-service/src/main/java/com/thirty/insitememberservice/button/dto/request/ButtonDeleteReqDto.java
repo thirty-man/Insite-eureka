@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ButtonDeleteReqDto {
 
-    @NotNull(message = "앱 아이디를 기입해주세요")
-    private int applicationId;
+    @NotNull(message = "앱 토큰을 기입해주세요")
+    private String applicationToken;
 }

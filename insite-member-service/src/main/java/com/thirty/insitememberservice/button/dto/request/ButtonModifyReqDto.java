@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ButtonModifyReqDto {
-    @NotNull(message = "앱 아이디를 입력해주세요")
-    private int applicationId;
+    @NotNull(message = "앱 토큰을 입력해주세요")
+    private String applicationToken;
 
     @NotNull(message = "버튼 이름을 입력해주세요")
     private String name;
