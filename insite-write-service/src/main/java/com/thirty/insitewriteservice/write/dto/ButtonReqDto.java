@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ButtonReqDto {
 	@NotNull
