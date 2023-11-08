@@ -9,6 +9,8 @@ import com.thirty.insitewriteservice.write.dto.DataReqDto;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.ZoneOffset;
+
 @Service
 @Slf4j
 public class KafkaProducer {
@@ -96,7 +98,7 @@ public class KafkaProducer {
 		sb.append("applicationUrl=\"").append(buttonReqDto.getApplicationUrl()).append("\"");
 
 		// Timestamp 추가 (나노초 단위로 변환)
-		sb.append(" ").append(System.currentTimeMillis() * 1000000);
+		sb.append(" ").append(System.currentTimeMillis() * 1000000 + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L);
 
 		return sb.toString();
 	}
