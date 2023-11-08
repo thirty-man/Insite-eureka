@@ -16,7 +16,6 @@ public class ExitFlowDto implements Comparable<ExitFlowDto>{
     private int exitCount;
     private String currentUrl;
     private double ratio;
-    private int size;
 
 
     public static ExitFlowDto create(String currentUrl,int exitCount){
@@ -26,7 +25,6 @@ public class ExitFlowDto implements Comparable<ExitFlowDto>{
         ++this.exitCount;
     }
     public ExitFlowDto addSize(int size){
-        this.size=size;
         ratio= (double) exitCount/(double) size;
         return this;
     }
