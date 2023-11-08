@@ -6,15 +6,15 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ExitPercentageReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.FirstClickTimeReqDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.ClickCountsDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
 import com.thirty.insitereadservice.buttons.dto.response.ExitPercentageResDto;
-import com.thirty.insitereadservice.buttons.dto.response.FirstClickTimeResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -247,6 +246,54 @@ public class ButtonServiceImpl implements ButtonService{
         double exitUsersAfterButtonClick = calculateExitUsers(userButtonClickTime, userLastTime);
 
         return ExitPercentageResDto.create(exitUsersAfterButtonClick/totalButtonClickUsers);
+    }
+
+    @Override
+    public List<ButtonAbnormalResDto> getButtonAbnormal(ButtonAbnormalReqDto buttonAbnormalReqDto,
+        int memberId) {
+        String applicationToken = buttonAbnormalReqDto.getApplicationToken();
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+
+        //통계 시간 설정
+        Instant startInstant = buttonAbnormalReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = buttonAbnormalReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(startInstant).append(", stop:").append(endInstant).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"button\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+
+
+        log.info("query={}",queryBuilder);
+
+        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
+        List<ButtonAbnormalResDto> buttonAbnormalResDtoList = new ArrayList<>();
+
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            for (FluxRecord record : records) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime currentDateTime = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+
+                String buttonName = record.getValueByKey("name").toString();
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+
+                buttonAbnormalResDtoList.add(ButtonAbnormalResDto.create(cookieId, buttonName, currentDateTime,currentUrl,requestCnt));
+            }
+        }
+        return buttonAbnormalResDtoList;
     }
 
 //    @Override

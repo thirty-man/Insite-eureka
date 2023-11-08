@@ -24,4 +24,6 @@ public class ButtonReqDto {
     private String applicationUrl;
 
     private String activityId;
+
+    private String requestCnt;
 }

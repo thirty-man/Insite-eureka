@@ -1,13 +1,16 @@
 package com.thirty.insitereadservice.buttons.service;
 
+import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ExitPercentageReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.FirstClickTimeReqDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
 import com.thirty.insitereadservice.buttons.dto.response.ExitPercentageResDto;
 import com.thirty.insitereadservice.buttons.dto.response.FirstClickTimeResDto;
+import java.util.List;
 
 public interface ButtonService {
 
@@ -18,4 +21,6 @@ public interface ButtonService {
     ExitPercentageResDto getExitPercentage(ExitPercentageReqDto exitCountsReqDto, int memberId);
 
 //    FirstClickTimeResDto getFirstClickTimeAvg(FirstClickTimeReqDto firstClickTimeReqDto, int memberId);
+
+    List<ButtonAbnormalResDto> getButtonAbnormal(ButtonAbnormalReqDto buttonAbnormalReqDto, int memberId);
 }

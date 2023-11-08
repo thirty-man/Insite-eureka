@@ -1,9 +1,11 @@
 package com.thirty.insitereadservice.buttons.controller;
 
+import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ExitPercentageReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.FirstClickTimeReqDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ExitPercentageResDto;
@@ -11,6 +13,7 @@ import com.thirty.insitereadservice.buttons.dto.response.FirstClickTimeResDto;
 import com.thirty.insitereadservice.buttons.service.ButtonService;
 import com.thirty.insitereadservice.global.jwt.JwtProcess;
 import com.thirty.insitereadservice.global.jwt.JwtVO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +71,18 @@ public class ButtonController {
             memberId
         );
         return new ResponseEntity<>(exitPercentageResDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/abnormality")
+    public ResponseEntity<List<ButtonAbnormalResDto>> getButtonAbnormal(
+        @Valid @RequestBody ButtonAbnormalReqDto buttonAbnormalReqDto,
+        HttpServletRequest request
+    ){
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
+        List<ButtonAbnormalResDto> buttonAbnormalResDtoList = buttonService.getButtonAbnormal(buttonAbnormalReqDto, memberId);
+        return new ResponseEntity<>(buttonAbnormalResDtoList, HttpStatus.OK);
     }
 
 //    @PostMapping("/first-click")
