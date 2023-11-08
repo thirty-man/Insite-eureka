@@ -44,6 +44,13 @@ spring:
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
+        - id: insite-write-service-health #writeService healthCheck
+          uri: lb://INSITE-WRITE-SERVICE  #lb : use eureka name
+          predicates:
+            - Path=/write-service/api/v1/health/check
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
         - id: insite-write-service #writeService
           uri: lb://INSITE-WRITE-SERVICE  #lb : use eureka name
           predicates:
@@ -52,7 +59,7 @@ spring:
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
-        - id: insite-read-service #writeService
+        - id: insite-read-service #readService
           uri: lb://INSITE-READ-SERVICE  #lb : use eureka name
           predicates:
             - Path=/read-service/**
@@ -60,7 +67,7 @@ spring:
             - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/read-service/(?<segment>.*)$, /$\{segment}
-        - id: insite-realtime-read-service #writeService
+        - id: insite-realtime-read-service #realtimeService
           uri: lb://INSITE-REALTIME-READ-SERVICE  #lb : use eureka name
           predicates:
             - Path=/realtime-read-service/**
