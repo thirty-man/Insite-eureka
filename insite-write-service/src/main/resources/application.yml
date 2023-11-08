@@ -1,5 +1,5 @@
 server:
-  port: 8082 #0
+  port: 8083 #0
   servlet:
     context-path: /api/v1
 
@@ -10,7 +10,7 @@ spring:
     import: optional:file:.env[.properties]
 
 influxdb:
-  url: http://localhost:8086
+  url: http://influxdb-insite:8086
   token: behappy1234
   org: thirty
   bucket: insite
