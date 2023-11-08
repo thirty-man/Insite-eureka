@@ -43,7 +43,6 @@ const TableBody = styled.tbody`
 
 function PageUsageStatistics() {
   const [data, setData] = useState<UserCountDtoType[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

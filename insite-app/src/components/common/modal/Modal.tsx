@@ -6,7 +6,7 @@ interface ModalContentType {
   height: string;
   $posX: string;
   $posY: string;
-  position: "absolute" | "fixed" | "relative";
+  $position: "absolute" | "fixed" | "relative";
 }
 
 interface ModalType extends ModalContentType {
@@ -26,7 +26,7 @@ const ModalContent = styled.div<ModalContentType>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: ${(props) => props.position};
+  position: ${(props) => props.$position};
   border: none;
   background-color: ${(props) => props.theme.colors.b3};
   color: white;
@@ -44,7 +44,7 @@ function Modal({
   height,
   $posX,
   $posY,
-  position,
+  $position,
   close,
 }: PropsWithChildren<ModalType>) {
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -70,7 +70,7 @@ function Modal({
       height={height}
       $posX={$posX}
       $posY={$posY}
-      position={position}
+      $position={$position}
       ref={modalRef}
     >
       {children}

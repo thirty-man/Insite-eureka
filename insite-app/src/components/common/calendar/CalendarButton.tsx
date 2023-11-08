@@ -13,18 +13,18 @@ interface CalendarButtonProps {
 }
 
 const DateText = styled.div`
-  width: 40%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-left: 1px;
-  margin-right: 1px;
+  margin-left: 2px;
+  margin-right: 2px;
 `;
 
 const DateText2 = styled.div`
-  width: 1%;
+  width: 2%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -32,12 +32,13 @@ const DateText2 = styled.div`
   justify-content: center;
 `;
 const DateImg = styled.img`
-  width: 10%;
+  width: 30%;
   height: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-right: 5px;
   filter: invert(100%);
 `;
 
