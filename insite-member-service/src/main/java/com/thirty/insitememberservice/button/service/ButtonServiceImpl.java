@@ -5,6 +5,7 @@ import com.thirty.insitememberservice.application.repository.ApplicationReposito
 import com.thirty.insitememberservice.button.dto.ButtonDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonCreateReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonDeleteReqDto;
+import com.thirty.insitememberservice.button.dto.request.ButtonListReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonModifyReqDto;
 import com.thirty.insitememberservice.button.dto.response.ButtonCreateResDto;
 import com.thirty.insitememberservice.button.dto.response.ButtonListResDto;
@@ -95,29 +96,23 @@ public class ButtonServiceImpl implements ButtonService{
     }
 
     @Override
-    public ButtonListResDto getMyButtonList(int memberId, int applicationId, int page) {
+    public ButtonListResDto getMyButtonList(int memberId, ButtonListReqDto buttonListReqDto) {
         //멤버 검증
         Member member = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId)
             .orElseThrow(()-> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
 
         //어플 검증
-        Application application = applicationRepository.findApplicationByApplicationIdAndMemberAndIsDeletedIsFalse(applicationId, member)
+        Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(member, buttonListReqDto.getApplicationToken())
             .orElseThrow(()-> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
 
-        Pageable pageable = PageRequest.of(page,10, Sort.by(Sort.Order.asc("buttonId")));
-
         //버튼 리스트
-        Page<Button> buttonList = buttonRepository.findAllByApplicationAndIsDeletedIsFalse(application, pageable);
+        List<Button> buttonList = buttonRepository.findAllByApplicationAndIsDeletedIsFalse(application);
         List<ButtonDto> buttonDtoList = new ArrayList<>();
 
         for(Button button: buttonList){
             buttonDtoList.add(ButtonDto.create(button.getButtonId(), button.getName()));
         }
 
-        int totalPages = buttonList.getTotalPages();
-        int currentPage = buttonList.getNumber();
-        Boolean hasNext = buttonList.hasNext();
-
-        return ButtonListResDto.create(buttonDtoList,totalPages, currentPage, hasNext);
+        return ButtonListResDto.create(buttonDtoList);
     }
 }

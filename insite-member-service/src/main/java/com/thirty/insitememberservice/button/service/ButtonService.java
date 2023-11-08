@@ -1,5 +1,6 @@
 package com.thirty.insitememberservice.button.service;
 
+import com.thirty.insitememberservice.button.dto.request.ButtonListReqDto;
 import com.thirty.insitememberservice.button.dto.response.ButtonCreateResDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonCreateReqDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonDeleteReqDto;
@@ -14,5 +15,5 @@ public interface ButtonService {
 
     void modify(int memberId, int buttonId, ButtonModifyReqDto buttonModifyReqDto);
 
-    ButtonListResDto getMyButtonList(int memberId, int applicationId, int page);
+    ButtonListResDto getMyButtonList(int memberId, ButtonListReqDto buttonListReqDto);
 }

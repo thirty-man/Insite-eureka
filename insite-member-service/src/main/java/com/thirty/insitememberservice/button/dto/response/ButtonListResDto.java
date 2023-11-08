@@ -18,18 +18,9 @@ public class ButtonListResDto {
     @Default
     private List<ButtonDto> buttonDtoList = new ArrayList<>();
 
-    private int totalPages;
-
-    private int currentPage;
-
-    private Boolean hasNext;
-
-    public static ButtonListResDto create(List<ButtonDto> buttonDtoList, int totalPages, int currentPage, Boolean hasNext){
+    public static ButtonListResDto create(List<ButtonDto> buttonDtoList){
         return ButtonListResDto.builder()
             .buttonDtoList(buttonDtoList)
-            .totalPages(totalPages)
-            .currentPage(currentPage)
-            .hasNext(hasNext)
             .build();
     }
 }

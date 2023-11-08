@@ -1,5 +1,6 @@
 package com.thirty.insitememberservice.button.controller;
 
+import com.thirty.insitememberservice.button.dto.request.ButtonListReqDto;
 import com.thirty.insitememberservice.button.dto.response.ButtonCreateResDto;
 import com.thirty.insitememberservice.button.dto.response.ButtonListResDto;
 import com.thirty.insitememberservice.button.dto.request.ButtonCreateReqDto;
@@ -67,15 +68,14 @@ public class ButtonController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
+    @PostMapping("/list")
     public ResponseEntity<ButtonListResDto> getMyButtonList(
-        @Valid @RequestParam("applicationId") int applicationId,
-        @Valid @RequestParam("page") int page,
+        @Valid @RequestBody ButtonListReqDto buttonListReqDto,
         HttpServletRequest request
     ){
         String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
-        ButtonListResDto buttonListResDto = buttonService.getMyButtonList(loginUser.getMember().getMemberId(), applicationId, page);
+        ButtonListResDto buttonListResDto = buttonService.getMyButtonList(loginUser.getMember().getMemberId(),buttonListReqDto);
         return new ResponseEntity<>(buttonListResDto, HttpStatus.OK);
     }
 }
