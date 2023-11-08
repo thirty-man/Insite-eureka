@@ -17,6 +17,7 @@ public class HealthController {
 	@GetMapping("/check")
 	public ResponseEntity<String> check(HttpServletRequest request) {
 		int port = request.getServerPort();
+		System.out.println("a");
 		return ResponseEntity.status(HttpStatus.OK).body("port : " + port);
 	}
 }
