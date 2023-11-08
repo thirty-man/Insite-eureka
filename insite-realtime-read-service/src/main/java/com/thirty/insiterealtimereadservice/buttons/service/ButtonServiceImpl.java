@@ -19,6 +19,7 @@ import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,6 +27,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ButtonServiceImpl implements ButtonService{
     private final MemberServiceClient memberServiceClient;
+
+    @Value("${influxdb.bucket}")
+    private String bucket;
 
     @Resource
     private InfluxDBClient influxDBClient;
@@ -40,7 +44,7 @@ public class ButtonServiceImpl implements ButtonService{
             Restrictions.measurement().equal("button"),
             Restrictions.tag("applicationToken").equal(token)
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
             .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy(new String[]{"name","cookieId"})

@@ -26,6 +26,7 @@ import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -34,6 +35,9 @@ import org.springframework.stereotype.Service;
 public class DataServiceImpl implements DataService{
 
     private final MemberServiceClient memberServiceClient;
+
+    @Value("${influxdb.bucket}")
+    private String bucket;
 
     @Resource
     private InfluxDBClient influxDBClient;
@@ -48,7 +52,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token)
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
             .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("beforeUrl")
@@ -101,7 +105,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token)
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
             .range(-30L, ChronoUnit.MINUTES)
             .filter(restrictions)
             .groupBy("currentUrl");
@@ -162,14 +166,13 @@ public class DataServiceImpl implements DataService{
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("requestCnt").greaterOrEqual("20")
+            Restrictions.tag("requestCnt").greaterOrEqual("10")
         );
-        Flux query = Flux.from("insite")
+        Flux query = Flux.from(bucket)
             .range(0L)
             .filter(restrictions)
             .groupBy(new String[]{""})
             .sort(new String[]{"_time"}, true);
-
 
         log.info("query= {}",query);
 
