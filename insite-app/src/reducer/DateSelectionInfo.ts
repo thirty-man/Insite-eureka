@@ -6,54 +6,32 @@ const todayDate = new Date();
 
 const today: string = ParsingDate(todayDate);
 
-interface DateSelectionState {
-  realtimeDate: DateSelectionType;
-  trackDate: DateSelectionType;
-  userDate: DateSelectionType;
-  activeDate: DateSelectionType;
-  buttonDate: DateSelectionType;
-}
-
-const initialState: DateSelectionState = {
-  realtimeDate: { start: today, end: today },
-  trackDate: { start: today, end: today },
-  userDate: { start: today, end: today },
-  activeDate: { start: today, end: today },
-  buttonDate: { start: today, end: today },
+const initialState: DateSelectionType = {
+  start: "2003-01-01", // 똑같이 past값으로 초기값 설정
+  end: today,
+  past: "1999-01-01", // 백에서 past값 가져오기
+  latest: today,
 };
 
 const DateSelectionInfoSlice = createSlice({
   name: "DateSelectionInfo",
   initialState,
   reducers: {
-    setRealtimeDate: (state, action: PayloadAction<string>) => {
-      state.realtimeDate.start = action.payload;
-      state.realtimeDate.end = action.payload;
+    setStartDate: (state, action: PayloadAction<string>) => {
+      state.start = action.payload;
     },
-    setTrackDate: (state, action: PayloadAction<string>) => {
-      state.trackDate.start = action.payload;
-      state.trackDate.end = action.payload;
+    setEndDate: (state, action: PayloadAction<string>) => {
+      state.end = action.payload;
     },
-    setUserDate: (state, action: PayloadAction<string>) => {
-      state.userDate.start = action.payload;
-      state.userDate.end = action.payload;
+    setPastDate: (state, action: PayloadAction<string>) => {
+      state.past = action.payload;
     },
-    setActivekDate: (state, action: PayloadAction<string>) => {
-      state.activeDate.start = action.payload;
-      state.activeDate.end = action.payload;
-    },
-    setButtonDate: (state, action: PayloadAction<string>) => {
-      state.buttonDate.start = action.payload;
-      state.buttonDate.end = action.payload;
+    setLatestDate: (state, action: PayloadAction<string>) => {
+      state.latest = action.payload;
     },
   },
 });
 
-export const {
-  setRealtimeDate,
-  setTrackDate,
-  setUserDate,
-  setActivekDate,
-  setButtonDate,
-} = DateSelectionInfoSlice.actions;
+export const { setStartDate, setEndDate, setPastDate, setLatestDate } =
+  DateSelectionInfoSlice.actions;
 export default DateSelectionInfoSlice.reducer;

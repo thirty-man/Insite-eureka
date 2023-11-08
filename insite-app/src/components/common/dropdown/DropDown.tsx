@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { setOpenDropdown } from "@reducer/HeaderModalStateInfo";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedSite } from "@reducer/SelectedSiteInfo";
+import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { dropdownArrow } from "@assets/icons";
-import { ItemTypes } from "@customtypes/dataTypes";
+import { ItemType } from "@customtypes/dataTypes";
 import siteLogos from "../header/SiteLogo";
 
 interface ComponentProps {
@@ -17,8 +17,10 @@ interface ButtonProps {
 }
 
 interface DropDownProps extends ComponentProps, ButtonProps {
-  items: ItemTypes[];
+  items: ItemType[];
   placeholder: string;
+  initialValue: string;
+  onChange: (selectedItem: ItemType) => void;
 }
 
 const Component = styled.div<ComponentProps>`
@@ -32,22 +34,27 @@ const Component = styled.div<ComponentProps>`
 const SelectButton = styled.button<ButtonProps>`
   width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: ${(props) => props.height};
   margin-top: 0.25rem;
   background-color: ${(props) => props.theme.colors.b3};
   border-radius: 0.6rem;
-  padding: 1.4rem 1.6rem;
+  border: 3px solid #2ce8c7;
   cursor: pointer;
 `;
 
 const Select = styled.div<{ $isThemeSelected: boolean }>`
-  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
   outline: none;
   border: none;
   color: ${(props) => (props.$isThemeSelected ? "#f9fafb" : "gray")};
   font-size: 1rem;
-  text-align: left;
 `;
 
 const DropDownStyle = styled.div`
@@ -55,6 +62,7 @@ const DropDownStyle = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.colors.b3};
   border-radius: 0.6rem;
+  border: 3px solid #2ce8c7;
   top: 3.5rem;
   height: auto;
   max-height: 10rem;
@@ -93,12 +101,13 @@ interface ArrowProps {
 }
 
 const Arrow = styled.div<ArrowProps>`
-  width: 1rem;
-  height: 1rem;
+  width: 0.5rem;
+  height: 0.5rem;
   background-image: url(${dropdownArrow});
   background-size: contain; // 이미지 크기 설정
   background-repeat: no-repeat; // 이미지 반복 설정
   background-color: transparent;
+  margin-right: 0.5rem;
 
   ${(props) =>
     props.$dropdown
@@ -118,21 +127,25 @@ const SiteLogo = styled.img`
   justify-content: center;
   width: 1.3rem;
   height: 1.3rem;
-  margin-right: 20px;
+  padding-left: 0.7rem;
 `;
 
 /** 데이터, 너비, 높이(rem) */
-function DropDown({ items, width, height, placeholder }: DropDownProps) {
+function DropDown({
+  items,
+  width,
+  height,
+  placeholder,
+  initialValue,
+  onChange,
+}: DropDownProps) {
   const dispatch = useDispatch();
   const openProfile = useSelector(
     (state: RootState) => state.HeaderModalStateInfo.openProfile,
   );
-  const selectedSite = useSelector(
-    (state: RootState) => state.SelectedSiteInfo.selectedSite,
-  );
   const [isDropdown, setIsDropdown] = useState<boolean>(false);
 
-  const [selectedItem, setSelectedItem] = useState<string>(selectedSite);
+  const [selectedItem, setSelectedItem] = useState<string>(initialValue);
 
   const selectedSiteLogo = siteLogos[selectedItem || ""];
 
@@ -166,6 +179,7 @@ function DropDown({ items, width, height, placeholder }: DropDownProps) {
     if (selectedThemeObj) {
       setSelectedItem(selectedThemeObj.name);
       setSelectedSite(selectedThemeObj.name);
+      onChange(selectedThemeObj);
     }
     setIsDropdown(false);
     dispatch(setOpenDropdown(false));

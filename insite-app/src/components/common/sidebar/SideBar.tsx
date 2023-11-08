@@ -1,9 +1,11 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 import { homeLogo } from "@assets/images";
 import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
+import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@reducer";
 import { SideBarMenu, icons } from "./SideBarMenu";
 import ImageButton from "../button/ImageButton";
 
@@ -111,8 +113,11 @@ const ContactImgWrapper = styled.div`
 `;
 
 function SideBar() {
-  const [selectedMenuId, setSelectedMenuId] = useState<number>(1);
+  const dispatch = useDispatch();
   const navi = useNavigate();
+  const selectedMenuId = useSelector(
+    (state: RootState) => state.SelectedSidebarMenuInfo.selectedMenuId,
+  );
 
   return (
     <SideBarContainer>
@@ -133,7 +138,11 @@ function SideBar() {
             <MenuWrapper
               $isActive={item.id === selectedMenuId}
               onClick={() => {
-                setSelectedMenuId(item.id);
+                if (item.id === 7) {
+                  window.open("http://rollinghoney.com", "_blank");
+                  return;
+                }
+                dispatch(setSelectedMenuId(item.id));
                 navi(item.route);
               }}
             >
