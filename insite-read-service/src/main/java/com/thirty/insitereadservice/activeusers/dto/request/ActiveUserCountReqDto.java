@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ActiveUserCountReqDto {
     @NotNull(message = "통계 시작 시간을 기입해주세요.")
-    private LocalDateTime startDate;
+    private LocalDateTime startDateTime;
 
     @NotNull(message = "통계 끝 시간을 기입해주세요.")
-    private LocalDateTime endDate;
+    private LocalDateTime endDateTime;
 
     @NotNull(message = "앱 토큰을 기입해주세요.")
     private String applicationToken;

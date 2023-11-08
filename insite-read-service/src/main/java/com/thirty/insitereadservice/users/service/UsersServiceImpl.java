@@ -48,8 +48,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
-        Instant startInstant = abnormalHistoryReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = abnormalHistoryReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = abnormalHistoryReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = abnormalHistoryReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -104,8 +104,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
 
         //통계 시간 설정
-        Instant startInstant = pageViewReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = pageViewReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = pageViewReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = pageViewReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -149,8 +149,8 @@ public class UsersServiceImpl implements UsersService {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = userCountReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = userCountReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = userCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = userCountReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -196,8 +196,8 @@ public class UsersServiceImpl implements UsersService {
         //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = totalUserCountReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = totalUserCountReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = totalUserCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = totalUserCountReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -226,8 +226,8 @@ public class UsersServiceImpl implements UsersService {
         //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = viewCountsPerUserReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = viewCountsPerUserReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = viewCountsPerUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = viewCountsPerUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);

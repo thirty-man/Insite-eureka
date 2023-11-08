@@ -81,11 +81,11 @@ public class ActiveUsersController {
         int memberId = 1;
 
 
-        TotalUserCountResDto totalUserCountResDto = usersService.getTotalUserCount(TotalUserCountReqDto.builder().endDate(activeUserPerUserReqDto.getEndDate())
-                .startDate(activeUserPerUserReqDto.getStartDate()).applicationToken(activeUserPerUserReqDto.getApplicationToken()).build(),memberId);
+        TotalUserCountResDto totalUserCountResDto = usersService.getTotalUserCount(TotalUserCountReqDto.builder().endDateTime(activeUserPerUserReqDto.getEndDateTime())
+                .startDateTime(activeUserPerUserReqDto.getStartDateTime()).applicationToken(activeUserPerUserReqDto.getApplicationToken()).build(),memberId);
         ActiveUserCountResDto activeUserCountResDto= activeusersService.getActiveUserCount(ActiveUserCountReqDto.builder()
-                .applicationToken(activeUserPerUserReqDto.getApplicationToken()).startDate(activeUserPerUserReqDto.getStartDate())
-                .endDate(activeUserPerUserReqDto.getEndDate()).build(),memberId);
+                .applicationToken(activeUserPerUserReqDto.getApplicationToken()).startDateTime(activeUserPerUserReqDto.getStartDateTime())
+                .endDateTime(activeUserPerUserReqDto.getEndDateTime()).build(),memberId);
         ActiveUserPerUserResDto activeUserPerUserResDto = ActiveUserPerUserResDto.builder().activeUserPerUser(activeUserCountResDto.getActiveUserCount()/ totalUserCountResDto.getTotal()).build();
 
         return new ResponseEntity<>(activeUserPerUserResDto,HttpStatus.OK);
