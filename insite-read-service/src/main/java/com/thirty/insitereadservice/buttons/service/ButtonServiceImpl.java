@@ -22,10 +22,13 @@ import com.thirty.insitereadservice.global.error.exception.TimeException;
 import feign.FeignException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -72,6 +75,7 @@ public class ButtonServiceImpl implements ButtonService{
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy(new String[]{"_time", "name"})
+            .sort(new String[]{"_time"})
             .count();
 
         log.info("query = {}" ,query);
@@ -79,45 +83,31 @@ public class ButtonServiceImpl implements ButtonService{
         //해당 값 가져와 이름별로 각 숫자 저장
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        Map<String, Integer> countsMap = new HashMap<>();
+        Map<String, Integer> countsMap = new LinkedHashMap<>();
 
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
             if (!records.isEmpty()) {
-                String date = records.get(0).getValueByKey("_time").toString();
+                String date = records.get(0).getValueByKey("_time").toString().split("T")[0];
                 String countStringValue = records.get(0).getValueByKey("_value").toString();
                 int count = Integer.valueOf(countStringValue);
 
                 // Map에 이름(name)과 해당 이름의 카운트 값을 저장
-                countsMap.put(date, count);
-            }
-        }
-
-        Map<String, Integer> result = new HashMap<>();
-
-        for (Map.Entry<String, Integer> entry : countsMap.entrySet()) {
-            String date = entry.getKey().split("T")[0];
-            int value = entry.getValue();
-
-            if (result.containsKey(date)) {
-                result.put(date, result.get(date) + value);
-            } else {
-                result.put(date, value);
+                if (countsMap.containsKey(date)) {
+                    countsMap.put(date, countsMap.get(date) + count);
+                } else {
+                    countsMap.put(date, count);
+                }
             }
         }
 
         //response 형식으로 변환
-        PriorityQueue<ClickCountsDto> clickCountsDtoPriorityQueue = new PriorityQueue<>();
         List<ClickCountsDto> countDtoList = new ArrayList<>();
         int id = 0;
 
-        for(String date : result.keySet()){
-            clickCountsDtoPriorityQueue.offer(ClickCountsDto.create(date, result.get(date)));
-        }
-
-        while(!clickCountsDtoPriorityQueue.isEmpty()){
-            countDtoList.add(clickCountsDtoPriorityQueue.poll().addId(id++));
+        for(String date : countsMap.keySet()){
+            countDtoList.add(ClickCountsDto.create(date, countsMap.get(date)).addId(id++));
         }
 
         return ClickCountsResDto.create(countDtoList);
@@ -140,26 +130,8 @@ public class ButtonServiceImpl implements ButtonService{
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
         }
 
-        //전체 활동 사용자 수 조회 쿼리 생성
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions activityRestrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token)
-        );
-
-        Flux activityQuery = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(activityRestrictions)
-            .groupBy("activityId");
-        log.info("activityQuery = {}" ,activityQuery);
-
-        List<FluxTable> activeTables = queryApi.query(activityQuery.toString());
-        double activitySum = activeTables.size();
-
-        if(activitySum == 0.0){
-            return ClickCountsPerActiveUserResDto.create(0.0);
-        }
         //버튼 누른 횟수 조회
+        QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
             Restrictions.tag("applicationToken").equal(token),
@@ -169,10 +141,18 @@ public class ButtonServiceImpl implements ButtonService{
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
+            .groupBy("activityId")
             .count();
         log.info("query = {}" ,query);
 
         List<FluxTable> tables = queryApi.query(query.toString());
+        double activeUsers = tables.size();
+
+        //사용자가 없으면 0.0 반환
+        if(activeUsers == 0.0){
+            return ClickCountsPerActiveUserResDto.create(0.0);
+        }
+
         double buttonCLicks = 0;
 
         for (FluxTable fluxTable : tables) {
@@ -185,7 +165,7 @@ public class ButtonServiceImpl implements ButtonService{
             }
         }
 
-        return ClickCountsPerActiveUserResDto.create(buttonCLicks/activitySum);
+        return ClickCountsPerActiveUserResDto.create(buttonCLicks/activeUsers);
     }
 
     @Override
@@ -236,8 +216,8 @@ public class ButtonServiceImpl implements ButtonService{
             }
         }
 
-        //data에서 모든 activityId의 마지막 활동 시간을 조회한다
-        // 위의 맵과 일치하는 아이디를 선별하여 비교하는데 button 테이블이 가장 마지막인경우 접속 종료자
+        // data에서 모든 activityId의 마지막 활동 시간을 조회한다
+        // 위의 맵과 일치하는 아이디를 선별한다
 
         Restrictions dataRestrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
@@ -345,29 +325,37 @@ public class ButtonServiceImpl implements ButtonService{
 //    }
 
     private double calculateExitUsers(Map<String,String> userButtonClickTime, Map<String, String> userLastTime){
+        // 비교하는데 button 누른시간 + 30분 이 마지막인경우 접속 종료자
+        // 버튼 누른시간이 현재시간 -30분 보다 최근인경우 접속 중
+
         double count = 0;
+
         for(String activityId: userButtonClickTime.keySet()){
+
             if(userLastTime.containsKey(activityId)) {
+
                 log.info("키 값={}", activityId);
-                String buttonClickTime = userButtonClickTime.get(activityId);
-                String userExitTime = userLastTime.get(activityId);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-                Date buttonClickDate;
-                Date userExitDate;
-                try {
-                    buttonClickDate = dateFormat.parse(buttonClickTime);
-                    userExitDate = dateFormat.parse(userExitTime);
+                String stringValueOfButtonClick = userButtonClickTime.get(activityId);
+                String stringValueOfUserLastTime = userLastTime.get(activityId);
 
-                    // 두 시간 간의 차이 구하기
-                    long timeDifference = userExitDate.getTime() - buttonClickDate.getTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime buttonClickDateTimePlusActiveMinutes = LocalDateTime.parse(stringValueOfButtonClick, formatter).plusMinutes(30);
+                LocalDateTime userLastDateTimePlusActiveMinutes = LocalDateTime.parse(stringValueOfUserLastTime, formatter).plusMinutes(30);
+                LocalDateTime now = LocalDateTime.now();
 
-                    if (timeDifference < 0) {
-                        //버튼을 마지막으로 누른사람
-                        count++;
-                    }
-                }catch (Exception e){
-                    log.error(e.getMessage());
+                //유저 마지막 시간+30분이 현재시간 이후인 경우 접속중
+                if(now.isBefore(userLastDateTimePlusActiveMinutes) || now.equals(userLastDateTimePlusActiveMinutes)){
+                    continue;
+                }
+                //버튼 누른 시간+30분이 현재시간 이후인 경우 접속중
+                if(now.isBefore(buttonClickDateTimePlusActiveMinutes) || now.equals(buttonClickDateTimePlusActiveMinutes)){
+                    continue;
+                }
+                // 두 시간 간의 차이 구하기
+                if (userLastDateTimePlusActiveMinutes.isAfter(buttonClickDateTimePlusActiveMinutes) || userLastDateTimePlusActiveMinutes.equals(buttonClickDateTimePlusActiveMinutes)) {
+                    //버튼을 마지막으로 누른사람
+                    count++;
                 }
             }
         }

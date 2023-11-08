@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClickCountsDto implements Comparable<ClickCountsDto>{
+public class ClickCountsDto{
 
     private int id;
 
@@ -30,10 +30,5 @@ public class ClickCountsDto implements Comparable<ClickCountsDto>{
     public ClickCountsDto addId(int id){
         this.id = id;
         return this;
-    }
-
-    @Override
-    public int compareTo(@NotNull ClickCountsDto o) {
-        return o.counts - this.getCounts();
     }
 }
