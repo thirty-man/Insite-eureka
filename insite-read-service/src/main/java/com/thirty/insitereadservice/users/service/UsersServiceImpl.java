@@ -65,18 +65,21 @@ public class UsersServiceImpl implements UsersService {
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("requestCnt").greaterOrEqual("20")
+            Restrictions.tag("requestCnt").greaterOrEqual("10")
         );
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
-            .groupBy("currentUrl");
+            .groupBy(new String[]{""})
+            .sort(new String[]{"_time"});
 
         log.info("query = {}" ,query);
 
         //해당 값 가져와 이름별로 각 숫자 저장
         List<FluxTable> tables = queryApi.query(query.toString());
-        Map<LocalDateTime, AbnormalUrlAndCountDto> dateAndAbnormalDtoUrlAndCountMap = new HashMap<>();
+        List<AbnormalDto> abnormalDtoList = new ArrayList<>();
+        int id = 0 ;
+
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
@@ -84,32 +87,15 @@ public class UsersServiceImpl implements UsersService {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 LocalDateTime date = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
 
+                String cookieId = record.getValueByKey("cookieId").toString();
                 String currentUrl = record.getValueByKey("currentUrl").toString();
+                String language = record.getValueByKey("language").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                String osId = record.getValueByKey("osId").toString();
 
-                if(dateAndAbnormalDtoUrlAndCountMap.containsKey(date)){
-                    AbnormalUrlAndCountDto abnormalUrlAndCountDto = dateAndAbnormalDtoUrlAndCountMap.get(date);
-                    abnormalUrlAndCountDto.addCount();
-
-                    dateAndAbnormalDtoUrlAndCountMap.put(date, abnormalUrlAndCountDto);
-                }else{
-                    dateAndAbnormalDtoUrlAndCountMap.put(date, AbnormalUrlAndCountDto.create(currentUrl,1));
-                }
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+                abnormalDtoList.add(AbnormalDto.create(cookieId,date,currentUrl,language,requestCnt,osId).addId(id++));
             }
-        }
-
-        List<AbnormalDto> abnormalDtoList = new ArrayList<>();
-        PriorityQueue<AbnormalDto> abnormalDtoPriorityQueue = new PriorityQueue<>();
-        int id = 0 ;
-
-        for(LocalDateTime date: dateAndAbnormalDtoUrlAndCountMap.keySet()){
-            AbnormalUrlAndCountDto abnormalUrlAndCountDto = dateAndAbnormalDtoUrlAndCountMap.get(date);
-
-            abnormalDtoPriorityQueue.offer(
-                AbnormalDto.create(date, abnormalUrlAndCountDto.getUrl(), abnormalUrlAndCountDto.getCount()));
-        }
-
-        while (!abnormalDtoPriorityQueue.isEmpty()){
-            abnormalDtoList.add(abnormalDtoPriorityQueue.poll().addId(id++));
         }
 
         return AbnormalHistoryResDto.create(abnormalDtoList);

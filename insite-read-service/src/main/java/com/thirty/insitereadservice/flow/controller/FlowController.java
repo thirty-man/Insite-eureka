@@ -34,6 +34,18 @@ public class FlowController {
         return new ResponseEntity<>(entryExitFlowResDto, HttpStatus.OK);
     }
 
+    @PostMapping("/entry-enter")
+    public ResponseEntity<EntryEnterFlowResDto> getExitFlow(
+        @Valid @RequestBody EntryEnterFlowReqDto entryEnterFlowReqDto,
+        HttpServletRequest request
+    ){
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
+        EntryEnterFlowResDto entryEnterFlowResDto = flowService.getEntryEnterFlow(entryEnterFlowReqDto, memberId);
+        return new ResponseEntity<>(entryEnterFlowResDto, HttpStatus.OK);
+    }
+
     //
     @PostMapping("/urlflow")
     public ResponseEntity<CurrentUrlFlowResDto> getUrlFlow(@Valid @RequestBody CurrentUrlFlowReqDto urlFlowReqDto,

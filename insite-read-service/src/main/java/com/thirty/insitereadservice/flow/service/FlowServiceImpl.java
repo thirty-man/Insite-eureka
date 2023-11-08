@@ -14,7 +14,9 @@ import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,19 +66,29 @@ public class FlowServiceImpl implements FlowService {
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId")
-            .pivot(new String[]{"_value"}, new String[]{"_field"},"currentUrl");
+            .sort(new String[]{"_time"});
 
         log.info("query = {}" ,query);
 
         List<FluxTable> tables = queryApi.query(query.toString());
         Map<String, Integer> exitPageRank = new HashMap<>();
         double totalUser = tables.size();
+        LocalDateTime nowMinusActiveTime = LocalDateTime.now().minusMinutes(30);
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
-            for (FluxRecord record: records) {
-                String exitPageUrl = record.getValueByKey("applicationUrl").toString();
+            if (!records.isEmpty()) {
+                int len = records.size()-1;
+                String exitPageUrl = records.get(len).getValueByKey("currentUrl").toString();
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime userLastTime = LocalDateTime.parse(records.get(len).getValueByKey("_time").toString(), formatter);
+
+                //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
+                if(userLastTime.isAfter(nowMinusActiveTime) || userLastTime.equals(nowMinusActiveTime)){
+                    continue;
+                }
+                
                 if(exitPageRank.containsKey(exitPageUrl)){
                     exitPageRank.put(exitPageUrl, exitPageRank.get(exitPageUrl)+1);
                 }else{
@@ -100,6 +112,67 @@ public class FlowServiceImpl implements FlowService {
         }
 
         return EntryExitFlowResDto.create(exitFlowDtoList);
+    }
+
+    @Override
+    public EntryEnterFlowResDto getEntryEnterFlow(EntryEnterFlowReqDto entryEnterFlowReqDto, int memberId) {
+        String token = entryEnterFlowReqDto.getApplicationToken();
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+
+        //통계 시간 설정
+        Instant startInstant = entryEnterFlowReqDto.getStartDate().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = entryEnterFlowReqDto.getEndDate().plusHours(9).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
+        //쿼리 생성
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        Restrictions restrictions = Restrictions.and(
+            Restrictions.measurement().equal("data"),
+            Restrictions.tag("applicationToken").equal(token),
+            Restrictions.tag("referrer").notEqual("null")
+        );
+        Flux query = Flux.from(bucket)
+            .range(startInstant, endInstant)
+            .filter(restrictions)
+            .groupBy("activityId");
+
+        log.info("query = {}" ,query);
+
+        List<FluxTable> tables = queryApi.query(query.toString());
+        Map<String, Integer> enterPageRank = new HashMap<>();
+        double totalUser = tables.size();
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            if (!records.isEmpty()) {
+                String enterPageUrl = records.get(0).getValueByKey("referrer").toString();
+
+                if(enterPageRank.containsKey(enterPageUrl)){
+                    enterPageRank.put(enterPageUrl, enterPageRank.get(enterPageUrl)+1);
+                }else{
+                    enterPageRank.put(enterPageUrl, 1);
+                }
+            }
+        }
+
+        List<EntryEnterFlowDto> entryEnterFlowDtoList = new ArrayList<>();
+        PriorityQueue<EntryEnterFlowDto> entryEnterFlowDtoPriorityQueue = new PriorityQueue<>();
+        int id = 0;
+
+        for(String enterPageUrl: enterPageRank.keySet()){
+            int count = enterPageRank.get(enterPageUrl);
+            entryEnterFlowDtoPriorityQueue.offer(
+                EntryEnterFlowDto.create(enterPageUrl, count,(totalUser == 0.0) ? 0.0:count/totalUser));
+        }
+
+        while(!entryEnterFlowDtoPriorityQueue.isEmpty()){
+            entryEnterFlowDtoList.add(entryEnterFlowDtoPriorityQueue.poll().addId(id++));
+        }
+
+        return EntryEnterFlowResDto.create(entryEnterFlowDtoList);
     }
 
 

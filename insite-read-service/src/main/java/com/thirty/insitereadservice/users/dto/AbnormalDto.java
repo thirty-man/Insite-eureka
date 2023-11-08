@@ -16,17 +16,26 @@ public class AbnormalDto implements Comparable<AbnormalDto>{
 
     private int id;
 
+    private String cookieId;
+
     private LocalDateTime date;
 
-    private String url;
+    private String currentUrl;
 
-    private int abnormalCount;
+    private String language;
 
-    public static AbnormalDto create(LocalDateTime date, String url, int abnormalCount){
+    private int requestCnt;
+
+    private String osId;
+
+    public static AbnormalDto create(String cookieId, LocalDateTime date, String currentUrl, String language, int requestCnt, String osId){
         return AbnormalDto.builder()
+            .cookieId(cookieId)
             .date(date)
-            .url(url)
-            .abnormalCount(abnormalCount)
+            .currentUrl(currentUrl)
+            .language(language)
+            .requestCnt(requestCnt)
+            .osId(osId)
             .build();
     }
 

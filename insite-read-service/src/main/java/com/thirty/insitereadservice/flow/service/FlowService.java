@@ -7,6 +7,7 @@ import com.thirty.insitereadservice.flow.dto.response.*;
 public interface FlowService {
 
     EntryExitFlowResDto getEntryExitFlow(EntryExitFlowReqDto exitFlowReqDto, int memberId);
+    EntryEnterFlowResDto getEntryEnterFlow(EntryEnterFlowReqDto entryEnterFlowReqDto, int memberId);
     CurrentUrlFlowResDto getUrlFlow(CurrentUrlFlowReqDto urlFlowReqDto, int memberId);
     ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto,int memberId);
     ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto,int memberId);
