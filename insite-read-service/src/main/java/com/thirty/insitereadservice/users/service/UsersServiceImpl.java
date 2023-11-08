@@ -65,7 +65,7 @@ public class UsersServiceImpl implements UsersService {
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("requestCnt").greaterOrEqual("20")
+            Restrictions.tag("requestCnt").greaterOrEqual("10")
         );
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
