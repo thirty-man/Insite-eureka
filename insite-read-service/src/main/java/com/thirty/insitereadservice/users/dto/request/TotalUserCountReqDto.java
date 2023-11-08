@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ViewCountsPerUserReqDto {
+public class TotalUserCountReqDto {
     @NotNull(message = "시작시간을 기입해 주세요")
     private LocalDateTime startDate;
 
@@ -21,5 +21,4 @@ public class ViewCountsPerUserReqDto {
 
     @NotNull(message = "앱 토큰을 기입해 주세요")
     private String applicationToken;
-
 }

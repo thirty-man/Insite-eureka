@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ViewCountsPerUserResDto {
-    private double viewCountsPerUser;
+public class TotalUserCountResDto {
+    private int total;
+
+    public static TotalUserCountResDto create(int total){
+        return TotalUserCountResDto.builder().total(total).build();
+    }
 }

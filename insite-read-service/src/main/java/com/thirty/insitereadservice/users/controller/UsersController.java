@@ -3,11 +3,10 @@ package com.thirty.insitereadservice.users.controller;
 import com.thirty.insitereadservice.users.dto.request.PageViewReqDto;
 import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
 import com.thirty.insitereadservice.users.dto.request.ViewCountsPerUserReqDto;
+import com.thirty.insitereadservice.users.dto.response.CookieIdUrlResDto;
 import com.thirty.insitereadservice.users.dto.response.PageViewResDto;
 import com.thirty.insitereadservice.users.dto.response.UserCountResDto;
-import com.thirty.insitereadservice.users.dto.response.ViewCountsPerUserResDto;
-import com.thirty.insitereadservice.global.jwt.JwtProcess;
-import com.thirty.insitereadservice.global.jwt.JwtVO;
+import com.thirty.insitereadservice.users.dto.ViewCountsPerUserDto;
 import com.thirty.insitereadservice.users.dto.request.AbnormalHistoryReqDto;
 import com.thirty.insitereadservice.users.dto.response.AbnormalHistoryResDto;
 import com.thirty.insitereadservice.users.service.UsersService;
@@ -43,7 +42,7 @@ public class UsersController {
     //
     @PostMapping("/view-counts")
     public ResponseEntity<PageViewResDto> getPageView(@Valid @RequestBody PageViewReqDto pageViewReqDto,
-        HttpServletRequest request
+                                                          HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
@@ -54,7 +53,7 @@ public class UsersController {
 
     @PostMapping("/user-counts")
     public ResponseEntity<UserCountResDto> getUserCounts(@Valid @RequestBody UserCountReqDto userCountReqDto,
-        HttpServletRequest request
+                                                             HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
@@ -64,18 +63,14 @@ public class UsersController {
     }
 
     @PostMapping("/view-counts-per-user")
-    public ResponseEntity<ViewCountsPerUserResDto> getViewCountsPerUser(@Valid @RequestBody ViewCountsPerUserReqDto viewCountsPerUserReqDto,
-        HttpServletRequest request
+    public ResponseEntity<CookieIdUrlResDto> getViewCountsPerUser(@Valid @RequestBody ViewCountsPerUserReqDto viewCountsPerUserReqDto,
+                                                                  HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
+        CookieIdUrlResDto cookieIdUrlResDto= usersService.getCookieIdUrlCount(viewCountsPerUserReqDto,memberId);
 
-        PageViewResDto pageViewResDto = usersService.getPageView(PageViewReqDto.builder().applicationToken(viewCountsPerUserReqDto.getApplicationToken())
-            .currentUrl(viewCountsPerUserReqDto.getCurrentUrl()).build(),memberId);
-        UserCountResDto userCountResDto = usersService.getUserCount(UserCountReqDto.builder().applicationToken(viewCountsPerUserReqDto.getApplicationToken()).build(),memberId);
-        ViewCountsPerUserResDto viewCountsPerUserResDto = ViewCountsPerUserResDto.builder().viewCountsPerUser(pageViewResDto.getPageView()/ userCountResDto.getUserCount()).build();
-
-        return new ResponseEntity<>(viewCountsPerUserResDto,HttpStatus.OK);
+        return new ResponseEntity<>(cookieIdUrlResDto,HttpStatus.OK);
     }
 }
