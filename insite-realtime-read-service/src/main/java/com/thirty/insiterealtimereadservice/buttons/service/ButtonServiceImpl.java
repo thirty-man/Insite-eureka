@@ -7,10 +7,14 @@ import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insiterealtimereadservice.buttons.dto.CountPerUserDto;
-import com.thirty.insiterealtimereadservice.buttons.dto.response.CountPerUserResDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.response.ButtonAbnormalResDto;
+import com.thirty.insiterealtimereadservice.buttons.dto.response.ClickCountPerUserResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
-import java.time.temporal.ChronoUnit;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,17 +39,18 @@ public class ButtonServiceImpl implements ButtonService{
     private InfluxDBClient influxDBClient;
 
     @Override
-    public CountPerUserResDto countPerUser(int memberId, String token) {
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-
+    public ClickCountPerUserResDto countPerUser(int memberId, String applicationToken) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
         QueryApi queryApi = influxDBClient.getQueryApi();
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
-            Restrictions.tag("applicationToken").equal(token)
+            Restrictions.tag("applicationToken").equal(applicationToken)
         );
         Flux query = Flux.from(bucket)
-            .range(-30L, ChronoUnit.MINUTES)
+            .range( beforeThirtyMinutes, now)
             .filter(restrictions)
             .groupBy(new String[]{"name","cookieId"})
             .count();
@@ -97,6 +102,46 @@ public class ButtonServiceImpl implements ButtonService{
         while (!ranking.isEmpty()){
             countPerUserDtoList.add(ranking.poll().addId(id++));
         }
-        return CountPerUserResDto.create(countPerUserDtoList);
+        return ClickCountPerUserResDto.create(countPerUserDtoList);
+    }
+
+    @Override
+    public List<ButtonAbnormalResDto> getButtonAbnormal(int memberId, String applicationToken) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(beforeThirtyMinutes).append(", stop:").append(now).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"button\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+
+
+        log.info("query={}",queryBuilder);
+
+        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
+        List<ButtonAbnormalResDto> buttonAbnormalResDtoList = new ArrayList<>();
+
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            for (FluxRecord record : records) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime currentDateTime = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+
+                String buttonName = record.getValueByKey("name").toString();
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+
+                buttonAbnormalResDtoList.add(ButtonAbnormalResDto.create(cookieId, buttonName, currentDateTime,currentUrl,requestCnt));
+            }
+        }
+        return buttonAbnormalResDtoList;
     }
 }
