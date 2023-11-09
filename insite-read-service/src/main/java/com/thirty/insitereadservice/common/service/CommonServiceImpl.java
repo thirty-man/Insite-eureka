@@ -39,7 +39,7 @@ public class CommonServiceImpl implements CommonService{
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         Instant startInstant = commonReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = commonReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = commonReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);

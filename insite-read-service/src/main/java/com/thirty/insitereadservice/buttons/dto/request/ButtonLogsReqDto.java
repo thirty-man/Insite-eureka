@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExitPercentageReqDto {
+public class ButtonLogsReqDto {
 
     @NotNull(message = "시작시간을 기입해 주세요")
     private LocalDateTime startDateTime;

@@ -6,32 +6,37 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.ExitPercentageReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.FirstClickTimeReqDto;
-import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
+import com.thirty.insitereadservice.buttons.dto.ButtonLogDto;
+import com.thirty.insitereadservice.buttons.dto.ButtonRateDto;
+import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
+import com.thirty.insitereadservice.buttons.dto.request.EveryButtonRateReqDto;
+import com.thirty.insitereadservice.buttons.dto.request.ButtonLogsReqDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.ClickCountsDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
-import com.thirty.insitereadservice.buttons.dto.response.ExitPercentageResDto;
-import com.thirty.insitereadservice.buttons.dto.response.FirstClickTimeResDto;
+import com.thirty.insitereadservice.buttons.dto.response.EveryButtonRateResDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonLogsResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
-import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
+import com.thirty.insitereadservice.feignclient.dto.ButtonDto;
+import com.thirty.insitereadservice.feignclient.dto.request.ButtonListReqDto;
+import com.thirty.insitereadservice.feignclient.dto.response.ButtonListResDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
+import com.thirty.insitereadservice.global.error.exception.ButtonException;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
-import feign.FeignException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +63,7 @@ public class ButtonServiceImpl implements ButtonService{
         
         //통계 시간 설정
         Instant startInstant = clickCountsReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = clickCountsReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = clickCountsReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -114,69 +119,14 @@ public class ButtonServiceImpl implements ButtonService{
     }
 
     @Override
-    public ClickCountsPerActiveUserResDto getClickCountsPerActiveUser(
-        ClickCountsPerActiveUserReqDto clickCountsPerActiveUserReqDto,
-        int memberId
-    ) {
-        String token = clickCountsPerActiveUserReqDto.getApplicationToken();
+    public ButtonLogsResDto getButtonLogs(ButtonLogsReqDto buttonLogsReqDto, int memberId) {
+        String token = buttonLogsReqDto.getApplicationToken();
 
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
-        Instant startInstant = clickCountsPerActiveUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = clickCountsPerActiveUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-
-        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
-            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
-        }
-
-        //버튼 누른 횟수 조회
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("button"),
-            Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("name").equal(clickCountsPerActiveUserReqDto.getButtonName())
-        );
-
-        Flux query = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(restrictions)
-            .groupBy("activityId")
-            .count();
-        log.info("query = {}" ,query);
-
-        List<FluxTable> tables = queryApi.query(query.toString());
-        double activeUsers = tables.size();
-
-        //사용자가 없으면 0.0 반환
-        if(activeUsers == 0.0){
-            return ClickCountsPerActiveUserResDto.create(0.0);
-        }
-
-        double buttonCLicks = 0;
-
-        for (FluxTable fluxTable : tables) {
-            List<FluxRecord> records = fluxTable.getRecords();
-
-            for (FluxRecord record : records) {
-                String countStringValue = record.getValueByKey("_value").toString();
-                double count = Double.valueOf(countStringValue);
-                buttonCLicks += count;
-            }
-        }
-
-        return ClickCountsPerActiveUserResDto.create(buttonCLicks/activeUsers);
-    }
-
-    @Override
-    public ExitPercentageResDto getExitPercentage(ExitPercentageReqDto exitCountsReqDto, int memberId) {
-        String token = exitCountsReqDto.getApplicationToken();
-
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-
-        //통계 시간 설정
-        Instant startInstant = exitCountsReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = exitCountsReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant startInstant = buttonLogsReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = buttonLogsReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -187,34 +137,57 @@ public class ButtonServiceImpl implements ButtonService{
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("button"),
             Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("name").equal(exitCountsReqDto.getButtonName())
+            Restrictions.tag("name").equal(buttonLogsReqDto.getButtonName())
         );
 
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
-            .groupBy("activityId")
-            .pivot(new String[]{"_value"}, new String[]{"_field"}, "_time");
+            .groupBy("activityId");
 
         log.info("query = {}" ,query);
         List<FluxTable> tables = queryApi.query(query.toString());
         Map<String,String> userButtonClickTime = new HashMap<>();
+
+        List<ButtonLogDto> buttonLogDtoList = new ArrayList<>();
         double totalButtonClickUsers = tables.size();
 
         //전체 사용자가 없는경우 바로 0리턴
         if(totalButtonClickUsers == 0){
-            return ExitPercentageResDto.create(0);
+            return ButtonLogsResDto.create(0,0,buttonLogDtoList);
         }
 
+        double buttonClicks = 0;
+        int id = 0;
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
+            buttonClicks += records.size();
             for (FluxRecord record : records) {
+                //이탈율 계산을 위한 map
                 String activityId = record.getValueByKey("activityId").toString();
-                String timeStringValue = record.getValueByKey("applicationUrl").toString();
+                String timeStringValue = record.getValueByKey("_time").toString();
 
                 userButtonClickTime.put(activityId, timeStringValue);
+
+                //log 출력을 위해 dto 생성
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime time = LocalDateTime.parse(timeStringValue, formatter);
+
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+
+                buttonLogDtoList.add(ButtonLogDto.create(currentUrl,time,cookieId, requestCnt >= 10).addId(id++));
             }
         }
+        //클릭 시간 오름차순으로 정렬
+        Collections.sort(buttonLogDtoList, new Comparator<ButtonLogDto>(){
+            @Override
+            public int compare(ButtonLogDto dto1, ButtonLogDto dto2) {
+                return dto1.getClickDateTime().compareTo(dto2.getClickDateTime());
+            }
+        });
 
         // data에서 모든 activityId의 마지막 활동 시간을 조회한다
         // 위의 맵과 일치하는 아이디를 선별한다
@@ -227,7 +200,7 @@ public class ButtonServiceImpl implements ButtonService{
             .range(startInstant, endInstant)
             .filter(dataRestrictions)
             .groupBy("activityId")
-            .pivot(new String[]{"_value"}, new String[]{"_field"}, "_time");
+            .sort(new String[]{"_time"});
 
         log.info("dataQuery ={}", dataQuery);
         List<FluxTable> dataTables = queryApi.query(dataQuery.toString());
@@ -238,7 +211,7 @@ public class ButtonServiceImpl implements ButtonService{
 
             for (FluxRecord record : records) {
                 String activityId = record.getValueByKey("activityId").toString();
-                String timeStringValue = record.getValueByKey("applicationUrl").toString();
+                String timeStringValue = record.getValueByKey("_time").toString();
 
                 userLastTime.put(activityId, timeStringValue);
             }
@@ -246,83 +219,146 @@ public class ButtonServiceImpl implements ButtonService{
 
         double exitUsersAfterButtonClick = calculateExitUsers(userButtonClickTime, userLastTime);
 
-        return ExitPercentageResDto.create(exitUsersAfterButtonClick/totalButtonClickUsers);
+        return ButtonLogsResDto.create(
+            exitUsersAfterButtonClick/totalButtonClickUsers,
+            buttonClicks/totalButtonClickUsers,
+            buttonLogDtoList
+        );
     }
 
-//    @Override
-//    public FirstClickTimeResDto getFirstClickTimeAvg(FirstClickTimeReqDto firstClickTimeReqDto,
-//        int memberId) {
-//        String token = firstClickTimeReqDto.getApplicationToken();
-//
-//        try{
-//            memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-//        }catch (FeignException fe){
-//            log.error(fe.getMessage());
-//        }
-//
-//        //버튼에서 url을 알아오면서 activityId가 처음 해당 버튼을 누른 시간 즉 레코드에 0번째행만 검사
-//        //data에서 같은 url이고 같은 activityId의 첫 이동 시간을 버튼 시간에서 뺀다 그렇게 나온거 다 더해서 버튼 map size로 나눈다
-//        //기간에 button기록이 page기록보다 앞설경우 -가 나옴...
-//        QueryApi queryApi = influxDBClient.getQueryApi();
-//
-//        Restrictions buttonRestrictions = Restrictions.and(
-//            Restrictions.measurement().equal("button"),
-//            Restrictions.tag("applicationToken").equal(token),
-//            Restrictions.tag("name").equal(firstClickTimeReqDto.getButtonName())
-//        );
-//        Flux buttonQuery = Flux.from("insite")
-//            .range(0L)
-//            .filter(buttonRestrictions)
-//            .groupBy("activityId");
-////            .pivot(new String[]{"currentUrl"}, new String[]{"_field"}, "_time");
-//
-//        log.info("buttonQuery ={}", buttonQuery);
-//        List<FluxTable> buttonTables = queryApi.query(buttonQuery.toString());
-//
-//        //해당 기간에 버튼을 누른 사람이 없는경우 0 리턴
-//        if(buttonTables.size() == 0){
-//            return FirstClickTimeResDto.create(0.0);
-//        }
-//
-//        Map<String, String> userFirstClickTime = new HashMap<>();
-//        String currentUrl ="";
-//        for (FluxTable fluxTable : buttonTables) {
-//            List<FluxRecord> records = fluxTable.getRecords();
-//
-//            if (!records.isEmpty()) {
-//                String activityId = records.get(0).getValueByKey("activityId").toString();
-//                String timeStringValue = records.get(0).getValueByKey("_time").toString();
-//                currentUrl = records.get(0).getValueByKey("currentUrl").toString();
-//                userFirstClickTime.put(activityId, timeStringValue);
-//            }
-//        }
-//
-//        Restrictions dataRestrictions = Restrictions.and(
-//            Restrictions.measurement().equal("data"),
-//            Restrictions.tag("applicationToken").equal(token),
-//            Restrictions.tag("currentUrl").equal(currentUrl)
-//        );
-//
-//        Flux dataQuery = Flux.from("insite")
-//            .range(0L)
-//            .filter(dataRestrictions)
-//            .groupBy("activityId");
-//
-//        List<FluxTable> dataTables = queryApi.query(dataQuery.toString());
-//        Map<String, String> userFirstVisit = new HashMap<>();
-//        for (FluxTable fluxTable : dataTables) {
-//            List<FluxRecord> records = fluxTable.getRecords();
-//
-//            if (!records.isEmpty()) {
-//                String activityId = records.get(0).getValueByKey("activityId").toString();
-//                String timeStringValue = records.get(0).getValueByKey("_time").toString();
-//                userFirstVisit.put(activityId, timeStringValue);
-//            }
-//        }
-//
-//        double firstClickTimeAvg = calculateFirstClickTimeAvg(userFirstClickTime, userFirstVisit);
-//        return FirstClickTimeResDto.create(firstClickTimeAvg);
-//    }
+    @Override
+    public List<ButtonAbnormalResDto> getButtonAbnormal(ButtonAbnormalReqDto buttonAbnormalReqDto,
+        int memberId) {
+        String applicationToken = buttonAbnormalReqDto.getApplicationToken();
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+
+        //통계 시간 설정
+        Instant startInstant = buttonAbnormalReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = buttonAbnormalReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(startInstant).append(", stop:").append(endInstant).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"button\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+
+
+        log.info("query={}",queryBuilder);
+
+        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
+        List<ButtonAbnormalResDto> buttonAbnormalResDtoList = new ArrayList<>();
+
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            for (FluxRecord record : records) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                LocalDateTime currentDateTime = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+
+                String buttonName = record.getValueByKey("name").toString();
+                String cookieId = record.getValueByKey("cookieId").toString();
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
+                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+
+                buttonAbnormalResDtoList.add(ButtonAbnormalResDto.create(cookieId, buttonName, currentDateTime,currentUrl,requestCnt));
+            }
+        }
+        return buttonAbnormalResDtoList;
+    }
+
+    @Override
+    public EveryButtonRateResDto getEveryButtonRate(EveryButtonRateReqDto everyButtonDistReqDto,
+        int memberId) {
+
+        String applicationToken = everyButtonDistReqDto.getApplicationToken();
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+
+        //통계 시간 설정
+        Instant startInstant = everyButtonDistReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = everyButtonDistReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+
+        //멤버의 모든 버튼 조회
+        ButtonListResDto buttons = memberServiceClient.getMyButtonList(ButtonListReqDto.create(applicationToken), memberId);
+
+        //각 버튼 Res 생성
+        List<ButtonDto> buttonDtoList = buttons.getButtonDtoList();
+        if(buttonDtoList.size() == 0){
+            throw new ButtonException(ErrorCode.NOT_EXIST_BUTTON);
+        }
+
+        List<ButtonRateDto> buttonRateDtoList = new ArrayList<>();
+        int id = 0;
+        for(ButtonDto buttonDto : buttonDtoList){
+            buttonRateDtoList.add(ButtonRateDto.create(buttonDto.getName(),0,0.0).addId(id++));
+            log.info("buttonName={}",buttonDto.getName());
+        }
+
+        //모든 버튼이 눌린횟수 / 버튼 종류 = avg, 평균 - 각 버튼 눌린 횟수 = 증감량
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        Restrictions dataRestrictions = Restrictions.and(
+            Restrictions.measurement().equal("button"),
+            Restrictions.tag("applicationToken").equal(applicationToken)
+        );
+        Flux query = Flux.from(bucket)
+            .range(startInstant, endInstant)
+            .filter(dataRestrictions)
+            .groupBy("name")
+            .sort(new String[]{"_time"}, true);
+
+        log.info("query ={}", query);
+
+        List<FluxTable> tables = queryApi.query(query.toString());
+        Map<String, Integer> buttonNameWithClickCounts = new HashMap<>();
+
+        int clickedButtons = tables.size();
+        if(clickedButtons == 0){
+            return EveryButtonRateResDto.create(0.0, buttonRateDtoList);
+        }
+        double totalCLickCounts = 0.0;
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            totalCLickCounts += records.size();
+
+            buttonNameWithClickCounts.put(records.get(0).getValueByKey("name").toString(), records.size());
+        }
+
+        //각 버튼 클릭 수, 증감률
+        double totalAvg = totalCLickCounts/clickedButtons;
+
+        for(String buttonName : buttonNameWithClickCounts.keySet()){
+            int count = buttonNameWithClickCounts.get(buttonName);
+            double increaseDecreaseRate = ((count - totalAvg)/ totalAvg);
+
+            for(ButtonRateDto buttonRateDto : buttonRateDtoList){
+
+                if(buttonRateDto.getName().equals(buttonName)){
+                    buttonRateDto.saveValues(count, increaseDecreaseRate);
+                }
+            }
+        }
+        //카운트내림차순으로 정렬
+        Collections.sort(buttonRateDtoList, new Comparator<ButtonRateDto>() {
+            @Override
+            public int compare(ButtonRateDto dto1, ButtonRateDto dto2) {
+                return dto2.getClickCounts() - dto1.getClickCounts();
+            }
+        });
+
+        return EveryButtonRateResDto.create(totalAvg, buttonRateDtoList);
+    }
 
     private double calculateExitUsers(Map<String,String> userButtonClickTime, Map<String, String> userLastTime){
         // 비교하는데 button 누른시간 + 30분 이 마지막인경우 접속 종료자
@@ -352,8 +388,8 @@ public class ButtonServiceImpl implements ButtonService{
                 if(now.isBefore(buttonClickDateTimePlusActiveMinutes) || now.equals(buttonClickDateTimePlusActiveMinutes)){
                     continue;
                 }
-                // 두 시간 간의 차이 구하기
-                if (userLastDateTimePlusActiveMinutes.isAfter(buttonClickDateTimePlusActiveMinutes) || userLastDateTimePlusActiveMinutes.equals(buttonClickDateTimePlusActiveMinutes)) {
+                // 페이지 이동시간이 더 과거인경우 count++
+                if (userLastDateTimePlusActiveMinutes.isBefore(buttonClickDateTimePlusActiveMinutes) || userLastDateTimePlusActiveMinutes.equals(buttonClickDateTimePlusActiveMinutes)) {
                     //버튼을 마지막으로 누른사람
                     count++;
                 }

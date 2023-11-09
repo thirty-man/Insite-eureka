@@ -1,16 +1,15 @@
 package com.thirty.insitereadservice.buttons.controller;
 
-import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
+import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.ExitPercentageReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.FirstClickTimeReqDto;
-import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
+import com.thirty.insitereadservice.buttons.dto.request.EveryButtonRateReqDto;
+import com.thirty.insitereadservice.buttons.dto.request.ButtonLogsReqDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
-import com.thirty.insitereadservice.buttons.dto.response.ExitPercentageResDto;
-import com.thirty.insitereadservice.buttons.dto.response.FirstClickTimeResDto;
+import com.thirty.insitereadservice.buttons.dto.response.EveryButtonRateResDto;
+import com.thirty.insitereadservice.buttons.dto.response.ButtonLogsResDto;
 import com.thirty.insitereadservice.buttons.service.ButtonService;
-import com.thirty.insitereadservice.global.jwt.JwtProcess;
-import com.thirty.insitereadservice.global.jwt.JwtVO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,48 +39,48 @@ public class ButtonController {
         return new ResponseEntity<>(clickCountsResDto, HttpStatus.OK);
     }
 
-    @PostMapping("/click-counts-per-active-user")
-    public ResponseEntity<ClickCountsPerActiveUserResDto> getClickCountsPerUser(
-        @Valid @RequestBody ClickCountsPerActiveUserReqDto clickCountsPerUserReqDto,
+    @PostMapping("/logs")
+    public ResponseEntity<ButtonLogsResDto> getButtonLogs(
+        @Valid @RequestBody ButtonLogsReqDto exitPercentageReqDto,
         HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
-        ClickCountsPerActiveUserResDto clickCountsPerActiveUserResDto = buttonService.getClickCountsPerActiveUser(
-            clickCountsPerUserReqDto,
-            memberId
-        );
-        return new ResponseEntity<>(clickCountsPerActiveUserResDto, HttpStatus.OK);
-    }
-
-    @PostMapping("/exit-after-click")
-    public ResponseEntity<ExitPercentageResDto> getExitPercentage(
-        @Valid @RequestBody ExitPercentageReqDto exitPercentageReqDto,
-        HttpServletRequest request
-    ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
-        ExitPercentageResDto exitPercentageResDto = buttonService.getExitPercentage(
+        ButtonLogsResDto buttonLogsResDto = buttonService.getButtonLogs(
             exitPercentageReqDto,
             memberId
         );
-        return new ResponseEntity<>(exitPercentageResDto, HttpStatus.OK);
+        return new ResponseEntity<>(buttonLogsResDto, HttpStatus.OK);
     }
 
-//    @PostMapping("/first-click")
-//    public ResponseEntity<FirstClickTimeResDto> getFirstClickTimeAvg(
-//        @Valid @RequestBody FirstClickTimeReqDto firstClickTimeReqDto,
-//        HttpServletRequest request
-//    ){
-////        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-////        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-//        int memberId = 1;
-//        FirstClickTimeResDto firstClickTimeResDto = buttonService.getFirstClickTimeAvg(
-//            firstClickTimeReqDto,
-//            memberId
-//        );
-//        return new ResponseEntity<>(firstClickTimeResDto, HttpStatus.OK);
-//    }
+    //모든 버튼의 평균대비 증감 횟수
+    @PostMapping("/every-button-rate")
+    public ResponseEntity<EveryButtonRateResDto> getEvertButtonRate(
+        @Valid @RequestBody EveryButtonRateReqDto everyButtonDistReqDto,
+        HttpServletRequest request
+    ){
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
+        EveryButtonRateResDto everyButtonDistResDto = buttonService.getEveryButtonRate(
+            everyButtonDistReqDto,
+            memberId
+        );
+        return new ResponseEntity<>(everyButtonDistResDto, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/abnormality")
+    public ResponseEntity<List<ButtonAbnormalResDto>> getButtonAbnormal(
+        @Valid @RequestBody ButtonAbnormalReqDto buttonAbnormalReqDto,
+        HttpServletRequest request
+    ){
+//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = 1;
+        List<ButtonAbnormalResDto> buttonAbnormalResDtoList = buttonService.getButtonAbnormal(buttonAbnormalReqDto, memberId);
+        return new ResponseEntity<>(buttonAbnormalResDtoList, HttpStatus.OK);
+    }
+
 }

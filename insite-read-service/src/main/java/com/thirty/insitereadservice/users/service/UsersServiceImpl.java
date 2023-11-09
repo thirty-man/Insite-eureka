@@ -44,12 +44,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public AbnormalHistoryResDto getAbnormalHistory(AbnormalHistoryReqDto abnormalHistoryReqDto, int memberId) {
-        String token = abnormalHistoryReqDto.getApplicationToken();
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+        String applicationToken = abnormalHistoryReqDto.getApplicationToken();
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
 
         //통계 시간 설정
         Instant startInstant = abnormalHistoryReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = abnormalHistoryReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = abnormalHistoryReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -57,23 +57,18 @@ public class UsersServiceImpl implements UsersService {
 
         //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("requestCnt").greaterOrEqual("10")
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(startInstant).append(", stop:").append(endInstant).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
 
-        );
-        Flux query = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(restrictions)
-            .groupBy(new String[]{""})
-
-            .sort(new String[]{"_time"});
-
-        log.info("query = {}" ,query);
+        log.info("query = {}" ,queryBuilder);
 
         //해당 값 가져와 이름별로 각 숫자 저장
-        List<FluxTable> tables = queryApi.query(query.toString());
+        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
         List<AbnormalDto> abnormalDtoList = new ArrayList<>();
         int id = 0 ;
 
@@ -105,7 +100,7 @@ public class UsersServiceImpl implements UsersService {
 
         //통계 시간 설정
         Instant startInstant = pageViewReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = pageViewReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = pageViewReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -150,7 +145,7 @@ public class UsersServiceImpl implements UsersService {
 
         //통계 시간 설정
         Instant startInstant = userCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = userCountReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = userCountReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -197,7 +192,7 @@ public class UsersServiceImpl implements UsersService {
 
         //통계 시간 설정
         Instant startInstant = totalUserCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = totalUserCountReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = totalUserCountReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -227,7 +222,7 @@ public class UsersServiceImpl implements UsersService {
 
         //통계 시간 설정
         Instant startInstant = viewCountsPerUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = viewCountsPerUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = viewCountsPerUserReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
