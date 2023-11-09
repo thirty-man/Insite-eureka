@@ -4,7 +4,6 @@ interface TitleBoxProps {
   children: React.ReactNode;
   width: string;
   height: string;
-  fontSize: string;
 }
 
 const TitleBoxStyle = styled.div<TitleBoxProps>`
@@ -14,15 +13,15 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${(props) => props.fontSize};
+  font-size: 1.7rem;
   color: white;
   background-color: transparent;
 `;
 
 /** 너비, 높이, 폰트 사이즈 */
-function TitleBox({ children, width, height, fontSize }: TitleBoxProps) {
+function TitleBox({ children, width, height }: TitleBoxProps) {
   return (
-    <TitleBoxStyle width={width} height={height} fontSize={fontSize}>
+    <TitleBoxStyle width={width} height={height}>
       {children}
     </TitleBoxStyle>
   );

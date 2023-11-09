@@ -1,4 +1,4 @@
-import DonutChart from "@components/chart/RealTimeUserDonutChart";
+import DonutChart from "@components/realtime/RealTimeUserDonutChart";
 import { BackgroundDiv, DefaultBox } from "@components/common";
 import Header from "@components/common/header/Header";
 

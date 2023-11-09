@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { UserRefDtoType } from "@customtypes/dataTypes";
-import { getRefData } from "@api/realtimeApi";
+import { getExitData } from "@api/accumulApi";
 import {
   Border,
   StyledTable,
@@ -9,15 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
+import { PageExitType } from "@customtypes/dataTypes";
+import { useEffect, useState } from "react";
 
-function UrlFlowStatstics() {
-  const [data, setData] = useState<UserRefDtoType[]>([]);
+function ExitPage() {
+  const [data, setData] = useState<PageExitType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getRefData(); // await를 사용하여 Promise를 기다립니다.
-        setData(response.referrerDtoList);
+        const response = await getExitData();
+        setData(response.exitFlowDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
@@ -25,18 +25,16 @@ function UrlFlowStatstics() {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
-    return () => clearInterval(intervalId);
   }, []);
 
-  return data.length > 0 ? (
+  return data && data.length > 0 ? (
     <Border>
       <StyledTable>
         <TableHeader>
           <tr>
             <th>순위</th>
-            <th>URL</th>
-            <th>명</th>
+            <th>Url</th>
+            <th>나간 횟수</th>
             <th>비율</th>
           </tr>
         </TableHeader>
@@ -44,9 +42,9 @@ function UrlFlowStatstics() {
           {data.map((item, index) => (
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{item.referrer}</TableCell>
-              <TableCell>{item.count}</TableCell>
-              <TableCell>{Math.round(item.percentage * 100)}</TableCell>
+              <TableCell>{item.currentUrl}</TableCell>
+              <TableCell>{item.exitCount}</TableCell>
+              <TableCell>{item.ratio * 100} %</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -57,4 +55,4 @@ function UrlFlowStatstics() {
   );
 }
 
-export default UrlFlowStatstics;
+export default ExitPage;
