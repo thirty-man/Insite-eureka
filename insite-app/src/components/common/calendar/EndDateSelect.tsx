@@ -42,16 +42,16 @@ function EndDateSelect({
   const dispatch = useDispatch();
 
   const startDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.start,
+    (state: RootState) => state.dateSelectionInfo.start,
   );
   const pastDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.past,
+    (state: RootState) => state.dateSelectionInfo.past,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.latest,
+    (state: RootState) => state.dateSelectionInfo.latest,
   );
   const endDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.dateSelectionInfo.end,
   );
 
   const isLeapYear = (year: number) => {

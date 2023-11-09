@@ -13,7 +13,7 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   color: white;
   background-color: transparent;
 `;

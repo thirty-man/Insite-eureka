@@ -45,17 +45,17 @@ function StartDateSelect({
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   };
   const pastDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.past,
+    (state: RootState) => state.dateSelectionInfo.past,
   );
   const endDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.dateSelectionInfo.end,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.dateSelectionInfo.end,
   );
 
   const startDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.start,
+    (state: RootState) => state.dateSelectionInfo.start,
   );
 
   const parseString = (dateStr: string) => {
