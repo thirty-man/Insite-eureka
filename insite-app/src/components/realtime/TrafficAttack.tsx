@@ -54,11 +54,12 @@ function TrafficAttack() {
     const fetchData = async () => {
       try {
         const response = await getAbnormality(); // await를 사용하여 Promise를 기다립니다.
-        setData(response.abnormalDtoList);
+        if (!response.abnormalDtoList) setData([]);
+        else setData(response.abnormalDtoList);
+
         setIsLoding(false);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 

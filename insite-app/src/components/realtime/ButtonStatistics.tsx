@@ -17,10 +17,10 @@ function ButtonStatistics() {
     const fetchData = async () => {
       try {
         const response = await getButtonCount(); // await를 사용하여 Promise를 기다립니다.
-        setData(response.countPerUserDtoList);
+        if (!response.countPerUserDtoList) setData([]);
+        else setData(response.countPerUserDtoList);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 

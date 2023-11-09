@@ -10,7 +10,7 @@ axios.defaults.baseURL = VITE_API_URI;
  */
 const useAxios = (initialConfig: AxiosRequestConfig) => {
   const [response, setResponse] = useState<AxiosResponse | undefined>();
-  const [error, setError] = useState<AxiosError | undefined>();
+  const [error] = useState<AxiosError | undefined>();
   const [loading, setLoading] = useState(true);
   const token = sessionStorage.getItem("Authorization");
   const fetchData = useCallback(
@@ -26,7 +26,7 @@ const useAxios = (initialConfig: AxiosRequestConfig) => {
         setResponse(res);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
-        setError(err);
+        // setError(err);
       } finally {
         setLoading(false);
       }

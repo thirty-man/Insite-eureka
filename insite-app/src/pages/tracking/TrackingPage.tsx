@@ -1,4 +1,11 @@
-import { BounceCount, ExitPage, UrlFlowStatstics } from "@components/tracking";
+import {
+  BounceCount,
+  EnterPage,
+  EntryExitPage,
+  ExitPage,
+  PageMovingStatistics,
+  UrlFlowStatistics,
+} from "@components/tracking";
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
 import styled from "styled-components";
 
@@ -53,7 +60,7 @@ function TrackingPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              <UrlFlowStatstics />
+              <UrlFlowStatistics />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -86,27 +93,29 @@ function TrackingPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              <UrlFlowStatstics />
+              <EnterPage />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%">
-            출구 페이지
+            출구 페이지(30분)
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              <UrlFlowStatstics />
+              <EntryExitPage />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
       </SecondCol>
       <ThirdCol>
-        <DefaultBox width="102rem" height="25rem">
-          <TitleBox width="" height="10%">
+        <DefaultBox width="96rem" height="25rem">
+          <TitleBox width="100%" height="10%">
             페이지 이동 통계
           </TitleBox>
-          <ContentDiv>안녕</ContentDiv>
+          <ContentDiv>
+            <PageMovingStatistics />
+          </ContentDiv>
         </DefaultBox>
       </ThirdCol>
     </>

@@ -1,5 +1,15 @@
-import UrlFlowStatstics from "./UrlFlowStatstics";
+import UrlFlowStatistics from "./UrlFlowStatistics";
 import ExitPage from "./ExitPage";
 import BounceCount from "./BounceCount";
+import EnterPage from "./EnterPage";
+import EntryExitPage from "./EntryExitPage";
+import PageMovingStatistics from "./PageMovingStatistics";
 
-export { UrlFlowStatstics, ExitPage, BounceCount };
+export {
+  UrlFlowStatistics,
+  ExitPage,
+  BounceCount,
+  EnterPage,
+  EntryExitPage,
+  PageMovingStatistics,
+};

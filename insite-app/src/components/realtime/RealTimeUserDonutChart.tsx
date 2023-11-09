@@ -14,7 +14,7 @@ function RealTimeUserDonutChart() {
         const userCountDto = response.userCountDtoList;
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
           name: item.currentPage,
-          y: Math.round(item.percentage * 100),
+          y: Math.round(item.percentage * 100).toFixed(2),
           dataLabels: {
             enabled: true,
             format: `{point.name}:<br> 횟수: ${item.count}`,
@@ -24,11 +24,10 @@ function RealTimeUserDonutChart() {
             },
           },
         }));
-
-        setData(seriesData);
+        if (!userCountDto) setData([]);
+        else setData(seriesData);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 

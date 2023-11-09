@@ -2,14 +2,14 @@ import axios from "axios";
 
 const { VITE_REALTIME_API_URI, VITE_ACCUMUL_API_URI, VITE_MEMBER_API_URI } =
   import.meta.env;
-const token = sessionStorage.getItem("Authorization");
-const refresh = sessionStorage.getItem("RefreshToken");
+const Authorization = sessionStorage.getItem("Authorization");
+const RefreshToken = sessionStorage.getItem("RefreshToken");
 
 const realTimeAPI = axios.create({
   baseURL: `${VITE_REALTIME_API_URI}/api/v1`,
   headers: {
-    Authorization: token,
-    RefreshToken: refresh,
+    Authorization,
+    RefreshToken,
     "Content-Type": "application/json",
   },
 });
@@ -17,8 +17,8 @@ const realTimeAPI = axios.create({
 const accumulAPI = axios.create({
   baseURL: `${VITE_ACCUMUL_API_URI}/api/v1`,
   headers: {
-    Authorization: token,
-    RefreshToken: refresh,
+    Authorization,
+    RefreshToken,
     "Content-Type": "application/json",
   },
 });
@@ -26,8 +26,8 @@ const accumulAPI = axios.create({
 const memberAPI = axios.create({
   baseURL: `${VITE_MEMBER_API_URI}/api/v1`,
   headers: {
-    Authorization: token,
-    RefreshToken: refresh,
+    Authorization,
+    RefreshToken,
     "Content-Type": "application/json",
   },
 });

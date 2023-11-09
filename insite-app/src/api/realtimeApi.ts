@@ -9,11 +9,10 @@ const getUserCount = async () => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
-  return null;
+  return [];
 };
 
 const getAbnormality = async () => {
@@ -23,11 +22,10 @@ const getAbnormality = async () => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
-  return null;
+  return [];
 };
 
 const getRefData = async () => {
@@ -37,11 +35,10 @@ const getRefData = async () => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
-  return null;
+  return [];
 };
 
 const getButtonCount = async () => {
@@ -54,11 +51,10 @@ const getButtonCount = async () => {
     );
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
-  return null;
+  return [];
 };
 
 export { getAbnormality, getRefData, getButtonCount, getUserCount };

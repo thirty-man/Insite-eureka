@@ -1,4 +1,4 @@
-import { getButtonDetail } from "@api/accumulApi";
+import { getButtonDetailData } from "@api/accumulApi";
 import { ButtonType } from "@customtypes/dataTypes";
 import { RootState } from "@reducer";
 import { useEffect, useState } from "react";
@@ -11,20 +11,33 @@ function ClickCount() {
     (state: RootState) => state.SelectedItemInfo.selectedButton,
   );
   const [data, setData] = useState<ButtonType[]>([]);
-  // const [seriesData, setSeriesData] = useState<[number, number][]>();
+  const startDateTime = useSelector(
+    (state: RootState) => state.DateSelectionInfo.start,
+  );
+
+  const endDateTime = useSelector(
+    (state: RootState) => state.DateSelectionInfo.end,
+  );
 
   useEffect(() => {
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
     const getDetailData = async () => {
       try {
-        const response = await getButtonDetail(selectedButton);
-        setData(response.clickCountsDtoList);
+        const response = await getButtonDetailData(
+          selectedButton,
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (response.clickCountsDtoList.length <= 0) setData([]);
+        else setData(response.clickCountsDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
       }
     };
     getDetailData();
-  }, [selectedButton]);
+  }, [endDateTime, selectedButton, startDateTime]);
 
   const formattedData = data.map((item) => [
     new Date(item.date).getTime(),
