@@ -35,11 +35,11 @@ public class WriteServiceImpl implements WriteService {
     @Override
     public void writeData(DataReqDto dataReqDto) {
         // applicationToken 과 applicationUrl 유효성 검증
-        applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
+      //  applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(dataReqDto.getApplicationToken(), dataReqDto.getApplicationUrl()));
         // activityId 및 abnormal requestCnt 갱신
         String[] activityId_requestCnt = getActivityIdAndRequestCnt(dataReqDto.getCookieId(), "data");
-        dataReqDto.updateActivityId(activityId_requestCnt[0]);
-        dataReqDto.updateRequestCnt(activityId_requestCnt[1]);
+    //    dataReqDto.updateActivityId(activityId_requestCnt[0]);
+    //    dataReqDto.updateRequestCnt(activityId_requestCnt[1]);
         // kafka 전송
         kafkaProducer.sendData("data", dataReqDto);
     }
@@ -47,11 +47,11 @@ public class WriteServiceImpl implements WriteService {
     @Override
     public void writeButton(ButtonReqDto buttonReqDto) {
         // applicationToken 과 applicationUrl 유효성 검증
-        applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(buttonReqDto.getApplicationToken(), buttonReqDto.getApplicationUrl()));
+     //   applicationServiceClient.validationApplication(ApplicationVerifyReqDto.create(buttonReqDto.getApplicationToken(), buttonReqDto.getApplicationUrl()));
         // activityId 및 abnormal requestCnt 갱신
-        String[] activityId_requestCnt = getActivityIdAndRequestCnt(buttonReqDto.getCookieId(), "button");
-        buttonReqDto.updateActivityId(activityId_requestCnt[0]);
-        buttonReqDto.updateRequestCnt(activityId_requestCnt[1]);
+     //   String[] activityId_requestCnt = getActivityIdAndRequestCnt(buttonReqDto.getCookieId(), "button");
+     //   buttonReqDto.updateActivityId(activityId_requestCnt[0]);
+     //   buttonReqDto.updateRequestCnt(activityId_requestCnt[1]);
         // kafka 전송
         kafkaProducer.sendButton("button", buttonReqDto);
     }
