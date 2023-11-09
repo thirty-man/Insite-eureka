@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { UserRefDtoType } from "@customtypes/dataTypes";
-import { getRefData } from "@api/accumulApi";
+import { getEnterCountData } from "@api/accumulApi";
 import {
   Border,
   StyledTable,
@@ -9,11 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { useSelector } from "react-redux";
+import { PageEnterDtoType } from "@customtypes/dataTypes";
 import { RootState } from "@reducer";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-function UrlFlowStatstics() {
-  const [data, setData] = useState<UserRefDtoType[]>([]);
+function EnterPage() {
+  const [data, setData] = useState<PageEnterDtoType[]>([]);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -27,16 +27,19 @@ function UrlFlowStatstics() {
     const parseEndDateTime = new Date(endDateTime);
     const fetchData = async () => {
       try {
-        const response = await getRefData(parseStartDateTime, parseEndDateTime);
-        setData(response.referrerFlowDtos);
+        const response = await getEnterCountData(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.enterFlowDtoList) setData([]);
+        else setData(response.enterFlowDtoList);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 
     fetchData();
-  }, [endDateTime, startDateTime]);
+  }, [startDateTime, endDateTime]);
 
   return data && data.length > 0 ? (
     <Border>
@@ -44,16 +47,18 @@ function UrlFlowStatstics() {
         <TableHeader>
           <tr>
             <th>순위</th>
-            <th>URL</th>
-            <th>명</th>
+            <th>진입 URL</th>
+            <th>진입 횟수</th>
+            <th>비율</th>
           </tr>
         </TableHeader>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{item.referrer}</TableCell>
-              <TableCell>{item.count}</TableCell>
+              <TableCell>{item.enterPage}</TableCell>
+              <TableCell>{item.enterCount}</TableCell>
+              <TableCell>{+item.enterRate.toFixed(4) * 100} %</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -64,4 +69,4 @@ function UrlFlowStatstics() {
   );
 }
 
-export default UrlFlowStatstics;
+export default EnterPage;

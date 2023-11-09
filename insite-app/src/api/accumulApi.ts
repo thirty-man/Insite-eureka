@@ -11,8 +11,7 @@ const getRefData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
   return [];
@@ -27,14 +26,13 @@ const getExitData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
   return [];
 };
 
-const getButtonDetail = async (
+const getButtonDetailData = async (
   name: string,
   startDateTime: Date,
   endDateTime: Date,
@@ -48,14 +46,13 @@ const getButtonDetail = async (
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
   return [];
 };
 
-const getBounceCount = async (startDateTime: Date, endDateTime: Date) => {
+const getBounceCountData = async (startDateTime: Date, endDateTime: Date) => {
   try {
     const response = await accumulAPI.post("/flow/bounce", {
       applicationToken,
@@ -64,11 +61,47 @@ const getBounceCount = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error); // 에러 처리
+    // console.error(error); // 에러 처리
   }
 
   return [];
 };
 
-export { getRefData, getExitData, getButtonDetail, getBounceCount };
+const getEnterCountData = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/flow/entry-enter", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getEntryExitData = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/flow/entry-exit", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+export {
+  getRefData,
+  getExitData,
+  getButtonDetailData,
+  getBounceCountData,
+  getEnterCountData,
+  getEntryExitData,
+};

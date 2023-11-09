@@ -31,10 +31,10 @@ function ExitPage() {
           parseStartDateTime,
           parseEndDateTime,
         );
-        setData(response.exitFlowDtoList);
+        if (!response.exitFlowDtoList) setData([]);
+        else setData(response.exitFlowDtoList);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 
@@ -47,7 +47,7 @@ function ExitPage() {
         <TableHeader>
           <tr>
             <th>순위</th>
-            <th>Url</th>
+            <th>나간 URL</th>
             <th>나간 횟수</th>
             <th>비율</th>
           </tr>
@@ -58,7 +58,7 @@ function ExitPage() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.exitCount}</TableCell>
-              <TableCell>{item.ratio * 100} %</TableCell>
+              <TableCell>{+item.ratio.toFixed(4) * 100} %</TableCell>
             </TableRow>
           ))}
         </TableBody>

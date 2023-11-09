@@ -16,11 +16,10 @@ function PageUsageStatistics() {
     const fetchData = async () => {
       try {
         const response = await getUserCount();
-        const userCountDto = response.userCountDtoList;
-        setData(userCountDto);
+        if (!response.userCountDtoList) setData([]);
+        else setData(response.userCountDtoList);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 
