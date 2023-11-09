@@ -1,11 +1,10 @@
 package com.thirty.insitereadservice.activeusers.controller;
 
+import com.thirty.insitereadservice.activeusers.dto.ActiveUserPerUserDto;
 import com.thirty.insitereadservice.activeusers.dto.request.*;
 import com.thirty.insitereadservice.activeusers.dto.response.*;
 import com.thirty.insitereadservice.activeusers.service.ActiveusersService;
 import com.thirty.insitereadservice.users.dto.request.TotalUserCountReqDto;
-import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
-import com.thirty.insitereadservice.users.dto.UserCountDto;
 import com.thirty.insitereadservice.users.dto.response.TotalUserCountResDto;
 import com.thirty.insitereadservice.users.service.UsersService;
 import java.text.ParseException;
@@ -74,19 +73,12 @@ public class ActiveUsersController {
 
     @PostMapping("/active-user-per-user") //전체 사용자 수 대비 활동 사용자 수 비율
     public ResponseEntity<ActiveUserPerUserResDto> getActiveUserPerUser(@Valid @RequestBody ActiveUserPerUserReqDto activeUserPerUserReqDto,
-        HttpServletRequest request
+                                                                     HttpServletRequest request
     ){
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
-
-
-        TotalUserCountResDto totalUserCountResDto = usersService.getTotalUserCount(TotalUserCountReqDto.builder().endDateTime(activeUserPerUserReqDto.getEndDateTime())
-                .startDateTime(activeUserPerUserReqDto.getStartDateTime()).applicationToken(activeUserPerUserReqDto.getApplicationToken()).build(),memberId);
-        ActiveUserCountResDto activeUserCountResDto= activeusersService.getActiveUserCount(ActiveUserCountReqDto.builder()
-                .applicationToken(activeUserPerUserReqDto.getApplicationToken()).startDateTime(activeUserPerUserReqDto.getStartDateTime())
-                .endDateTime(activeUserPerUserReqDto.getEndDateTime()).build(),memberId);
-        ActiveUserPerUserResDto activeUserPerUserResDto = ActiveUserPerUserResDto.builder().activeUserPerUser(activeUserCountResDto.getActiveUserCount()/ totalUserCountResDto.getTotal()).build();
+        ActiveUserPerUserResDto activeUserPerUserResDto=activeusersService.getActiveUserPerUser(activeUserPerUserReqDto,memberId);
 
         return new ResponseEntity<>(activeUserPerUserResDto,HttpStatus.OK);
     }
@@ -104,11 +96,11 @@ public class ActiveUsersController {
 
     @PostMapping("/average-active-time-per-active-user") // 평균 활동 시간
     public ResponseEntity<AverageActiveTimeResDto> getAverageActiveTime(@Valid @RequestBody AverageActiveTimeReqDto averageActiveTimeReqDto,
-        HttpServletRequest request) throws ParseException {
+                                                                     HttpServletRequest request) throws ParseException {
 //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
 //        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
-        AverageActiveTimeResDto averageActiveTimeResDto = activeusersService.getAverageActiveTime(averageActiveTimeReqDto,memberId);
+        AverageActiveTimeResDto averageActiveTimeResDto= activeusersService.getAverageActiveTime(averageActiveTimeReqDto,memberId);
         return new ResponseEntity<>(averageActiveTimeResDto,HttpStatus.OK);
     }
 }
