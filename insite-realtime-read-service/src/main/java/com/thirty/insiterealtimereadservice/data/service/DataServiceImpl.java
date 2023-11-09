@@ -15,9 +15,10 @@ import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,14 +47,15 @@ public class DataServiceImpl implements DataService{
     public ReferrerResDto getReferrer(int memberId, String token) {
         //멤버 및 application 유효성검사
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
-
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from(bucket)
-            .range(-30L, ChronoUnit.MINUTES)
+            .range(beforeThirtyMinutes, now)
             .filter(restrictions)
             .groupBy("beforeUrl")
             .count();
@@ -99,6 +101,8 @@ public class DataServiceImpl implements DataService{
         //멤버 및 application 유효성검사
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
 
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
@@ -106,7 +110,7 @@ public class DataServiceImpl implements DataService{
             Restrictions.tag("applicationToken").equal(token)
         );
         Flux query = Flux.from(bucket)
-            .range(-30L, ChronoUnit.MINUTES)
+            .range(beforeThirtyMinutes,now)
             .filter(restrictions)
             .groupBy("currentUrl");
 //            .count();
@@ -158,25 +162,25 @@ public class DataServiceImpl implements DataService{
     }
 
     @Override
-    public AbnormalResDto getAbnormal(int memberId, String token) {
+    public AbnormalResDto getAbnormal(int memberId, String applicationToken) {
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken, memberId));
+
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("requestCnt").greaterOrEqual("10")
-        );
-        Flux query = Flux.from(bucket)
-            .range(0L)
-            .filter(restrictions)
-            .groupBy(new String[]{""})
-            .sort(new String[]{"_time"}, true);
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(beforeThirtyMinutes).append(", stop:").append(now).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
 
-        log.info("query= {}",query);
+        log.info("query={}",queryBuilder);
 
-        List<FluxTable> tables = queryApi.query(query.toString());
+        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
         List<AbnormalDto> abnormalDtoList = new ArrayList<>();
         int id = 0;
         for (FluxTable fluxTable : tables) {

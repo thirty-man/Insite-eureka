@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClickCountPerUserReqDto {
-    @NotNull(message = "토큰을 기입해주세요")
-    private String token;
+    @NotNull(message = "앱 토큰을 기입해주세요.")
+    private String applicationToken;
 }

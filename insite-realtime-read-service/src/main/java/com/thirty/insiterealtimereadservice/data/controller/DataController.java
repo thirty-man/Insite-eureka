@@ -33,7 +33,7 @@ public class DataController {
     ){
         String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        ReferrerResDto referrerResDto = dataService.getReferrer(memberId, referrerReqDto.getToken());
+        ReferrerResDto referrerResDto = dataService.getReferrer(memberId, referrerReqDto.getApplicationToken());
         return new ResponseEntity<>(referrerResDto, HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class DataController {
         String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         UserCountResDto userCountResDto = dataService.getUserCount(memberId,
-            userCountReqDto.getToken());
+            userCountReqDto.getApplicationToken());
         return new ResponseEntity<>(userCountResDto, HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class DataController {
     ){
         String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getToken());
+        AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getApplicationToken());
         return new ResponseEntity<>(abnormalResDto, HttpStatus.OK);
     }
 }

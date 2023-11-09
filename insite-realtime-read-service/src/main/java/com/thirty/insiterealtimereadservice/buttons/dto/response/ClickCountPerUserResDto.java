@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CountPerUserResDto {
+public class ClickCountPerUserResDto {
 
     @Default
     private List<CountPerUserDto> countPerUserDtoList = new ArrayList<>();
 
-    public static CountPerUserResDto create(List<CountPerUserDto> countPerUserDtoList){
-        return CountPerUserResDto.builder()
+    public static ClickCountPerUserResDto create(List<CountPerUserDto> countPerUserDtoList){
+        return ClickCountPerUserResDto.builder()
             .countPerUserDtoList(countPerUserDtoList)
             .build();
     }
