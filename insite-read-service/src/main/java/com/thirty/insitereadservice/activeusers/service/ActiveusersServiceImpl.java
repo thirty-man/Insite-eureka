@@ -6,12 +6,9 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import com.thirty.insitereadservice.activeusers.dto.ActiveTimeDto;
-import com.thirty.insitereadservice.activeusers.dto.ViewCountsPerActiveUserDto;
+import com.thirty.insitereadservice.activeusers.dto.*;
 import com.thirty.insitereadservice.activeusers.dto.request.*;
 import com.thirty.insitereadservice.activeusers.dto.response.*;
-import com.thirty.insitereadservice.activeusers.dto.OsActiveUserDto;
-import com.thirty.insitereadservice.activeusers.dto.ActiveUserDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
@@ -170,20 +167,28 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         Flux query = Flux.from(bucket)
             .range(0L)
             .filter(restrictions)
-            .groupBy("activityId")
-                    .sort(new String[]{"_time"},true);
+            .groupBy(new String [] {"currentUrl","activityId"})
+                .sort(new String[]{"_time"},true);
         log.info("query= {}", query);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
-
-        double size = tables.size();
-        double time=0;
-
+        HashMap<String,Double> map = new HashMap<>();
+        HashMap<String,Integer> size = new HashMap<>();
+        PriorityQueue<AverageActiveTimeDto> averageActiveTimeDtoPriorityQueue= new PriorityQueue<>();
+        List<AverageActiveTimeDto> averageActiveTimeDtoList= new ArrayList<>();
+        int id=0;
         for(FluxTable fluxTable:tables){
             List<FluxRecord> records = fluxTable.getRecords();
             if(records.size()<=1)
                 continue;
+            String currentUrl = records.get(0).getValueByKey("currentUrl").toString();
+            if(map.containsKey(currentUrl)) {
+                size.replace(currentUrl,size.get(currentUrl)+1);
+            }
+            else{
+                size.put(currentUrl,1);
+            }
             try {
                 StringTokenizer st = new StringTokenizer(records.get(records.size() - 1).getValueByKey("_time").toString(),"T");
                 String from ="";
@@ -200,14 +205,32 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
 
                 Date toDate = transFormat.parse(to);
-                long sec =(toDate.getTime()-fromDate.getTime())/1000;
-                time+=sec;
+                double sec =(toDate.getTime()-fromDate.getTime())/1000;
+                log.info("sec={}",sec);
+                if(map.containsKey(currentUrl)){
+                    map.replace(currentUrl,map.get(currentUrl)+sec);
+                }
+                else{
+                    map.put(currentUrl,sec);
+                }
             }
             catch(Exception e){
                 log.error(e.getMessage());
             }
+
+
         }
-        return AverageActiveTimeResDto.create(time/size);
+        map.forEach((key,value)->{
+            String current = key;
+            double average = value/size.get(current);
+            log.info("average={}",average);
+            averageActiveTimeDtoPriorityQueue.add(AverageActiveTimeDto.create(current,average));
+
+        });
+        while(!averageActiveTimeDtoPriorityQueue.isEmpty()){
+            averageActiveTimeDtoList.add(averageActiveTimeDtoPriorityQueue.poll().addId(id++));
+        }
+        return AverageActiveTimeResDto.create(averageActiveTimeDtoList);
     }
 
 
@@ -362,5 +385,80 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         }
 
         return ViewCountsPerActiveUserResDto.create(viewCountsPerActiveUserDtoList);
+    }
+
+    @Override
+    public ActiveUserPerUserResDto getActiveUserPerUser(ActiveUserPerUserReqDto activeUserPerUserReqDto, int memberId) {
+        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+
+        //범위 시간 설정
+        Instant startInstant = activeUserPerUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = activeUserPerUserReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+
+        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
+            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
+        }
+        Restrictions restrictions = Restrictions.and(
+                Restrictions.measurement().equal("data"),
+                Restrictions.tag("applicationToken").equal(activeUserPerUserReqDto.getApplicationToken())
+        );
+
+        Flux act_query = Flux.from(bucket)
+                .range(startInstant,endInstant)
+                .filter(restrictions)
+                .groupBy("currentUrl")
+                .distinct("activityId")
+                .count();
+
+        log.info("query= {}", act_query);
+
+        QueryApi act_queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> tables = act_queryApi.query(act_query.toString());
+        HashMap<String, Integer> map = new HashMap<>();
+        for(FluxTable table:tables){
+            List<FluxRecord> records = table.getRecords();
+            String currentUrl=records.get(0).getValueByKey("currentUrl").toString();
+            int count = Integer.parseInt(records.get(0).getValueByKey("_value").toString());
+            map.put(currentUrl,count);
+        }
+        //위는 currentUrl에 따른 활동 사용자수 map에 저장
+
+        // 아래는 currentUrl에 따른 사용자 수 map에 저장
+        restrictions = Restrictions.and(
+                Restrictions.measurement().equal("data"),
+                Restrictions.tag("applicationToken").equal(activeUserPerUserReqDto.getApplicationToken())
+        );
+
+        Flux query = Flux.from(bucket)
+                .range(startInstant, endInstant)
+                .filter(restrictions)
+                .groupBy("currentUrl")
+                .distinct("cookieId")
+                .sort(new String[]{"_time"},true)
+                .count();
+
+        log.info("query= {}", query);
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> fluxTables = queryApi.query(query.toString());
+        HashMap<String,Integer> cookie = new HashMap<>();
+        for(FluxTable table:fluxTables){
+            List<FluxRecord> records = table.getRecords();
+            String currentUrl=records.get(0).getValueByKey("currentUrl").toString();
+            int count = Integer.parseInt(records.get(0).getValueByKey("_value").toString());
+            cookie.put(currentUrl,count);
+        }
+        PriorityQueue<ActiveUserPerUserDto> activeUserPerUserDtoPriorityQueue = new PriorityQueue<>();
+        List<ActiveUserPerUserDto> activeUserPerUserDtoList=new ArrayList<>();
+        int id=0;
+        map.forEach((key,value)->{
+            String currentUrl = key;
+            int size= cookie.get(key);
+            activeUserPerUserDtoPriorityQueue.add(ActiveUserPerUserDto.create(currentUrl,(double)value/(double) size));
+        });
+        while(!activeUserPerUserDtoPriorityQueue.isEmpty()){
+            activeUserPerUserDtoList.add(activeUserPerUserDtoPriorityQueue.poll().addId(id++));
+        }
+        return ActiveUserPerUserResDto.create(activeUserPerUserDtoList);
     }
 }
