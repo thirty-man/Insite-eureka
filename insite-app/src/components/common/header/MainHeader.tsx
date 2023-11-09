@@ -69,7 +69,19 @@ const LogoImgWrapper = styled.div`
   align-items: center;
   //   justify-content: center;
 `;
-
+const Option = styled.button`
+  width: 100%;
+  color: white;
+  background-color: ${(props) => props.theme.colors.b3};
+  font-size: 1rem;
+  height: 2.5rem;
+  margin-top: 0.5rem;
+  &:hover {
+    border-radius: 0.6rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+  }
+`;
 function MainHeader() {
   const navi = useNavigate();
   const [openProfile, setOpenProfile] = useState<boolean>(false);
@@ -108,29 +120,15 @@ function MainHeader() {
               close={() => setOpenProfile(false)}
               $position="absolute"
             >
-              {/* <Option
+              <Option
                 onClick={() => {
                   navi("/login");
-                  setIsProfile(false);
+                  setOpenProfile(false);
                 }}
               >
                 로그인 / 로그아웃
-              </Option> */}
-              {/* <Option
-                onClick={() => {
-                  if (currentPathname !== "/main") {
-                    navi("/main");
-                  } else {
-                    navi("/mysite");
-                  }
-
-                  setIsProfile(false);
-                }}
-              >
-                {currentPathname === "/main"
-                  ? "사이트 선택하러 가기"
-                  : "메인으로 가기"}
-              </Option> */}
+              </Option>
+              {/* 다른 Option을 추가할 수 있음 */}
             </Modal>
           )}
         </ProfileWrapper>
