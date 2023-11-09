@@ -1,4 +1,4 @@
-import { getExitData } from "@api/accumulApi";
+import { getBounceCount } from "@api/accumulApi";
 import {
   Border,
   StyledTable,
@@ -7,13 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { PageExitType } from "@customtypes/dataTypes";
+import { BounceType } from "@customtypes/dataTypes";
 import { RootState } from "@reducer";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-function ExitPage() {
-  const [data, setData] = useState<PageExitType[]>([]);
+function BounceCount() {
+  const [data, setData] = useState<BounceType[]>([]);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -27,11 +27,11 @@ function ExitPage() {
     const parseEndDateTime = new Date(endDateTime);
     const fetchData = async () => {
       try {
-        const response = await getExitData(
+        const response = await getBounceCount(
           parseStartDateTime,
           parseEndDateTime,
         );
-        setData(response.exitFlowDtoList);
+        setData(response.bounceDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
@@ -39,7 +39,7 @@ function ExitPage() {
     };
 
     fetchData();
-  }, [startDateTime, endDateTime]);
+  }, [endDateTime, startDateTime]);
 
   return data && data.length > 0 ? (
     <Border>
@@ -48,7 +48,7 @@ function ExitPage() {
           <tr>
             <th>순위</th>
             <th>Url</th>
-            <th>나간 횟수</th>
+            <th>바운스 횟수</th>
             <th>비율</th>
           </tr>
         </TableHeader>
@@ -57,7 +57,7 @@ function ExitPage() {
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.exitCount}</TableCell>
+              <TableCell>{item.count}</TableCell>
               <TableCell>{item.ratio * 100} %</TableCell>
             </TableRow>
           ))}
@@ -69,4 +69,4 @@ function ExitPage() {
   );
 }
 
-export default ExitPage;
+export default BounceCount;
