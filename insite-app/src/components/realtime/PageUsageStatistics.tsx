@@ -1,45 +1,14 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { UserCountDtoType } from "@customtypes/dataTypes";
 import { getUserCount } from "@api/realtimeApi";
-
-const Border = styled.div`
-  display: flex;
-  overflow: auto;
-  justify-content: center;
-  align-items: start;
-  width: 90%;
-  height: 80%;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  justify-content: center;
-  text-align: center;
-`;
-
-const TableHeader = styled.thead`
-  font-size: 15px;
-  margin-bottom: 15px;
-  color: ${(props) => props.theme.colors.a1};
-  font-weight: bold;
-`;
-
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    color: coral;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 8px;
-`;
-
-const TableBody = styled.tbody`
-  overflow: auto;
-  max-height: 200px;
-`;
+import {
+  Border,
+  StyledTable,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@assets/styles/tableStyles";
 
 function PageUsageStatistics() {
   const [data, setData] = useState<UserCountDtoType[]>([]);
@@ -64,12 +33,12 @@ function PageUsageStatistics() {
     <Border>
       <StyledTable>
         <TableHeader>
-          <TableRow>
+          <tr>
             <th>순위</th>
             <th>URL</th>
             <th>사용자 수</th>
             <th>랜더링 시간</th>
-          </TableRow>
+          </tr>
         </TableHeader>
         <TableBody>
           {data.map((item, index) => (

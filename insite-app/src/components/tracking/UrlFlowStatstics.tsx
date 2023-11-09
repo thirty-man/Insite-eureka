@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getButtonCount } from "@api/realtimeApi";
-import { ButtonCountDtoType } from "@customtypes/dataTypes";
+import { UserRefDtoType } from "@customtypes/dataTypes";
+import { getRefData } from "@api/accumulApi";
 import {
   Border,
   StyledTable,
@@ -10,14 +10,14 @@ import {
   TableRow,
 } from "@assets/styles/tableStyles";
 
-function ButtonStatistics() {
-  const [data, setData] = useState<ButtonCountDtoType[]>([]);
+function UrlFlowStatstics() {
+  const [data, setData] = useState<UserRefDtoType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getButtonCount(); // await를 사용하여 Promise를 기다립니다.
-        setData(response.countPerUserDtoList);
+        const response = await getRefData();
+        setData(response.referrerFlowDtos);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error); // 에러 처리
@@ -25,26 +25,24 @@ function ButtonStatistics() {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
-    return () => clearInterval(intervalId);
   }, []);
 
-  return data.length > 0 ? (
+  return data && data.length > 0 ? (
     <Border>
       <StyledTable>
         <TableHeader>
           <tr>
-            <th>버튼</th>
-            <th>누른 횟수</th>
-            <th>차지 비율</th>
+            <th>순위</th>
+            <th>URL</th>
+            <th>명</th>
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{item.referrer}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{item.countPerUser}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -55,4 +53,4 @@ function ButtonStatistics() {
   );
 }
 
-export default ButtonStatistics;
+export default UrlFlowStatstics;

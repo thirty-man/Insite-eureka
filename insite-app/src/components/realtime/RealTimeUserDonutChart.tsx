@@ -47,8 +47,8 @@ function RealTimeUserDonutChart() {
     chart: {
       type: "pie",
       backgroundColor: "transparent",
-      width: 480, // 차트의 너비 설정
-      height: 350, // 차트의 높이 설정
+      width: 350, // 차트의 너비 설정
+      height: 300, // 차트의 높이 설정
     },
     title: {
       text: null,
