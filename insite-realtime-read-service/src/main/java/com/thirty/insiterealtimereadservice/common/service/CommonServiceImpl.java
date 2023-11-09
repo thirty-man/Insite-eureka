@@ -6,16 +6,13 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
-import com.thirty.insiterealtimereadservice.common.dto.request.CommonReqDto;
 import com.thirty.insiterealtimereadservice.common.dto.response.CommonResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
-import com.thirty.insiterealtimereadservice.global.error.ErrorCode;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,18 +33,18 @@ public class CommonServiceImpl implements CommonService{
     private InfluxDBClient influxDBClient;
 
     @Override
-    public CommonResDto getCommonInfo(CommonReqDto commonReqDto, int memberId) {
-        String token = commonReqDto.getApplicationToken();
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-
+    public CommonResDto getCommonInfo(String applicationToken, int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
         //쿼리 생성
         QueryApi queryApi = influxDBClient.getQueryApi();
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token)
+            Restrictions.tag("applicationToken").equal(applicationToken)
         );
         Flux query = Flux.from(bucket)
-            .range(-30L, ChronoUnit.MINUTES)
+            .range(beforeThirtyMinutes, now)
             .filter(restrictions)
             .groupBy("activityId");
 

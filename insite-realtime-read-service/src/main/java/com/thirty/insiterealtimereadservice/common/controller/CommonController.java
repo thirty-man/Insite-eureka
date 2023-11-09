@@ -29,7 +29,7 @@ public class CommonController {
     ){
         String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
         int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        CommonResDto commonResDto = commonService.getCommonInfo(commonReqDto, memberId);
+        CommonResDto commonResDto = commonService.getCommonInfo(commonReqDto.getApplicationToken(), memberId);
         return new ResponseEntity<>(commonResDto, HttpStatus.OK);
     }
 }
