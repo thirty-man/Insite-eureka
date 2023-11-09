@@ -7,7 +7,7 @@ import getButtonList from "@api/memberApi";
 import DropDown from "@components/common/dropdown/DropDown";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
-import { setSelectedButton } from "@reducer/SelectedItemInfo";
+import { setSelectedButton } from "@reducer/selectedItemInfo";
 
 const FirstCol = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ function ButtonManagementPage() {
   const [isDropdown, setIsDropdown] = useState<boolean>(false);
 
   const selectedButton = useSelector(
-    (state: RootState) => state.SelectedItemInfo.selectedButton,
+    (state: RootState) => state.selectedItemInfo.selectedButton,
   );
 
   useEffect(() => {

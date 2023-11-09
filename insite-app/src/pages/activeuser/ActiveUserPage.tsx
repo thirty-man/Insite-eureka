@@ -1,3 +1,4 @@
+import ActiveUsersStatistics from "@components/activeuser/ActiveUserStatistics";
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
 import styled from "styled-components";
 
@@ -18,7 +19,7 @@ const ContentDiv = styled.div`
   height: 90%;
 `;
 
-const InvisiableDiv = styled.div`
+const InvisibleDiv = styled.div`
   width: 30rem;
   height: 25rem;
   margin: 1%;
@@ -52,13 +53,13 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              표 데이터
+              <ActiveUsersStatistics />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%">
-            활동 사용자 평균 체류 시간
+            URL 별 활동 사용자 평균 체류 시간
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
@@ -68,7 +69,7 @@ function ActiveUserPage() {
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%">
-            활동 사용자 수 / 사용자 수
+            URL 별 활동 사용자 수 / 사용자 수
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
@@ -78,10 +79,10 @@ function ActiveUserPage() {
         </DefaultBox>
       </FirstCol>
       <SecondCol>
-        <InvisiableDiv />
+        <InvisibleDiv />
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%">
-            OS별 활동 사용자 수
+            OS 별 활동 사용자 수
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">

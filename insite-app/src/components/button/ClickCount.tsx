@@ -8,7 +8,7 @@ import HighchartsReact from "highcharts-react-official";
 
 function ClickCount() {
   const selectedButton = useSelector(
-    (state: RootState) => state.SelectedItemInfo.selectedButton,
+    (state: RootState) => state.selectedItemInfo.selectedButton,
   );
   const [data, setData] = useState<ButtonType[]>([]);
   const startDateTime = useSelector(

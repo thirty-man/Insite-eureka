@@ -10,8 +10,8 @@ const initialState: SelectedItemState = {
   selectedButton: "버튼을 선택해주세요.",
 };
 
-const SelectedItemInfoSlice = createSlice({
-  name: "SelectedItemInfo",
+const selectedItemInfoSlice = createSlice({
+  name: "selectedItemInfo",
   initialState,
   reducers: {
     setSelectedSite: (state, action: PayloadAction<string>) => {
@@ -24,5 +24,5 @@ const SelectedItemInfoSlice = createSlice({
 });
 
 export const { setSelectedSite, setSelectedButton } =
-  SelectedItemInfoSlice.actions;
-export default SelectedItemInfoSlice.reducer;
+  selectedItemInfoSlice.actions;
+export default selectedItemInfoSlice.reducer;

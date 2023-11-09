@@ -3,7 +3,7 @@ import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 import { homeLogo } from "@assets/images";
 import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
-import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
+import { setSelectedMenuId } from "@reducer/selectedSidebarMenuInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
 import { SideBarMenu, icons } from "./SideBarMenu";
@@ -116,7 +116,7 @@ function SideBar() {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const selectedMenuId = useSelector(
-    (state: RootState) => state.SelectedSidebarMenuInfo.selectedMenuId,
+    (state: RootState) => state.selectedSidebarMenuInfo.selectedMenuId,
   );
 
   return (

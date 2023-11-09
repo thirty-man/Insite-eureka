@@ -13,8 +13,8 @@ const initialState: DateSelectionType = {
   latest: today,
 };
 
-const DateSelectionInfoSlice = createSlice({
-  name: "DateSelectionInfo",
+const dateSelectionInfoSlice = createSlice({
+  name: "dateSelectionInfo",
   initialState,
   reducers: {
     setStartDate: (state, action: PayloadAction<string>) => {
@@ -33,5 +33,5 @@ const DateSelectionInfoSlice = createSlice({
 });
 
 export const { setStartDate, setEndDate, setPastDate, setLatestDate } =
-  DateSelectionInfoSlice.actions;
-export default DateSelectionInfoSlice.reducer;
+  dateSelectionInfoSlice.actions;
+export default dateSelectionInfoSlice.reducer;

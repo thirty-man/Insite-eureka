@@ -13,12 +13,12 @@ import {
   setEndDate,
   setLatestDate,
   setStartDate,
-} from "@reducer/DateSelectionInfo";
+} from "@reducer/dateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import SiteList from "@components/common/dropdown/SiteList";
 import DropDown from "@components/common/dropdown/DropDown";
 import { ItemType } from "@customtypes/dataTypes";
-import { setSelectedSite } from "@reducer/SelectedItemInfo";
+import { setSelectedSite } from "@reducer/selectedItemInfo";
 import { Modal } from "@components/common/modal";
 
 const HeaderContainer = styled.div`
@@ -145,20 +145,20 @@ function Header() {
   const [openDropEndDay, setOpenDropEndDay] = useState<boolean>(false);
 
   const startDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.start,
+    (state: RootState) => state.dateSelectionInfo.start,
   );
   const endDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.dateSelectionInfo.end,
   );
   const pastDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.past,
+    (state: RootState) => state.dateSelectionInfo.past,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.latest,
+    (state: RootState) => state.dateSelectionInfo.latest,
   );
 
   const selectedSite = useSelector(
-    (state: RootState) => state.SelectedItemInfo.selectedSite,
+    (state: RootState) => state.selectedItemInfo.selectedSite,
   );
 
   const [currentPathname, setCurrentPathname] = useState<string>(
@@ -332,6 +332,7 @@ function Header() {
   const setDateRange = () => {
     dispatch(setStartDate(newStartDate));
     dispatch(setEndDate(newEndDate));
+    setOpenDate(false);
   };
 
   const formatDateString = (dateString: string): string => {

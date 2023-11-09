@@ -8,8 +8,8 @@ const initialState: SelectedSidebarMenuState = {
   selectedMenuId: 1,
 };
 
-const SelectedSidebarMenuInfoSlice = createSlice({
-  name: "SelectedSidebarMenuInfo",
+const selectedSidebarMenuInfoSlice = createSlice({
+  name: "selectedSidebarMenuInfo",
   initialState,
   reducers: {
     setSelectedMenuId: (state, action: PayloadAction<number>) => {
@@ -18,5 +18,5 @@ const SelectedSidebarMenuInfoSlice = createSlice({
   },
 });
 
-export const { setSelectedMenuId } = SelectedSidebarMenuInfoSlice.actions;
-export default SelectedSidebarMenuInfoSlice.reducer;
+export const { setSelectedMenuId } = selectedSidebarMenuInfoSlice.actions;
+export default selectedSidebarMenuInfoSlice.reducer;
