@@ -32,13 +32,17 @@ public class Button {
     @Column
     private String activityId;
 
-    public static Button create(String name, String currentUrl,String cookieId, String serviceToken, String activityId){
+    @Column
+    private int requestCnt;
+
+    public static Button create(String name, String currentUrl,String cookieId, String serviceToken, String activityId, int requestCnt){
         return Button.builder()
             .name(name)
             .currentUrl(currentUrl)
             .cookieId(cookieId)
             .applicationToken(serviceToken)
             .activityId(activityId)
+            .requestCnt(requestCnt)
             .build();
     }
 }
