@@ -78,4 +78,13 @@ public class ButtonController {
         ButtonListResDto buttonListResDto = buttonService.getMyButtonList(loginUser.getMember().getMemberId(),buttonListReqDto);
         return new ResponseEntity<>(buttonListResDto, HttpStatus.OK);
     }
+
+    @PostMapping("/list/{memberId}")
+    public ButtonListResDto getMyButtonList(
+        @Valid @RequestBody ButtonListReqDto buttonListReqDto,
+        @Valid @PathVariable int memberId
+    ){
+        ButtonListResDto buttonListResDto = buttonService.getMyButtonList(memberId,buttonListReqDto);
+        return buttonListResDto;
+    }
 }
