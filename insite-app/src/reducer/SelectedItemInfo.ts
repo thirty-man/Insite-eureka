@@ -6,8 +6,8 @@ interface SelectedItemState {
 }
 
 const initialState: SelectedItemState = {
-  selectedSite: "www.moduo.kr",
-  selectedButton: "버튼을 선택해주세요",
+  selectedSite: "사이트를 설정해주세요.",
+  selectedButton: "버튼을 선택해주세요.",
 };
 
 const SelectedItemInfoSlice = createSlice({

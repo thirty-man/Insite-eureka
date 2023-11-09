@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenProfile } from "@reducer/HeaderModalStateInfo";
 import { myprofile } from "@assets/icons";
 import {
   CalendarButton,
@@ -24,7 +23,7 @@ import { Modal } from "@components/common/modal";
 
 const HeaderContainer = styled.div`
   width: 100%;
-  height: 5%;
+  height: 10%;
   top: 0;
   right: 0;
   margin-bottom: 1%;
@@ -33,14 +32,15 @@ const HeaderContainer = styled.div`
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  height: 70%;
+  height: 75%;
   margin-top: 15px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  font-weight: 900;
+  font-weight: 500;
   color: white;
+  position: relative;
 `;
 const ProfileWrapper = styled.div`
   display: flex;
@@ -130,9 +130,18 @@ function Header() {
   const navi = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const openDropdown = useSelector(
-    (state: RootState) => state.HeaderModalStateInfo.openDropdown,
-  );
+
+  const [openSite, setOpenSite] = useState<boolean>(false);
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
+  const [openDate, setOpenDate] = useState<boolean>(false);
+
+  const [openDropStartYear, setOpenDropStartYear] = useState<boolean>(false);
+  const [openDropStartMonth, setOpenDropStartMonth] = useState<boolean>(false);
+  const [openDropStartDay, setOpenDropStartDay] = useState<boolean>(false);
+
+  const [openDropEndYear, setOpenDropEndYear] = useState<boolean>(false);
+  const [openDropEndMonth, setOpenDropEndMonth] = useState<boolean>(false);
+  const [openDropEndDay, setOpenDropEndDay] = useState<boolean>(false);
 
   const startDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
@@ -151,13 +160,90 @@ function Header() {
     (state: RootState) => state.SelectedItemInfo.selectedSite,
   );
 
-  const [isProfile, setIsProfile] = useState<boolean>(false);
   const [currentPathname, setCurrentPathname] = useState<string>(
     location.pathname,
   );
-  const [dateModal, setDateModal] = useState<boolean>(false);
   const [newStartDate, setNewStartDate] = useState<string>(startDate);
   const [newEndDate, setNewEndDate] = useState<string>(endDate);
+
+  const closeDateDropdown = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartMonth(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay(false);
+  };
+
+  useEffect(() => {
+    if (openSite) {
+      setOpenProfile(false);
+      setOpenDate(false);
+      closeDateDropdown();
+    }
+    if (openProfile) {
+      setOpenSite(false);
+      setOpenDate(false);
+      closeDateDropdown();
+    }
+    if (openDate) {
+      setOpenProfile(false);
+      setOpenSite(false);
+      closeDateDropdown();
+    }
+  }, [openSite, openProfile, openDate]);
+
+  useEffect(() => {
+    if (openDropStartYear) {
+      setOpenDropStartMonth(false);
+      setOpenDropStartDay(false);
+      setOpenDropEndYear(false);
+      setOpenDropEndMonth(false);
+      setOpenDropEndDay(false);
+    }
+    if (openDropStartMonth) {
+      setOpenDropStartYear(false);
+      setOpenDropStartDay(false);
+      setOpenDropEndYear(false);
+      setOpenDropEndMonth(false);
+      setOpenDropEndDay(false);
+    }
+    if (openDropStartDay) {
+      setOpenDropStartYear(false);
+      setOpenDropStartMonth(false);
+      setOpenDropEndYear(false);
+      setOpenDropEndMonth(false);
+      setOpenDropEndDay(false);
+    }
+    if (openDropEndYear) {
+      setOpenDropStartYear(false);
+      setOpenDropStartMonth(false);
+      setOpenDropStartDay(false);
+      setOpenDropEndMonth(false);
+      setOpenDropEndDay(false);
+    }
+    if (openDropEndMonth) {
+      setOpenDropStartYear(false);
+      setOpenDropStartMonth(false);
+      setOpenDropStartDay(false);
+      setOpenDropEndYear(false);
+      setOpenDropEndDay(false);
+    }
+    if (openDropEndDay) {
+      setOpenDropStartYear(false);
+      setOpenDropStartMonth(false);
+      setOpenDropStartDay(false);
+      setOpenDropEndYear(false);
+      setOpenDropEndMonth(false);
+    }
+  }, [
+    openDropStartYear,
+    openDropStartMonth,
+    openDropStartDay,
+    openDropEndYear,
+    openDropEndMonth,
+    openDropEndDay,
+  ]);
 
   useEffect(() => {
     if (location.pathname !== currentPathname) {
@@ -177,18 +263,11 @@ function Header() {
     dispatch(setLatestDate(today));
   });
 
-  useEffect(() => {
-    if (openDropdown) {
-      setIsProfile(false);
-      dispatch(setOpenProfile(false));
-    }
-  }, [openDropdown, dispatch, setIsProfile]);
-
-  const handleOpenProfile = (e: React.MouseEvent) => {
+  const handleToggleProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const newIsProfile = !isProfile;
-    setIsProfile(newIsProfile);
-    dispatch(setOpenProfile(newIsProfile));
+    setOpenSite(false);
+    setOpenDate(false);
+    setOpenProfile((p) => !p);
   };
 
   const handleSelectedSite = (item: ItemType) => {
@@ -200,6 +279,55 @@ function Header() {
 
   const handlenewEndDate = (item: string) => {
     setNewEndDate(item);
+  };
+
+  const handleToggleStartYear = () => {
+    setOpenDropStartMonth(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay(false);
+    setOpenDropStartYear((p) => !p);
+  };
+  const handleToggleStartMonth = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay(false);
+    setOpenDropStartMonth((p) => !p);
+  };
+  const handleToggleStartDay = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartMonth(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay(false);
+    setOpenDropStartDay((p) => !p);
+  };
+  const handleToggleEndYear = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartMonth(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay(false);
+    setOpenDropEndYear((p) => !p);
+  };
+  const handleToggleEndMonth = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartMonth(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndDay(false);
+    setOpenDropEndMonth((p) => !p);
+  };
+  const handleToggleEndDay = () => {
+    setOpenDropStartYear(false);
+    setOpenDropStartMonth(false);
+    setOpenDropStartDay(false);
+    setOpenDropEndYear(false);
+    setOpenDropEndMonth(false);
+    setOpenDropEndDay((p) => !p);
   };
 
   const setDateRange = () => {
@@ -231,7 +359,9 @@ function Header() {
             <CalendarWrapper
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                setDateModal(!dateModal);
+                setOpenProfile(false);
+                setOpenSite(false);
+                setOpenDate((p) => !p);
               }}
             >
               <CalendarButton
@@ -243,21 +373,43 @@ function Header() {
             </CalendarWrapper>
           </CalendarContainer>
         )}
-        {dateModal && (
+        {openDate && (
           <Modal
             width="24rem"
             height="22rem"
-            $posX="75%"
-            $posY="-30%"
+            $posX="35%"
+            $posY="60%"
             $position="absolute"
-            close={() => setDateModal(false)}
+            close={() => setOpenDate(false)}
           >
             <DateSelectContainer>
               <DateHeader>기간 선택</DateHeader>
               <DateText>시작 날짜</DateText>
-              <StartDateSelect onChange={handlenewStartDate} />
+              <StartDateSelect
+                onChange={handlenewStartDate}
+                openDropStartYear={openDropStartYear}
+                closeDropStartYear={() => setOpenDropStartYear(false)}
+                toggleDropStartYear={handleToggleStartYear}
+                openDropStartMonth={openDropStartMonth}
+                closeDropStartMonth={() => setOpenDropStartMonth(false)}
+                toggleDropStartMonth={handleToggleStartMonth}
+                openDropStartDay={openDropStartDay}
+                closeDropStartDay={() => setOpenDropStartDay(false)}
+                toggleDropStartDay={handleToggleStartDay}
+              />
               <DateText>종료 날짜</DateText>
-              <EndDateSelect onChange={handlenewEndDate} />
+              <EndDateSelect
+                onChange={handlenewEndDate}
+                openDropEndYear={openDropEndYear}
+                closeDropEndYear={() => setOpenDropEndYear(false)}
+                toggleDropEndYear={handleToggleEndYear}
+                openDropEndMonth={openDropEndMonth}
+                closeDropEndMonth={() => setOpenDropEndMonth(false)}
+                toggleDropEndMonth={handleToggleEndMonth}
+                openDropEndDay={openDropEndDay}
+                closeDropEndDay={() => setOpenDropEndDay(false)}
+                toggleDropEndDay={handleToggleEndDay}
+              />
               <SettingDate onClick={setDateRange}>설정</SettingDate>
             </DateSelectContainer>
           </Modal>
@@ -266,29 +418,37 @@ function Header() {
           items={SiteList}
           width="15rem"
           height="3rem"
-          placeholder="사이트를 설정해주세요."
           initialValue={selectedSite}
           onChange={handleSelectedSite}
+          openDropdown={openSite}
+          close={() => {
+            setOpenSite(false);
+          }}
+          toggle={() => {
+            setOpenProfile(false);
+            setOpenDate(false);
+            setOpenSite((p) => !p);
+          }}
         />
         <ProfileWrapper>
           <ProfileImg
             src={myprofile}
             alt="my profile"
-            onClick={handleOpenProfile}
+            onClick={handleToggleProfile}
           />
-          {isProfile && (
+          {openProfile && (
             <Modal
               width="15rem"
               height="6.5rem"
               $posX="-50%"
               $posY="80%"
-              close={() => setIsProfile(false)}
+              close={() => setOpenProfile(false)}
               $position="absolute"
             >
               <Option
                 onClick={() => {
                   navi("/login");
-                  setIsProfile(false);
+                  setOpenProfile(false);
                 }}
               >
                 로그인 / 로그아웃
@@ -301,7 +461,7 @@ function Header() {
                     navi("/mysite");
                   }
 
-                  setIsProfile(false);
+                  setOpenProfile(false);
                 }}
               >
                 {currentPathname === "/main"
