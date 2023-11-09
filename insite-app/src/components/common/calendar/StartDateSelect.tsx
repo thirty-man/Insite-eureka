@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
-import { ItemTypes } from "@customtypes/dataTypes";
+import { ItemType } from "@customtypes/dataTypes";
 import DropDown from "../dropdown/DropDown";
 
 const StartDateSelectContainer = styled.div`
@@ -17,9 +17,29 @@ const StartDateSelectContainer = styled.div`
 
 interface StartDateSelectProps {
   onChange: (item: string) => void;
+  openDropStartYear: boolean;
+  closeDropStartYear: () => void;
+  toggleDropStartYear: () => void;
+  openDropStartMonth: boolean;
+  closeDropStartMonth: () => void;
+  toggleDropStartMonth: () => void;
+  openDropStartDay: boolean;
+  closeDropStartDay: () => void;
+  toggleDropStartDay: () => void;
 }
 
-function StartDateSelect({ onChange }: StartDateSelectProps) {
+function StartDateSelect({
+  onChange,
+  openDropStartYear,
+  closeDropStartYear,
+  toggleDropStartYear,
+  openDropStartMonth,
+  closeDropStartMonth,
+  toggleDropStartMonth,
+  openDropStartDay,
+  closeDropStartDay,
+  toggleDropStartDay,
+}: StartDateSelectProps) {
   const dispatch = useDispatch();
   const isLeapYear = (year: number) => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -115,23 +135,23 @@ function StartDateSelect({ onChange }: StartDateSelectProps) {
   // 예시: 범위 내의 일 옵션 가져오기
   const dayArray = getDaysInRange(pastDateObj, endDateObj);
 
-  const yearOptions: ItemTypes[] = yearArray.map((year, index) => {
+  const yearOptions: ItemType[] = yearArray.map((year, index) => {
     return { id: index, name: year };
   });
-  const monthOptions: ItemTypes[] = monthArray.map((month, index) => {
+  const monthOptions: ItemType[] = monthArray.map((month, index) => {
     return { id: index, name: month };
   });
-  const dayOptions: ItemTypes[] = dayArray.map((day, index) => {
+  const dayOptions: ItemType[] = dayArray.map((day, index) => {
     return { id: index, name: day };
   });
 
-  const handleStartYear = (item: ItemTypes) => {
+  const handleStartYear = (item: ItemType) => {
     setStartYear(item.name);
   };
-  const handleStartMonth = (item: ItemTypes) => {
+  const handleStartMonth = (item: ItemType) => {
     setStartMonth(item.name);
   };
-  const handleStartDay = (item: ItemTypes) => {
+  const handleStartDay = (item: ItemType) => {
     setStartDay(item.name);
   };
 
@@ -146,27 +166,33 @@ function StartDateSelect({ onChange }: StartDateSelectProps) {
         items={yearOptions}
         width="20%"
         height="3rem"
-        placeholder=""
         initialValue={parseString(startDate)[0]}
         onChange={handleStartYear}
+        openDropdown={openDropStartYear}
+        close={closeDropStartYear}
+        toggle={toggleDropStartYear}
       />
       년
       <DropDown
         items={monthOptions}
         width="20%"
         height="3rem"
-        placeholder=""
         initialValue={parseString(startDate)[1]}
         onChange={handleStartMonth}
+        openDropdown={openDropStartMonth}
+        close={closeDropStartMonth}
+        toggle={toggleDropStartMonth}
       />
       월
       <DropDown
         items={dayOptions}
         width="20%"
         height="3rem"
-        placeholder=""
         initialValue={parseString(startDate)[2]}
         onChange={handleStartDay}
+        openDropdown={openDropStartDay}
+        close={closeDropStartDay}
+        toggle={toggleDropStartDay}
       />
       일
     </StartDateSelectContainer>

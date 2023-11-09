@@ -1,6 +1,6 @@
-import { ItemTypes } from "@customtypes/dataTypes";
+import { ItemType } from "@customtypes/dataTypes";
 
-const SiteList: ItemTypes[] = [
+const SiteList: ItemType[] = [
   { id: 0, name: "moduo.kr" },
   { id: 1, name: "naver.com" },
   { id: 2, name: "google.com" },
