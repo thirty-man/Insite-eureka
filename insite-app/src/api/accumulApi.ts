@@ -1,12 +1,13 @@
 import { accumulAPI } from "./Api";
 
-const token = "295c293c-f903-49c8-986d-92d2efe6ccdb";
+const applicationToken = "295c293c-f903-49c8-986d-92d2efe6ccdb";
 
-const getRefData = async () => {
+const getRefData = async (startDateTime: Date, endDateTime: Date) => {
   try {
     const response = await accumulAPI.post("/flow/referrer", {
-      applicationToken: token,
-      currentUrl: "login페이지",
+      applicationToken,
+      startDateTime,
+      endDateTime,
     });
     return response.data;
   } catch (error) {
@@ -14,13 +15,15 @@ const getRefData = async () => {
     console.error(error); // 에러 처리
   }
 
-  return null;
+  return [];
 };
 
-const getExitData = async () => {
+const getExitData = async (startDateTime: Date, endDateTime: Date) => {
   try {
     const response = await accumulAPI.post("/flow/exit", {
-      applicationToken: token,
+      applicationToken,
+      startDateTime,
+      endDateTime,
     });
     return response.data;
   } catch (error) {
@@ -31,11 +34,17 @@ const getExitData = async () => {
   return [];
 };
 
-const getButtonDetail = async (name: string) => {
+const getButtonDetail = async (
+  name: string,
+  startDateTime: Date,
+  endDateTime: Date,
+) => {
   try {
     const response = await accumulAPI.post("/buttons/click-counts", {
-      applicationToken: token,
+      applicationToken,
       buttonName: name,
+      startDateTime,
+      endDateTime,
     });
     return response.data;
   } catch (error) {
@@ -46,4 +55,20 @@ const getButtonDetail = async (name: string) => {
   return [];
 };
 
-export { getRefData, getExitData, getButtonDetail };
+const getBounceCount = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/flow/bounce", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+export { getRefData, getExitData, getButtonDetail, getBounceCount };

@@ -251,8 +251,6 @@ function Header() {
       dispatch(setStartDate(pastDate));
       dispatch(setEndDate(latestDate));
       setCurrentPathname(location.pathname);
-      console.log(currentPathname);
-      console.log(location.pathname);
     }
     setCurrentPathname(location.pathname);
   }, [location.pathname, currentPathname, dispatch, pastDate, latestDate]);
@@ -334,8 +332,6 @@ function Header() {
   const setDateRange = () => {
     dispatch(setStartDate(newStartDate));
     dispatch(setEndDate(newEndDate));
-    console.log(newStartDate);
-    console.log(newEndDate);
   };
 
   const formatDateString = (dateString: string): string => {

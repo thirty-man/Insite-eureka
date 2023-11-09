@@ -81,6 +81,13 @@ type AbnormalType = {
   osId: string;
 };
 
+type BounceType = {
+  id: number;
+  currentUrl: string;
+  count: number;
+  ratio: number;
+};
+
 // -------------- Data Type
 type ButtonType = {
   id: number;
@@ -103,4 +110,5 @@ export type {
   AbnormalType,
   ButtonType,
   PageExitType,
+  BounceType,
 };
