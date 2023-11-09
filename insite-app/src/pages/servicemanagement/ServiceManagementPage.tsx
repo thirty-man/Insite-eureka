@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import {useState,useEffect} from "react"; 
 import axios from "axios";
+import { ButtonType } from "@customtypes/dataTypes";
 
 const ManagementStyle = styled.div`
   .parent {
@@ -28,6 +29,22 @@ const ManagementStyle = styled.div`
     margin-top: 40px;
   }
 `;
+const AddButton = styled.div`
+  flex: 1;
+  margin-right: 10px; /* 간격 조절 */
+  padding: 20px; /* 버튼 크기 조절 */
+  font-size: 18px; /* 폰트 크기 조절 */
+  cursor: pointer;
+  background-color: #4caf50; /* 배경색 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  text-align:center;
+  &:hover {
+    background-color: #45a049; /* 호버링 시 배경색 변경 */
+  }
+`;
 
 function ServiceManagementPage() {
   const data = {
@@ -37,7 +54,7 @@ function ServiceManagementPage() {
     applicationId: 'your_application_id',
     createTime: 'your_create_time',
   };
-  const [buttonList,setButtonList]=useState('');
+  const [buttonList,setButtonList]=useState<ButtonType[]>([]);
   useEffect(()=>{
     const data={
       "applicationToken":"token"
@@ -57,7 +74,7 @@ function ServiceManagementPage() {
       <div className="parent">
         <div className="child">
           <DefaultBox width="1000px" height="700px">
-            <div>
+            <div >
             <br />
             <h1 >내 서비스 관리</h1>
             <br />
@@ -86,10 +103,21 @@ function ServiceManagementPage() {
               </TextBox>
             </div>
             </div>
-            <div>
+            
+            <div style={{marginTop:'5%'}}>
             <div className="infoContainer">
               <p className="infoText">버튼 </p>
+              {buttonList.map((button:ButtonType)=>(
+                <TextBox width="500px" height="50px">
+                <p>{button.name}</p>
+              </TextBox>
+              ))}
               
+            </div>
+            <div>
+              <div>
+                <AddButton>버튼 추가하기</AddButton>
+              </div>
             </div>
             </div>
           </DefaultBox>
