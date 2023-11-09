@@ -73,6 +73,7 @@ public class WriteService {
                 .addTag("cookieId", buttonReqDto.getCookieId())
                 .addTag("activityId", buttonReqDto.getActivityId())
                 .addTag("applicationToken", buttonReqDto.getApplicationToken())
+                .addTag("requestCnt", buttonReqDto.getRequestCnt())
                 .addField("applicationUrl", buttonReqDto.getApplicationUrl())
 //                .time(Instant.now().minus(1, ChronoUnit.DAYS), WritePrecision.MS);
                 .time(Instant.now(), WritePrecision.MS);
