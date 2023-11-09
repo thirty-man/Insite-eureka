@@ -25,6 +25,7 @@ public class WriteController {
 	@PostMapping("/page")
 	public ResponseEntity<String> data(@RequestBody DataReqDto dataReqDto) {
 		writeService.writeData(dataReqDto);
+		System.out.println("qwe");
 		return ResponseEntity.status(HttpStatus.OK).body("ok");
 	}
 
