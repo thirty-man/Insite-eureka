@@ -1,12 +1,10 @@
 package com.thirty.insitereadservice.buttons.controller;
 
 import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
-import com.thirty.insitereadservice.buttons.dto.request.ClickCountsPerActiveUserReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ClickCountsReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.EveryButtonRateReqDto;
 import com.thirty.insitereadservice.buttons.dto.request.ButtonLogsReqDto;
 import com.thirty.insitereadservice.buttons.dto.response.ButtonAbnormalResDto;
-import com.thirty.insitereadservice.buttons.dto.response.ClickCountsPerActiveUserResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.response.EveryButtonRateResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ButtonLogsResDto;
