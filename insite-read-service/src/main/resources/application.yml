@@ -1,26 +1,8 @@
-server:
-  port: 8082
-  servlet:
-    context-path: /api/v1
 spring:
   application:
     name: insite-read-service
+  profiles:
+    active: dev
   config:
-    import: optional:file:.env[.properties]
+    import: "optional:configserver:http://3.36.72.8:8888"
 
-influxdb:
-  url: ${INFLUX_HOST}
-  token: ${INFLUX_TOKEN}
-  org: ${INFLUX_ORG}
-  bucket: ${INFLUX_BUCKET}
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    server-url:
-      defaultZone: http://localhost:8761/eureka
-
-logging:
-  level:
-    com.thirty.insitereadservice.client: DEBUG
