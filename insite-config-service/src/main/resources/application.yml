@@ -7,15 +7,15 @@ spring:
   rabbitmq:
     host: insite-rabbit
     port: 5672
-    username:  guest
-    password: guest
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/DHKIM-0511/insite-config.git
-          username: DHKIM-0511@github.com
-          password: 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
+          uri: ${GIT_URI}
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
 management:
   endpoints:
     web:
