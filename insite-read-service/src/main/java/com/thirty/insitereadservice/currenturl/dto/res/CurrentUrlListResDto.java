@@ -12,9 +12,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurrentrUrlListResDto {
+public class CurrentUrlListResDto {
+
     private List<CurrentUrlDto> currentUrlDtoList;
-    public static CurrentrUrlListResDto create(List<CurrentUrlDto>currentUrlDtoList){
-        return CurrentrUrlListResDto.builder().currentUrlDtoList(currentUrlDtoList).build();
+
+    public static CurrentUrlListResDto create(List<CurrentUrlDto>currentUrlDtoList){
+        return CurrentUrlListResDto.builder()
+            .currentUrlDtoList(currentUrlDtoList)
+            .build();
     }
 }
