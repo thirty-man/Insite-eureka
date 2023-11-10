@@ -9,8 +9,8 @@ spring:
     rabbitmq:
     host: insite-rabbit
     port: 5672
-    username:  ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
+    username:  guest
+    password: guest
   cloud:
     config:
       server:
