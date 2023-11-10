@@ -9,15 +9,15 @@ spring:
     rabbitmq:
     host: localhost
     port: 5672
-    username:  ${RABBITMQ-USERNAME}
-    password: ${RABBITMQ-PASSWORD}
+    username:  ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
   cloud:
     config:
       server:
         git:
-          uri: ${GIT-URI}
-          username: ${GIT-USERNAME}
-          password: ${GIT-PASSWORD}
+          uri: ${GIT_URI}
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
 management:
   endpoints:
     web:
