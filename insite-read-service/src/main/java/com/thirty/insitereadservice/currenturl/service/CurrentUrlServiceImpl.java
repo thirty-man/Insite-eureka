@@ -8,7 +8,7 @@ import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insitereadservice.currenturl.dto.CurrentUrlDto;
 import com.thirty.insitereadservice.currenturl.dto.req.CurrentUrlListReqDto;
-import com.thirty.insitereadservice.currenturl.dto.res.CurrentrUrlListResDto;
+import com.thirty.insitereadservice.currenturl.dto.res.CurrentUrlListResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
@@ -36,12 +36,11 @@ public class CurrentUrlServiceImpl implements CurrentUrlService{
     @Resource
     private InfluxDBClient influxDBClient;
     @Override
-    public CurrentrUrlListResDto getCurrentUrlList(CurrentUrlListReqDto currentUrlListReqDto, int memberId) {
+    public CurrentUrlListResDto getCurrentUrlList(CurrentUrlListReqDto currentUrlListReqDto, int memberId) {
 //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
-
         //범위 시간 지정
         Instant startInstant = currentUrlListReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = currentUrlListReqDto.getEndDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
+        Instant endInstant = currentUrlListReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant)  || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -73,6 +72,6 @@ public class CurrentUrlServiceImpl implements CurrentUrlService{
         while(!currentUrlDtoPriorityQueue.isEmpty()){
             currentUrlDtoList.add(currentUrlDtoPriorityQueue.poll().addId(id++));
         }
-        return CurrentrUrlListResDto.create(currentUrlDtoList);
+        return CurrentUrlListResDto.create(currentUrlDtoList);
     }
 }
