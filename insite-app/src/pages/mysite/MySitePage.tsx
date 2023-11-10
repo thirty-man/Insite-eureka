@@ -5,9 +5,10 @@ import MainHeader from "@components/common/header/MainHeader";
 import styled from "styled-components";
 import { ItemType } from "@customtypes/dataTypes";
 import SiteList from "@components/common/dropdown/SiteList";
-import { pig } from "@assets/images"; // 이미지를 불러옴
+import { pig, plus } from "@assets/images"; // 이미지를 불러옴
 import { useState } from "react";
 import axios from 'axios';
+import { insitePanda } from '@assets/images';
 
 const MainContainer = styled.div`
   width: 80%;
@@ -172,7 +173,11 @@ function MySitePage() {
             <MySitePageStyle key={item.id}>
               <Link to={`/`}>
                 <TextBox width="100%" height="100%">
-                  <Image src={pig} alt="Pig Image" />
+                <img
+                    src={insitePanda}
+                    alt="Panda"
+                    style={{ width: '30%', height: '30%', objectFit: 'cover', top: 0, left: 0, opacity: 0.8 }}
+                  />
                   {item.name}
                 </TextBox>
               </Link>
@@ -181,7 +186,7 @@ function MySitePage() {
           <MySitePageStyle>
             <div onClick={openModal} style={{ width: '100%', height: '100%',cursor: 'pointer'}}>
               <TextBox width="100%" height="100%">
-                add
+              <Image src={plus} alt="Pig Image" />
               </TextBox>
             </div>
           </MySitePageStyle>
