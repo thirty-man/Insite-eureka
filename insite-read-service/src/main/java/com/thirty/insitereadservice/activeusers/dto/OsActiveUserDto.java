@@ -14,6 +14,7 @@ public class OsActiveUserDto implements Comparable<OsActiveUserDto>{
     private int id;
     private String os;
     private int count;
+    private double ratio;
 
     public static OsActiveUserDto create(String os, int count){
         return OsActiveUserDto.builder()
@@ -22,8 +23,9 @@ public class OsActiveUserDto implements Comparable<OsActiveUserDto>{
             .build();
     }
 
-    public OsActiveUserDto addId(int id){
+    public OsActiveUserDto addId(int id,int size){
         this.id = id;
+        this.ratio= (double)count/(double)size;
         return this;
     }
 
