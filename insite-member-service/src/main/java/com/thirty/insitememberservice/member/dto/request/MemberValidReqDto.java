@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberValidReqDto {
     @NotNull(message = "토큰값을 기입해주세요")
-    private String token;
+    private String applicationToken;
 
     @NotNull(message = "멤버 아이디를 기입해주세요")
     private int memberId;

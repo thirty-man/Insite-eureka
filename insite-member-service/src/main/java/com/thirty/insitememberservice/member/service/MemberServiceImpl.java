@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Application application = applicationRepository.findByMemberAndApplicationTokenAndIsDeletedIsFalse(
 				member,
-				memberValidReqDto.getToken()
+				memberValidReqDto.getApplicationToken()
 			).orElseThrow(() -> new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION));
 	}
 }
