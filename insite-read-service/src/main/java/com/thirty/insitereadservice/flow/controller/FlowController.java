@@ -47,7 +47,7 @@ public class FlowController {
     }
 
     //
-    @PostMapping("/urlflow")
+    @PostMapping("/urlflow")//현재 Url의 BeforeUrl을 리스트로 담아서 보내줍니다.
     public ResponseEntity<CurrentUrlFlowResDto> getUrlFlow(@Valid @RequestBody CurrentUrlFlowReqDto urlFlowReqDto,
                                                            HttpServletRequest request
     ){
@@ -58,7 +58,7 @@ public class FlowController {
         return new ResponseEntity<>(urlFlowResDto, HttpStatus.OK);
     }
 
-    @PostMapping("/referrer")
+    @PostMapping("/referrer")//해당 서비스의 외부 유입 경로를 리스트로 담아서 보내줍니다.
     public ResponseEntity<ReferrerFlowResDto> getReferrerFlow(@Valid @RequestBody ReferrerFlowReqDto referrerFlowReqDto,
         HttpServletRequest request
     ){
@@ -69,7 +69,7 @@ public class FlowController {
         return new ResponseEntity<>(referrerFlowResDto,HttpStatus.OK);
     }
 
-    @PostMapping("/bounce")
+    @PostMapping("/bounce")//activityId에 해당하는 활동이 한 번인 경우, 해당 Url과 횟수. 비율을 리스트로 담아 보내줍니다.
     public ResponseEntity<BounceResDto> getBounceCounts(@Valid @RequestBody BounceReqDto bounceReqDto,
                                                      HttpServletRequest request
     ){
@@ -81,7 +81,7 @@ public class FlowController {
         return new ResponseEntity<>(bounceResDto,HttpStatus.OK);
     }
 
-    @PostMapping("/exit")
+    @PostMapping("/exit") //모든 activityId의 마지막 Url을 총 횟수와 비율을 담아 리스트로 보내줍니다.
     public ResponseEntity<ExitFlowResDto> getExitCounts(@Valid @RequestBody ExitFlowReqDto exitFlowReqDto,
         HttpServletRequest request
     ){
@@ -93,7 +93,7 @@ public class FlowController {
         return new ResponseEntity<>(exitFlowResDto,HttpStatus.OK);
     }
 
-    @PostMapping("/beforeurl")
+    @PostMapping("/beforeurl") // 모든 beforeUrl을 총횟수와 함께 리스트로 담아보내줍니다. (현재 서비스에는 상관없는 컨트롤러입니다.)
     public ResponseEntity<BeforeUrlFlowResDto> getBeforeUrl(@Valid @RequestBody BeforeUrlFlowReqDto beforeUrlFlowReqDto,
                                                             HttpServletRequest request){
 //           String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
