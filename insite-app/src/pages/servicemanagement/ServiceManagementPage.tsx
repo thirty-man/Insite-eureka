@@ -1,9 +1,11 @@
+import ButtonBox from "@components/common/ButtonBox";
 import TextBox from "@components/common/TextBox";
 import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import {useState,useEffect} from "react"; 
 import axios from "axios";
 import { ButtonType } from "@customtypes/dataTypes";
+import ButtonList from "@components/ButtonList";
 
 const ManagementStyle = styled.div`
   .parent {
@@ -35,15 +37,17 @@ const AddButton = styled.div`
   padding: 20px; /* 버튼 크기 조절 */
   font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
-  background-color: #4caf50; /* 배경색 */
-  color: white;
+  background-color: #2CE8C7; /* 배경색 */
+  color: black;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
   text-align:center;
   &:hover {
-    background-color: #45a049; /* 호버링 시 배경색 변경 */
+    background-color: #00E6FF; /* 호버링 시 배경색 변경 */
   }
+  width:500px;
+  height:auto;
 `;
 
 function ServiceManagementPage() {
@@ -54,20 +58,21 @@ function ServiceManagementPage() {
     applicationId: 'your_application_id',
     createTime: 'your_create_time',
   };
-  const [buttonList,setButtonList]=useState<ButtonType[]>([]);
-  useEffect(()=>{
-    const data={
-      "applicationToken":"token"
-    }
-      axios.post("http://localhost:8082/api/v1/buttons",data)
-      .then(response=>{
-        console.log('API 호출 성공',response.data);
-        setButtonList(response.data);
-      }).catch(error=>{
-        console.error('API 호출 실패', error);
-      })
+  // const [buttonList,setButtonList]=useState<ButtonType[]>([]);
+  // useEffect(()=>{
+  //   const data={
+  //     "applicationToken":"token"
+  //   }
+  //     axios.post("http://localhost:8082/api/v1/buttons",data)
+  //     .then(response=>{
+  //       console.log('API 호출 성공',response.data);
+  //       setButtonList(response.data);
+  //     }).catch(error=>{
+  //       console.error('API 호출 실패', error);
+  //     })
     
-  })
+  // })
+  //임시로 버튼 리스트를 만든 뒤 사용, 추후 서버와 연결할 때 사용할 것
 
   return (
     <ManagementStyle>
@@ -107,19 +112,25 @@ function ServiceManagementPage() {
             <div style={{marginTop:'5%'}}>
             <div className="infoContainer">
               <p className="infoText">버튼 </p>
-              {buttonList.map((button:ButtonType)=>(
-                <TextBox width="500px" height="50px">
+              <div style={{flexDirection:"column", overflow:"scroll",height:"200px", textAlign: "center"}} >
+              {ButtonList&&ButtonList.length>0 ?(ButtonList.map((button: ButtonType)=>(
+                <div  key={button.id}>
+                <ButtonBox width="490px" height="50px" color="#00E6FF">
                 <p>{button.name}</p>
-              </TextBox>
-              ))}
+              </ButtonBox>
+              <br></br>
               
+              </div>
+              ))):(
+              <ButtonBox width="490px" height="50px" color="#00E6FF">
+              <p>버튼을 추가해 보세요.</p>
+            </ButtonBox>)}
             </div>
-            <div>
+            </div>
+            </div>
               <div>
                 <AddButton>버튼 추가하기</AddButton>
               </div>
-            </div>
-            </div>
           </DefaultBox>
         </div>
       </div>
