@@ -264,7 +264,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
         List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
         PriorityQueue<OsActiveUserDto> osActiveUserDtoPriorityQueue = new PriorityQueue<>();
-
+        int size=0;
         for(FluxTable fluxTable :tables){
             List<FluxRecord> records = fluxTable.getRecords();
             for(FluxRecord record:records){
@@ -272,13 +272,13 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 String os = record.getValueByKey("osId").toString();
                 String stringValueOfCount = record.getValueByKey("_value").toString();
                 int count = Integer.valueOf(stringValueOfCount);
-
+                size+=count;
                 osActiveUserDtoPriorityQueue.offer(OsActiveUserDto.create(os,count));
             }
         }
         int id = 0;
         while(!osActiveUserDtoPriorityQueue.isEmpty()){
-            osActiveUserDtoList.add(osActiveUserDtoPriorityQueue.poll().addId(id++));
+            osActiveUserDtoList.add(osActiveUserDtoPriorityQueue.poll().addId(id++,size));
         }
 
         return OsActiveUserResDto.from(osActiveUserDtoList);
