@@ -1,29 +1,7 @@
-server:
-  port: 8083 #0
-  servlet:
-    context-path: /api/v1
-
 spring:
   application:
     name: insite-write-service
+  profiles:
+    active: dev
   config:
-    import: optional:file:.env[.properties]
-
-influxdb:
-  url: http://influxdb-insite:8086
-  token: behappy1234
-  org: thirty
-  bucket: insite
-
-eureka:
-  instance:
-    instance-id: ${EUREKA_INSTANCE_HOSTNAME}:${server.port}
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://k9a701.p.ssafy.io:8761/eureka
-
-logging:
-  level:
-    com.thirty.insitewriteservice.client: DEBUG
+    import: "optional:configserver:http://3.36.72.8:8888"
