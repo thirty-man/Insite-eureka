@@ -7,7 +7,7 @@ spring:
   config:
     import: optional:file:.env[.proerties]
     rabbitmq:
-    host: localhost
+    host: insite-rabbit
     port: 5672
     username:  ${RABBITMQ_USERNAME}
     password: ${RABBITMQ_PASSWORD}
