@@ -137,7 +137,8 @@ public class FlowServiceImpl implements FlowService {
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
             .filter(restrictions)
-            .groupBy("activityId");
+            .groupBy("activityId")
+            .sort(new String[]{"_time"});
 
         log.info("query = {}" ,query);
 
@@ -148,7 +149,7 @@ public class FlowServiceImpl implements FlowService {
             List<FluxRecord> records = fluxTable.getRecords();
 
             if (!records.isEmpty()) {
-                String enterPageUrl = records.get(0).getValueByKey("referrer").toString();
+                String enterPageUrl = records.get(0).getValueByKey("currentUrl").toString();
 
                 if(enterPageRank.containsKey(enterPageUrl)){
                     enterPageRank.put(enterPageUrl, enterPageRank.get(enterPageUrl)+1);
