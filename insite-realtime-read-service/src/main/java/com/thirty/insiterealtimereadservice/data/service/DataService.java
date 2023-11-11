@@ -6,9 +6,9 @@ import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 
 public interface DataService {
 
-    ReferrerResDto getReferrer(int memberId, String token);
+    ReferrerResDto getReferrer(int memberId, String applicationToken);
 
-    UserCountResDto getUserCount(int memberId, String token);
+    UserCountResDto getUserCount(int memberId, String applicationToken);
 
-    AbnormalResDto getAbnormal(int memberId, String token);
+    AbnormalResDto getAbnormal(int memberId, String applicationToken);
 }
