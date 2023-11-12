@@ -97,6 +97,76 @@ const getEntryExitData = async (startDateTime: Date, endDateTime: Date) => {
   return [];
 };
 
+const getUrlFlowData = async (
+  startDateTime: Date,
+  endDateTime: Date,
+  currentUrl: string,
+) => {
+  try {
+    const response = await accumulAPI.post("/flow/urlflow", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+      currentUrl,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getButtonDistData = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/buttons/every-button-rate", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getAllUrl = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/currenturl/list", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getButtonLogs = async (
+  startDateTime: Date,
+  endDateTime: Date,
+  buttonName: string,
+) => {
+  try {
+    const response = await accumulAPI.post("/buttons/logs", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+      buttonName,
+    });
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
 export {
   getRefData,
   getExitData,
@@ -104,4 +174,8 @@ export {
   getBounceCountData,
   getEnterCountData,
   getEntryExitData,
+  getUrlFlowData,
+  getButtonDistData,
+  getAllUrl,
+  getButtonLogs,
 };

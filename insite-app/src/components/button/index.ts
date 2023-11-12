@@ -1,3 +1,5 @@
 import ClickCount from "./ClickCount";
+import ButtonStatistics from "./ButtonStatistics";
+import ButtonClickLogs from "./ButtonClickLogs";
 
-export default ClickCount;
+export { ClickCount, ButtonStatistics, ButtonClickLogs };
