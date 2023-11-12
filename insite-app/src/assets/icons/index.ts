@@ -19,6 +19,8 @@ import myprofile from "./myprofile.svg";
 import moduoLogo from "./moduoLogo.svg";
 import naverLogo from "./naverLogo.svg";
 import googleLogo from "./googleLogo.svg";
+import activeuserclickavg from "./activeuserclickavg.svg";
+import clickavgexit from "./clickavgexit.svg";
 
 export {
   IconApi,
@@ -42,4 +44,6 @@ export {
   moduoLogo,
   naverLogo,
   googleLogo,
+  activeuserclickavg,
+  clickavgexit,
 };

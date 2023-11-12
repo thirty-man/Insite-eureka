@@ -1,5 +1,9 @@
-import ClickCount from "@components/button";
-import { DefaultBox, TextBox, TitleBox } from "@components/common";
+import {
+  ButtonClickLogs,
+  ButtonStatistics,
+  ClickCount,
+} from "@components/button";
+import { DefaultBox, TitleBox } from "@components/common";
 import { ButtonType, ItemType } from "@customtypes/dataTypes";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
@@ -48,10 +52,11 @@ function ButtonManagementPage() {
     const fetchData = async () => {
       try {
         const response = await getButtonList();
-        setButtonList(response.buttonDtoList);
+        if (!response.buttonDtoList) setButtonList([]);
+        else setButtonList(response.buttonDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
 
@@ -69,15 +74,15 @@ function ButtonManagementPage() {
           <TitleBox width="" height="10%">
             버튼 통계
           </TitleBox>
-          <ContentDiv>{/* <ClickCount /> */}</ContentDiv>
+          <ContentDiv>
+            <ButtonStatistics />
+          </ContentDiv>
         </DefaultBox>
         <DefaultBox width="62rem" height="25rem">
           <TitleBox width="" height="10%">
             버튼 클릭 로그
           </TitleBox>
-          <TextBox width="90%" height="80%">
-            표
-          </TextBox>
+          <ButtonClickLogs />
         </DefaultBox>
       </FirstCol>
       <SecondCol>

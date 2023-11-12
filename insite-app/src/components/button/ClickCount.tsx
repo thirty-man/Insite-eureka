@@ -12,11 +12,11 @@ function ClickCount() {
   );
   const [data, setData] = useState<ButtonType[]>([]);
   const startDateTime = useSelector(
-    (state: RootState) => state.DateSelectionInfo.start,
+    (state: RootState) => state.dateSelectionInfo.start,
   );
 
   const endDateTime = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.dateSelectionInfo.end,
   );
 
   useEffect(() => {
@@ -29,11 +29,11 @@ function ClickCount() {
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (response.clickCountsDtoList.length <= 0) setData([]);
+        if (!response.clickCountsDtoList) setData([]);
         else setData(response.clickCountsDtoList);
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(error); // 에러 처리
+        // console.error(error); // 에러 처리
       }
     };
     getDetailData();
@@ -100,7 +100,11 @@ function ClickCount() {
     ],
   };
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return data.length <= 0 ? (
+    <div>데이터가 없습니다.</div>
+  ) : (
+    <HighchartsReact highcharts={Highcharts} options={options} />
+  );
 }
 
 export default ClickCount;
