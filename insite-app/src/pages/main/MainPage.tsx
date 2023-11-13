@@ -15,7 +15,6 @@ import backgroundImg from "../../assets/images/애니메이션배경.gif";
 import backgroundImg2 from "../../assets/images/메인페이지_설명5.jpg";
 // import backgroundImg3 from "../../assets/images/MainVertical.jpg";
 import thirdPageImg from "../../assets/images/메인페이지_두번째2.jpg";
-import thirdPageGif from "../../assets/images/drive4.gif";
 import FooterLogoImg from "../../assets/images/InSiteLogo3.svg";
 import MainHeader2 from "@components/common/header/MainHeader2";
 import { Element } from "react-scroll";
@@ -227,53 +226,6 @@ const SecondPage = styled(animated.div)`
   /* border-top: 1px solid black; */
   z-index: 2;
 `;
-
-const ThirdPage = styled(animated.div)`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-image: url(${backgroundImg2}),
-    radial-gradient(circle at center, transparent 0%, #252531 50%),
-    url(${thirdPageGif}), url(${backgroundImg2});
-
-  /* radial-gradient(circle at center, transparent 0%, #252531 80%),
-    radial-gradient(circle at center, transparent 0%, #252531 80%); */
-  background-position:
-    left,
-    center,
-    center center,
-    right;
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-  background-size: 35%, 30%, 30%, 35%; /* Set this to the correct size of your images */
-  z-index: 1;
-
-  /* Add a pseudo-element to create the blur effect on the left edge of the right image */
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 45%; /* Adjust this value so it overlays the left edge of the right image */
-    height: 100%;
-    width: 300px; /* Width of the blur effect */
-    /* background: linear-gradient(to left, rgba(0, 0, 0, 0), #252531); */
-    /* z-index: -1; */
-  }
-`;
-
-// const ThirdPage = styled.div`
-//   width: 100%;
-//   height: 100%; /* Making the container tall to enable scrolling */
-//   position: relative;
-//   background-image: url(${thirdPageImg});
-//   background-color: #252531;
-//   background-size: cover;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   opacity: 1;
-//   z-index: -10;
-// `;
 
 const ScrollDownIndicator = styled(animated.div)`
   position: fixed;

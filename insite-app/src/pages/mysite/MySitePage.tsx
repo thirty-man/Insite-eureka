@@ -201,7 +201,6 @@ function MySitePage() {
       applicationToken: item.applicationUrl,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
-    console.log("포인터");
     navi("/");
   };
 

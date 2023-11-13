@@ -28,19 +28,22 @@ function GuidePage() {
       <div className="parent">
         <div className="child">
           <DefaultBox width="1000px" height="700px">
-            <h1 className="textMargin">인사이트 이용 가이드 ⯑</h1>
+            <br />
+            <br />
+            <h1 className="textMargin">인사이트 이용 가이드</h1>
+            <br />
             <TextBox width="80%" height="80%">
               <div className="box text">
                 <br />
-                <h2>주의사항:</h2>
+                {/* <h2>주의사항:</h2>
                 <ul>
                   <li>사항 1: 내용 1</li>
                   <li>사항 2: 내용 2</li>
                   <li>사항 3: 내용 3</li>
-                </ul>
+                </ul> */}
                 <br />
-                <h2>이용 약관</h2>
-                <br />
+                {/* <h2>이용 약관</h2> */}
+                {/* <br /> */}
                 <p>Team Thirty 웹사이트 정보 추적 서비스 이용 약관</p>
                 <br />
                 <p>
@@ -94,7 +97,6 @@ function GuidePage() {
                   해석되며, 모든 분쟁은 [재판 권한을 가진 재판소]에서
                   해결됩니다.
                 </p>
-                2
               </div>
             </TextBox>
           </DefaultBox>

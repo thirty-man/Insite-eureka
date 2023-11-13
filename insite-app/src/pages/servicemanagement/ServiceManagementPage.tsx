@@ -30,26 +30,58 @@ const ManagementStyle = styled.div`
     margin-top: 40px;
   }
 `;
-const AddButton = styled.button`
-  flex: 1;
-  justify-content: center;
+// const AddButton = styled.button`
+//   flex: 1;
+//   justify-content: center;
+//   text-align: center;
+//   align-items: center;
+//   margin-right: 10px; /* 간격 조절 */
+//   padding: 20px; /* 버튼 크기 조절 */
+//   font-size: 18px; /* 폰트 크기 조절 */
+//   cursor: pointer;
+//   background-color: #2ce8c7; /* 배경색 */
+//   color: black;
+//   border: none;
+//   border-radius: 4px;
+//   transition: background-color 0.3s;
+//   text-align: center;
+//   &:hover {
+//     background-color: #00e6ff; /* 호버링 시 배경색 변경 */
+//   }
+//   width: 30rem;
+//   height: auto;
+// `;
+
+const StyledButton = styled.button`
+  background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
+  padding: 15px 30px;
   text-align: center;
-  align-items: center;
-  margin-right: 10px; /* 간격 조절 */
-  padding: 20px; /* 버튼 크기 조절 */
-  font-size: 18px; /* 폰트 크기 조절 */
-  cursor: pointer;
-  background-color: #2ce8c7; /* 배경색 */
-  color: black;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-  text-align: center;
-  &:hover {
-    background-color: #00e6ff; /* 호버링 시 배경색 변경 */
-  }
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px black;
+  border-radius: 10px;
+  display: block;
   width: 30rem;
-  height: auto;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: white;
+    text-decoration: none;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+
+  &:active {
+    transform: scale(0.96);
+    transition: transform 0.1s;
+  }
+
+  &:focus {
+    background-color: white;
+  }
 `;
 
 const ModalBackground = styled.div`
@@ -66,13 +98,15 @@ const ModalBackground = styled.div`
   align-items: center;
 `;
 const ModalContent = styled.div`
+  border: 1px solid black;
   background: #333744;
   padding: 40px; /* 모달 크기 조절 */
   border-radius: 8px;
+  width: 20rem;
 `;
 
 const InputField = styled.input`
-  width: 93%;
+  width: 89%;
   margin-bottom: 15px; /* 간격 조절 */
   padding: 15px; /* 텍스트 필드 크기 조절 */
   font-size: 16px; /* 폰트 크기 조절 */
@@ -89,14 +123,14 @@ const ConfirmButton = styled.button`
   padding: 20px; /* 버튼 크기 조절 */
   font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
-  background-color: #4caf50; /* 배경색 */
+  background-color: #9051e4; /* 배경색 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #45a049; /* 호버링 시 배경색 변경 */
+    background-color: #b990ec; /* 호버링 시 배경색 변경 */
   }
 `;
 
@@ -106,15 +140,21 @@ const CancelButton = styled.button`
   padding: 20px; /* 버튼 크기 조절 */
   font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
-  background-color: #f44336; /* 배경색 */
+  background-color: #1e1f23; /* 배경색 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #d32f2f; /* 호버링 시 배경색 변경 */
+    background-color: rgba(30, 31, 35, 0.6); /* 호버링 시 배경색 변경 */
   }
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function ServiceManagementPage() {
@@ -189,10 +229,14 @@ function ServiceManagementPage() {
     <ManagementStyle>
       <div className="parent">
         <div className="child">
-          <DefaultBox width="1000px" height="700px">
+          <DefaultBox width="1000px" height="800px">
             <div>
               <br />
-              <h1>내 서비스 관리</h1>
+              <br />
+              <Title>
+                <h1>내 서비스 관리</h1>
+              </Title>
+              <br />
               <br />
               <div className="infoContainer">
                 <p className="infoText">서비스 명 </p>
@@ -242,18 +286,16 @@ function ServiceManagementPage() {
                       </div>
                     ))
                   ) : (
-                    <ButtonBox width="490px" height="50px" color="#00E6FF">
+                    <ButtonBox width="490px" height="50px" color="#1e1f23">
                       <p>버튼을 추가해 보세요.</p>
                     </ButtonBox>
                   )}
                 </div>
               </div>
             </div>
-            <div>
-              <AddButton type="button" onClick={openModal}>
-                버튼 추가하기
-              </AddButton>
-            </div>
+            <StyledButton type="button" onClick={openModal}>
+              버튼 추가하기
+            </StyledButton>
           </DefaultBox>
         </div>
       </div>

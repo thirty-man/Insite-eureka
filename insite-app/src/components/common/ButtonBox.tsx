@@ -3,7 +3,7 @@ import styled from "styled-components";
 interface ButtonBoxProps {
   width: string;
   height: string;
-  color:string;
+  color: string;
   children: React.ReactNode;
 }
 
@@ -13,7 +13,7 @@ const TextBoxStyle = styled.div<ButtonBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: white;
   background-color: ${(props) => props.color};
   border-radius: 15px;
   box-shadow:
@@ -22,10 +22,10 @@ const TextBoxStyle = styled.div<ButtonBoxProps>`
 `;
 
 /** 검정색 테스트 박스: 너비, 높이 */
-function ButtonBox({ children, width, height,color }: ButtonBoxProps) {
+function ButtonBox({ children, width, height, color }: ButtonBoxProps) {
   return (
     <TextBoxStyle width={width} height={height} color={color}>
-        {children}
+      {children}
     </TextBoxStyle>
   );
 }
