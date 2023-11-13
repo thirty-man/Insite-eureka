@@ -43,9 +43,10 @@ const routePath: RouteObject[] = [
         id: "real-time",
         path: "",
         element: (
-          <ProtectRoute>
-            <RealTimePage />
-          </ProtectRoute>
+          <RealTimePage />
+          // <ProtectRoute>
+
+          // </ProtectRoute>
         ),
       },
       {
