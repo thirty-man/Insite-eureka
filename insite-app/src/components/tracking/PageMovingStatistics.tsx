@@ -178,28 +178,32 @@ function PageMovingStatistics() {
   return (
     <OutDiv>
       <TextBox width="30%" height="100%">
-        <Border>
-          <StyledTable>
-            <TableHeader>
-              <tr>
-                <th>URL</th>
-                <th>이동</th>
-              </tr>
-            </TableHeader>
-            <TableBody>
-              {urlData.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.currentUrl}</TableCell>
-                  <TableCell>
-                    <MoveButton onClick={() => pageMove(item.currentUrl)}>
-                      이동
-                    </MoveButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </StyledTable>
-        </Border>
+        {urlData.length > 0 ? (
+          <Border>
+            <StyledTable>
+              <TableHeader>
+                <tr>
+                  <th>URL</th>
+                  <th>이동</th>
+                </tr>
+              </TableHeader>
+              <TableBody>
+                {urlData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.currentUrl}</TableCell>
+                    <TableCell>
+                      <MoveButton onClick={() => pageMove(item.currentUrl)}>
+                        이동
+                      </MoveButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </StyledTable>
+          </Border>
+        ) : (
+          <div>데이터가 없습니다.</div>
+        )}
       </TextBox>
       <TextBox width="65%" height="100%">
         {data.length > 0 ? (

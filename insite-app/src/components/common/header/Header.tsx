@@ -15,11 +15,11 @@ import {
   setStartDate,
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
-import SiteList from "@components/common/dropdown/SiteList";
 import DropDown from "@components/common/dropdown/DropDown";
 import { ItemType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
+import { getSiteList } from "@api/memberApi";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -143,6 +143,22 @@ function Header() {
   const [openDropEndYear, setOpenDropEndYear] = useState<boolean>(false);
   const [openDropEndMonth, setOpenDropEndMonth] = useState<boolean>(false);
   const [openDropEndDay, setOpenDropEndDay] = useState<boolean>(false);
+  const [siteList, setSiteList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getSiteList();
+        if (!response.applicationDtoList) setSiteList([]);
+        else setSiteList(response.applicationDtoList);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        // console.error(error); // 에러 처리
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const startDate = useSelector(
     (state: RootState) => state.dateSelectionInfo.start,
@@ -412,22 +428,26 @@ function Header() {
             </DateSelectContainer>
           </Modal>
         )}
-        <DropDown
-          items={SiteList}
-          width="15rem"
-          height="3rem"
-          initialValue={selectedSite}
-          onChange={handleSelectedSite}
-          openDropdown={openSite}
-          close={() => {
-            setOpenSite(false);
-          }}
-          toggle={() => {
-            setOpenProfile(false);
-            setOpenDate(false);
-            setOpenSite((p) => !p);
-          }}
-        />
+        {siteList.length > 0 ? (
+          <DropDown
+            items={siteList}
+            width="15rem"
+            height="3rem"
+            initialValue={selectedSite}
+            onChange={handleSelectedSite}
+            openDropdown={openSite}
+            close={() => {
+              setOpenSite(false);
+            }}
+            toggle={() => {
+              setOpenProfile(false);
+              setOpenDate(false);
+              setOpenSite((p) => !p);
+            }}
+          />
+        ) : (
+          <div>사이트를 등록해주세요</div>
+        )}
         <ProfileWrapper>
           <ProfileImg
             src={myprofile}

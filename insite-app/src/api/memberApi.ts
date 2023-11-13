@@ -1,7 +1,14 @@
+import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { memberAPI } from "./Api";
 
 // const applicationToken = sessionStorage.getItem("ApplicationToken");
-const applicationToken = "295c293c-f903-49c8-986d-92d2efe6ccdb";
+
+const myApp =
+  sessionStorage.getItem("myApp") ||
+  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+
+const data: ApplicationDtoType = JSON.parse(myApp);
+const { applicationToken } = data;
 
 // 버튼 목록 가져오기
 const getButtonList = async () => {
@@ -24,9 +31,9 @@ const createButton = async (name: string) => {
       applicationToken,
       name,
     });
-    return response.data;
+    return response;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    // console.error("등록에러: ", error); // 에러 처리
   }
 
   return [];
@@ -54,7 +61,7 @@ const createStie = async (name: string, applicationUrl: string) => {
       name,
       applicationUrl,
     });
-    return response.data;
+    return response;
   } catch (error) {
     // console.error(error); // 에러 처리
   }

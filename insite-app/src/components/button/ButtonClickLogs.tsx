@@ -137,34 +137,40 @@ function ButtonClickLogs() {
       />
       <OutDiv>
         <TextBox width="70%" height="90%">
-          <Border>
-            <StyledTable>
-              <TableHeader>
-                <tr>
-                  <th>순위</th>
-                  <th>URL</th>
-                  <th>클릭 시간</th>
-                  <th>쿠키 아이디</th>
-                  <th>비정상 접근</th>
-                </tr>
-              </TableHeader>
-              <TableBody>
-                {data.map((item, index) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.currentUrl}</TableCell>
-                    <TableCell>{item.clickDateTime}</TableCell>
-                    <TableCell>{item.cookieId}</TableCell>
-                    <TableCell>
-                      <div style={{ color: item.isAbnormal ? "red" : "green" }}>
-                        {item.isAbnormal ? "비정상" : "정상"}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </StyledTable>
-          </Border>
+          {data.length > 0 ? (
+            <Border>
+              <StyledTable>
+                <TableHeader>
+                  <tr>
+                    <th>순위</th>
+                    <th>URL</th>
+                    <th>클릭 시간</th>
+                    <th>쿠키 아이디</th>
+                    <th>비정상 접근</th>
+                  </tr>
+                </TableHeader>
+                <TableBody>
+                  {data.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{item.currentUrl}</TableCell>
+                      <TableCell>{item.clickDateTime}</TableCell>
+                      <TableCell>{item.cookieId}</TableCell>
+                      <TableCell>
+                        <div
+                          style={{ color: item.isAbnormal ? "red" : "green" }}
+                        >
+                          {item.isAbnormal ? "비정상" : "정상"}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </StyledTable>
+            </Border>
+          ) : (
+            <div>데이터가 없습니다.</div>
+          )}
         </TextBox>
         <IconDiv>
           <div>클릭 후 평균 이탈율</div>
