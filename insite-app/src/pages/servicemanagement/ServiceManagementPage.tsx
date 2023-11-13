@@ -279,7 +279,7 @@ function ServiceManagementPage() {
                   {buttonList && buttonList.length > 0 ? (
                     buttonList.map((button: ButtonType) => (
                       <div key={button.id}>
-                        <ButtonBox width="490px" height="50px" color="#00E6FF">
+                        <ButtonBox width="490px" height="50px" color="#1e1f23">
                           <p>{button.name}</p>
                         </ButtonBox>
                         <br />
