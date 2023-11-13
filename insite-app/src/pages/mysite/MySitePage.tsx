@@ -1,15 +1,16 @@
 import { BackgroundDiv, TextBox } from "@components/common";
-import MainHeader from "@components/common/header/MainHeader";
+import MainHeader2 from "@components/common/header/MainHeader2";
 import styled from "styled-components";
 import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { plus, insitePanda } from "@assets/images"; // 이미지를 불러옴
 import { useEffect, useState } from "react";
 import { createStie, getSiteList } from "@api/memberApi";
 import { useNavigate } from "react-router-dom";
+import { useSpring } from "react-spring";
 
 const MainContainer = styled.div`
-  width: 80%;
-  height: 94%;
+  width: 90%;
+  height: 70%;
 `;
 
 const OverflowContainer = styled.div`
@@ -28,7 +29,8 @@ const OutletContainer = styled.div`
 
 const MySitePageStyle = styled.div`
   margin: 5%;
-  min-height: 300px;
+  height: 20rem;
+  width: 20rem;
   padding: 20px;
   box-sizing: border-box;
 `;
@@ -79,14 +81,14 @@ const ConfirmButton = styled.button`
   padding: 20px; /* 버튼 크기 조절 */
   font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
-  background-color: #4caf50; /* 배경색 */
+  background-color: #9051e4; /* 배경색 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #45a049; /* 호버링 시 배경색 변경 */
+    background-color: #b990ec; /* 호버링 시 배경색 변경 */
   }
 `;
 
@@ -96,14 +98,14 @@ const CancelButton = styled.button`
   padding: 20px; /* 버튼 크기 조절 */
   font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
-  background-color: #f44336; /* 배경색 */
+  background-color: #1e1f23; /* 배경색 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #d32f2f; /* 호버링 시 배경색 변경 */
+    background-color: rgba(30, 31, 35, 0.6); /* 호버링 시 배경색 변경 */
   }
 `;
 
@@ -113,6 +115,18 @@ function MySitePage() {
   const [serviceUrl, setServiceUrl] = useState("");
   const [siteList, setSiteList] = useState<ApplicationDtoType[]>([]);
   const navi = useNavigate();
+
+  // Spring values for the image animations based on scroll
+  const [{ scrollY }, setScrollY] = useSpring(() => ({ scrollY: 0 }));
+
+  // Update scrollY when the user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY({ scrollY: window.scrollY });
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [setScrollY]);
 
   // 등록된 사이트 리스트 가져오기
   useEffect(() => {
@@ -194,7 +208,7 @@ function MySitePage() {
   return (
     <BackgroundDiv>
       <MainContainer>
-        <MainHeader />
+        <MainHeader2 scrollY={scrollY} />
         <OverflowContainer>
           <OutletContainer>
             {siteList.map((item: ApplicationDtoType) => (
