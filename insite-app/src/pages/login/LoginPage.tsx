@@ -1,4 +1,4 @@
-import { insiteText, insitePanda, kakaoLoginButton } from "@assets/images";
+import { kakaoLoginButton } from "@assets/images";
 import BackgroundDiv from "@components/common/BackgroundDiv";
 import DefaultBox from "@components/common/DefaultBox";
 import { ImageButton } from "@components/common/button";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import InSiteLogo from "@assets/images/슬로건_배경제거.jpg";
 
 const Container = styled.div`
   display: flex;
@@ -17,21 +18,20 @@ const Container = styled.div`
 `;
 
 const ImagePanda = styled.img`
-  width: 45%;
-  height: 70%;
+  width: 55%;
 `;
 
-const ImageName = styled.img`
-  width: 50%;
-  height: 30%;
-`;
+// const ImageName = styled.img`
+//   width: 50%;
+//   height: 30%;
+// `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70%;
+  /* height: 70%; */
   width: 100%;
   margin-bottom: 5%;
 `;
@@ -77,8 +77,8 @@ function LoginPage() {
       <DefaultBox width="500px" height="500px">
         <Container>
           <TitleContainer>
-            <ImagePanda src={insitePanda} alt="인사이트 판다" />
-            <ImageName src={insiteText} alt="인사이트 이름" />
+            <ImagePanda src={InSiteLogo} alt="인사이트 판다" />
+            {/* <ImageName src={insiteText} alt="인사이트 이름" /> */}
           </TitleContainer>
           <ImageButton
             width="50%"
