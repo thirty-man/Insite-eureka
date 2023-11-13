@@ -1,6 +1,5 @@
 import { kakaoLoginButton } from "@assets/images";
 import BackgroundDiv from "@components/common/BackgroundDiv";
-import DefaultBox from "@components/common/DefaultBox";
 import { ImageButton } from "@components/common/button";
 import axios from "axios";
 import { useEffect } from "react";
@@ -21,19 +20,12 @@ const ImagePanda = styled.img`
   width: 55%;
 `;
 
-// const ImageName = styled.img`
-//   width: 50%;
-//   height: 30%;
-// `;
-
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: 70%; */
-  width: 100%;
-  margin-bottom: 5%;
+  width: 40%;
 `;
 
 function LoginPage() {
@@ -74,21 +66,18 @@ function LoginPage() {
 
   return (
     <BackgroundDiv>
-      <DefaultBox width="500px" height="500px">
-        <Container>
-          <TitleContainer>
-            <ImagePanda src={InSiteLogo} alt="인사이트 판다" />
-            {/* <ImageName src={insiteText} alt="인사이트 이름" /> */}
-          </TitleContainer>
-          <ImageButton
-            width="50%"
-            height="8%"
-            onClick={handleLoginClick}
-            src={kakaoLoginButton}
-            alt="kakao Login Btn"
-          />
-        </Container>
-      </DefaultBox>
+      <Container>
+        <TitleContainer>
+          <ImagePanda src={InSiteLogo} alt="인사이트 판다" />
+        </TitleContainer>
+        <ImageButton
+          width="20%"
+          height="10%"
+          onClick={handleLoginClick}
+          src={kakaoLoginButton}
+          alt="kakao Login Btn"
+        />
+      </Container>
     </BackgroundDiv>
   );
 }

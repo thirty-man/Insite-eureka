@@ -6,6 +6,7 @@ import { SideBarMenuType } from "@customtypes/dataTypes";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
+import InSiteLogo from "@assets/images/슬로건_배경제거.jpg";
 import { SideBarMenu, icons } from "./SideBarMenu";
 import ImageButton from "../button/ImageButton";
 
@@ -51,7 +52,7 @@ const MenuWrapper = styled.button<{ $isActive: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  background-color: ${(props) => (props.$isActive ? "#6646ef" : "black")};
+  background-color: ${(props) => (props.$isActive ? "#252531" : "black")};
   color: white;
   width: 100%;
   height: 100%;
@@ -62,7 +63,7 @@ const MenuWrapper = styled.button<{ $isActive: boolean }>`
     color 0.3s transform 0.3s;
 
   &:hover {
-    background-color: #6646ef;
+    background-color: #252531;
     color: white;
     font-weight: 600;
     /* filter: invert(100%); */
@@ -82,7 +83,7 @@ const MenuItem2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  font-size: 20px;
+  font-size: 1rem;
   width: 70%;
   height: 100%;
 `;
@@ -92,28 +93,23 @@ const ContactContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin-top: 15px;
+  margin-top: 30px;
   width: 100%;
   height: 13%;
 `;
 
 const ContactTextWrapper = styled.div`
-  font-size: 18px;
+  font-size: 15px;
 `;
 const ContactImgWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  background-color: #6646ef;
+  /* background-color: #252531; */
   border-radius: 5px;
   width: 70%;
   height: 40%;
-`;
-const INSITE = styled.div`
-  font-weight: 900;
-  color: #6646ef;
-  font-size: 56px;
 `;
 
 function SideBar() {
@@ -127,14 +123,13 @@ function SideBar() {
     <SideBarContainer>
       <LogoContainer>
         <LogoImgWrapper>
-          {/* <ImageButton
-            width="100%"
+          <ImageButton
+            width="50%"
             height="100%"
-            src=""
+            src={InSiteLogo}
             alt="insite Home Logo"
             onClick={() => navi("/main")}
-          /> */}
-          <INSITE>INSITE</INSITE>
+          />
         </LogoImgWrapper>
       </LogoContainer>
       <SideBarWrapper>
