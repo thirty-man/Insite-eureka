@@ -3,17 +3,12 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { RootState } from "@reducer";
-import { useDispatch, useSelector } from "react-redux";
-import { IconUser, myprofile } from "@assets/icons";
+import {useState } from "react";
+import {useNavigate } from "react-router-dom";
+import { IconUser } from "@assets/icons";
 import styled from "styled-components";
 import Modal from "../modal/Modal";
-import DropDown from "../dropdown/DropDown";
-import SiteList from "../dropdown/SiteList";
 import ImageButton from "../button/ImageButton";
-import { homeLogo } from "@assets/images";
 import { animated, useSpring, SpringValue } from "@react-spring/web";
 import InSiteLogo from "@assets/images/InSiteLogo3.svg";
 
@@ -120,14 +115,7 @@ const LogoImgWrapper = styled.div`
 
 function MainHeader({ scrollY }: MainHeaderProps) {
   const navi = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
   const [isProfile, setIsProfile] = useState<boolean>(false);
-  const [currentPathname, setCurrentPathname] = useState<string>("");
-
-  useEffect(() => {
-    setCurrentPathname(location.pathname);
-  }, [location]);
 
   const handleOpenProfile = (e: React.MouseEvent) => {
     e.stopPropagation();

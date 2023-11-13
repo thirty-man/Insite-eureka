@@ -8,18 +8,17 @@
 // /* eslint-disable import/order */
 // /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import styled, { css } from "styled-components";
 import backgroundImg from "../../assets/images/애니메이션배경.gif";
 import backgroundImg2 from "../../assets/images/메인페이지_설명5.jpg";
 // import backgroundImg3 from "../../assets/images/MainVertical.jpg";
-import secondPageImg from "../../assets/images/MainVertical.jpg";
 import thirdPageImg from "../../assets/images/메인페이지_두번째2.jpg";
 import thirdPageGif from "../../assets/images/MainBackground7.gif";
 import FooterLogoImg from "../../assets/images/InSiteLogo3.svg";
 import MainHeader2 from "@components/common/header/MainHeader2";
-import { Link, Element } from "react-scroll";
+import {Element } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 
 const StyledButton = styled.button`
@@ -285,10 +284,6 @@ const ScrollDownIndicator = styled(animated.div)`
   font-size: 70px;
 `;
 
-const AnimatedImage = styled(animated.img)`
-  position: absolute;
-  will-change: transform; /* Performance optimization for smoother animations */
-`;
 
 function MainPage() {
   // Initialize vhInPixels state to a default value
