@@ -1,11 +1,9 @@
-interface DropdownType<T> {
+interface DropdownType {
   isVisible: boolean;
-  data: T[];
 }
 
-function ButtonDropdown<T>({ isVisible }: DropdownType<T>) {
+function ButtonDropdown({ isVisible }: DropdownType) {
   if (!isVisible) {
-    console.log(data);
     return null; // 드롭다운을 숨길 때
   }
 
