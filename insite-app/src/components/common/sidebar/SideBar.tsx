@@ -119,6 +119,11 @@ function SideBar() {
     (state: RootState) => state.SelectedSidebarMenuInfo.selectedMenuId,
   );
 
+  const myApp =
+    sessionStorage.getItem("myApp") ||
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"https://www.takeinsite.com/error", "applicationToken":"사이트를 선택해주세요"}`;
+  const target = JSON.parse(myApp).applicationUrl;
+
   return (
     <SideBarContainer>
       <LogoContainer>
@@ -139,7 +144,7 @@ function SideBar() {
               $isActive={item.id === selectedMenuId}
               onClick={() => {
                 if (item.id === 7) {
-                  window.open("http://rollinghoney.com", "_blank");
+                  window.open(target, "_blank");
                   return;
                 }
                 dispatch(setSelectedMenuId(item.id));
