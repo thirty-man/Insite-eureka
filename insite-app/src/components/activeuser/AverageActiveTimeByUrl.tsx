@@ -35,10 +35,10 @@ function AverageActiveTimeByUrl() {
   // }
 
   const startDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.start,
+    (state: RootState) => state.DateSelectionInfo.start,
   );
   const endDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.end,
   );
 
   useEffect(() => {

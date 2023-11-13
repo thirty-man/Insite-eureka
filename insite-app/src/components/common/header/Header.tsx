@@ -13,11 +13,11 @@ import {
   setEndDate,
   setLatestDate,
   setStartDate,
-} from "@reducer/dateSelectionInfo";
+} from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
 import { ItemType } from "@customtypes/dataTypes";
-import { setSelectedSite } from "@reducer/selectedItemInfo";
+import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
 
@@ -172,20 +172,20 @@ function Header() {
   }, []);
 
   const startDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.start,
+    (state: RootState) => state.DateSelectionInfo.start,
   );
   const endDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.end,
   );
   const pastDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.past,
+    (state: RootState) => state.DateSelectionInfo.past,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.dateSelectionInfo.latest,
+    (state: RootState) => state.DateSelectionInfo.latest,
   );
 
   const selectedSite = useSelector(
-    (state: RootState) => state.selectedItemInfo.selectedSite,
+    (state: RootState) => state.SelectedItemInfo.selectedSite,
   );
 
   const [currentPathname, setCurrentPathname] = useState<string>(

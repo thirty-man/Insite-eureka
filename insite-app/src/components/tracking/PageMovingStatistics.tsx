@@ -45,10 +45,10 @@ function PageMovingStatistics() {
   // 페이지  URL 불러오기 + 직전 URL 버튼DIv
   // 상세보기 누르면 세부 정보
   const startDateTime = useSelector(
-    (state: RootState) => state.dateSelectionInfo.start,
+    (state: RootState) => state.DateSelectionInfo.start,
   );
   const endDateTime = useSelector(
-    (state: RootState) => state.dateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.end,
   );
 
   const [selectedUrl, setSelectedUrl] = useState(""); // 이동 버튼 누를 때 선택되는

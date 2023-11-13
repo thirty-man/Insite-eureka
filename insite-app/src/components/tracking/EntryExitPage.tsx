@@ -15,11 +15,11 @@ import { useSelector } from "react-redux";
 function BeforeUrl() {
   const [data, setData] = useState<EntryExitDtoType[]>([]);
   const startDateTime = useSelector(
-    (state: RootState) => state.dateSelectionInfo.start,
+    (state: RootState) => state.DateSelectionInfo.start,
   );
 
   const endDateTime = useSelector(
-    (state: RootState) => state.dateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.end,
   );
 
   useEffect(() => {
