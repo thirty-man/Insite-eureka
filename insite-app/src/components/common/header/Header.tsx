@@ -13,12 +13,12 @@ import {
   setEndDate,
   setLatestDate,
   setStartDate,
-} from "@reducer/dateSelectionInfo";
+} from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import SiteList from "@components/common/dropdown/SiteList";
 import DropDown from "@components/common/dropdown/DropDown";
 import { ItemType } from "@customtypes/dataTypes";
-import { setSelectedSite } from "@reducer/selectedItemInfo";
+import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 
 const HeaderContainer = styled.div`
