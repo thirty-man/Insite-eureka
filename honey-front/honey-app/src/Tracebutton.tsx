@@ -72,7 +72,7 @@ export function traceButton(name: string) {
     cookie_id: cookieId,
     current_url: path,
     name: name,
-    application_token: "test",
+    application_token: "87114d66-9228-4e89-80f6-7a4f94663a6b",
     application_url: window.location.origin,
     activity_id: "test",
   };
