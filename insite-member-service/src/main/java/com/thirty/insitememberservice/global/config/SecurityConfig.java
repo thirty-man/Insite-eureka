@@ -53,7 +53,7 @@ public class SecurityConfig {
 		log.debug("디버그 : filterChain 빈 등록됨");
 		http.headers().frameOptions().sameOrigin(); // iframe 허용안함.
 		http.csrf().disable(); // enable이면 post맨 작동안함
-		http.cors().configurationSource(configurationSource());
+	//	http.cors().configurationSource(configurationSource());
 
 		// jSessionId를 서버쪽에서 관리안하겠다는 뜻!!
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
