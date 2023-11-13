@@ -110,6 +110,7 @@ const LogoImgWrapper = styled.div`
 
 function MainHeader({ scrollY }: MainHeaderProps) {
   const navi = useNavigate();
+  const token = sessionStorage.getItem("Authoriztion");
   const [isProfile, setIsProfile] = useState<boolean>(false);
 
   const handleOpenProfile = (e: React.MouseEvent) => {
@@ -134,7 +135,7 @@ function MainHeader({ scrollY }: MainHeaderProps) {
               height="100%"
               src={InSiteLogo}
               alt="insite Home Logo"
-              onClick={() => navi("/main")}
+              onClick={() => navi("/")}
             />
           </LogoImgWrapper>
         </LogoContainer>
@@ -154,15 +155,27 @@ function MainHeader({ scrollY }: MainHeaderProps) {
               <Option
                 onClick={(e) => {
                   e.stopPropagation();
-                  navi("/login");
+                  if (token === null) {
+                    navi("/login");
+                    setIsProfile(false);
+                  } else {
+                    setIsProfile(false);
+                    sessionStorage.clear();
+                  }
                 }}
               >
-                로그인 / 로그아웃
+                {token === null ? "로그인" : "로그아웃"}
               </Option>
               <Option
                 onClick={(e) => {
                   e.stopPropagation();
-                  navi("/mysite");
+                  if (token === null) {
+                    navi("/login");
+                    setIsProfile(false);
+                  } else {
+                    navi("/mysite");
+                    setIsProfile(false);
+                  }
                 }}
               >
                 사이트 선택하러 가기
