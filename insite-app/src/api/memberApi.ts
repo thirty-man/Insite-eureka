@@ -43,9 +43,7 @@ const createButton = async (name: string) => {
 
 const getSiteList = async () => {
   try {
-    const response = await memberAPI.post("/application/list", {
-      applicationToken,
-    });
+    const response = await memberAPI.get("/application/list");
     return response.data;
   } catch (error) {
     // console.error(error); // 에러 처리
