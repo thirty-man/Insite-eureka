@@ -3,7 +3,7 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconUser } from "@assets/icons";
 import styled from "styled-components";
@@ -110,8 +110,13 @@ const LogoImgWrapper = styled.div`
 
 function MainHeader({ scrollY }: MainHeaderProps) {
   const navi = useNavigate();
-  const token = sessionStorage.getItem("Authoriztion");
   const [isProfile, setIsProfile] = useState<boolean>(false);
+
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    const getToken = sessionStorage.getItem("Authorization");
+    setToken(getToken);
+  }, []);
 
   const handleOpenProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -161,6 +166,7 @@ function MainHeader({ scrollY }: MainHeaderProps) {
                   } else {
                     setIsProfile(false);
                     sessionStorage.clear();
+                    setToken(null);
                   }
                 }}
               >
