@@ -7,12 +7,13 @@ import RoomList from "@pages/roomlist";
 import MyPage from "@pages/mypage";
 import { ErrorNotFound } from "@pages/error";
 import Send from "@pages/send";
+import { withAnalytics } from "./WithAnalytics";
 
 const routePaths: RouteObject[] = [
   {
     id: "app",
     path: "",
-    element: <App />,
+    element: withAnalytics(App),
     children: [
       {
         id: "roomlist",
