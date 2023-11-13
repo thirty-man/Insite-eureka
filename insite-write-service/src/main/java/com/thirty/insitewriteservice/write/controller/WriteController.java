@@ -15,7 +15,7 @@ import com.thirty.insitewriteservice.write.dto.DataReqDto;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/data")
