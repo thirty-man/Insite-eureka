@@ -6,6 +6,7 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insitereadservice.buttons.builder.ButtonsQueryBuilder;
 import com.thirty.insitereadservice.buttons.dto.ButtonLogDto;
 import com.thirty.insitereadservice.buttons.dto.ButtonRateDto;
 import com.thirty.insitereadservice.buttons.dto.request.ButtonAbnormalReqDto;
@@ -20,6 +21,7 @@ import com.thirty.insitereadservice.buttons.dto.response.ButtonLogsResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.feignclient.dto.ButtonDto;
 import com.thirty.insitereadservice.feignclient.dto.request.ButtonListReqDto;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.feignclient.dto.response.ButtonListResDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.ButtonException;
@@ -40,6 +42,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +51,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ButtonServiceImpl implements ButtonService{
     private final MemberServiceClient memberServiceClient;
+    private final ButtonsQueryBuilder buttonsQueryBuilder;
 
     @Value("${influxdb.bucket}")
     private String bucket;
@@ -57,95 +61,30 @@ public class ButtonServiceImpl implements ButtonService{
 
     @Override
     public ClickCountsResDto getClickCounts(ClickCountsReqDto clickCountsReqDto, int memberId) {
-        String token = clickCountsReqDto.getApplicationToken();
-
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-        
-        //통계 시간 설정
-        Instant startInstant = clickCountsReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = clickCountsReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
-
-        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
-            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
-        }
-
-        //쿼리 생성
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(clickCountsReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("button"),
-            Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("name").equal(clickCountsReqDto.getButtonName())
+        Flux query = buttonsQueryBuilder.getClickCounts(
+            clickCountsReqDto.getStartDateTime(),
+            clickCountsReqDto.getEndDateTime(),
+            clickCountsReqDto.getApplicationToken(),
+            clickCountsReqDto.getButtonName()
         );
-        Flux query = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(restrictions)
-            .groupBy(new String[]{"_time", "name"})
-            .sort(new String[]{"_time"})
-            .count();
-
-        log.info("query = {}" ,query);
-
-        //해당 값 가져와 이름별로 각 숫자 저장
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        Map<String, Integer> countsMap = new LinkedHashMap<>();
-
-        for (FluxTable fluxTable : tables) {
-            List<FluxRecord> records = fluxTable.getRecords();
-
-            if (!records.isEmpty()) {
-                String date = records.get(0).getValueByKey("_time").toString().split("T")[0];
-                String countStringValue = records.get(0).getValueByKey("_value").toString();
-                int count = Integer.valueOf(countStringValue);
-
-                // Map에 이름(name)과 해당 이름의 카운트 값을 저장
-                if (countsMap.containsKey(date)) {
-                    countsMap.put(date, countsMap.get(date) + count);
-                } else {
-                    countsMap.put(date, count);
-                }
-            }
-        }
-
-        //response 형식으로 변환
-        List<ClickCountsDto> countDtoList = new ArrayList<>();
-        int id = 0;
-
-        for(String date : countsMap.keySet()){
-            countDtoList.add(ClickCountsDto.create(date, countsMap.get(date)).addId(id++));
-        }
-
-        return ClickCountsResDto.create(countDtoList);
+        return ClickCountsResDto.create(getClickCountsDtoList(tables));
     }
 
     @Override
     public ButtonLogsResDto getButtonLogs(ButtonLogsReqDto buttonLogsReqDto, int memberId) {
-        String token = buttonLogsReqDto.getApplicationToken();
-
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
-
-        //통계 시간 설정
-        Instant startInstant = buttonLogsReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = buttonLogsReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
-
-        if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
-            throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
-        }
-
-        //해당 버튼을 누른 전체 사용자 수
+//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(buttonLogsReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("button"),
-            Restrictions.tag("applicationToken").equal(token),
-            Restrictions.tag("name").equal(buttonLogsReqDto.getButtonName())
+        Flux query = buttonsQueryBuilder.getButtonClickActiveUsers(
+            buttonLogsReqDto.getStartDateTime(),
+            buttonLogsReqDto.getEndDateTime(),
+            buttonLogsReqDto.getApplicationToken(),
+            buttonLogsReqDto.getButtonName()
         );
 
-        Flux query = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(restrictions)
-            .groupBy("activityId");
-
-        log.info("query = {}" ,query);
         List<FluxTable> tables = queryApi.query(query.toString());
         Map<String,String> userButtonClickTime = new HashMap<>();
 
@@ -189,20 +128,13 @@ public class ButtonServiceImpl implements ButtonService{
             }
         });
 
-        // data에서 모든 activityId의 마지막 활동 시간을 조회한다
-        // 위의 맵과 일치하는 아이디를 선별한다
-
-        Restrictions dataRestrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token)
+        Flux dataQuery = buttonsQueryBuilder.getLastActive(
+            buttonLogsReqDto.getStartDateTime(),
+            buttonLogsReqDto.getEndDateTime(),
+            buttonLogsReqDto.getApplicationToken(),
+            buttonLogsReqDto.getButtonName()
         );
-        Flux dataQuery = Flux.from(bucket)
-            .range(startInstant, endInstant)
-            .filter(dataRestrictions)
-            .groupBy("activityId")
-            .sort(new String[]{"_time"});
 
-        log.info("dataQuery ={}", dataQuery);
         List<FluxTable> dataTables = queryApi.query(dataQuery.toString());
         Map<String, String> userLastTime = new HashMap<>();
 
@@ -426,5 +358,36 @@ public class ButtonServiceImpl implements ButtonService{
         }
 
         return userFirstClickTime.size() <= 0 ? 0.0 :sum / userFirstClickTime.size();
+    }
+
+    @NotNull
+    private List<ClickCountsDto> getClickCountsDtoList(List<FluxTable> tables) {
+        Map<String, Integer> countsMap = new LinkedHashMap<>();
+
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+
+            if (!records.isEmpty()) {
+                String date = records.get(0).getValueByKey("_time").toString().split("T")[0];
+                String countStringValue = records.get(0).getValueByKey("_value").toString();
+                int count = Integer.valueOf(countStringValue);
+
+                // Map에 이름(name)과 해당 이름의 카운트 값을 저장
+                if (countsMap.containsKey(date)) {
+                    countsMap.put(date, countsMap.get(date) + count);
+                } else {
+                    countsMap.put(date, count);
+                }
+            }
+        }
+
+        //response 형식으로 변환
+        List<ClickCountsDto> countDtoList = new ArrayList<>();
+        int id = 0;
+
+        for(String date : countsMap.keySet()){
+            countDtoList.add(ClickCountsDto.create(date, countsMap.get(date)).addId(id++));
+        }
+        return countDtoList;
     }
 }
