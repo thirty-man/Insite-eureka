@@ -56,7 +56,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledText1 = styled.text`
+const StyledText1 = styled.div`
   text-align: center;
   transition: 0.5s;
   color: white;
@@ -74,7 +74,7 @@ const StyledText1 = styled.text`
   }
 `;
 
-const StyledText2 = styled.text`
+const StyledText2 = styled.div`
   text-align: center;
   transition: 0.5s;
   color: white;
@@ -92,7 +92,7 @@ const StyledText2 = styled.text`
   }
 `;
 
-const StyledText3 = styled.text`
+const StyledText3 = styled.div`
   text-align: center;
   transition: 0.5s;
   color: white;
@@ -109,7 +109,7 @@ const StyledText3 = styled.text`
   }
 `;
 
-const StyledText4 = styled.text`
+const StyledText4 = styled.div`
   text-align: center;
   transition: 0.5s;
   color: white;
@@ -125,7 +125,7 @@ const StyledText4 = styled.text`
     transition: transform 0.1s ease;
   }
 `;
-const StyledText5 = styled.text`
+const StyledText5 = styled.div`
   text-align: center;
   transition: 0.5s;
   color: white;

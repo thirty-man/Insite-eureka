@@ -3,14 +3,14 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IconUser } from "@assets/icons";
 import styled from "styled-components";
 import Modal from "../modal/Modal";
 import ImageButton from "../button/ImageButton";
 import { animated, useSpring, SpringValue } from "@react-spring/web";
-import InSiteLogo from "@assets/images/InSiteLogo3.svg";
+import InSiteLogo from "@assets/images/슬로건_배경제거.jpg";
 
 interface MainHeaderProps {
   scrollY: SpringValue<number>;
@@ -40,8 +40,7 @@ const ProfileWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  padding-right: 2.5%;
-  padding-top: 10px;
+  padding-right: 4rem;
 `;
 
 const ProfileButton = styled.button`
@@ -57,9 +56,6 @@ const ProfileButton = styled.button`
     #4776e6
   );
   border-radius: 15px;
-  margin-top: 2px;
-  margin-right: 35px;
-  margin-left: 15px;
   cursor: pointer;
 
   &:hover {
@@ -102,9 +98,8 @@ const LogoContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 10%;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  padding-left: 3.5%;
+  padding-top: 1.7rem;
+  padding-left: 2.5rem;
 `;
 
 const LogoImgWrapper = styled.div`
@@ -135,7 +130,7 @@ function MainHeader({ scrollY }: MainHeaderProps) {
         <LogoContainer>
           <LogoImgWrapper>
             <ImageButton
-              width="20%"
+              width="25%"
               height="100%"
               src={InSiteLogo}
               alt="insite Home Logo"
