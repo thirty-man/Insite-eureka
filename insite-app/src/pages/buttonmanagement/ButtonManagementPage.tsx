@@ -7,7 +7,7 @@ import { DefaultBox, TitleBox } from "@components/common";
 import { ButtonType, ItemType } from "@customtypes/dataTypes";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import getButtonList from "@api/memberApi";
+import { getButtonList } from "@api/memberApi";
 import DropDown from "@components/common/dropdown/DropDown";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";

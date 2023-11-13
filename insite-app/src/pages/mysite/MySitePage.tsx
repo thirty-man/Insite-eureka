@@ -1,24 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { BackgroundDiv, TextBox } from "@components/common";
 import MainHeader from "@components/common/header/MainHeader";
 import styled from "styled-components";
-import { ItemType } from "@customtypes/dataTypes";
-import SiteList from "@components/common/dropdown/SiteList";
-import { pig, plus } from "@assets/images"; // 이미지를 불러옴
-import { useState } from "react";
-import axios from 'axios';
-import { insitePanda } from '@assets/images';
+import { ApplicationDtoType } from "@customtypes/dataTypes";
+import { plus, insitePanda } from "@assets/images"; // 이미지를 불러옴
+import { useEffect, useState } from "react";
+import { createStie, getSiteList } from "@api/memberApi";
 
 const MainContainer = styled.div`
   width: 80%;
   height: 94%;
 `;
 
-const OutletContainer = styled.div`
-  overflow-y: auto;
+const OverflowContainer = styled.div`
+  overflow-y: auto; /* 스크롤이 필요한 경우에만 스크롤 표시 */
   width: 100%;
-  height: 90%;
+  height: 80%; /* 동적으로 계산되도록 설정 */
+`;
+
+const OutletContainer = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 1%;
@@ -49,7 +50,7 @@ const ModalBackground = styled.div`
   width: 80%; /* 모달의 가로 크기를 조절할 수 있습니다. */
   max-width: 600px; /* 모달의 최대 가로 크기를 설정할 수 있습니다. */
   height: auto; /* 내용에 맞게 높이를 조절합니다. */
-  opacity:100%;
+  opacity: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,7 +84,7 @@ const ConfirmButton = styled.button`
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
-  
+
   &:hover {
     background-color: #45a049; /* 호버링 시 배경색 변경 */
   }
@@ -106,9 +107,27 @@ const CancelButton = styled.button`
   }
 `;
 
-
 function MySitePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [serviceName, setServiceName] = useState("");
+  const [serviceUrl, setServiceUrl] = useState("");
+  const [siteList, setSiteList] = useState<ApplicationDtoType[]>([]);
+
+  // 등록된 사이트 리스트 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getSiteList();
+        if (!response.applicationDtoList) setSiteList([]);
+        else setSiteList(response.applicationDtoList);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        // console.error(error); // 에러 처리
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -117,41 +136,36 @@ function MySitePage() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const [serviceName, setServiceName] = useState('');
-  const [serviceUrl, setServiceUrl] = useState('');
 
-  const handleServiceNameChange = (event:any) => {
+  const handleServiceNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setServiceName(event.target.value);
   };
 
-  const handleServiceUrlChange = (event:any) => {
+  const handleServiceUrlChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setServiceUrl(event.target.value);
   };
 
   const handleConfirm = () => {
-    // 서버 API 호출 로직 추가
-    const data = {
-      name: serviceName,
-      applicationUrl: serviceUrl,
-      
-    };
     // API 호출
-  axios.post('http://localhost:8081/api/v1/application/regist', data)
-  .then(response => {
-    // API 호출이 성공하면 모달을 닫을 수 있도록 closeModal 호출
-    console.log('API 호출 성공', response.data);
-    
-    closeModal();
-    window.location.reload();
-  })
-  .catch(error => {
-    // API 호출이 실패하면 에러를 처리할 수 있도록 추가 작업 필요
-    console.error('API 호출 실패', error);
-    // 에러 처리 로직 추가
-  });
-    
-  setServiceName('');
-  setServiceUrl('');
+    const fetchData = async () => {
+      try {
+        const response = await createStie(serviceName, serviceUrl);
+        console.log("어플 등록 성공", response.data);
+        closeModal();
+        window.location.reload();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        // console.error(error); // 에러 처리
+      }
+    };
+
+    fetchData();
+    setServiceName("");
+    setServiceUrl("");
 
     // 모달 닫기
     closeModal();
@@ -160,62 +174,79 @@ function MySitePage() {
   const handleCancel = () => {
     // 모달 닫기
     closeModal();
-    setServiceName('');
-    setServiceUrl('');  
+    setServiceName("");
+    setServiceUrl("");
   };
 
   return (
     <BackgroundDiv>
       <MainContainer>
         <MainHeader />
-        <OutletContainer>
-          {SiteList.map((item: ItemType) => (
-            <MySitePageStyle key={item.id}>
-              <Link to={`/`}>
+        <OverflowContainer>
+          <OutletContainer>
+            {siteList.map((item: ApplicationDtoType) => (
+              <MySitePageStyle key={item.applicationId}>
+                <Link to="/">
+                  <TextBox width="100%" height="100%">
+                    <img
+                      src={insitePanda}
+                      alt="Panda"
+                      style={{
+                        width: "30%",
+                        height: "30%",
+                        objectFit: "cover",
+                        top: 0,
+                        left: 0,
+                        opacity: 0.8,
+                      }}
+                    />
+                    {item.name}
+                  </TextBox>
+                </Link>
+              </MySitePageStyle>
+            ))}
+            <MySitePageStyle>
+              <button
+                type="button"
+                onClick={openModal}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  cursor: "pointer",
+                  backgroundColor: "transparent",
+                }}
+              >
                 <TextBox width="100%" height="100%">
-                <img
-                    src={insitePanda}
-                    alt="Panda"
-                    style={{ width: '30%', height: '30%', objectFit: 'cover', top: 0, left: 0, opacity: 0.8 }}
-                  />
-                  {item.name}
+                  <Image src={plus} alt="Pig Image" />
                 </TextBox>
-              </Link>
+              </button>
             </MySitePageStyle>
-          ))}
-          <MySitePageStyle>
-            <div onClick={openModal} style={{ width: '100%', height: '100%',cursor: 'pointer'}}>
-              <TextBox width="100%" height="100%">
-              <Image src={plus} alt="Pig Image" />
-              </TextBox>
-            </div>
-          </MySitePageStyle>
-        </OutletContainer>
+          </OutletContainer>
+        </OverflowContainer>
       </MainContainer>
       {isModalOpen && (
         <ModalBackground>
           <ModalContent>
-          {/* 모달 내용 */}
-          <h2 style={{color:"white"}}>서비스 추가하기</h2>
-          <br/>
-          <InputField
-            type="text"
-            placeholder="서비스명"
-            value={serviceName}
-            onChange={handleServiceNameChange}
-          />
-          <InputField
-            type="text"
-            placeholder="서비스URL"
-            value={serviceUrl}
-            onChange={handleServiceUrlChange}
-          />
-          <ButtonContainer>
-            <ConfirmButton onClick={handleConfirm}  >확인</ConfirmButton>
-            
-            <CancelButton onClick={handleCancel}>취소</CancelButton>
-          </ButtonContainer>
-        </ModalContent>
+            {/* 모달 내용 */}
+            <h2 style={{ color: "white" }}>서비스 추가하기</h2>
+            <br />
+            <InputField
+              type="text"
+              placeholder="서비스명"
+              value={serviceName}
+              onChange={handleServiceNameChange}
+            />
+            <InputField
+              type="text"
+              placeholder="서비스URL"
+              value={serviceUrl}
+              onChange={handleServiceUrlChange}
+            />
+            <ButtonContainer>
+              <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
+              <CancelButton onClick={handleCancel}>취소</CancelButton>
+            </ButtonContainer>
+          </ModalContent>
         </ModalBackground>
       )}
     </BackgroundDiv>
