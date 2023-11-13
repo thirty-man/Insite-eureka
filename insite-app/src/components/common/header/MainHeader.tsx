@@ -101,7 +101,7 @@ function MainHeader() {
               height="100%"
               src={homeLogo}
               alt="insite Home Logo"
-              onClick={() => navi("/main")}
+              onClick={() => navi("/")}
             />
           </LogoImgWrapper>
         </LogoContainer>

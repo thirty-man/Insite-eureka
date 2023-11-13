@@ -242,9 +242,14 @@ function MainPage() {
   // Initialize vhInPixels state to a default value
   const [vhInPixels, setVhInPixels] = useState(0);
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("Authorization");
 
   const handleButtonClick = () => {
-    navigate("/mysite"); // Navigate to "/mysite" when the button is clicked
+    if (token === null) {
+      navigate("/login");
+    } else {
+      navigate("/mysite");
+    }
   };
 
   // Update vhInPixels whenever the window resizes

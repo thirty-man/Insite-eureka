@@ -1,4 +1,5 @@
 import App from "@App";
+import ProtectRoute from "@components/common/ProtectRoute";
 import ActiveUserPage from "@pages/activeuser/ActiveUserPage";
 import ApiTestPage from "@pages/apitest/ApiTestPage";
 import ButtonManagementPage from "@pages/buttonmanagement/ButtonManagementPage";
@@ -21,58 +22,94 @@ const routePath: RouteObject[] = [
   },
   {
     id: "main-page",
-    path: "/main",
+    path: "/",
     element: <MainPage />,
   },
   {
     id: "my-site",
     path: "/mysite",
-    element: <MySitePage />,
+    element: (
+      <ProtectRoute>
+        <MySitePage />
+      </ProtectRoute>
+    ),
   },
   {
     id: "app",
-    path: "",
+    path: "board",
     element: <App />,
     children: [
       {
         id: "real-time",
         path: "",
-        element: <RealTimePage />,
+        element: (
+          <ProtectRoute>
+            <RealTimePage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "service-management",
-        path: "/manage",
-        element: <ServiceManagementPage />,
+        path: "manage",
+        element: (
+          <ProtectRoute>
+            <ServiceManagementPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "tracking",
-        path: "/track",
-        element: <TrackingPage />,
+        path: "track",
+        element: (
+          <ProtectRoute>
+            <TrackingPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "user",
-        path: "/user",
-        element: <UserPage />,
+        path: "user",
+        element: (
+          <ProtectRoute>
+            <UserPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "active-user",
-        path: "/active",
-        element: <ActiveUserPage />,
+        path: "active",
+        element: (
+          <ProtectRoute>
+            <ActiveUserPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "button-management",
-        path: "/button",
-        element: <ButtonManagementPage />,
+        path: "button",
+        element: (
+          <ProtectRoute>
+            <ButtonManagementPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "api-test",
-        path: "/api",
-        element: <ApiTestPage />,
+        path: "api",
+        element: (
+          <ProtectRoute>
+            <ApiTestPage />
+          </ProtectRoute>
+        ),
       },
       {
         id: "guide",
-        path: "/guide",
-        element: <GuidPage />,
+        path: "guide",
+        element: (
+          <ProtectRoute>
+            <GuidPage />
+          </ProtectRoute>
+        ),
       },
     ],
   },

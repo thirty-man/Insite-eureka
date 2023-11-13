@@ -391,10 +391,10 @@ function Header() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        {(currentPathname === "/track" ||
-          currentPathname === "/user" ||
-          currentPathname === "/active" ||
-          currentPathname === "/button") && (
+        {(currentPathname === "/board/track" ||
+          currentPathname === "/board/user" ||
+          currentPathname === "/board/active" ||
+          currentPathname === "/board/button") && (
           <CalendarContainer>
             <CalendarWrapper
               onClick={(e: React.MouseEvent) => {
@@ -495,12 +495,13 @@ function Header() {
                   setOpenProfile(false);
                 }}
               >
-                로그인 / 로그아웃
+                로그아웃
               </Option>
               <Option
                 onClick={() => {
                   navi("/mysite");
                   setOpenProfile(false);
+                  sessionStorage.clear();
                 }}
               >
                 사이트 선택하러 가기
