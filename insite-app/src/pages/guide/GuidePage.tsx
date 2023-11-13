@@ -1,4 +1,3 @@
-import React from "react";
 import TextBox from "@components/common/TextBox";
 import styled from "styled-components";
 import { DefaultBox } from "@components/common";

@@ -1,13 +1,13 @@
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { ButtonDIstDtoType } from "@customtypes/dataTypes";
+import { ButtonDistDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "@reducer";
 import { getButtonDistData } from "@api/accumulApi";
 
 function ButtonStatistics() {
-  const [data, setData] = useState<ButtonDIstDtoType[]>([]);
+  const [data, setData] = useState<ButtonDistDtoType[]>([]);
   const [avg, setAvg] = useState<number>(0);
 
   const startDateTime = useSelector(

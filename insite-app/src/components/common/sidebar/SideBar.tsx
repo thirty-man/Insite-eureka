@@ -3,7 +3,7 @@ import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 import { homeLogo } from "@assets/images";
 import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
-import { setSelectedMenuId } from "@reducer/selectedSidebarMenuInfo";
+import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
 import { SideBarMenu, icons } from "./SideBarMenu";
