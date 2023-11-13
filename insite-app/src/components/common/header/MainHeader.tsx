@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { myprofile } from "@assets/icons";
 import styled from "styled-components";
@@ -85,6 +85,11 @@ const Option = styled.button`
 function MainHeader() {
   const navi = useNavigate();
   const [openProfile, setOpenProfile] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    const getToken = sessionStorage.getItem("Authorization");
+    setToken(getToken);
+  }, []);
 
   const handleToggleProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -121,12 +126,19 @@ function MainHeader() {
               $position="absolute"
             >
               <Option
-                onClick={() => {
-                  navi("/login");
-                  setOpenProfile(false);
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!token) {
+                    navi("/login");
+                    setOpenProfile(false);
+                  } else {
+                    setOpenProfile(false);
+                    sessionStorage.clear();
+                    setToken(null);
+                  }
                 }}
               >
-                로그인 / 로그아웃
+                {!token ? "로그인" : "로그아웃"}
               </Option>
               {/* 다른 Option을 추가할 수 있음 */}
             </Modal>
