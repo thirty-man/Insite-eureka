@@ -140,6 +140,13 @@ type ButtonLogsResDto = {
   buttonLogDtoList: ButtonLogDtoType[];
 };
 
+type ApplicationDtoType = {
+  applicationId: number;
+  name: string;
+  applicationUrl: string;
+  applicationToken: string;
+};
+
 // -------------- Data Type
 type ButtonType = {
   id: number;
@@ -171,4 +178,5 @@ export type {
   CurrentUrlDtoType,
   ButtonLogDtoType,
   ButtonLogsResDto,
+  ApplicationDtoType,
 };

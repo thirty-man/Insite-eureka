@@ -1,5 +1,5 @@
 import { getButtonLogs } from "@api/accumulApi";
-import getButtonList from "@api/memberApi";
+import { getButtonList } from "@api/memberApi";
 import { activeuserclickavg, clickavgexit } from "@assets/icons";
 import {
   Border,
@@ -105,7 +105,7 @@ function ButtonClickLogs() {
           parseEndDateTime,
           selectedButton,
         );
-        if (!response) {
+        if (!response.buttonLogDtoList) {
           setData([]);
           setExitRate(0);
           setClickCountsPerActiveUsers(0);
