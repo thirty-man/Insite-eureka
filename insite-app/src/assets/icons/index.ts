@@ -19,6 +19,7 @@ import myprofile from "./myprofile.svg";
 import moduoLogo from "./moduoLogo.svg";
 import naverLogo from "./naverLogo.svg";
 import googleLogo from "./googleLogo.svg";
+import IconClock from "./icon_clock.svg";
 import activeuserclickavg from "./activeuserclickavg.svg";
 import clickavgexit from "./clickavgexit.svg";
 
@@ -44,6 +45,7 @@ export {
   moduoLogo,
   naverLogo,
   googleLogo,
+  IconClock,
   activeuserclickavg,
   clickavgexit,
 };

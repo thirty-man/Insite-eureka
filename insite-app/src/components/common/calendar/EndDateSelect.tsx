@@ -76,11 +76,12 @@ function EndDateSelect({
   const latestDateObj = parseDate(latestDate);
 
   const getYearsInRange = (start: Date, end: Date) => {
-    const years = [];
-    for (let year = start.getFullYear(); year <= end.getFullYear(); year += 1) {
-      years.push(year.toString());
-    }
-    return years;
+    const sYear = start.getFullYear();
+    const eYear = end.getFullYear();
+
+    return Array.from({ length: eYear - sYear + 1 }, (i: number) =>
+      (i + sYear).toString(),
+    );
   };
 
   const getMonthsInRange = (start: Date, end: Date) => {

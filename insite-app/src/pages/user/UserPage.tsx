@@ -1,4 +1,8 @@
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
+import AbnormalStatistics from "@components/user/AbnormalStatistics";
+import PageUsagePerUser from "@components/user/PageUsageUser";
+import UserStatistics from "@components/user/UserStatistics";
+import ViewCountsByCookie from "@components/user/ViewCountsByCookie";
 import styled from "styled-components";
 
 const FirstCol = styled.div`
@@ -47,7 +51,7 @@ function UserPage() {
             </TitleBox>
             <ContentDiv>
               <TextBox width="90%" height="90%">
-                꺾은선 그래프
+                <UserStatistics />
               </TextBox>
             </ContentDiv>
           </DefaultBox>
@@ -57,7 +61,7 @@ function UserPage() {
             </TitleBox>
             <ContentDiv>
               <TextBox width="90%" height="90%">
-                표
+                <PageUsagePerUser />
               </TextBox>
             </ContentDiv>
           </DefaultBox>
@@ -65,18 +69,22 @@ function UserPage() {
         <SecondCol>
           <DefaultBox width="51rem" height="25rem">
             <TitleBox width="" height="10%">
-              시간 별 활동 사용자 수
+              비정상적 사용자 접근 내역
             </TitleBox>
-            <ContentDiv>표 + 아이콘</ContentDiv>
+            <ContentDiv>
+              <AbnormalStatistics />
+            </ContentDiv>
           </DefaultBox>
         </SecondCol>
       </InnerDiv>
       <InnerDiv>
         <DefaultBox width="25rem" height="51rem">
           <TitleBox width="" height="10%">
-            시간 별 활동 사용자 수
+            사용자 별 페이지 조회 수
           </TitleBox>
-          <ContentDiv>표 + 아이콘</ContentDiv>
+          <ContentDiv>
+            <ViewCountsByCookie />
+          </ContentDiv>
         </DefaultBox>
       </InnerDiv>
     </RowDiv>

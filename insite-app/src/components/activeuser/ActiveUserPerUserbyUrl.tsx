@@ -7,12 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { ActiveUserCountDtoType } from "@customtypes/dataTypes";
+import { ActiveUserPerUserDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 
-function ActiveUserStatistics() {
-  const [data, setData] = useState<ActiveUserCountDtoType[]>([]);
+// interface AverageActiveTimeProps {
+//   id: number;
+//   startDateTime: Date;
+//   endDateTime: Date;
+// }
+
+function ActiveUserPerUserbyUrl() {
+  const [data, setData] = useState<ActiveUserPerUserDtoType[]>([]);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -34,6 +40,7 @@ function ActiveUserStatistics() {
   const endDate = useSelector(
     (state: RootState) => state.dateSelectionInfo.end,
   );
+
   useEffect(() => {
     const startDateTime = new Date(startDate);
     const endDateTime = new Date(endDate);
@@ -43,72 +50,35 @@ function ActiveUserStatistics() {
     const newData = [
       {
         id: 1,
-        currentUrl: "https://www.naver.com",
-        activeUserCount: 6,
-        ratio: 15,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 1,
       },
       {
         id: 2,
-        currentUrl: "https://www.example2.com",
-        activeUserCount: 6,
-        ratio: 14,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 6,
       },
       {
         id: 3,
-        currentUrl: "https://www.example3.com",
-        activeUserCount: 10,
-        ratio: 38,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 2,
       },
       {
         id: 4,
-        currentUrl: "https://www.example4.com",
-        activeUserCount: 4,
-        ratio: 75,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 4,
       },
       {
         id: 5,
-        currentUrl: "https://www.example5.com",
-        activeUserCount: 1,
-        ratio: 80,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 3,
       },
       {
         id: 6,
-        currentUrl: "https://www.example6.com",
-        activeUserCount: 16,
-        ratio: 15,
-      },
-      {
-        id: 7,
-        currentUrl: "https://www.example7.com",
-        activeUserCount: 12,
-        ratio: 3,
-      },
-      {
-        id: 8,
-        currentUrl: "https://www.example8.com",
-        activeUserCount: 8,
-        ratio: 53,
-      },
-      {
-        id: 9,
-        currentUrl: "https://www.example9.com",
-        activeUserCount: 8,
-        ratio: 99,
-      },
-      {
-        id: 10,
-        currentUrl: "https://www.example10.com",
-        activeUserCount: 4,
-        ratio: 22,
-      },
-      {
-        id: 11,
-        currentUrl: "https://www.example11.com",
-        activeUserCount: 16,
-        ratio: 100,
+        currentUrl: "https://www.google.com",
+        activeUserPerUser: 12,
       },
     ];
-
     setData(newData);
   }, [endDate, startDate]);
 
@@ -119,8 +89,7 @@ function ActiveUserStatistics() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>활동 사용자 수</th>
-            <th>비율%</th>
+            <th>값</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -128,8 +97,7 @@ function ActiveUserStatistics() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{item.ratio}%</TableCell>
+              <TableCell>{item.activeUserPerUser}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -140,4 +108,4 @@ function ActiveUserStatistics() {
   );
 }
 
-export default ActiveUserStatistics;
+export default ActiveUserPerUserbyUrl;
