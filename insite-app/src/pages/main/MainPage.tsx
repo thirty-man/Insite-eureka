@@ -251,9 +251,9 @@ function MainPage() {
 
   const handleButtonClick = () => {
     if (!token) {
-      navigate("/mysite");
-    } else {
       navigate("/login");
+    } else {
+      navigate("/mysite");
     }
   };
 
