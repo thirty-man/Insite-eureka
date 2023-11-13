@@ -46,20 +46,35 @@ const ProfileWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  padding-right: 2rem;
+  margin-left: 3rem;
 `;
 
 const ProfileButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  background-color: #6646ef;
+  width: 2.8rem;
+  height: 2.8rem;
+  background-image: linear-gradient(
+    to right,
+    #4776e6 0%,
+    #8e54e9 100%,
+    #4776e6
+  );
   border-radius: 15px;
-  margin-top: 2px;
-  margin-right: 35px;
-  margin-left: 15px;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+
+  &:active {
+    transform: scale(0.96);
+    transition: transform 0.1s;
+  }
 `;
 const ProfileImg = styled.img`
   display: flex;
