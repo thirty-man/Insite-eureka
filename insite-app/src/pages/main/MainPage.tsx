@@ -15,10 +15,10 @@ import backgroundImg from "../../assets/images/애니메이션배경.gif";
 import backgroundImg2 from "../../assets/images/메인페이지_설명5.jpg";
 // import backgroundImg3 from "../../assets/images/MainVertical.jpg";
 import thirdPageImg from "../../assets/images/메인페이지_두번째2.jpg";
-import thirdPageGif from "../../assets/images/MainBackground7.gif";
+import thirdPageGif from "../../assets/images/drive4.gif";
 import FooterLogoImg from "../../assets/images/InSiteLogo3.svg";
 import MainHeader2 from "@components/common/header/MainHeader2";
-import {Element } from "react-scroll";
+import { Element } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 
 const StyledButton = styled.button`
@@ -131,9 +131,8 @@ const StyledText5 = styled.text`
   color: white;
   display: block;
   position: absolute;
-  top: -15%;
-  left: 50%;
-  font-size: 45px;
+  left: 48%;
+  font-size: 35px;
   font-weight: bold;
 
   &:hover {
@@ -160,15 +159,18 @@ const Footer = styled(animated.footer)`
   bottom: 0;
   width: 100%;
   text-align: center;
-  padding: 70px;
+  padding-left: 70px;
+  padding-right: 70px;
+  padding-bottom: 70px;
   background-color: #252531;
   color: white;
   font-size: 16px;
+  z-index: 3;
 `;
 
 const Container = styled.div`
   width: 100%;
-  height: 320vh; /* Making the container tall to enable scrolling */
+  height: 220vh; /* Making the container tall to enable scrolling */
   position: relative;
   background-color: #252531;
   background-size: cover;
@@ -218,7 +220,7 @@ const SecondPage = styled(animated.div)`
   position: relative;
   background-image: url(${thirdPageImg});
   background-color: #252531;
-  background-size: cover;
+  background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
   opacity: 1;
@@ -233,7 +235,7 @@ const ThirdPage = styled(animated.div)`
   top: 0;
   left: 0;
   background-image: url(${backgroundImg2}),
-    radial-gradient(circle at center, transparent 0%, #252531 43%),
+    radial-gradient(circle at center, transparent 0%, #252531 50%),
     url(${thirdPageGif}), url(${backgroundImg2});
 
   /* radial-gradient(circle at center, transparent 0%, #252531 80%),
@@ -244,7 +246,7 @@ const ThirdPage = styled(animated.div)`
     center center,
     right;
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-  background-size: 38%, 24%, 24%, 38%; /* Set this to the correct size of your images */
+  background-size: 35%, 30%, 30%, 35%; /* Set this to the correct size of your images */
   z-index: 1;
 
   /* Add a pseudo-element to create the blur effect on the left edge of the right image */
@@ -284,7 +286,6 @@ const ScrollDownIndicator = styled(animated.div)`
   font-size: 70px;
 `;
 
-
 function MainPage() {
   // Initialize vhInPixels state to a default value
   const [vhInPixels, setVhInPixels] = useState(0);
@@ -321,11 +322,6 @@ function MainPage() {
   });
 
   const secondPageAnimation = useSpring({
-    // opacity: scrollY.to([0, vhInPixels * 0.5, vhInPixels], [0, 0, 1]),
-    transform: scrollY.to(
-      [0, vhInPixels * 0.5, vhInPixels],
-      ["scale(0.8)", "scale(0.8)", "scale(0.8)"],
-    ),
     config: { tension: 250, friction: 10 },
   });
 
@@ -335,7 +331,7 @@ function MainPage() {
   // Spring animation for the footer
   const footerAnimation = useSpring({
     opacity: showFooter ? 1 : 0,
-    bottom: showFooter ? "0px" : "-700px", // This will smoothly slide the footer up and down
+    bottom: showFooter ? "0px" : "-1000px", // This will smoothly slide the footer up and down
   });
 
   // Update scrollY when the user scrolls
@@ -414,17 +410,8 @@ function MainPage() {
           <StyledText5>단순 애널리틱스를 넘은 정밀 분석의 시작</StyledText5>
         </SecondPage>,
       )}
-      {renderSection(3, <ThirdPage />)}
-      {/* Repeat for as many sections as you need, putting your content inside */}
-      {/* Your ScrollDownIndicator and Footer will likely stay outside of these sections */}
+      {/* {renderSection(3, <ThirdPage />)} */}
 
-      {/* <DynamicBackground
-        style={{
-          transform: imageTransform, // Apply the dynamic scale transformation
-          opacity: imageOpacity, // Apply the dynamic opacity
-        }}
-      /> */}
-      {/* Your other content here */}
       <ScrollDownIndicator style={scrollDownAnimation}>🢓</ScrollDownIndicator>
       <Footer style={footerAnimation}>
         <div
