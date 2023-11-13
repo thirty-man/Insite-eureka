@@ -68,6 +68,9 @@ const InputField = styled.input`
   margin-bottom: 15px; /* 간격 조절 */
   padding: 15px; /* 텍스트 필드 크기 조절 */
   font-size: 16px; /* 폰트 크기 조절 */
+  background-color: #1e1f23;
+  color: white;
+  border: 1px solid black;
 `;
 
 const ButtonContainer = styled.div`
