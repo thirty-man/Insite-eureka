@@ -127,8 +127,8 @@ function MainHeader({ scrollY }: MainHeaderProps) {
 
   // Use the scrollY value to interpolate the scale and opacity
   const style = useSpring({
-    transform: scrollY.interpolate((y) => `scale(${1 + y / 5000})`), // Adjust scale rate as needed
-    opacity: scrollY.interpolate((y) => 1 - y / 300), // Adjust fade out rate as needed
+    transform: scrollY.to((y) => `scale(${1 + y / 5000})`), // Adjust scale rate as needed
+    opacity: scrollY.to((y) => 1 - y / 300), // Adjust fade out rate as needed
   });
 
   return (

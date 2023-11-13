@@ -1,8 +1,6 @@
 import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { memberAPI } from "./Api";
 
-// const applicationToken = sessionStorage.getItem("ApplicationToken");
-
 const myApp =
   sessionStorage.getItem("myApp") ||
   `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
