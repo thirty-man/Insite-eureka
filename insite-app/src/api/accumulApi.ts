@@ -1,6 +1,12 @@
+import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { accumulAPI } from "./Api";
 
-const applicationToken = "295c293c-f903-49c8-986d-92d2efe6ccdb";
+const myApp =
+  sessionStorage.getItem("myApp") ||
+  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+
+const data: ApplicationDtoType = JSON.parse(myApp);
+const { applicationToken } = data;
 
 const getRefData = async (startDateTime: Date, endDateTime: Date) => {
   try {

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { BackgroundDiv, TextBox } from "@components/common";
 import MainHeader from "@components/common/header/MainHeader";
 import styled from "styled-components";
@@ -6,6 +5,7 @@ import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { plus, insitePanda } from "@assets/images"; // 이미지를 불러옴
 import { useEffect, useState } from "react";
 import { createStie, getSiteList } from "@api/memberApi";
+import { useNavigate } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 80%;
@@ -112,6 +112,7 @@ function MySitePage() {
   const [serviceName, setServiceName] = useState("");
   const [serviceUrl, setServiceUrl] = useState("");
   const [siteList, setSiteList] = useState<ApplicationDtoType[]>([]);
+  const navi = useNavigate();
 
   // 등록된 사이트 리스트 가져오기
   useEffect(() => {
@@ -154,12 +155,12 @@ function MySitePage() {
     const fetchData = async () => {
       try {
         const response = await createStie(serviceName, serviceUrl);
-        console.log("어플 등록 성공", response.data);
+        console.log("어플 등록 성공", response);
         closeModal();
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         // eslint-disable-next-line no-console
-        // console.error(error); // 에러 처리
+        console.error("등록에러: ", error); // 에러 처리
       }
     };
 
@@ -178,6 +179,18 @@ function MySitePage() {
     setServiceUrl("");
   };
 
+  const seletSite = (item: ApplicationDtoType) => {
+    const myApp: ApplicationDtoType = {
+      applicationId: item.applicationId,
+      name: item.name,
+      applicationUrl: item.applicationUrl,
+      applicationToken: item.applicationUrl,
+    };
+    sessionStorage.setItem("myApp", JSON.stringify(myApp));
+    console.log("포인터");
+    navi("/");
+  };
+
   return (
     <BackgroundDiv>
       <MainContainer>
@@ -186,7 +199,16 @@ function MySitePage() {
           <OutletContainer>
             {siteList.map((item: ApplicationDtoType) => (
               <MySitePageStyle key={item.applicationId}>
-                <Link to="/">
+                <button
+                  type="button"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "transparent",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => seletSite(item)}
+                >
                   <TextBox width="100%" height="100%">
                     <img
                       src={insitePanda}
@@ -202,7 +224,7 @@ function MySitePage() {
                     />
                     {item.name}
                   </TextBox>
-                </Link>
+                </button>
               </MySitePageStyle>
             ))}
             <MySitePageStyle>
@@ -217,7 +239,7 @@ function MySitePage() {
                 }}
               >
                 <TextBox width="100%" height="100%">
-                  <Image src={plus} alt="Pig Image" />
+                  <Image src={plus} alt="Add Image" />
                 </TextBox>
               </button>
             </MySitePageStyle>

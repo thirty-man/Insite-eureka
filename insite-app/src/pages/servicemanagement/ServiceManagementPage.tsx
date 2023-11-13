@@ -3,8 +3,7 @@ import TextBox from "@components/common/TextBox";
 import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { ButtonType } from "@customtypes/dataTypes";
+import { ApplicationDtoType, ButtonType } from "@customtypes/dataTypes";
 import { createButton, getButtonList } from "@api/memberApi";
 
 const ManagementStyle = styled.div`
@@ -119,31 +118,14 @@ const CancelButton = styled.button`
 `;
 
 function ServiceManagementPage() {
-  const data = {
-    applicationToken: "your_application_token",
-    applicationUrl: "your_application_url",
-    name: "your_name",
-    applicationId: "your_application_id",
-    createTime: "your_create_time",
-  };
+  const myApp =
+    sessionStorage.getItem("myApp") ||
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
 
+  const data: ApplicationDtoType = JSON.parse(myApp);
   const [buttonList, setButtonList] = useState<ButtonType[]>([]);
   const [buttonName, setButtonName] = useState("");
-  const [applicationToken, setApplicationToken] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // 어플리케이션 정보 받아오기
-  useEffect(() => {
-    axios
-      .post("http://localhost:8082/api/v1/buttons", data)
-      .then((response) => {
-        console.log("API 호출 성공", response.data);
-        setButtonList(response.data);
-      })
-      .catch((error) => {
-        console.error("API 호출 실패", error);
-      });
-  }, []);
 
   // 버튼 리스트 가져오기
   useEffect(() => {
@@ -175,18 +157,12 @@ function ServiceManagementPage() {
     setButtonName(event.target.value);
   };
 
-  const handleApplicationTokenChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setApplicationToken(event.target.value);
-  };
-
   // 버튼 추가
   const handleConfirm = () => {
     const createData = async () => {
       try {
         const response = await createButton(buttonName);
-        console.log("API 호출 성공", response.data);
+        console.log("API 호출 성공", response);
 
         closeModal();
         window.location.reload();
@@ -198,7 +174,6 @@ function ServiceManagementPage() {
 
     createData();
     setButtonName("");
-    setApplicationToken("");
 
     // 모달 닫기
     closeModal();
@@ -208,7 +183,6 @@ function ServiceManagementPage() {
     // 모달 닫기
     closeModal();
     setButtonName("");
-    setApplicationToken("");
   };
 
   return (
@@ -235,7 +209,8 @@ function ServiceManagementPage() {
               <div className="infoContainer">
                 <p className="infoText">등록일 </p>
                 <TextBox width="500px" height="50px">
-                  <p>{data.createTime}</p>
+                  {/* <p>{data.createTime}</p> */}
+                  <p>등록일 필요</p>
                 </TextBox>
               </div>
               <div className="infoContainer">
@@ -293,12 +268,6 @@ function ServiceManagementPage() {
               placeholder="버튼명"
               value={buttonName}
               onChange={handleButtonNameChange}
-            />
-            <InputField
-              type="text"
-              placeholder="어플리케이션 토큰"
-              value={applicationToken}
-              onChange={handleApplicationTokenChange}
             />
             <ButtonContainer>
               <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
