@@ -4,6 +4,9 @@ import HighchartsReact from "highcharts-react-official";
 import theme from "@assets/styles/colors";
 import styled from "styled-components";
 import { IconClock } from "@assets/icons";
+import { getActiveUserPerUser } from "@api/accumulApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@reducer";
 
 const ChartContainer = styled.div`
   width: 100%;
@@ -67,43 +70,41 @@ let tickInterval = 0;
 // 시간 별 활동 사용자 수
 function ActiveUserPerTime() {
   const [data, setData] = useState<number[]>([0]);
+  const startDateTime = useSelector(
+    (state: RootState) => state.DateSelectionInfo.start,
+  );
+
+  const endDateTime = useSelector(
+    (state: RootState) => state.DateSelectionInfo.end,
+  );
 
   useEffect(() => {
-    const fetchData = () => {
-      const newData = {
-        nightActiveUserCount: 14,
-        morningActiveUserCount: 8,
-        afternoonActiveUserCount: 12,
-        eveningActiveUserCount: 4,
-      };
-      const seriesData = [
-        newData.nightActiveUserCount,
-        newData.morningActiveUserCount,
-        newData.afternoonActiveUserCount,
-        newData.eveningActiveUserCount,
-      ];
-
-      maxDataValue = Math.max(
-        seriesData[0],
-        seriesData[1],
-        seriesData[2],
-        seriesData[3],
-      );
-
-      tickInterval = maxDataValue / 5;
-
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
       try {
-        // const response = await getUserCount();
-        // const userCountDto = response.userCountDtoList;
-        if (!newData) setData([]);
-        else setData(seriesData);
+        const response = await getActiveUserPerUser(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.nightActiveUserCount) setData([]);
+        else
+          setData([
+            response.nightActiveUserCount,
+            response.morningActiveUserCount,
+            response.afternoonActiveUserCount,
+            response.eveningActiveUserCount,
+          ]);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
     };
 
     fetchData();
-  }, []);
+  }, [endDateTime, startDateTime]);
+
+  maxDataValue = Math.max(data[0], data[1], data[2], data[3]);
+  tickInterval = maxDataValue / 5;
 
   const options = {
     credits: {

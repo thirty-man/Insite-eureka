@@ -216,6 +216,13 @@ type ApplicationDtoType = {
   applicationToken: string;
 };
 
+type ActiveUsersPerTimeResDtoType = {
+  nightActiveUserCount: number; // value :0
+  morningActiveUserCount: number; // value :1
+  afternoonActiveUserCount: number; // value :2
+  eveningActiveUserCount: number; // value :3
+};
+
 // -------------- Data Type
 type ButtonType = {
   id: number;
@@ -258,4 +265,5 @@ export type {
   ButtonLogDtoType,
   ButtonLogsResDto,
   ApplicationDtoType,
+  ActiveUsersPerTimeResDtoType,
 };

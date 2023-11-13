@@ -270,6 +270,7 @@ const getActiveUserCounts = async (startDateTime: Date, endDateTime: Date) => {
   return [];
 };
 
+// os별 사용자
 const getOsActiveUser = async (startDateTime: Date, endDateTime: Date) => {
   try {
     const response = await accumulAPI.post("/active-users/active-user-per-os", {
@@ -304,6 +305,7 @@ const getAverageActiveTime = async (startDateTime: Date, endDateTime: Date) => {
   return [];
 };
 
+//
 const getViewCountsPerActiveUser = async (
   startDateTime: Date,
   endDateTime: Date,
@@ -311,6 +313,45 @@ const getViewCountsPerActiveUser = async (
   try {
     const response = await accumulAPI.post(
       "/active-users/view-counts-per-active-user",
+      {
+        applicationToken,
+        startDateTime,
+        endDateTime,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getActiveUserPerUser = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post(
+      "/active-users/active-user-per-user",
+      {
+        applicationToken,
+        startDateTime,
+        endDateTime,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    // console.error(error); // 에러 처리
+  }
+
+  return [];
+};
+
+const getActiveUsersPerTime = async (
+  startDateTime: Date,
+  endDateTime: Date,
+) => {
+  try {
+    const response = await accumulAPI.post(
+      "/active-users/active-users-per-time",
       {
         applicationToken,
         startDateTime,
@@ -345,4 +386,6 @@ export {
   getOsActiveUser,
   getAverageActiveTime,
   getViewCountsPerActiveUser,
+  getActiveUserPerUser,
+  getActiveUsersPerTime,
 };
