@@ -8,7 +8,6 @@ import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.data.service.DataService;
 import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
-import com.thirty.insiterealtimereadservice.global.jwt.JwtVO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,7 @@ public class DataController {
         @Valid @RequestBody ReferrerReqDto referrerReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         ReferrerResDto referrerResDto = dataService.getReferrer(memberId, referrerReqDto.getApplicationToken());
         return new ResponseEntity<>(referrerResDto, HttpStatus.OK);
     }
@@ -42,8 +40,7 @@ public class DataController {
         @Valid @RequestBody UserCountReqDto userCountReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         UserCountResDto userCountResDto = dataService.getUserCount(memberId,
             userCountReqDto.getApplicationToken());
         return new ResponseEntity<>(userCountResDto, HttpStatus.OK);
@@ -54,8 +51,8 @@ public class DataController {
         @Valid @RequestBody AbnormalReqDto abnormalReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+//        int memberId = JwtProcess.verifyAccessToken(request);//검증
+        int memberId = 1;
         AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getApplicationToken());
         return new ResponseEntity<>(abnormalResDto, HttpStatus.OK);
     }

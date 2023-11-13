@@ -15,6 +15,7 @@ import com.thirty.insiterealtimereadservice.data.dto.response.ReferrerResDto;
 import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
+import com.thirty.insiterealtimereadservice.global.builder.InfluxQueryBuilder;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -27,7 +28,7 @@ import java.util.PriorityQueue;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -36,56 +37,97 @@ import org.springframework.stereotype.Service;
 public class DataServiceImpl implements DataService{
 
     private final MemberServiceClient memberServiceClient;
-
-    @Value("${influxdb.bucket}")
-    private String bucket;
+    private final InfluxQueryBuilder influxQueryBuilder;
 
     @Resource
     private InfluxDBClient influxDBClient;
 
     @Override
-    public ReferrerResDto getReferrer(int memberId, String token) {
+    public ReferrerResDto getReferrer(int memberId, String applicationToken) {
         //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
-        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token)
-        );
-        Flux query = Flux.from(bucket)
-            .range(beforeThirtyMinutes, now)
-            .filter(restrictions)
-            .groupBy("beforeUrl")
-            .count();
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken, memberId));
 
-        log.info("query= {}",query);
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        Flux query = influxQueryBuilder.getReferrer(applicationToken);
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        Map<String, Double> map= new HashMap<>();
         double sum = 0.0;
+
+        Map<String, Double> referrerWithCount = getReferrerWithCountAndPlusSum(sum, tables);
+        return ReferrerResDto.create(getReferrerDtoList(referrerWithCount.get("sum"), referrerWithCount));
+    }
+
+    @Override
+    public UserCountResDto getUserCount(int memberId, String applicationToken) {
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken, memberId));
+
+        Flux query = influxQueryBuilder.getUserCount(applicationToken);
+        QueryApi queryApi = influxDBClient.getQueryApi();
+
+        List<FluxTable> tables = queryApi.query(query.toString());
+        double sum = 0.0;
+
+        for(FluxTable table : tables){
+            sum+=table.getRecords().size();
+        }
+
+        Map<String, CountWithResponseTime> urlWithCountAndResponseTime = getCurrentUrlWithCountWithResponseTime(tables);
+        return UserCountResDto.create(getUserCountDtoList(sum, urlWithCountAndResponseTime));
+    }
+
+    @Override
+    public AbnormalResDto getAbnormal(int memberId, String applicationToken) {
+        //멤버 및 application 유효성검사
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken, memberId));
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        String query = influxQueryBuilder.getDataAbnormal(applicationToken);
+
+        List<FluxTable> tables = queryApi.query(query);
+        return AbnormalResDto.create(getAbnormalDtoList(tables));
+    }
+
+    private Map<String, Double> getReferrerWithCountAndPlusSum(double sum , List<FluxTable> tables){
+
+        Map<String, Double> referrerWithCount= new HashMap<>();
+
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord record : records) {
-                String url = record.getValueByKey("beforeUrl").toString();
-                String count = record.getValueByKey("_value").toString();
-                Double urlCount = Double.valueOf(count);
-                sum += urlCount;
+                String referrer = record.getValueByKey("referrer").toString();
 
-                map.put(url, urlCount);
+                if(referrer.equals("null")){
+                    continue;
+                }
+
+                String count = record.getValueByKey("_value").toString();
+                double referrerCount = Double.valueOf(count);
+                sum += referrerCount;
+                referrerWithCount.put(referrer, referrerCount);
             }
         }
+        referrerWithCount.put("sum", sum);
+        return referrerWithCount;
+    }
+
+    @NotNull
+    private List<ReferrerDto> getReferrerDtoList(double sum, Map<String, Double> referrerWithCount) {
         List<ReferrerDto> referrerDtoList = new ArrayList<>();
         PriorityQueue<ReferrerDto> referrerDtoPriorityQueue = new PriorityQueue<>();
 
-        for(String url : map.keySet()){
-            double curCount = map.get(url);
+        for(String url : referrerWithCount.keySet()){
+
+            if(url.equals("sum")){
+                continue;
+            }
+
+            double curCount = referrerWithCount.get(url);
 
             referrerDtoPriorityQueue.offer(ReferrerDto.create(
                 url,
                 (int)curCount,
-                (sum == 0) ? 0.0 : curCount/sum
+                (sum == 0) ? 0.0 : curCount/ sum
             ));
         }
 
@@ -93,39 +135,16 @@ public class DataServiceImpl implements DataService{
         while (!referrerDtoPriorityQueue.isEmpty()){
             referrerDtoList.add(referrerDtoPriorityQueue.poll().addId(id++));
         }
-        return ReferrerResDto.create(referrerDtoList);
+        return referrerDtoList;
     }
 
-    @Override
-    public UserCountResDto getUserCount(int memberId, String token) {
-        //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token, memberId));
-
-        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
-
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(token)
-        );
-        Flux query = Flux.from(bucket)
-            .range(beforeThirtyMinutes,now)
-            .filter(restrictions)
-            .groupBy("currentUrl");
-//            .count();
-
-        log.info("query= {}",query);
-
-        List<FluxTable> tables = queryApi.query(query.toString());
-        Map<String, CountWithResponseTime> urlWithCountAndResponseTime= new HashMap<>();
-        double sum = 0.0;
+    private Map<String, CountWithResponseTime> getCurrentUrlWithCountWithResponseTime(List<FluxTable> tables){
+        Map<String, CountWithResponseTime> urlWithCountAndResponseTime = new HashMap<>();
 
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             String url = "";
             int sumResponseTime = 0;
-            sum += records.size();
 
             for (FluxRecord record : records) {
                 url = record.getValueByKey("currentUrl").toString();
@@ -139,6 +158,12 @@ public class DataServiceImpl implements DataService{
             }
         }
 
+        return urlWithCountAndResponseTime;
+    }
+
+    @NotNull
+    private List<UserCountDto> getUserCountDtoList(double sum,
+        Map<String, CountWithResponseTime> urlWithCountAndResponseTime) {
         PriorityQueue<UserCountDto> userCountDtoPriorityQueue = new PriorityQueue<>();
         List<UserCountDto> userCountDtoList = new ArrayList<>();
 
@@ -148,7 +173,7 @@ public class DataServiceImpl implements DataService{
             userCountDtoPriorityQueue.offer(UserCountDto.create(
                 url,
                 countWithResponseTime.getCount(),
-                (sum == 0)? 0.0 : countWithResponseTime.getCount()/sum,
+                (sum == 0)? 0.0 : countWithResponseTime.getCount()/ sum,
                 countWithResponseTime.getResponseTime()
             ));
         }
@@ -157,30 +182,11 @@ public class DataServiceImpl implements DataService{
         while(!userCountDtoPriorityQueue.isEmpty()){
             userCountDtoList.add(userCountDtoPriorityQueue.poll().addId(id++));
         }
-
-        return UserCountResDto.create(userCountDtoList);
+        return userCountDtoList;
     }
 
-    @Override
-    public AbnormalResDto getAbnormal(int memberId, String applicationToken) {
-        //멤버 및 application 유효성검사
-        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken, memberId));
-
-        Instant now = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-        Instant beforeThirtyMinutes = LocalDateTime.now().minusMinutes(30).toInstant(ZoneOffset.UTC);
-
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
-        queryBuilder.append("  |> range(start: ").append(beforeThirtyMinutes).append(", stop:").append(now).append(")\n");
-        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
-            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
-        queryBuilder.append("  |> group(columns:[\"\"])\n");
-        queryBuilder.append("  |> sort(columns: [\"_time\"])");
-
-        log.info("query={}",queryBuilder);
-
-        List<FluxTable> tables = queryApi.query(queryBuilder.toString());
+    @NotNull
+    private List<AbnormalDto> getAbnormalDtoList(List<FluxTable> tables) {
         List<AbnormalDto> abnormalDtoList = new ArrayList<>();
         int id = 0;
         for (FluxTable fluxTable : tables) {
@@ -200,7 +206,6 @@ public class DataServiceImpl implements DataService{
                 abnormalDtoList.add(AbnormalDto.create(cookieId,time,currentUrl,language,requestCnt,osId).addId(id++));
             }
         }
-
-        return AbnormalResDto.create(abnormalDtoList);
+        return abnormalDtoList;
     }
 }

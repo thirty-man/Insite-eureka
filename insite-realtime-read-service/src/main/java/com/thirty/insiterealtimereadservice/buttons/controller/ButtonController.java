@@ -6,7 +6,6 @@ import com.thirty.insiterealtimereadservice.buttons.dto.response.ButtonAbnormalR
 import com.thirty.insiterealtimereadservice.buttons.dto.response.ClickCountPerUserResDto;
 import com.thirty.insiterealtimereadservice.buttons.service.ButtonService;
 import com.thirty.insiterealtimereadservice.global.jwt.JwtProcess;
-import com.thirty.insiterealtimereadservice.global.jwt.JwtVO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,9 +29,7 @@ public class ButtonController {
         @Valid @RequestBody ClickCountPerUserReqDto clickCountPerUserReqDto,
         HttpServletRequest request
     ){
-        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         ClickCountPerUserResDto countPerUserResDto = buttonService.countPerUser(memberId, clickCountPerUserReqDto.getApplicationToken());
         return new ResponseEntity<>(countPerUserResDto, HttpStatus.OK);
     }
@@ -42,9 +39,7 @@ public class ButtonController {
         @Valid @RequestBody ButtonAbnormalReqDto buttonAbnormalReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         List<ButtonAbnormalResDto> buttonAbnormalResDtoList = buttonService.getButtonAbnormal(memberId, buttonAbnormalReqDto.getApplicationToken());
         return new ResponseEntity<>(buttonAbnormalResDtoList, HttpStatus.OK);
     }
