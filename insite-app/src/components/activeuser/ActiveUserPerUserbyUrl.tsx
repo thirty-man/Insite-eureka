@@ -11,28 +11,9 @@ import { ActiveUserPerUserDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 
-// interface AverageActiveTimeProps {
-//   id: number;
-//   startDateTime: Date;
-//   endDateTime: Date;
-// }
-
+// URL별 활동 사용자 수 / 사용자 수
 function ActiveUserPerUserbyUrl() {
   const [data, setData] = useState<ActiveUserPerUserDtoType[]>([]);
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
 
   const startDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,

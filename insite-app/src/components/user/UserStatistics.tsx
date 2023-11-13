@@ -4,66 +4,36 @@ import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { getUserCount } from "@api/accumulApi";
 
 function UserStatistics() {
   const [data, setData] = useState<UserStatisticsDtoType[]>([]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
-
-  const startDate = useSelector(
+  const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const endDate = useSelector(
+  const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
+
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    console.log(startDateTime);
-    console.log(endDateTime);
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
+      try {
+        const response = await getUserCount(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.userCountDtoList) setData([]);
+        else setData(response.userCountDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-    const newData = [
-      {
-        id: 1,
-        currentUrl: "https://www.naver.com",
-        userCount: 6,
-      },
-      {
-        id: 2,
-        currentUrl: "https://www.example2.com",
-        userCount: 6,
-      },
-      {
-        id: 3,
-        currentUrl: "https://www.example3.com",
-        userCount: 10,
-      },
-      {
-        id: 4,
-        currentUrl: "https://www.example4.com",
-        userCount: 4,
-      },
-      {
-        id: 5,
-        currentUrl: "https://www.example5.com",
-        userCount: 1,
-      },
-    ];
-
-    setData(newData);
-  }, [endDate, startDate]);
+    fetchData();
+  }, [endDateTime, startDateTime]);
 
   // 카테고리 배열 생성
   const categories = data.map((item) => item.currentUrl);
@@ -79,12 +49,11 @@ function UserStatistics() {
     chart: {
       type: "line",
       backgroundColor: "transparent",
-      width: 450, // 차트의 너비 설정
+      marginTop: 40,
+      width: 300, // 차트의 너비 설정
       height: 300, // 차트의 높이 설정
     },
-    title: {
-      text: null,
-    },
+    title: "",
     plotOptions: {
       series: {
         showInLegend: false,
@@ -92,10 +61,18 @@ function UserStatistics() {
     },
     xAxis: {
       categories,
+      labels: {
+        style: {
+          color: "white",
+        },
+      },
     },
     yAxis: {
-      title: {
-        text: null,
+      title: "",
+      labels: {
+        style: {
+          color: "white",
+        },
       },
     },
     series: [

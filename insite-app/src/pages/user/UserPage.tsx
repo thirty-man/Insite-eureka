@@ -72,7 +72,9 @@ function UserPage() {
               비정상적 사용자 접근 내역
             </TitleBox>
             <ContentDiv>
-              <AbnormalStatistics />
+              <TextBox width="90%" height="90%">
+                <AbnormalStatistics />
+              </TextBox>
             </ContentDiv>
           </DefaultBox>
         </SecondCol>

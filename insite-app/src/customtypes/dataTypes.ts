@@ -141,6 +141,7 @@ type ActiveUserPertimeDtoType = {
   afternoonActiveUserCount: number;
   eveningActiveUserCount: number;
 };
+
 type UserStatisticsDtoType = {
   id: number;
   currentUrl: string;

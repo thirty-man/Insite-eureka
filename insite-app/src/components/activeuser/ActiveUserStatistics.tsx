@@ -10,107 +10,36 @@ import {
 import { ActiveUserCountDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
+import { getActiveUser } from "@api/accumulApi";
 
+// 활동 사용자 수 조회
 function ActiveUserStatistics() {
   const [data, setData] = useState<ActiveUserCountDtoType[]>([]);
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
-
-  const startDate = useSelector(
+  const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const endDate = useSelector(
+
+  const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    console.log(startDateTime);
-    console.log(endDateTime);
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
+      try {
+        const response = await getActiveUser(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.activeUserDtoList) setData([]);
+        else setData(response.activeUserDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-    const newData = [
-      {
-        id: 1,
-        currentUrl: "https://www.naver.com",
-        activeUserCount: 6,
-        ratio: 15,
-      },
-      {
-        id: 2,
-        currentUrl: "https://www.example2.com",
-        activeUserCount: 6,
-        ratio: 14,
-      },
-      {
-        id: 3,
-        currentUrl: "https://www.example3.com",
-        activeUserCount: 10,
-        ratio: 38,
-      },
-      {
-        id: 4,
-        currentUrl: "https://www.example4.com",
-        activeUserCount: 4,
-        ratio: 75,
-      },
-      {
-        id: 5,
-        currentUrl: "https://www.example5.com",
-        activeUserCount: 1,
-        ratio: 80,
-      },
-      {
-        id: 6,
-        currentUrl: "https://www.example6.com",
-        activeUserCount: 16,
-        ratio: 15,
-      },
-      {
-        id: 7,
-        currentUrl: "https://www.example7.com",
-        activeUserCount: 12,
-        ratio: 3,
-      },
-      {
-        id: 8,
-        currentUrl: "https://www.example8.com",
-        activeUserCount: 8,
-        ratio: 53,
-      },
-      {
-        id: 9,
-        currentUrl: "https://www.example9.com",
-        activeUserCount: 8,
-        ratio: 99,
-      },
-      {
-        id: 10,
-        currentUrl: "https://www.example10.com",
-        activeUserCount: 4,
-        ratio: 22,
-      },
-      {
-        id: 11,
-        currentUrl: "https://www.example11.com",
-        activeUserCount: 16,
-        ratio: 100,
-      },
-    ];
-
-    setData(newData);
-  }, [endDate, startDate]);
+    fetchData();
+  }, [endDateTime, startDateTime]);
 
   return data.length > 0 ? (
     <Border>
