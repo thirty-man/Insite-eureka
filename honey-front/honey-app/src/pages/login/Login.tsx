@@ -7,6 +7,7 @@ import useRouter from "@hooks/useRouter";
 import { useLocation } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { logoutState } from "@recoil/atom";
+import { traceButton } from "../../Tracebutton";
 
 function Login() {
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
@@ -116,7 +117,10 @@ function Login() {
             <button
               type="button"
               className="w-[100%] h-[100%] text-[24px]"
-              onClick={() => setHelpOpen(false)}
+              onClick={() => {
+                setHelpOpen(false);
+                traceButton("로그인화면 닫기 버튼");
+              }}
             >
               닫기
             </button>
