@@ -33,6 +33,7 @@ const HeaderContainer = styled.div`
 const HeaderWrapper = styled.div`
   width: 100%;
   height: 75%;
+  min-width: 50%;
   margin-top: 15px;
   display: flex;
   flex-direction: row;

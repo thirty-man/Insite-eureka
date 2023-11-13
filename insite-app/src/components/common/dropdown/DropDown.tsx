@@ -26,6 +26,7 @@ const Component = styled.div<ComponentProps>`
   flex-direction: column;
   align-items: center;
   width: ${(props) => props.width};
+  min-width: ${(props) => props.width};
   position: relative;
 `;
 

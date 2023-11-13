@@ -128,7 +128,7 @@ function SideBar() {
             height="100%"
             src={InSiteLogo}
             alt="insite Home Logo"
-            onClick={() => navi("/main")}
+            onClick={() => navi("/")}
           />
         </LogoImgWrapper>
       </LogoContainer>
