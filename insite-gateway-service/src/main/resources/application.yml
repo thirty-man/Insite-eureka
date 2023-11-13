@@ -48,7 +48,7 @@ spring:
           predicates:
             - Path=/member-service/**
           filters:
-            #    - AuthorizationHeaderFilter
+            - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
         - id: insite-write-service-health #writeService healthCheck
@@ -70,7 +70,7 @@ spring:
           predicates:
             - Path=/write-service/**
           filters:
-            - AuthorizationHeaderFilter
+            # - AuthorizationHeaderFilter
             - RemoveRequestHeader=Cookie
             - RewritePath=/write-service/(?<segment>.*)$, /$\{segment}
         - id: insite-read-service-acu #readService
