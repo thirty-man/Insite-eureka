@@ -7,12 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { ActiveUserCountDtoType } from "@customtypes/dataTypes";
+import { ViewCountsPerActiveUserDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 
-function ActiveUserStatistics() {
-  const [data, setData] = useState<ActiveUserCountDtoType[]>([]);
+function PageUsagePerUser() {
+  const [data, setData] = useState<ViewCountsPerActiveUserDtoType[]>([]);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -44,67 +44,67 @@ function ActiveUserStatistics() {
       {
         id: 1,
         currentUrl: "https://www.naver.com",
-        activeUserCount: 6,
+        count: 6,
         ratio: 15,
       },
       {
         id: 2,
         currentUrl: "https://www.example2.com",
-        activeUserCount: 6,
+        count: 6,
         ratio: 14,
       },
       {
         id: 3,
         currentUrl: "https://www.example3.com",
-        activeUserCount: 10,
+        count: 10,
         ratio: 38,
       },
       {
         id: 4,
         currentUrl: "https://www.example4.com",
-        activeUserCount: 4,
+        count: 4,
         ratio: 75,
       },
       {
         id: 5,
         currentUrl: "https://www.example5.com",
-        activeUserCount: 1,
+        count: 1,
         ratio: 80,
       },
       {
         id: 6,
         currentUrl: "https://www.example6.com",
-        activeUserCount: 16,
+        count: 16,
         ratio: 15,
       },
       {
         id: 7,
         currentUrl: "https://www.example7.com",
-        activeUserCount: 12,
+        count: 12,
         ratio: 3,
       },
       {
         id: 8,
         currentUrl: "https://www.example8.com",
-        activeUserCount: 8,
+        count: 8,
         ratio: 53,
       },
       {
         id: 9,
         currentUrl: "https://www.example9.com",
-        activeUserCount: 8,
+        count: 8,
         ratio: 99,
       },
       {
         id: 10,
         currentUrl: "https://www.example10.com",
-        activeUserCount: 4,
+        count: 4,
         ratio: 22,
       },
       {
         id: 11,
         currentUrl: "https://www.example11.com",
-        activeUserCount: 16,
+        count: 16,
         ratio: 100,
       },
     ];
@@ -119,8 +119,8 @@ function ActiveUserStatistics() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>활동 사용자 수</th>
-            <th>비율%</th>
+            <th>조회 수</th>
+            <th>비율(%)</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -128,8 +128,8 @@ function ActiveUserStatistics() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{item.ratio}%</TableCell>
+              <TableCell>{item.count}</TableCell>
+              <TableCell>{item.ratio}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -140,4 +140,4 @@ function ActiveUserStatistics() {
   );
 }
 
-export default ActiveUserStatistics;
+export default PageUsagePerUser;

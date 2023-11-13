@@ -1,4 +1,9 @@
+import ActiveUserPerTime from "@components/activeuser/ActiveUserPerTime";
+import ActiveUserPerUserbyUrl from "@components/activeuser/ActiveUserPerUserbyUrl";
 import ActiveUsersStatistics from "@components/activeuser/ActiveUserStatistics";
+import AverageActiveTimeByUrl from "@components/activeuser/AverageActiveTimeByUrl";
+import OsActiveUser from "@components/activeuser/OSActiveUser";
+import PageUsagePerActiveUser from "@components/activeuser/PageUsagePerActiveUser";
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
 import styled from "styled-components";
 
@@ -63,7 +68,7 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              하트비트 데이터
+              <AverageActiveTimeByUrl />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -73,7 +78,7 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              하트비트 데이터
+              <ActiveUserPerUserbyUrl />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -86,7 +91,7 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              도넛 데이터
+              <OsActiveUser />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -96,7 +101,7 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              표 데이터
+              <PageUsagePerActiveUser />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -106,7 +111,9 @@ function ActiveUserPage() {
           <TitleBox width="" height="10%">
             시간 별 활동 사용자 수
           </TitleBox>
-          <ContentDiv>표 + 아이콘</ContentDiv>
+          <ContentDiv>
+            <ActiveUserPerTime />
+          </ContentDiv>
         </DefaultBox>
       </ThirdCol>
     </>

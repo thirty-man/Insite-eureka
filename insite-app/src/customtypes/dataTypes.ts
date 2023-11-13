@@ -42,7 +42,7 @@ type UserCountDtoType = {
 type ChartDtoType = {
   name: string;
   y: number;
-  dataLables: {
+  dataLabels: {
     enabled: boolean;
     format: string;
     style?: StyleType;
@@ -100,6 +100,74 @@ type EntryExitDtoType = {
   exitPage: string;
   exitCount: number;
   exitRate: number;
+};
+
+type AverageActiveTimeDtoType = {
+  id: number;
+  currentUrl: string;
+  averageActiveTime: number;
+};
+
+type ActiveUserPerUserDtoType = {
+  id: number;
+  currentUrl: string;
+  activeUserPerUser: number;
+};
+
+type ActiveUserCountDtoType = {
+  id: number;
+  currentUrl: string;
+  activeUserCount: number;
+  ratio: number;
+};
+
+type ViewCountsPerActiveUserDtoType = {
+  id: number;
+  currentUrl: string;
+  count: number;
+  ratio: number;
+};
+
+type OSActiveUserDtoType = {
+  id: number;
+  os: string;
+  count: number;
+  ratio: number;
+};
+
+type ActiveUserPertimeDtoType = {
+  nightActiveUserCount: number;
+  morningActiveUserCount: number;
+  afternoonActiveUserCount: number;
+  eveningActiveUserCount: number;
+};
+type UserStatisticsDtoType = {
+  id: number;
+  currentUrl: string;
+  userCount: number;
+};
+
+type ViewCountsPerUserDtoType = {
+  currentUrl: string;
+  count: number;
+  ratio: number;
+};
+
+type CookieIdUrlDtoType = {
+  id: number;
+  cookieId: string;
+  size: number;
+  viewCountsPerUserDtoList: ViewCountsPerUserDtoType[];
+};
+
+type AbnormalDtoListType = {
+  id: number;
+  cookieId: string;
+  date: string;
+  currentUrl: string;
+  language: string;
+  requestCnt: number;
+  osId: string;
 };
 
 type UrlFlowDtoType = {
@@ -172,6 +240,16 @@ export type {
   BounceDtoType,
   PageEnterDtoType,
   EntryExitDtoType,
+  AverageActiveTimeDtoType,
+  ActiveUserPerUserDtoType,
+  ActiveUserCountDtoType,
+  ViewCountsPerActiveUserDtoType,
+  OSActiveUserDtoType,
+  ActiveUserPertimeDtoType,
+  UserStatisticsDtoType,
+  ViewCountsPerUserDtoType,
+  CookieIdUrlDtoType,
+  AbnormalDtoListType,
   UrlFlowDtoType,
   EveryButtonDistResDto,
   ButtonDistDtoType,

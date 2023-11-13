@@ -7,12 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { ActiveUserCountDtoType } from "@customtypes/dataTypes";
+import { AverageActiveTimeDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 
-function ActiveUserStatistics() {
-  const [data, setData] = useState<ActiveUserCountDtoType[]>([]);
+// interface AverageActiveTimeProps {
+//   id: number;
+//   startDateTime: Date;
+//   endDateTime: Date;
+// }
+
+function AverageActiveTimeByUrl() {
+  const [data, setData] = useState<AverageActiveTimeDtoType[]>([]);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -34,6 +40,7 @@ function ActiveUserStatistics() {
   const endDate = useSelector(
     (state: RootState) => state.dateSelectionInfo.end,
   );
+
   useEffect(() => {
     const startDateTime = new Date(startDate);
     const endDateTime = new Date(endDate);
@@ -41,71 +48,56 @@ function ActiveUserStatistics() {
     console.log(endDateTime);
 
     const newData = [
-      {
-        id: 1,
-        currentUrl: "https://www.naver.com",
-        activeUserCount: 6,
-        ratio: 15,
-      },
+      { id: 1, currentUrl: "https://www.naver.com", averageActiveTime: 300.12 },
       {
         id: 2,
         currentUrl: "https://www.example2.com",
-        activeUserCount: 6,
-        ratio: 14,
+        averageActiveTime: 243.05,
       },
       {
         id: 3,
         currentUrl: "https://www.example3.com",
-        activeUserCount: 10,
-        ratio: 38,
+        averageActiveTime: 553.185,
       },
       {
         id: 4,
         currentUrl: "https://www.example4.com",
-        activeUserCount: 4,
-        ratio: 75,
+        averageActiveTime: 464.192,
       },
       {
         id: 5,
         currentUrl: "https://www.example5.com",
-        activeUserCount: 1,
-        ratio: 80,
+        averageActiveTime: 407.679,
       },
       {
         id: 6,
         currentUrl: "https://www.example6.com",
-        activeUserCount: 16,
-        ratio: 15,
+        averageActiveTime: 389.537,
       },
       {
         id: 7,
         currentUrl: "https://www.example7.com",
-        activeUserCount: 12,
-        ratio: 3,
+        averageActiveTime: 364.227,
       },
       {
         id: 8,
         currentUrl: "https://www.example8.com",
-        activeUserCount: 8,
-        ratio: 53,
+        averageActiveTime: 430.776,
       },
       {
         id: 9,
         currentUrl: "https://www.example9.com",
-        activeUserCount: 8,
-        ratio: 99,
+        averageActiveTime: 597.312,
       },
       {
         id: 10,
         currentUrl: "https://www.example10.com",
-        activeUserCount: 4,
-        ratio: 22,
+        averageActiveTime: 287.432,
       },
       {
         id: 11,
         currentUrl: "https://www.example11.com",
-        activeUserCount: 16,
-        ratio: 100,
+        averageActiveTime: 386.025,
       },
     ];
 
@@ -119,8 +111,7 @@ function ActiveUserStatistics() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>활동 사용자 수</th>
-            <th>비율%</th>
+            <th>평균체류시간(s)</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -128,8 +119,7 @@ function ActiveUserStatistics() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{item.ratio}%</TableCell>
+              <TableCell>{item.averageActiveTime}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -140,4 +130,4 @@ function ActiveUserStatistics() {
   );
 }
 
-export default ActiveUserStatistics;
+export default AverageActiveTimeByUrl;

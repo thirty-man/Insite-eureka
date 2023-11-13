@@ -5,6 +5,7 @@ interface DropdownType<T> {
 
 function ButtonDropdown<T>({ isVisible }: DropdownType<T>) {
   if (!isVisible) {
+    console.log(data);
     return null; // 드롭다운을 숨길 때
   }
 

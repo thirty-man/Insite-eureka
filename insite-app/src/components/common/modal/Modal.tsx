@@ -31,6 +31,7 @@ const ModalContent = styled.div<ModalContentType>`
   background-color: ${(props) => props.theme.colors.b3};
   color: white;
   border-radius: 0.6rem;
+  border: 3px solid #6646ef;
   box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
   box-sizing: border-box;
   z-index: 10000;

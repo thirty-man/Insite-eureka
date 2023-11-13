@@ -39,7 +39,7 @@ const SelectButton = styled.button<ButtonProps>`
   margin-top: 0.25rem;
   background-color: ${(props) => props.theme.colors.b3};
   border-radius: 0.6rem;
-  border: 3px solid #2ce8c7;
+  border: 3px solid #6646ef;
   cursor: pointer;
 `;
 
@@ -60,7 +60,7 @@ const DropDownStyle = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.colors.b3};
   border-radius: 0.6rem;
-  border: 3px solid #2ce8c7;
+  border: 3px solid #6646ef;
   top: 3.5rem;
   height: auto;
   max-height: 10rem;
@@ -101,14 +101,14 @@ interface ArrowProps {
 }
 
 const Arrow = styled.div<ArrowProps>`
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.7rem;
+  height: 0.7rem;
   background-image: url(${dropdownArrow});
   background-size: contain; // 이미지 크기 설정
   background-repeat: no-repeat; // 이미지 반복 설정
   background-color: transparent;
   margin-right: 0.5rem;
-
+  filter: invert(100%);
   ${(props) =>
     props.$dropdown
       ? css`

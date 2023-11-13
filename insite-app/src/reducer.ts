@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
-import selectedItemInfoReducer from "@reducer/SelectedItemInfo";
-import selectedSidebarMenuInfoReducer from "@reducer/SelectedSidebarMenuInfo";
-import dateSelectionInfoReducer from "@reducer/DateSelectionInfo";
+import selectedItemInfoReducer from "@reducer/selectedItemInfo";
+import selectedSidebarMenuInfoReducer from "@reducer/selectedSidebarMenuInfo";
+import dateSelectionInfoReducer from "@reducer/dateSelectionInfo";
 
 const persistConfig = {
   key: "root",

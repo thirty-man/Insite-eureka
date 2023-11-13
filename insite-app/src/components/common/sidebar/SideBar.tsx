@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
-import { homeLogo } from "@assets/images";
+// import { homeLogo } from "@assets/images";
 import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
-import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
+import { setSelectedMenuId } from "@reducer/selectedSidebarMenuInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
 import { SideBarMenu, icons } from "./SideBarMenu";
@@ -51,8 +51,7 @@ const MenuWrapper = styled.button<{ $isActive: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  background-color: ${(props) =>
-    props.$isActive ? props.theme.colors.d1 : "black"};
+  background-color: ${(props) => (props.$isActive ? "#6646ef" : "black")};
   color: white;
   width: 100%;
   height: 100%;
@@ -63,13 +62,13 @@ const MenuWrapper = styled.button<{ $isActive: boolean }>`
     color 0.3s transform 0.3s;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.d1};
+    background-color: #6646ef;
     color: white;
     font-weight: 600;
-    filter: invert(100%);
+    /* filter: invert(100%); */
   }
 
-  ${({ $isActive }) => $isActive && `font-weight:600; filter: invert(100%);`}
+  ${({ $isActive }) => $isActive && `font-weight:600;`}
 `;
 const MenuItem = styled.div`
   display: flex;
@@ -106,10 +105,15 @@ const ContactImgWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${(props) => props.theme.colors.a1};
+  background-color: #6646ef;
   border-radius: 5px;
   width: 70%;
   height: 40%;
+`;
+const INSITE = styled.div`
+  font-weight: 900;
+  color: #6646ef;
+  font-size: 56px;
 `;
 
 function SideBar() {
@@ -123,13 +127,14 @@ function SideBar() {
     <SideBarContainer>
       <LogoContainer>
         <LogoImgWrapper>
-          <ImageButton
+          {/* <ImageButton
             width="100%"
             height="100%"
-            src={homeLogo}
+            src=""
             alt="insite Home Logo"
             onClick={() => navi("/main")}
-          />
+          /> */}
+          <INSITE>INSITE</INSITE>
         </LogoImgWrapper>
       </LogoContainer>
       <SideBarWrapper>

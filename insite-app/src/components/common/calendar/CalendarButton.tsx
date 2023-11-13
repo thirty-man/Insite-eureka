@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import { IconCalendar } from "@assets/icons";
-import { DefaultBox } from "@components/common";
-
-interface CalendarButtonSizeProps {
-  width: string;
-  height: string;
-}
 
 interface CalendarButtonProps {
   startDate: string;
   endDate: string;
 }
+
+const Border = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  border: 3px solid #6646ef;
+`;
 
 const DateText = styled.div`
   width: 100%;
@@ -52,21 +56,16 @@ const CalendarContainer = styled.div`
   padding: 5px;
 `;
 
-function CalendarButton({
-  startDate,
-  endDate,
-  width,
-  height,
-}: CalendarButtonProps & CalendarButtonSizeProps) {
+function CalendarButton({ startDate, endDate }: CalendarButtonProps) {
   return (
-    <DefaultBox width={width} height={height}>
+    <Border>
       <CalendarContainer>
         <DateText>{startDate}</DateText>
         <DateText2>~</DateText2>
         <DateText>{endDate}</DateText>
         <DateImg src={IconCalendar} alt="calendar icon" />
       </CalendarContainer>
-    </DefaultBox>
+    </Border>
   );
 }
 export default CalendarButton;
