@@ -18,14 +18,14 @@ spring:
         - id: insite-member-service-login #memberlogin
           uri: lb://INSITE-MEMBER-SERVICE
           predicates:
-            - Path=/member-service/api/v1/member/login
+            - Path=/member-service/api/v1/members/login
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
         - id: insite-member-service-reissue #memberreissue
           uri: lb://INSITE-MEMBER-SERVICE
           predicates:
-            - Path=/member-service/api/v1/member/reissue
+            - Path=/member-service/api/v1/members/reissue
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/member-service/(?<segment>.*)$, /$\{segment}
