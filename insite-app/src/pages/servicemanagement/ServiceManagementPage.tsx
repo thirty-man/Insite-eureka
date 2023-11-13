@@ -2,7 +2,7 @@ import ButtonBox from "@components/common/ButtonBox";
 import TextBox from "@components/common/TextBox";
 import styled from "styled-components";
 import { DefaultBox } from "@components/common";
-import {useState,useEffect} from "react"; 
+import {useState} from "react"; 
 import axios from "axios";
 import { ButtonType } from "@customtypes/dataTypes";
 import ButtonList from "@components/ButtonList";
