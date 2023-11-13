@@ -126,7 +126,7 @@ memberAPI.interceptors.response.use(
 
         // 서버에서 "no"를 반환하는 경우 로그인 페이지로 리디렉션
         if (response.data === "no") {
-          window.location.href = `${VITE_LOCAL_URL}/login`;
+          window.location.href = `${VITE_SERVER_URL}/login`;
           return;
         }
 
