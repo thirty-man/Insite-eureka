@@ -15,7 +15,6 @@ import backgroundImg from "../../assets/images/애니메이션배경.gif";
 import backgroundImg2 from "../../assets/images/메인페이지_설명5.jpg";
 import MainHeader2 from "@components/common/header/MainHeader2";
 import { Element } from "react-scroll";
-import { useNavigate } from "react-router-dom";
 
 const StyledText1 = styled.div`
   text-align: center;
@@ -60,23 +59,6 @@ const StyledText3 = styled.div`
   display: block;
   position: absolute;
   top: 45%;
-  left: 10%;
-  font-size: 24px;
-
-  &:hover {
-    color: white;
-    transform: scale(1.06);
-    transition: transform 0.1s ease;
-  }
-`;
-
-const StyledText4 = styled.div`
-  text-align: center;
-  transition: 0.5s;
-  color: white;
-  display: block;
-  position: absolute;
-  top: 50%;
   left: 10%;
   font-size: 24px;
 
@@ -142,16 +124,6 @@ const DynamicBackground = styled(animated.div)`
 
 function NotFoundErrorPage() {
   const [vhInPixels, setVhInPixels] = useState(0);
-  const navigate = useNavigate();
-  const token = sessionStorage.getItem("Authorization");
-
-  const handleButtonClick = () => {
-    if (token === null) {
-      navigate("/login");
-    } else {
-      navigate("/mysite");
-    }
-  };
 
   // Update vhInPixels whenever the window resizes
   useEffect(() => {
@@ -171,9 +143,6 @@ function NotFoundErrorPage() {
   // Spring values for the image animations based on scroll
   const [{ scrollY }, setScrollY] = useSpring(() => ({ scrollY: 0 }));
 
-  // State to manage the footer visibility
-  const [showFooter, setShowFooter] = useState(false);
-
   // Update scrollY when the user scrolls
   useEffect(() => {
     const handleScroll = () => {
@@ -182,25 +151,6 @@ function NotFoundErrorPage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [setScrollY]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const bottomThreshold = 100; // or any other value that suits your needs
-
-      // Check if the user has scrolled to the bottom of the page
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - bottomThreshold
-      ) {
-        setShowFooter(true); // Show footer
-      } else {
-        setShowFooter(false); // Hide footer
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []); // Empty dependency array means this effect will only attach the event listener once
 
   // Define the background and image properties to change with scroll
   const imageTransform = scrollY.to(
@@ -224,7 +174,6 @@ function NotFoundErrorPage() {
   return (
     <Container>
       <MainHeader2 scrollY={scrollY} />
-      {/* {renderSection(1, <MainHeader2 scrollY={scrollY} />)} */}
       {renderSection(
         1,
         <DynamicBackground
