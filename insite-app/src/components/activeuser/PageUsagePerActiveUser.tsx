@@ -10,107 +10,37 @@ import {
 import { ViewCountsPerActiveUserDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
+import { getViewCountsPerActiveUser } from "@api/accumulApi";
 
+// 페이지 조회 / 활동 사용자 수
 function PageUsagePerActiveUser() {
   const [data, setData] = useState<ViewCountsPerActiveUserDtoType[]>([]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
-
-  const startDate = useSelector(
+  const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const endDate = useSelector(
+
+  const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    console.log(startDateTime);
-    console.log(endDateTime);
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
+      try {
+        const response = await getViewCountsPerActiveUser(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.viewCountsPerActiveUserDtoList) setData([]);
+        else setData(response.viewCountsPerActiveUserDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-    const newData = [
-      {
-        id: 1,
-        currentUrl: "https://www.naver.com",
-        count: 6,
-        ratio: 15,
-      },
-      {
-        id: 2,
-        currentUrl: "https://www.example2.com",
-        count: 6,
-        ratio: 14,
-      },
-      {
-        id: 3,
-        currentUrl: "https://www.example3.com",
-        count: 10,
-        ratio: 38,
-      },
-      {
-        id: 4,
-        currentUrl: "https://www.example4.com",
-        count: 4,
-        ratio: 75,
-      },
-      {
-        id: 5,
-        currentUrl: "https://www.example5.com",
-        count: 1,
-        ratio: 80,
-      },
-      {
-        id: 6,
-        currentUrl: "https://www.example6.com",
-        count: 16,
-        ratio: 15,
-      },
-      {
-        id: 7,
-        currentUrl: "https://www.example7.com",
-        count: 12,
-        ratio: 3,
-      },
-      {
-        id: 8,
-        currentUrl: "https://www.example8.com",
-        count: 8,
-        ratio: 53,
-      },
-      {
-        id: 9,
-        currentUrl: "https://www.example9.com",
-        count: 8,
-        ratio: 99,
-      },
-      {
-        id: 10,
-        currentUrl: "https://www.example10.com",
-        count: 4,
-        ratio: 22,
-      },
-      {
-        id: 11,
-        currentUrl: "https://www.example11.com",
-        count: 16,
-        ratio: 100,
-      },
-    ];
-
-    setData(newData);
-  }, [endDate, startDate]);
+    fetchData();
+  }, [endDateTime, startDateTime]);
 
   return data.length > 0 ? (
     <Border>

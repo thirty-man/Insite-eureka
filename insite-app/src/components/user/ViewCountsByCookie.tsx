@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { getViewCountsPerUser } from "@api/accumulApi";
 
 type FormatterContext = {
   point: Highcharts.Point;
@@ -14,147 +15,31 @@ type FormatterContext = {
 function ViewCountsByCookie() {
   const [data, setData] = useState<CookieIdUrlDtoType[]>([]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
-
-  const startDate = useSelector(
+  const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const endDate = useSelector(
+
+  const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    console.log(startDateTime);
-    console.log(endDateTime);
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
+      try {
+        const response = await getViewCountsPerUser(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.cookieIdUrlDtoList) setData([]);
+        else setData(response.cookieIdUrlDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-    const newData = [
-      {
-        id: 1,
-        cookieId: "cookie1",
-        size: 3,
-        viewCountsPerUserDtoList: [
-          {
-            currentUrl: "/url1",
-            count: 2,
-            ratio: 0.2,
-          },
-          {
-            currentUrl: "/url2",
-            count: 3,
-            ratio: 0.3,
-          },
-          {
-            currentUrl: "/url3",
-            count: 5,
-            ratio: 0.5,
-          },
-        ],
-      },
-      {
-        id: 2,
-        cookieId: "cookie2",
-        size: 3,
-        viewCountsPerUserDtoList: [
-          {
-            currentUrl: "/url1",
-            count: 2,
-            ratio: 0.2,
-          },
-          {
-            currentUrl: "/url2",
-            count: 3,
-            ratio: 0.3,
-          },
-          {
-            currentUrl: "/url3",
-            count: 5,
-            ratio: 0.5,
-          },
-        ],
-      },
-      {
-        id: 3,
-        cookieId: "cookie3",
-        size: 3,
-        viewCountsPerUserDtoList: [
-          {
-            currentUrl: "/url1",
-            count: 2,
-            ratio: 0.2,
-          },
-          {
-            currentUrl: "/url2",
-            count: 3,
-            ratio: 0.3,
-          },
-          {
-            currentUrl: "/url3",
-            count: 5,
-            ratio: 0.5,
-          },
-        ],
-      },
-      {
-        id: 4,
-        cookieId: "cookie4",
-        size: 3,
-        viewCountsPerUserDtoList: [
-          {
-            currentUrl: "/url1",
-            count: 2,
-            ratio: 0.2,
-          },
-          {
-            currentUrl: "/url2",
-            count: 3,
-            ratio: 0.3,
-          },
-          {
-            currentUrl: "/url3",
-            count: 5,
-            ratio: 0.5,
-          },
-        ],
-      },
-      {
-        id: 5,
-        cookieId: "cookie5",
-        size: 3,
-        viewCountsPerUserDtoList: [
-          {
-            currentUrl: "/url1",
-            count: 2,
-            ratio: 0.2,
-          },
-          {
-            currentUrl: "/url2",
-            count: 3,
-            ratio: 0.3,
-          },
-          {
-            currentUrl: "/url3",
-            count: 5,
-            ratio: 0.5,
-          },
-        ],
-      },
-    ];
-
-    setData(newData);
-  }, [endDate, startDate]);
+    fetchData();
+  }, [endDateTime, startDateTime]);
 
   // 차트 구성
   const options = {

@@ -10,99 +10,35 @@ import {
 import { AverageActiveTimeDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
-
-// interface AverageActiveTimeProps {
-//   id: number;
-//   startDateTime: Date;
-//   endDateTime: Date;
-// }
+import { getAverageActiveTime } from "@api/accumulApi";
 
 function AverageActiveTimeByUrl() {
   const [data, setData] = useState<AverageActiveTimeDtoType[]>([]);
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         // const response = await getActiveUserCount(); // await를 사용하여 Promise를 기다립니다.
-  //         // setData(response.countPerUserDtoList);
-  //       } catch (error) {
-  //         // eslint-disable-next-line no-console
-  //         console.error(error); // 에러 처리
-  //       }
-  //     };
-
-  //     fetchData();
-  // }
-
-  const startDate = useSelector(
+  const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const endDate = useSelector(
+
+  const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
-
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    console.log(startDateTime);
-    console.log(endDateTime);
+    const parseStartDateTime = new Date(startDateTime);
+    const parseEndDateTime = new Date(endDateTime);
+    const fetchData = async () => {
+      try {
+        const response = await getAverageActiveTime(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.averageActiveTimeDtoList) setData([]);
+        else setData(response.averageActiveTimeDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-    const newData = [
-      { id: 1, currentUrl: "https://www.naver.com", averageActiveTime: 300.12 },
-      {
-        id: 2,
-        currentUrl: "https://www.example2.com",
-        averageActiveTime: 243.05,
-      },
-      {
-        id: 3,
-        currentUrl: "https://www.example3.com",
-        averageActiveTime: 553.185,
-      },
-      {
-        id: 4,
-        currentUrl: "https://www.example4.com",
-        averageActiveTime: 464.192,
-      },
-      {
-        id: 5,
-        currentUrl: "https://www.example5.com",
-        averageActiveTime: 407.679,
-      },
-      {
-        id: 6,
-        currentUrl: "https://www.example6.com",
-        averageActiveTime: 389.537,
-      },
-      {
-        id: 7,
-        currentUrl: "https://www.example7.com",
-        averageActiveTime: 364.227,
-      },
-      {
-        id: 8,
-        currentUrl: "https://www.example8.com",
-        averageActiveTime: 430.776,
-      },
-      {
-        id: 9,
-        currentUrl: "https://www.example9.com",
-        averageActiveTime: 597.312,
-      },
-      {
-        id: 10,
-        currentUrl: "https://www.example10.com",
-        averageActiveTime: 287.432,
-      },
-      {
-        id: 11,
-        currentUrl: "https://www.example11.com",
-        averageActiveTime: 386.025,
-      },
-    ];
-
-    setData(newData);
-  }, [endDate, startDate]);
+    fetchData();
+  }, [endDateTime, startDateTime]);
 
   return data.length > 0 ? (
     <Border>

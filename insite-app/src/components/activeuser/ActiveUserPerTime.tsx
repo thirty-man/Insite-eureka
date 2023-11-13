@@ -64,6 +64,7 @@ const ActiveUserValue = styled.div`
 let maxDataValue = 0;
 let tickInterval = 0;
 
+// 시간 별 활동 사용자 수
 function ActiveUserPerTime() {
   const [data, setData] = useState<number[]>([0]);
 
