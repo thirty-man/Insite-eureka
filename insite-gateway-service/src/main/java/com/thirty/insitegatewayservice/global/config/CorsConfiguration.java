@@ -41,6 +41,7 @@ public class CorsConfiguration {
 				}
 			}
 			return chain.filter(ctx);
+
 		};
 	}
 }
