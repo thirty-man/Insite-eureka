@@ -76,7 +76,7 @@ function gatherData(path: string) {
     response_time: responseTime,
     os_id: navigator.platform,
     is_new: isNew,
-    application_token: "test",
+    application_token: "87114d66-9228-4e89-80f6-7a4f94663a6b",
     application_url: window.location.origin,
     activity_id: "test",
   };
