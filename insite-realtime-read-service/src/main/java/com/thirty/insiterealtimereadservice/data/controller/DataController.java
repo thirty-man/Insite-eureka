@@ -51,8 +51,7 @@ public class DataController {
         @Valid @RequestBody AbnormalReqDto abnormalReqDto,
         HttpServletRequest request
     ){
-//        int memberId = JwtProcess.verifyAccessToken(request);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         AbnormalResDto abnormalResDto = dataService.getAbnormal(memberId, abnormalReqDto.getApplicationToken());
         return new ResponseEntity<>(abnormalResDto, HttpStatus.OK);
     }
