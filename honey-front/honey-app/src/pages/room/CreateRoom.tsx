@@ -92,12 +92,11 @@ function CreateRoom() {
       const selectedDate = value;
       const formattedDate = moment(selectedDate).format("YYYY년 MM월 DD일");
 
-      // 오늘 이전 날짜 선택 방지
       if (selectedDate < moment().startOf("day").toDate()) {
         setAlertText("오늘 이전의 날짜는 선택할 수 없습니다.");
         setAlertModal(true);
       } else {
-        setReleaseDate(formattedDate);
+        setReleaseDate(formattedDate); // 날짜 선택 시 releaseDate 업데이트
         setToday(selectedDate);
       }
     } else {
@@ -123,7 +122,7 @@ function CreateRoom() {
     }
   };
   const handleCalendar = () => {
-    const datePart = releaseDate.split(" ")[0]; // 날짜 부분만 추출
+    const datePart = releaseDate.split(" ").slice(0, 3).join(" "); // 날짜 부분만 추출
     const newReleaseDate = `${datePart} ${time}`; // 새로운 시간과 결합
     setReleaseDate(newReleaseDate);
     setOpenCalendar((prev) => !prev);
