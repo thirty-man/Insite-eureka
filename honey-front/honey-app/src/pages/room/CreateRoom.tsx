@@ -42,6 +42,7 @@ function CreateRoom() {
       setRoomNameFocused(false);
     }
   };
+
   const handleRoomPasswordFocus = () => {
     setRoomPasswordFocused(true);
   };
@@ -67,81 +68,65 @@ function CreateRoom() {
     setRoomPasswordFocused(false);
   };
 
-  function parseKoreanDateString(dateString: string): Date {
-    const matches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
+  function parseKoreanDateString(dateString: string, timeString: string): Date {
+    const dateMatches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
+    const timeMatches = timeString.match(/(\d+):(\d+)/);
 
-    if (!matches) {
-      throw new Error("Invalid date string format.");
+    if (!dateMatches || !timeMatches) {
+      throw new Error("Invalid date or time string format.");
     }
 
-    const year = parseInt(matches[1], 10);
-    const month = parseInt(matches[2], 10) - 1; // JavaScript의 month는 0부터 시작
-    const day = parseInt(matches[3], 10);
+    const year = parseInt(dateMatches[1], 10);
+    const month = parseInt(dateMatches[2], 10) - 1;
+    const day = parseInt(dateMatches[3], 10);
+    const hour = parseInt(timeMatches[1], 10);
+    const minute = parseInt(timeMatches[2], 10);
 
-    return new Date(year, month, day);
+    return new Date(year, month, day, hour, minute);
   }
-  const compareDate = (value: Value): boolean => {
-    const nextDate = moment().add(1, "days").startOf("day");
-    if (!(value instanceof Date) || value === null) {
-      return false;
-    }
 
-    const selectedDate = moment(value);
-
-    if (selectedDate.isBefore(nextDate)) {
-      return true;
-    }
-    return false;
-  };
   const handleDateChange = (
     value: Value,
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    if (compareDate(value)) {
-      setAlertText("종료일은 오늘 이후의 날짜만 선택할 수 있습니다.");
-      setAlertModal(true);
-      // alert("종료일은 오늘 이후의 날짜만 선택할 수 있습니다."); alert 0
-    } else {
-      const eventTarget = event.target as HTMLElement;
-      const aria = eventTarget.getAttribute("aria-label");
-      if (aria !== null) {
-        setReleaseDate(aria);
-        setToday(parseKoreanDateString(aria));
+    const eventTarget = event.target as HTMLElement;
+    const aria = eventTarget.getAttribute("aria-label");
+    if (aria !== null) {
+      const selectedDate = parseKoreanDateString(aria, time || "00:00");
+      if (selectedDate < new Date()) {
+        setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
+        setAlertModal(true);
       } else {
-        setReleaseDate("날짜 설정");
+        setReleaseDate(aria);
+        setToday(selectedDate);
       }
+    } else {
+      setReleaseDate("날짜 설정");
     }
   };
 
   const handleTimeChange = (value: string | null) => {
-    if (value) {
-      setTime(value);
+    const selectedDateTime = parseKoreanDateString(
+      releaseDate,
+      value || "00:00",
+    );
+    if (selectedDateTime < new Date()) {
+      setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
+      setAlertModal(true);
     } else {
-      setTime("00:00");
+      setTime(value);
     }
   };
 
   const handleCalendar = () => {
-    const newReleasDate = `${releaseDate} ${time}`;
-    setReleaseDate(newReleasDate);
+    const newReleaseDate = `${releaseDate} ${time}`;
+    setReleaseDate(newReleaseDate);
     setOpenCalendar((prev) => !prev);
-  };
-
-  const parseKoreanDateStringtoLocalDateTime = (dateString: string): Date => {
-    const regex = /(\d{4})년 (\d{1,2})월 (\d{1,2})일/;
-    const match = dateString.match(regex);
-    if (!match) throw new Error("Invalid date format");
-
-    const year = parseInt(match[1], 10);
-    const month = parseInt(match[2], 10);
-    const day = parseInt(match[3], 10);
-
-    return new Date(year, month - 1, day);
   };
   const submitRoomData = async () => {
     try {
       const token = sessionStorage.getItem("Authorization");
-      const dateObject = parseKoreanDateStringtoLocalDateTime(releaseDate);
+      const dateObject = parseKoreanDateString(releaseDate, time || "00:00");
       const formattedDate = moment(dateObject).format("YYYY-MM-DDTHH:mm:ss");
 
       const postData = {

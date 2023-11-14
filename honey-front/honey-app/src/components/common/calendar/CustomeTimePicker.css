@@ -40,12 +40,14 @@
 }
 
 .react-time-picker__inputGroup__divider {
-  padding: 1px 0;
+  font-size: 24px;
+  padding: 10px 0;
   white-space: pre;
 }
 
 .react-time-picker__inputGroup__divider,
 .react-time-picker__inputGroup__leadingZero {
+  font-size: 24px;
   display: inline-block;
 }
 
