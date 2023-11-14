@@ -30,7 +30,9 @@ function CreateRoom() {
   );
 
   useEffect(() => {
-    setToday(new Date());
+    const now = new Date();
+    setToday(now);
+    setReleaseDate(moment(now).format("YYYY년 MM월 DD일")); // 초기 날짜 설정
   }, []);
 
   const handleInputFocus = () => {
@@ -87,11 +89,12 @@ function CreateRoom() {
 
   const handleDateChange = (value: Value) => {
     if (value instanceof Date && value !== null) {
-      const selectedDate = value; // 여기서 value를 사용
+      const selectedDate = value;
       const formattedDate = moment(selectedDate).format("YYYY년 MM월 DD일");
 
-      if (selectedDate < new Date()) {
-        setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
+      // 오늘 이전 날짜 선택 방지
+      if (selectedDate < moment().startOf("day").toDate()) {
+        setAlertText("오늘 이전의 날짜는 선택할 수 없습니다.");
         setAlertModal(true);
       } else {
         setReleaseDate(formattedDate);
@@ -107,16 +110,21 @@ function CreateRoom() {
       releaseDate,
       value || "00:00",
     );
-    if (selectedDateTime < new Date()) {
+
+    // 오늘 날짜에 대해 현재 시간 이후만 선택
+    if (
+      moment(selectedDateTime).isSame(moment(), "day") &&
+      selectedDateTime < new Date()
+    ) {
       setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
       setAlertModal(true);
     } else {
       setTime(value);
     }
   };
-
   const handleCalendar = () => {
-    const newReleaseDate = `${releaseDate} ${time}`;
+    const datePart = releaseDate.split(" ")[0]; // 날짜 부분만 추출
+    const newReleaseDate = `${datePart} ${time}`; // 새로운 시간과 결합
     setReleaseDate(newReleaseDate);
     setOpenCalendar((prev) => !prev);
   };
@@ -207,6 +215,16 @@ function CreateRoom() {
         // ); alert 5
         return;
       }
+    }
+
+    const selectedDateTime = parseKoreanDateString(
+      releaseDate,
+      time || "00:00",
+    );
+    if (selectedDateTime < new Date()) {
+      setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
+      setAlertModal(true);
+      return;
     }
 
     submitRoomData();
