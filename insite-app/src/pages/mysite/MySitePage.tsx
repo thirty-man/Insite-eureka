@@ -220,6 +220,7 @@ function MySitePage() {
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
+      createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");

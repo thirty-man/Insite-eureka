@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import { useState, useEffect } from "react";
 import { ApplicationDtoType, ButtonType } from "@customtypes/dataTypes";
-import { createButton, getButtonList } from "@api/memberApi";
+import { createButton, getButtonList, deleteApplication } from "@api/memberApi";
+
 
 const ManagementStyle = styled.div`
   .parent {
@@ -125,7 +126,7 @@ const Title = styled.div`
 function ServiceManagementPage() {
   const myApp =
     sessionStorage.getItem("myApp") ||
-    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
   const data: ApplicationDtoType = JSON.parse(myApp);
   const [buttonList, setButtonList] = useState<ButtonType[]>([]);
@@ -147,6 +148,17 @@ function ServiceManagementPage() {
 
     fetchData();
   }, []);
+  
+  const deleteData = async() =>{
+    
+    try{
+      const response = await deleteApplication(data.id);
+      console.log("API 호출 성공",response);
+      window.location.reload();
+    }catch(error){
+      console.error(error);
+        }
+  }
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -161,7 +173,7 @@ function ServiceManagementPage() {
   ) => {
     setButtonName(event.target.value);
   };
-
+  
   // 버튼 추가
   const handleConfirm = () => {
     const createData = async () => {
@@ -201,6 +213,9 @@ function ServiceManagementPage() {
               <Title>
                 <h1>내 서비스 관리</h1>
               </Title>
+              <ButtonContainer>
+              <ConfirmButton onClick={deleteData}>삭제</ConfirmButton>
+            </ButtonContainer>
               <br />
               <br />
               <div className="infoContainer">
@@ -218,8 +233,7 @@ function ServiceManagementPage() {
               <div className="infoContainer">
                 <p className="infoText">등록일 </p>
                 <TextBox width="500px" height="50px">
-                  {/* <p>{data.createTime}</p> */}
-                  <p>등록일 필요</p>
+                  <p>{data.createTime.split("T")[0]}</p>
                 </TextBox>
               </div>
               <div className="infoContainer">
@@ -228,6 +242,7 @@ function ServiceManagementPage() {
                   <p>{data.applicationToken}</p>
                 </TextBox>
               </div>
+              
             </div>
 
             <div style={{ marginTop: "5%" }}>
@@ -261,6 +276,7 @@ function ServiceManagementPage() {
             <StyledButton type="button" onClick={openModal}>
               버튼 추가하기
             </StyledButton>
+            
           </DefaultBox>
         </div>
       </div>

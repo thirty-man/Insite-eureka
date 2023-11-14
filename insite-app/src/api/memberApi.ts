@@ -3,10 +3,11 @@ import { memberAPI } from "./Api";
 
 const myApp =
   sessionStorage.getItem("myApp") ||
-  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
 const data: ApplicationDtoType = JSON.parse(myApp);
 const { applicationToken } = data;
+
 
 // 버튼 목록 가져오기
 const getButtonList = async () => {
@@ -50,6 +51,16 @@ const getSiteList = async () => {
   return [];
 };
 
+const deleteApplication = async(applicationId:number)=>{
+  try{
+    const response = await memberAPI.patch("/application/remove");
+    return response.data;
+  } catch(error){
+    console.error("memberApi - deleteApplication error",error);
+  }
+  return [];
+}
+
 const createStie = async (name: string, applicationUrl: string) => {
   try {
     const response = await memberAPI.post("/application/regist", {
@@ -65,4 +76,4 @@ const createStie = async (name: string, applicationUrl: string) => {
   return [];
 };
 
-export { getButtonList, createButton, getSiteList, createStie };
+export { getButtonList, createButton, getSiteList, createStie,deleteApplication };
