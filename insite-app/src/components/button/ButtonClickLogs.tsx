@@ -23,7 +23,7 @@ const Outer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 80%;
   margin: 0;
 `;
 
@@ -31,7 +31,7 @@ const OutDiv = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  height: 70%;
+  height: 100%;
   margin-top: 1rem;
 `;
 
