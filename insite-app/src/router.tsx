@@ -1,7 +1,7 @@
 import App from "@App";
 import ProtectRoute from "@components/common/ProtectRoute";
 import ActiveUserPage from "@pages/activeuser/ActiveUserPage";
-import ApiTestPage from "@pages/apitest/ApiTestPage";
+// import ApiTestPage from "@pages/apitest/ApiTestPage";
 import ButtonManagementPage from "@pages/buttonmanagement/ButtonManagementPage";
 import NotFoundErrorPage from "@pages/error/NotFoundErrorPage";
 import GuidPage from "@pages/guide/GuidePage";
@@ -93,15 +93,15 @@ const routePath: RouteObject[] = [
           </ProtectRoute>
         ),
       },
-      {
-        id: "api-test",
-        path: "api",
-        element: (
-          <ProtectRoute>
-            <ApiTestPage />
-          </ProtectRoute>
-        ),
-      },
+      // {
+      //   id: "api-test",
+      //   path: "api",
+      //   element: (
+      //     <ProtectRoute>
+      //       <ApiTestPage />
+      //     </ProtectRoute>
+      //   ),
+      // },
       {
         id: "guide",
         path: "guide",
