@@ -16,7 +16,7 @@ const getButtonList = async () => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - getButtonList err", error); // 에러 처리
   }
 
   return [];
@@ -31,7 +31,7 @@ const createButton = async (name: string) => {
     });
     return response;
   } catch (error) {
-    // console.error("등록에러: ", error); // 에러 처리
+    console.error("memberApi - createButton err", error); // 에러 처리
   }
 
   return [];
@@ -44,7 +44,7 @@ const getSiteList = async () => {
     const response = await memberAPI.get("/application/list");
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - getSiteList err", error); // 에러 처리
   }
 
   return [];
@@ -59,7 +59,7 @@ const createStie = async (name: string, applicationUrl: string) => {
     });
     return response;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - createStie err", error); // 에러 처리
   }
 
   return [];
