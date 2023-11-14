@@ -3,7 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { IconUser } from "@assets/icons";
-import CalendarButton from "@components/common/calendar";
+import {
+  CalendarButton,
+  StartDateSelect,
+  EndDateSelect,
+} from "@components/common/calendar";
 import styled from "styled-components";
 import {
   setEndDate,
@@ -12,7 +16,7 @@ import {
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
-import { ApplicationDtoType, ItemType } from "@customtypes/dataTypes";
+import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
@@ -150,24 +154,6 @@ const SettingDate = styled.button`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
-const StartDateSelectContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  font-size: 1.2rem;
-`;
-const EndDateSelectContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  font-size: 1.2rem;
-`;
 
 function Header() {
   const navi = useNavigate();
@@ -186,14 +172,6 @@ function Header() {
   const [openDropEndMonth, setOpenDropEndMonth] = useState<boolean>(false);
   const [openDropEndDay, setOpenDropEndDay] = useState<boolean>(false);
   const [siteList, setSiteList] = useState([]);
-
-  const [startYearOptions, setStartYearOptions] = useState<ItemType[]>([]);
-  const [startMonthOptions, setStartMonthOptions] = useState<ItemType[]>([]);
-  const [startDayOptions, setStartDayOptions] = useState<ItemType[]>([]);
-
-  const [endYearOptions, setEndYearOptions] = useState<ItemType[]>([]);
-  const [endMonthOptions, setEndMonthOptions] = useState<ItemType[]>([]);
-  const [endDayOptions, setEndDayOptions] = useState<ItemType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -227,172 +205,11 @@ function Header() {
     (state: RootState) => state.SelectedItemInfo.selectedSite,
   );
 
-  const parseString = (dateStr: string) => {
-    const [year, month, day] = dateStr.split("-");
-    return [year, month, day];
-  };
-
-  const [startYear, setStartYear] = useState(parseString(startDate)[0]);
-  const [startMonth, setStartMonth] = useState(parseString(startDate)[1]);
-  const [startDay, setStartDay] = useState(parseString(startDate)[2]);
-
-  const [endYear, setEndYear] = useState(parseString(endDate)[0]);
-  const [endMonth, setEndMonth] = useState(parseString(endDate)[1]);
-  const [endDay, setEndDay] = useState(parseString(endDate)[2]);
-
   const [currentPathname, setCurrentPathname] = useState<string>(
     location.pathname,
   );
   const [newStartDate, setNewStartDate] = useState<string>(startDate);
   const [newEndDate, setNewEndDate] = useState<string>(endDate);
-
-  const isLeapYear = (year: number): boolean => {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  };
-
-  useEffect(() => {
-    // 문자열을 숫자로 변환
-    const pastYearNum = parseInt(parseString(pastDate)[0], 10);
-    const latestYearNum = parseInt(parseString(latestDate)[0], 10);
-    const startYearNum = parseInt(startYear, 10);
-    const endYearNum = parseInt(endYear, 10);
-
-    const pastMonthNum = parseInt(parseString(pastDate)[1], 10);
-    const latestMonthNum = parseInt(parseString(latestDate)[1], 10);
-    const startMonthNum = parseInt(startMonth, 10);
-    const endMonthNum = parseInt(endMonth, 10);
-
-    const pastDayNum = parseInt(parseString(pastDate)[2], 10);
-    const latestDayNum = parseInt(parseString(latestDate)[2], 10);
-    const startDayNum = parseInt(startDay, 10);
-    const endDayNum = parseInt(endDay, 10);
-
-    // 시작 연도가 과거 연도와 같은 경우
-    if (startYearNum === pastYearNum) {
-      // 시작 월 옵션 재설정
-      setStartMonthOptions(
-        Array.from({ length: 12 - pastMonthNum + 1 }, (_, i) => ({
-          id: i,
-          name: (pastMonthNum + i).toString(),
-        })),
-      );
-
-      // 시작 월이 과거 월과 같은 경우
-      if (startMonthNum === pastMonthNum) {
-        // 시작 일 옵션 재설정
-        setStartDayOptions(
-          Array.from({ length: 31 - pastDayNum }, (_, i) => ({
-            id: i,
-            name: (pastDayNum + 1 + i).toString(),
-          })),
-        );
-
-        // 시작 일이 과거 일보다 이른 경우
-        if (startDayNum <= pastDayNum) {
-          setStartDay((pastDayNum + 1).toString());
-        }
-      }
-    }
-
-    // 시작 연도 옵션 설정
-    setStartYearOptions(
-      Array.from({ length: endYearNum - pastYearNum + 1 }, (_, i) => ({
-        id: i,
-        name: (startYearNum + i).toString(),
-      })),
-    );
-
-    // 종료 연도 옵션 설정
-    setEndYearOptions(
-      Array.from({ length: latestYearNum - startYearNum + 1 }, (_, i) => ({
-        id: i,
-        name: (startYearNum + i).toString(),
-      })),
-    );
-
-    // 월 옵션 설정
-    const startMonthOptionsTemp = Array.from(
-      { length: 12 - startMonthNum + 1 },
-      (_, i) => ({
-        id: i,
-        name: (startMonthNum + i).toString(),
-      }),
-    );
-
-    let endMonthOptionsTemp;
-    if (endYearNum === startYearNum) {
-      endMonthOptionsTemp = startMonthOptionsTemp;
-    } else if (endYearNum === latestYearNum) {
-      endMonthOptionsTemp = Array.from({ length: latestMonthNum }, (_, i) => ({
-        id: i,
-        name: (i + 1).toString(),
-      }));
-    } else {
-      endMonthOptionsTemp = Array.from({ length: 12 }, (_, i) => ({
-        id: i,
-        name: (i + 1).toString(),
-      }));
-    }
-
-    setStartMonthOptions(startMonthOptionsTemp);
-    setEndMonthOptions(endMonthOptionsTemp);
-
-    // 날짜 유효성 검사
-    if (endYearNum === latestYearNum && endMonthNum > latestMonthNum) {
-      // 종료 월을 최신 월로 설정
-      setEndMonth(latestMonthNum.toString());
-    }
-
-    const getDayOptions = (year: number, month: number, limitDay?: number) => {
-      let daysInMonth;
-
-      if (month === 2) {
-        daysInMonth = isLeapYear(year) ? 29 : 28;
-      } else {
-        daysInMonth = new Date(year, month, 0).getDate();
-      }
-
-      if (limitDay) {
-        daysInMonth = Math.min(daysInMonth, limitDay);
-      }
-
-      return Array.from({ length: daysInMonth }, (_, i) => ({
-        id: i,
-        name: (i + 1).toString(),
-      }));
-    };
-    // 날짜 유효성 검사
-    // 종료 연도가 최신 연도와 동일하고 종료 월이 최신 월과 같은 경우
-    if (
-      endYearNum === latestYearNum &&
-      endMonthNum === latestMonthNum &&
-      endDayNum > latestDayNum
-    ) {
-      // 종료 일을 최신 일로 설정
-      setEndDay(latestDayNum.toString());
-    }
-
-    // 시작 일 옵션 설정
-    setStartDayOptions(getDayOptions(startYearNum, startMonthNum));
-
-    // 종료 일 옵션 설정
-    if (endYearNum === latestYearNum && endMonthNum === latestMonthNum) {
-      setEndDayOptions(getDayOptions(endYearNum, endMonthNum, latestDayNum));
-    } else {
-      setEndDayOptions(getDayOptions(endYearNum, endMonthNum));
-    }
-  }, [
-    startDay,
-    endDay,
-    startDate,
-    endDate,
-    pastDate,
-    latestDate,
-    startYear,
-    endYear,
-    startMonth,
-    endMonth,
-  ]);
 
   const closeDateDropdown = () => {
     setOpenDropStartYear(false);
@@ -483,6 +300,7 @@ function Header() {
   }, [location.pathname, currentPathname, dispatch, pastDate, latestDate]);
 
   useEffect(() => {
+    // 최신 날짜 오늘로 갱신
     const todayDate = new Date();
     const today: string = ParsingDate(todayDate);
     dispatch(setLatestDate(today));
@@ -498,35 +316,20 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
     const myApp = {
-      id: item.id,
+      applicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
-      createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
-    window.location.reload();
+  };
+  const handlenewStartDate = (item: string) => {
+    setNewStartDate(item);
   };
 
-  const handleStartYear = (item: ItemType) => {
-    setStartYear(item.name);
-  };
-  const handleStartMonth = (item: ItemType) => {
-    setStartMonth(item.name);
-  };
-  const handleStartDay = (item: ItemType) => {
-    setStartDay(item.name);
-  };
-
-  const handleEndYear = (item: ItemType) => {
-    setEndYear(item.name);
-  };
-  const handleEndMonth = (item: ItemType) => {
-    setEndMonth(item.name);
-  };
-  const handleEndDay = (item: ItemType) => {
-    setEndDay(item.name);
+  const handlenewEndDate = (item: string) => {
+    setNewEndDate(item);
   };
 
   const handleToggleStartYear = () => {
@@ -579,8 +382,6 @@ function Header() {
   };
 
   const setDateRange = () => {
-    setNewStartDate(`${startYear}-${startMonth}-${startDay}`);
-    setNewEndDate(`${endYear}-${endMonth}-${endDay}`);
     dispatch(setStartDate(newStartDate));
     dispatch(setEndDate(newEndDate));
     setOpenDate(false);
@@ -624,7 +425,7 @@ function Header() {
           <Modal
             width="24rem"
             height="22rem"
-            $posX="15%"
+            $posX="35%"
             $posY="60%"
             $position="absolute"
             close={() => setOpenDate(false)}
@@ -632,77 +433,31 @@ function Header() {
             <DateSelectContainer>
               <DateHeader>기간 선택</DateHeader>
               <DateText>시작 날짜</DateText>
-              <StartDateSelectContainer>
-                <DropDown
-                  items={startYearOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(startDate)[0]}
-                  onChange={handleStartYear}
-                  openDropdown={openDropStartYear}
-                  close={() => setOpenDropStartYear(false)}
-                  toggle={handleToggleStartYear}
-                />
-                년
-                <DropDown
-                  items={startMonthOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(startDate)[1]}
-                  onChange={handleStartMonth}
-                  openDropdown={openDropStartMonth}
-                  close={() => setOpenDropStartMonth(false)}
-                  toggle={handleToggleStartMonth}
-                />
-                월
-                <DropDown
-                  items={startDayOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(startDate)[2]}
-                  onChange={handleStartDay}
-                  openDropdown={openDropStartDay}
-                  close={() => setOpenDropStartDay(false)}
-                  toggle={handleToggleStartDay}
-                />
-                일
-              </StartDateSelectContainer>
+              <StartDateSelect
+                onChange={handlenewStartDate}
+                openDropStartYear={openDropStartYear}
+                closeDropStartYear={() => setOpenDropStartYear(false)}
+                toggleDropStartYear={handleToggleStartYear}
+                openDropStartMonth={openDropStartMonth}
+                closeDropStartMonth={() => setOpenDropStartMonth(false)}
+                toggleDropStartMonth={handleToggleStartMonth}
+                openDropStartDay={openDropStartDay}
+                closeDropStartDay={() => setOpenDropStartDay(false)}
+                toggleDropStartDay={handleToggleStartDay}
+              />
               <DateText>종료 날짜</DateText>
-              <EndDateSelectContainer>
-                <DropDown
-                  items={endYearOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(endDate)[0]}
-                  onChange={handleEndYear}
-                  openDropdown={openDropEndYear}
-                  close={() => setOpenDropEndYear(false)}
-                  toggle={handleToggleEndYear}
-                />
-                년
-                <DropDown
-                  items={endMonthOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(endDate)[1]}
-                  onChange={handleEndMonth}
-                  openDropdown={openDropEndMonth}
-                  close={() => setOpenDropEndMonth(false)}
-                  toggle={handleToggleEndMonth}
-                />
-                월
-                <DropDown
-                  items={endDayOptions}
-                  width="20%"
-                  height="3rem"
-                  initialValue={parseString(endDate)[2]}
-                  onChange={handleEndDay}
-                  openDropdown={openDropEndDay}
-                  close={() => setOpenDropEndDay(false)}
-                  toggle={handleToggleEndDay}
-                />
-                일
-              </EndDateSelectContainer>
+              <EndDateSelect
+                onChange={handlenewEndDate}
+                openDropEndYear={openDropEndYear}
+                closeDropEndYear={() => setOpenDropEndYear(false)}
+                toggleDropEndYear={handleToggleEndYear}
+                openDropEndMonth={openDropEndMonth}
+                closeDropEndMonth={() => setOpenDropEndMonth(false)}
+                toggleDropEndMonth={handleToggleEndMonth}
+                openDropEndDay={openDropEndDay}
+                closeDropEndDay={() => setOpenDropEndDay(false)}
+                toggleDropEndDay={handleToggleEndDay}
+              />
               <SettingDate onClick={setDateRange}>설정</SettingDate>
             </DateSelectContainer>
           </Modal>
