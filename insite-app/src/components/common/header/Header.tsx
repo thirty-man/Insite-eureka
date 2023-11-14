@@ -326,16 +326,17 @@ function Header() {
     navi("/board");
   };
 
-  useEffect(() => {
-    const myApp =
-      sessionStorage.getItem("myApp") ||
-      `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
+  const myApp =
+    sessionStorage.getItem("myApp") ||
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
-    const data: ApplicationDtoType = JSON.parse(myApp);
-    const { name } = data;
+  const data: ApplicationDtoType = JSON.parse(myApp);
+  const { name } = data;
+
+  useEffect(() => {
     dispatch(setSelectedSite(name));
-    console.log("헤더바꿔");
-  }, [dispatch]);
+    console.log("헤더바꿔라");
+  }, [dispatch, name]);
 
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
