@@ -104,7 +104,7 @@ function ButtomMenu() {
       <div className="flex w-full">
         <div className="flex flex-col w-[50%] h-[247px] items-center justify-center">
           <TextButton
-            text="참가자 보기"
+            text="메시지 보내기"
             color="3"
             className={buttonStyle}
             onClick={() => showMemberList()}
