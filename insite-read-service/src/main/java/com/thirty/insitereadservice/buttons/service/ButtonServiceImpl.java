@@ -328,7 +328,7 @@ public class ButtonServiceImpl implements ButtonService{
         //각 버튼 Res 생성
         List<ButtonDto> buttonDtoList = buttons.getButtonDtoList();
         if(buttonDtoList.size() == 0){
-            throw new ButtonException(ErrorCode.NOT_EXIST_BUTTON);
+            return new ArrayList<>();
         }
 
         List<ButtonRateDto> buttonRateDtoList = new ArrayList<>();
