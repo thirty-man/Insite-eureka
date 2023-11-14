@@ -58,7 +58,7 @@ function EnterPage() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.enterPage}</TableCell>
               <TableCell>{item.enterCount}</TableCell>
-              <TableCell>{(+item.enterRate * 100).toPrecision(4)}%</TableCell>
+              <TableCell>{(+item.enterRate * 100).toPrecision(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>

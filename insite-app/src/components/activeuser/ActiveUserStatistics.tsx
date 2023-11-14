@@ -53,12 +53,12 @@ function ActiveUserStatistics() {
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{(+item.ratio * 100).toPrecision(4)}%</TableCell>
+              <TableCell>{(+item.ratio * 100).toPrecision(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>

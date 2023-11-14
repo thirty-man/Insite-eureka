@@ -51,12 +51,12 @@ function AverageActiveTimeByUrl() {
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>
-                {(+item.averageActiveTime / 1000).toPrecision(4)}s
+                {(+item.averageActiveTime / 1000).toPrecision(2)}s
               </TableCell>
             </TableRow>
           ))}

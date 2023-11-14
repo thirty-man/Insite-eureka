@@ -58,7 +58,7 @@ function BounceCount() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{(+item.ratio * 100).toPrecision(4)}%</TableCell>
+              <TableCell>{(+item.ratio * 100).toPrecision(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -191,9 +191,7 @@ function ButtonClickLogs() {
               src={activeuserclickavg}
               alt="사용자당 클릭 수 평균"
             />
-            <NumberDiv>
-              {(clickCountsPerActiveUsers * 100).toFixed(2)}
-            </NumberDiv>
+            <NumberDiv>{clickCountsPerActiveUsers.toFixed(2)}</NumberDiv>
           </InnerIconBox>
         </IconDiv>
       </OutDiv>

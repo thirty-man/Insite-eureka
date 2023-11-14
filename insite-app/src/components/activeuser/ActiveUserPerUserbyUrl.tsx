@@ -50,16 +50,16 @@ function ActiveUserPerUserbyUrl() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>값</th>
+            <th>회</th>
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>
-                {(+item.activeUserPerUser * 100).toPrecision(4)}%
+                {(+item.activeUserPerUser).toPrecision(2)}회
               </TableCell>
             </TableRow>
           ))}
