@@ -125,10 +125,9 @@ function ViewCountsByCookie() {
         dataLabels: {
           enabled: true,
           useHTML: true,
-          // formatter() {
-          //   const context = this as unknown as FormatterContext;
-          //   return `<span style="color: white; font-size: 10px">${context.y}%</span>`;
-          // },
+          formatter() {
+            return "";
+          },
           align: "center",
           verticalAlign: "middle",
           y: -5,
