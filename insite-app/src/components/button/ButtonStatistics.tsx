@@ -153,7 +153,7 @@ function ButtonStatistics() {
       },
       {
         name: "클릭 평균",
-        data: Array(data.length).fill(parseFloat(avg.toFixed(2))),
+        data: Array(data.length).fill(Number(avg.toFixed(2))),
         yAxis: 0,
         type: "line",
         dataLabels: {
