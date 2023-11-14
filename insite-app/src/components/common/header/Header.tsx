@@ -335,8 +335,9 @@ function Header() {
 
   useEffect(() => {
     dispatch(setSelectedSite(name));
-    console.log("헤더바꿔라");
-  }, [dispatch, name]);
+    navi("/board");
+    console.log("헤더 바꿔라");
+  }, [dispatch, name, navi]);
 
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
