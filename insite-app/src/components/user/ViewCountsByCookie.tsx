@@ -64,10 +64,10 @@ function ViewCountsByCookie() {
   const seriesData = uniqueUrls.map((url) => ({
     name: url,
     data: data.map((item) => {
-      const newUrlList = item.viewCountsPerUserDtoList.find(
+      const newUrlData = item.viewCountsPerUserDtoList.find(
         (urlDat) => urlDat.currentUrl === url,
       );
-      return newUrlList ? newUrlList.ratio * 100 : 0;
+      return newUrlData ? Number((newUrlData.ratio * 100).toFixed(2)) : 0;
     }),
   }));
 
