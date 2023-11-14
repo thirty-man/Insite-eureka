@@ -49,7 +49,7 @@ function ActiveUserStatistics() {
             <th>순위</th>
             <th>URL</th>
             <th>활동 사용자 수</th>
-            <th>비율%</th>
+            <th>비율</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -58,7 +58,7 @@ function ActiveUserStatistics() {
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{item.ratio}%</TableCell>
+              <TableCell>{(+item.ratio * 100).toPrecision(4)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>

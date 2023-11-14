@@ -47,7 +47,7 @@ function AverageActiveTimeByUrl() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>평균체류시간(s)</th>
+            <th>평균체류시간</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -55,7 +55,9 @@ function AverageActiveTimeByUrl() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.averageActiveTime}</TableCell>
+              <TableCell>
+                {(+item.averageActiveTime / 1000).toPrecision(4)}s
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

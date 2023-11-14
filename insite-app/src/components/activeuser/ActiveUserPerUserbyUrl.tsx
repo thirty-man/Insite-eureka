@@ -58,7 +58,9 @@ function ActiveUserPerUserbyUrl() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.activeUserPerUser}</TableCell>
+              <TableCell>
+                {(+item.activeUserPerUser * 100).toPrecision(4)}%
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

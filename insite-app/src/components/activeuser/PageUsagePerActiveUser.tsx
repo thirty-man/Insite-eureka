@@ -50,7 +50,7 @@ function PageUsagePerActiveUser() {
             <th>순위</th>
             <th>URL</th>
             <th>조회 수</th>
-            <th>비율(%)</th>
+            <th>비율</th>
           </tr>
         </TableHeader>
         <TableBody>
@@ -59,7 +59,7 @@ function PageUsagePerActiveUser() {
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{item.ratio}</TableCell>
+              <TableCell>{(+item.ratio * 100).toPrecision(4)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>
