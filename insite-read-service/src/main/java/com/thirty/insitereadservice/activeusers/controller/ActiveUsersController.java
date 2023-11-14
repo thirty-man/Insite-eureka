@@ -31,16 +31,16 @@ public class ActiveUsersController {
         @Valid @RequestBody ActiveUsersPerTimeReqDto activeUsersPerTimeReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         ActiveUsersPerTimeResDto exitFlowResDto = activeusersService.getActiveUsersPerTime(activeUsersPerTimeReqDto, memberId);
         return new ResponseEntity<>(exitFlowResDto, HttpStatus.OK);
     }
     @PostMapping("/active-users-per-currenturl") //각 페이지의 활동사용자 수와 비율을 리스트로 반환합니다.
     public ResponseEntity<ActiveUserResDto> getActiveUser(@Valid @RequestBody ActiveUserReqDto activeUserReqDto,HttpServletRequest request){
-        //        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         ActiveUserResDto activeUserResDto = activeusersService.getActiveUser(activeUserReqDto,memberId);
         return new ResponseEntity<>(activeUserResDto,HttpStatus.OK);
@@ -50,8 +50,8 @@ public class ActiveUsersController {
     public ResponseEntity<ActiveUserCountResDto> getActiveUserCounts(@Valid @RequestBody ActiveUserCountReqDto activeUserCountReqDto,
                                                              HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         ActiveUserCountResDto activeUserCountResDto = activeusersService.getActiveUserCount(activeUserCountReqDto,memberId);
         return new ResponseEntity<>(activeUserCountResDto, HttpStatus.OK);
@@ -61,8 +61,8 @@ public class ActiveUsersController {
     public ResponseEntity<ViewCountsPerActiveUserResDto> getViewCountsPerActiveUser(@Valid @RequestBody ViewCountsPerActiveUserReqDto viewCountsPerActiveUserReqDto,
                                                                                  HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
 
         ViewCountsPerActiveUserResDto viewCountsPerActiveUserResDto = activeusersService.getViewCounts(viewCountsPerActiveUserReqDto,memberId);
@@ -75,8 +75,8 @@ public class ActiveUsersController {
     public ResponseEntity<ActiveUserPerUserResDto> getActiveUserPerUser(@Valid @RequestBody ActiveUserPerUserReqDto activeUserPerUserReqDto,
                                                                      HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         ActiveUserPerUserResDto activeUserPerUserResDto=activeusersService.getActiveUserPerUser(activeUserPerUserReqDto,memberId);
 
@@ -87,8 +87,8 @@ public class ActiveUsersController {
     public ResponseEntity<OsActiveUserResDto> getOsActiveUser(@Valid @RequestBody OsActiveUserReqDto osActiveUserReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         OsActiveUserResDto osActiveUserResDto=activeusersService.getOsActiveUserCounts(osActiveUserReqDto,memberId);
         return new ResponseEntity<>(osActiveUserResDto,HttpStatus.OK);
@@ -97,8 +97,8 @@ public class ActiveUsersController {
     @PostMapping("/average-active-time-per-active-user") //각 페이지별 활동 사용자의 평균 활동 시간을 리스트로 반환합니다.
     public ResponseEntity<AverageActiveTimeResDto> getAverageActiveTime(@Valid @RequestBody AverageActiveTimeReqDto averageActiveTimeReqDto,
                                                                      HttpServletRequest request) throws ParseException {
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
+        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
         int memberId = 1;
         AverageActiveTimeResDto averageActiveTimeResDto= activeusersService.getAverageActiveTime(averageActiveTimeReqDto,memberId);
         return new ResponseEntity<>(averageActiveTimeResDto,HttpStatus.OK);
