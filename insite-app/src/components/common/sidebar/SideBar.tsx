@@ -148,7 +148,6 @@ function SideBar() {
         {SideBarMenu.map((item: SideBarMenuType) => (
           <MenuContainer key={item.id}>
             <MenuWrapper
-              $isActive={item.id === selectedMenuId}
               onClick={() => {
                 if (item.id === 7) {
                   window.open(`https://${target}`, "_blank");
@@ -157,6 +156,7 @@ function SideBar() {
                 dispatch(setSelectedMenuId(item.id));
                 navi(item.route);
               }}
+              $isActive={item.id === selectedMenuId}
             >
               <MenuItem>
                 <img src={icons[item.image]} alt={item.menu} />
