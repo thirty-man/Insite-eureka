@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { useEffect } from "react";
 import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 // import { homeLogo } from "@assets/images";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SideBarMenuType } from "@customtypes/dataTypes";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
 import { useSelector, useDispatch } from "react-redux";
@@ -115,7 +114,6 @@ const ContactImgWrapper = styled.div`
 
 function SideBar() {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navi = useNavigate();
   const selectedMenuId = useSelector(
     (state: RootState) => state.SelectedSidebarMenuInfo.selectedMenuId,
@@ -125,22 +123,6 @@ function SideBar() {
     sessionStorage.getItem("myApp") ||
     `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
   const target = JSON.parse(myApp).applicationUrl;
-
-  useEffect(() => {
-    // 현재 경로 확인
-    const currentPath = location.pathname;
-
-    // 클린업 함수
-    const cleanup = () => {
-      dispatch(setSelectedMenuId(1));
-    };
-
-    // /board 하위 경로인지 확인
-    const isBoardSubPath = currentPath.startsWith("/board/");
-
-    // /board 하위 경로가 아니면 클린업 함수 실행
-    return isBoardSubPath ? undefined : cleanup;
-  }, [location, dispatch]);
 
   return (
     <SideBarContainer>

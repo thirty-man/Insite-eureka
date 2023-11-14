@@ -58,12 +58,12 @@ const SideBarMenu: SideBarMenuType[] = [
     menu: "버튼",
     route: "/board/button",
   },
-  {
-    id: 6,
-    image: "IconApi",
-    menu: "API 테스트",
-    route: "/board/api",
-  },
+  // {
+  //   id: 6,
+  //   image: "IconApi",
+  //   menu: "API 테스트",
+  //   route: "/board/api",
+  // },
   {
     id: 7,
     image: "IconLink",
