@@ -9,6 +9,7 @@ import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insitereadservice.common.dto.request.CommonReqDto;
 import com.thirty.insitereadservice.common.dto.response.CommonResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
 import java.time.Instant;
@@ -36,7 +37,7 @@ public class CommonServiceImpl implements CommonService{
     @Override
     public CommonResDto getCommonInfo(CommonReqDto commonReqDto, int memberId) {
         String token = commonReqDto.getApplicationToken();
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         Instant startInstant = commonReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
         Instant endInstant = commonReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);

@@ -1,5 +1,6 @@
 package com.thirty.insitereadservice.users.controller;
 
+import com.thirty.insitereadservice.global.jwt.JwtProcess;
 import com.thirty.insitereadservice.users.dto.request.PageViewReqDto;
 import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
 import com.thirty.insitereadservice.users.dto.request.ViewCountsPerUserReqDto;
@@ -32,21 +33,18 @@ public class UsersController {
         @Valid @RequestBody AbnormalHistoryReqDto abnormalHistoryReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+
         AbnormalHistoryResDto exitFlowResDto = usersService.getAbnormalHistory(abnormalHistoryReqDto, memberId);
         return new ResponseEntity<>(exitFlowResDto, HttpStatus.OK);
     }
 
-    //
     @PostMapping("/view-counts") //모든 페이지의 조회수를 리스트로 담아 보내줍니다.
     public ResponseEntity<PageViewResDto> getPageView(@Valid @RequestBody PageViewReqDto pageViewReqDto,
                                                           HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+
         PageViewResDto pageViewResDto= usersService.getPageView(pageViewReqDto,memberId);
         return new ResponseEntity<>(pageViewResDto, HttpStatus.OK);
     }
@@ -55,9 +53,8 @@ public class UsersController {
     public ResponseEntity<UserCountResDto> getUserCounts(@Valid @RequestBody UserCountReqDto userCountReqDto,
                                                              HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+
         UserCountResDto userCountResDto = usersService.getUserCount(userCountReqDto,memberId);
         return new ResponseEntity<>(userCountResDto,HttpStatus.OK);
     }
@@ -66,11 +63,9 @@ public class UsersController {
     public ResponseEntity<CookieIdUrlResDto> getViewCountsPerUser(@Valid @RequestBody ViewCountsPerUserReqDto viewCountsPerUserReqDto,
                                                                   HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
-        CookieIdUrlResDto cookieIdUrlResDto= usersService.getCookieIdUrlCount(viewCountsPerUserReqDto,memberId);
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
 
+        CookieIdUrlResDto cookieIdUrlResDto= usersService.getCookieIdUrlCount(viewCountsPerUserReqDto,memberId);
         return new ResponseEntity<>(cookieIdUrlResDto,HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.thirty.insitereadservice.currenturl.controller;
 import com.thirty.insitereadservice.currenturl.dto.req.CurrentUrlListReqDto;
 import com.thirty.insitereadservice.currenturl.dto.res.CurrentUrlListResDto;
 import com.thirty.insitereadservice.currenturl.service.CurrentUrlService;
+import com.thirty.insitereadservice.global.jwt.JwtProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,7 @@ public class CurrentUrlController {
         @Valid @RequestBody CurrentUrlListReqDto currentUrlListReqDto,
         HttpServletRequest request
     ){
-//        String jwtToken = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-//        int memberId = JwtProcess.verifyAccessToken(jwtToken);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
         CurrentUrlListResDto currentUrlListResDto = currentUrlService.getCurrentUrlList(currentUrlListReqDto,memberId);
         return new ResponseEntity<>(currentUrlListResDto, HttpStatus.OK);
     }
