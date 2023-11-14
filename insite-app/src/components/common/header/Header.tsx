@@ -319,7 +319,7 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
     const myApp = {
-      ApplicationId: item.id,
+      applicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,

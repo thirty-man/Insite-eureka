@@ -1,6 +1,6 @@
 import { getButtonLogs } from "@api/accumulApi";
 import { getButtonList } from "@api/memberApi";
-import { activeuserclickavg, clickavgexit } from "@assets/icons";
+import { activeuserclickavg } from "@assets/icons";
 import {
   Border,
   StyledTable,
@@ -63,7 +63,7 @@ function ButtonClickLogs() {
     useState<string>("버튼을 선택해주세요");
   const [isDropdown, setIsDropdown] = useState<boolean>(false);
   const [data, setData] = useState<ButtonLogDtoType[]>([]);
-  const [exitRate, setExitRate] = useState<number>(0);
+  // const [exitRate, setExitRate] = useState<number>(0);
   const [clickCountsPerActiveUsers, setClickCountsPerActiveUsers] =
     useState<number>(0);
 
@@ -107,11 +107,11 @@ function ButtonClickLogs() {
         );
         if (!response.buttonLogDtoList) {
           setData([]);
-          setExitRate(0);
+          // setExitRate(0);
           setClickCountsPerActiveUsers(0);
         } else {
           setData(response.buttonLogDtoList);
-          setExitRate(response.exitRate);
+          // setExitRate(response.exitRate);
           setClickCountsPerActiveUsers(response.clickCountsPerActiveUsers);
         }
       } catch (error) {
@@ -176,7 +176,7 @@ function ButtonClickLogs() {
           )}
         </TextBox>
         <IconDiv>
-          <div>클릭 후 평균 이탈율</div>
+          {/* <div>클릭 후 평균 이탈율</div>
           <InnerIconBox>
             <ImageBox
               width="4rem"
@@ -185,7 +185,7 @@ function ButtonClickLogs() {
               alt="클릭 후 평균 이탈율"
             />
             <NumberDiv>{exitRate}</NumberDiv>
-          </InnerIconBox>
+          </InnerIconBox> */}
           <div>사용자당 클릭 수 평균</div>
           <InnerIconBox>
             <ImageBox
