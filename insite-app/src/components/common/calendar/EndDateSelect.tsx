@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
 import { ItemType } from "@customtypes/dataTypes";
 import DropDown from "../dropdown/DropDown";
+import { Alert } from "../modal";
 
 interface EndDateSelectProps {
   onChange: (item: string) => void;
@@ -66,6 +67,8 @@ function EndDateSelect({
   const [endYear, setEndYear] = useState(parseString(endDate)[0]);
   const [endMonth, setEndMonth] = useState(parseString(endDate)[1]);
   const [endDay, setEndDay] = useState(parseString(endDate)[2]);
+
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const parseDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split("-").map(Number);
@@ -155,45 +158,61 @@ function EndDateSelect({
 
   useEffect(() => {
     const newEndDate: string = `${endYear}-${endMonth}-${endDay}`;
+    const d1 = new Date(newEndDate);
+    const d2 = new Date(latestDate);
+    if (d1 > d2) {
+      setOpenAlert(false);
+      return;
+    }
     onChange(newEndDate);
-  }, [endYear, endMonth, endDay, dispatch, onChange]);
+  }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
 
   return (
-    <EndDateSelectContainer>
-      <DropDown
-        items={yearOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(endDate)[0]}
-        onChange={handleEndYear}
-        openDropdown={openDropEndYear}
-        close={closeDropEndYear}
-        toggle={toggleDropEndYear}
-      />
-      년
-      <DropDown
-        items={monthOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(endDate)[1]}
-        onChange={handleEndMonth}
-        openDropdown={openDropEndMonth}
-        close={closeDropEndMonth}
-        toggle={toggleDropEndMonth}
-      />
-      월
-      <DropDown
-        items={dayOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(endDate)[2]}
-        onChange={handleEndDay}
-        openDropdown={openDropEndDay}
-        close={closeDropEndDay}
-        toggle={toggleDropEndDay}
-      />
-      일
-    </EndDateSelectContainer>
+    <>
+      <EndDateSelectContainer>
+        <DropDown
+          items={yearOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(endDate)[0]}
+          onChange={handleEndYear}
+          openDropdown={openDropEndYear}
+          close={closeDropEndYear}
+          toggle={toggleDropEndYear}
+        />
+        년
+        <DropDown
+          items={monthOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(endDate)[1]}
+          onChange={handleEndMonth}
+          openDropdown={openDropEndMonth}
+          close={closeDropEndMonth}
+          toggle={toggleDropEndMonth}
+        />
+        월
+        <DropDown
+          items={dayOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(endDate)[2]}
+          onChange={handleEndDay}
+          openDropdown={openDropEndDay}
+          close={closeDropEndDay}
+          toggle={toggleDropEndDay}
+        />
+        일
+      </EndDateSelectContainer>
+      {openAlert && (
+        <Alert
+          width="20rem"
+          height="15rem"
+          closeAlert={() => setOpenAlert(false)}
+          text="종료 날짜는 최신 날짜 이전이어야 합니다."
+        />
+      )}
+    </>
   );
 }
 

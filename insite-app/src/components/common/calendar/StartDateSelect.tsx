@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@reducer";
 import { ItemType } from "@customtypes/dataTypes";
 import DropDown from "../dropdown/DropDown";
+import { Alert } from "../modal";
 
 const StartDateSelectContainer = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ function StartDateSelect({
     const [year, month, day] = dateStr.split("-");
     return [year, month, day];
   };
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const [startYear, setStartYear] = useState(parseString(startDate)[0]);
   const [startMonth, setStartMonth] = useState(parseString(startDate)[1]);
@@ -157,45 +159,62 @@ function StartDateSelect({
 
   useEffect(() => {
     const newStartDate: string = `${startYear}-${startMonth}-${startDay}`;
+
+    const d1 = new Date(newStartDate);
+    const d2 = new Date(pastDate);
+    if (d1 < d2) {
+      setOpenAlert(true);
+      return;
+    }
     onChange(newStartDate);
-  }, [startYear, startMonth, startDay, dispatch, onChange]);
+  }, [startYear, startMonth, startDay, pastDate, dispatch, onChange]);
 
   return (
-    <StartDateSelectContainer>
-      <DropDown
-        items={yearOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(startDate)[0]}
-        onChange={handleStartYear}
-        openDropdown={openDropStartYear}
-        close={closeDropStartYear}
-        toggle={toggleDropStartYear}
-      />
-      년
-      <DropDown
-        items={monthOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(startDate)[1]}
-        onChange={handleStartMonth}
-        openDropdown={openDropStartMonth}
-        close={closeDropStartMonth}
-        toggle={toggleDropStartMonth}
-      />
-      월
-      <DropDown
-        items={dayOptions}
-        width="20%"
-        height="3rem"
-        initialValue={parseString(startDate)[2]}
-        onChange={handleStartDay}
-        openDropdown={openDropStartDay}
-        close={closeDropStartDay}
-        toggle={toggleDropStartDay}
-      />
-      일
-    </StartDateSelectContainer>
+    <>
+      <StartDateSelectContainer>
+        <DropDown
+          items={yearOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(startDate)[0]}
+          onChange={handleStartYear}
+          openDropdown={openDropStartYear}
+          close={closeDropStartYear}
+          toggle={toggleDropStartYear}
+        />
+        년
+        <DropDown
+          items={monthOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(startDate)[1]}
+          onChange={handleStartMonth}
+          openDropdown={openDropStartMonth}
+          close={closeDropStartMonth}
+          toggle={toggleDropStartMonth}
+        />
+        월
+        <DropDown
+          items={dayOptions}
+          width="20%"
+          height="3rem"
+          initialValue={parseString(startDate)[2]}
+          onChange={handleStartDay}
+          openDropdown={openDropStartDay}
+          close={closeDropStartDay}
+          toggle={toggleDropStartDay}
+        />
+        일
+      </StartDateSelectContainer>
+      {openAlert && (
+        <Alert
+          width="20rem"
+          height="15rem"
+          closeAlert={() => setOpenAlert(false)}
+          text="서비스 시작 날짜보다 시작 날짜가 이를 수 없습니다."
+        />
+      )}
+    </>
   );
 }
 
