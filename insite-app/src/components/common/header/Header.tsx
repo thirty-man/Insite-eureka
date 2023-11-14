@@ -108,6 +108,7 @@ const CalendarContainer = styled.div`
 `;
 const CalendarWrapper = styled.div`
   width: 38%;
+  min-width: 38%;
   height: 100%;
   margin-right: 20px;
   cursor: pointer;

@@ -152,9 +152,9 @@ function MainHeader({ scrollY }: MainHeaderProps) {
           {isProfile && (
             <Modal
               width="15rem"
-              height="6.5rem"
+              height={location.pathname === "/mysite" ? "3.5rem" : "6.5rem"}
               $posX="-50%"
-              $posY="80%"
+              $posY={location.pathname === "/mysite" ? "70%" : "80%"}
               close={() => setIsProfile(false)}
               $position="absolute"
             >
@@ -168,6 +168,7 @@ function MainHeader({ scrollY }: MainHeaderProps) {
                     setIsProfile(false);
                     sessionStorage.clear();
                     setToken(null);
+                    navi("/");
                   }
                 }}
               >

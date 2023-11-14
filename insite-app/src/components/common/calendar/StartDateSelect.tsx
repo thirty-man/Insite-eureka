@@ -51,7 +51,7 @@ function StartDateSelect({
     (state: RootState) => state.DateSelectionInfo.end,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.latest,
   );
 
   const startDate = useSelector(
@@ -67,83 +67,112 @@ function StartDateSelect({
   const [startMonth, setStartMonth] = useState(parseString(startDate)[1]);
   const [startDay, setStartDay] = useState(parseString(startDate)[2]);
 
+  const [yearOptions, setYearOptions] = useState<ItemType[]>([]);
+  const [monthOptions, setMonthOptions] = useState<ItemType[]>([]);
+  const [dayOptions, setDayOptions] = useState<ItemType[]>([]);
+
   const parseDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split("-").map(Number);
     return new Date(year, month - 1, day); // 월은 0에서 시작합니다.
   };
 
   const pastDateObj = parseDate(pastDate);
-  const endDateObj = endDate ? parseDate(endDate) : parseDate(latestDate);
 
-  const getYearsInRange = (start: Date, end: Date) => {
-    const years = [];
-    for (let year = start.getFullYear(); year <= end.getFullYear(); year += 1) {
-      years.push(year.toString());
-    }
-    return years;
-  };
-
-  const getMonthsInRange = (start: Date, end: Date) => {
-    const months = [];
-    // 시작과 종료가 같은 년도일 때만
-    if (start.getFullYear() === end.getFullYear()) {
-      for (let month = start.getMonth(); month <= end.getMonth(); month += 1) {
-        months.push((month + 1).toString()); // 실제 월은 1에서 시작합니다.
+  useEffect(() => {
+    const getYearsInRange = (start: Date, end: Date) => {
+      const years = [];
+      for (
+        let year = start.getFullYear();
+        year <= end.getFullYear();
+        year += 1
+      ) {
+        years.push(year.toString());
       }
-    } else {
-      // 전체 12개월
-      for (let month = 1; month <= 12; month += 1) {
-        months.push(month.toString());
-      }
-    }
-    return months;
-  };
+      return years;
+    };
 
-  const getDaysInRange = (start: Date, end: Date) => {
-    const days = [];
-    // 시작과 종료 날짜가 같은 년, 같은 월일 때만
-    if (
-      start.getFullYear() === end.getFullYear() &&
-      start.getMonth() === end.getMonth()
-    ) {
-      for (let day = start.getDate(); day <= end.getDate(); day += 1) {
-        days.push(day.toString());
-      }
-    } else {
-      // 해당 월의 마지막 일자를 계산합니다.
-      const month = start.getMonth();
-      const year = start.getFullYear();
-      let lastDayOfMonth;
-
-      if (month === 1) {
-        // 2월의 경우
-        lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+    const getMonthsInRange = (start: Date, end: Date) => {
+      const months = [];
+      // 시작과 종료가 같은 년도일 때만
+      if (start.getFullYear() === end.getFullYear()) {
+        for (
+          let month = start.getMonth();
+          month <= end.getMonth();
+          month += 1
+        ) {
+          months.push((month + 1).toString()); // 실제 월은 1에서 시작합니다.
+        }
       } else {
-        lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+        // 전체 12개월
+        for (let month = 1; month <= 12; month += 1) {
+          months.push(month.toString());
+        }
       }
+      return months;
+    };
 
-      for (let day = 1; day <= lastDayOfMonth; day += 1) {
-        days.push(day.toString());
+    const getDaysInRange = (start: Date, end: Date) => {
+      const days = [];
+      // 시작과 종료 날짜가 같은 년, 같은 월일 때만
+      if (
+        start.getFullYear() === end.getFullYear() &&
+        start.getMonth() === end.getMonth()
+      ) {
+        for (let day = start.getDate(); day <= end.getDate(); day += 1) {
+          days.push(day.toString());
+        }
+      } else {
+        // 해당 월의 마지막 일자를 계산합니다.
+        const month = start.getMonth();
+        const year = start.getFullYear();
+        let lastDayOfMonth;
+
+        if (month === 1) {
+          // 2월의 경우
+          lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+        } else {
+          lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+        }
+
+        for (let day = 1; day <= lastDayOfMonth; day += 1) {
+          days.push(day.toString());
+        }
       }
+      return days;
+    };
+
+    // const yearArray = getYearsInRange(pastDateObj, endDateObj);
+
+    // const monthArray = getMonthsInRange(pastDateObj, endDateObj);
+
+    // const dayArray = getDaysInRange(pastDateObj, endDateObj);
+
+    // const yearOptions: ItemType[] = yearArray.map((year, index) => {
+    //   return { id: index, name: year };
+    // });
+    // const monthOptions: ItemType[] = monthArray.map((month, index) => {
+    //   return { id: index, name: month };
+    // });
+    // const dayOptions: ItemType[] = dayArray.map((day, index) => {
+    //   return { id: index, name: day };
+    // });
+    if (endDate) {
+      const endDateObj = endDate ? parseDate(endDate) : parseDate(latestDate);
+      const newYearArray = getYearsInRange(pastDateObj, endDateObj);
+      const newMonthArray = getMonthsInRange(pastDateObj, endDateObj);
+      const newDayArray = getDaysInRange(pastDateObj, endDateObj);
+
+      setYearOptions(
+        newYearArray.map((year, index) => ({ id: index, name: year })),
+      );
+      setMonthOptions(
+        newMonthArray.map((month, index) => ({ id: index, name: month })),
+      );
+      setDayOptions(
+        newDayArray.map((day, index) => ({ id: index, name: day })),
+      );
     }
-    return days;
-  };
-  // 예시: 범위 내의 년도 옵션 가져오기
-  const yearArray = getYearsInRange(pastDateObj, endDateObj);
-  // 예시: 범위 내의 월 옵션 가져오기
-  const monthArray = getMonthsInRange(pastDateObj, endDateObj);
-  // 예시: 범위 내의 일 옵션 가져오기
-  const dayArray = getDaysInRange(pastDateObj, endDateObj);
-
-  const yearOptions: ItemType[] = yearArray.map((year, index) => {
-    return { id: index, name: year };
-  });
-  const monthOptions: ItemType[] = monthArray.map((month, index) => {
-    return { id: index, name: month };
-  });
-  const dayOptions: ItemType[] = dayArray.map((day, index) => {
-    return { id: index, name: day };
-  });
+  }, [endDate, latestDate, pastDateObj]);
 
   const handleStartYear = (item: ItemType) => {
     setStartYear(item.name);
