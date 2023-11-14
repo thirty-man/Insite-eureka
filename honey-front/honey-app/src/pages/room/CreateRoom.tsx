@@ -109,11 +109,16 @@ function CreateRoom() {
   };
 
   const handleCalendar = () => {
+    setOpenCalendar((p) => !p);
+  };
+
+  const handleSetting = () => {
     const datePart = releaseDate.split(" ").slice(0, 3).join(" "); // 날짜 부분만 추출
-    const newReleaseDate = `${datePart} ${time || "00:00"}`; // 새로운 시간과 결합
+    const newReleaseDate = `${datePart} ${time}`; // 새로운 시간과 결합
+    setReleaseDate(newReleaseDate);
 
     const selectedDateTime = parseKoreanDateString(
-      newReleaseDate,
+      releaseDate,
       time || "00:00",
     );
 
@@ -124,10 +129,9 @@ function CreateRoom() {
     ) {
       setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
       setAlertModal(true);
-    } else {
-      setReleaseDate(newReleaseDate);
-      setOpenCalendar((prev) => !prev);
+      return;
     }
+    setOpenCalendar((prev) => !prev);
   };
 
   const submitRoomData = async () => {
@@ -333,14 +337,14 @@ function CreateRoom() {
             <button
               type="button"
               className="w-[100px] h-[35px] rounded-[60px] bg-cg-2 flex items-center justify-center"
-              onClick={handleCalendar}
+              onClick={handleSetting}
             >
               설정
             </button>
             <button
               type="button"
               className="w-[100px] h-[35px] rounded-[60px] bg-cg-2 flex items-center justify-center"
-              onClick={handleCalendar}
+              onClick={() => setOpenCalendar(false)}
             >
               닫기
             </button>
