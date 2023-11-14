@@ -158,6 +158,7 @@ function EndDateSelect({
 
   useEffect(() => {
     const newEndDate: string = `${endYear}-${endMonth}-${endDay}`;
+
     const d1 = new Date(newEndDate);
     const d2 = new Date(latestDate);
     if (d1 > d2) {
