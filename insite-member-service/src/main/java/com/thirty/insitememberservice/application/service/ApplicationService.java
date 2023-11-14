@@ -12,7 +12,7 @@ public interface ApplicationService {
 
     void modifyApplication(ApplicationModifyReqDto applicationModifyReqDto, int memberId);
 
-    ApplicationTokenResDto getApplicationToken(ApplicationTokenReqDto applicationTokenReqDto, int memberId);
+//    ApplicationTokenResDto getApplicationToken(ApplicationTokenReqDto applicationTokenReqDto, int memberId);
 
     ApplicationResDto getMyApplicationList(int memberId);
 

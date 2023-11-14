@@ -41,15 +41,15 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationResDto,HttpStatus.OK);
     }
 
-    @PostMapping("/token")
-    public ResponseEntity<ApplicationTokenResDto> readToken(@Valid @RequestBody ApplicationTokenReqDto applicationTokenReqDto,
-                                                            HttpServletRequest request
-                                                          ){
-        String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
-        LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
-        ApplicationTokenResDto applicationTokenResDto= applicationService.getApplicationToken(applicationTokenReqDto,loginUser.getMember().getMemberId());
-        return new ResponseEntity<>(applicationTokenResDto,HttpStatus.OK);
-    }
+//    @PostMapping("/token")
+//    public ResponseEntity<ApplicationTokenResDto> readToken(@Valid @RequestBody ApplicationTokenReqDto applicationTokenReqDto,
+//                                                            HttpServletRequest request
+//                                                          ){
+//        String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+//        LoginUser loginUser = JwtProcess.verifyAccessToken(token);//검증
+//        ApplicationTokenResDto applicationTokenResDto= applicationService.getApplicationToken(applicationTokenReqDto,loginUser.getMember().getMemberId());
+//        return new ResponseEntity<>(applicationTokenResDto,HttpStatus.OK);
+//    }
     
     
     @PostMapping("/regist")

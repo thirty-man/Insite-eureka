@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ApplicationModifyReqDto {
     @NotNull
-    private int applicationId;
+    private String applicationToken;
     @NotBlank
     private String name;
 

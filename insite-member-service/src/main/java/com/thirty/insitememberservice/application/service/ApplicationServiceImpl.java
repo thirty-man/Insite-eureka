@@ -65,11 +65,10 @@ public class ApplicationServiceImpl implements ApplicationService{
             throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
         }
 
-        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationIdAndIsDeletedIsFalse(applicationDeleteReqDto.getApplicationId());
+        Optional<Application>optionalApplication = applicationRepository.findApplicationByApplicationTokenAndIsDeletedIsFalse(applicationDeleteReqDto.getApplicationToken());
         if(optionalApplication.isEmpty()){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
         }
-
         Member member= optionalMember.get();
         Application application= optionalApplication.get();
 
@@ -87,7 +86,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         if(optionalMember.isEmpty()){
             throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
         }
-        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationIdAndIsDeletedIsFalse(applicationModifyReqDto.getApplicationId());
+        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationTokenAndIsDeletedIsFalse(applicationModifyReqDto.getApplicationToken());
         if(optionalApplication.isEmpty()){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
         }
@@ -103,24 +102,24 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     }
 
-    @Override
-    public ApplicationTokenResDto getApplicationToken(ApplicationTokenReqDto applicationTokenReqDto, int memberId) {
-        Optional<Member> optionalMember = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId);
-        if(optionalMember.isEmpty()) {
-            throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
-        }
-        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationIdAndIsDeletedIsFalse(applicationTokenReqDto.getApplicationId());
-        if(optionalApplication.isEmpty()){
-            throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
-        }
-        Member member= optionalMember.get();
-        Application application=optionalApplication.get();
-        if(!application.getMember().equals(member)){
-            throw new MemberException(ErrorCode.NOT_OWNER_MEMBER);
-        }
-
-        return ApplicationTokenResDto.from(application);
-    }
+//    @Override
+//    public ApplicationTokenResDto getApplicationToken(ApplicationTokenReqDto applicationTokenReqDto, int memberId) {
+//        Optional<Member> optionalMember = memberRepository.findByMemberIdAndGoodByeTimeIsNull(memberId);
+//        if(optionalMember.isEmpty()) {
+//            throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
+//        }
+//        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationIdAndIsDeletedIsFalse(applicationTokenReqDto.getApplicationId());
+//        if(optionalApplication.isEmpty()){
+//            throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
+//        }
+//        Member member= optionalMember.get();
+//        Application application=optionalApplication.get();
+//        if(!application.getMember().equals(member)){
+//            throw new MemberException(ErrorCode.NOT_OWNER_MEMBER);
+//        }
+//
+//        return ApplicationTokenResDto.from(application);
+//    }
 
 
     @Override
