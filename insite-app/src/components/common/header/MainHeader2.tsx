@@ -152,9 +152,9 @@ function MainHeader({ scrollY }: MainHeaderProps) {
           {isProfile && (
             <Modal
               width="15rem"
-              height={location.pathname === "/mysite" ? "3.25rem" : "6.5rem"}
+              height={location.pathname === "/mysite" ? "3.5rem" : "6.5rem"}
               $posX="-50%"
-              $posY="80%"
+              $posY={location.pathname === "/mysite" ? "70%" : "80%"}
               close={() => setIsProfile(false)}
               $position="absolute"
             >

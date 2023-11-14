@@ -12,7 +12,7 @@ function ProtectRoute({ children }: ProtectRouteProps) {
   const token = sessionStorage.getItem("Authorization");
 
   useEffect(() => {
-    if (!token && location.pathname !== "") {
+    if (!token) {
       navi("/");
     } else {
       setIsVerified(true);
