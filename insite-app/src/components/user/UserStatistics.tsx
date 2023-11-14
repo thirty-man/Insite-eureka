@@ -50,7 +50,7 @@ function UserStatistics() {
       enabled: false,
     },
     chart: {
-      type: "line",
+      type: "column",
       backgroundColor: "transparent",
       marginTop: 40,
       width: 300, // 차트의 너비 설정
