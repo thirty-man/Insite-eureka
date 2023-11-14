@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { IconUser } from "@assets/icons";
-import { CalendarButton } from "@components/common/calendar";
+import CalendarButton from "@components/common/calendar";
 import styled from "styled-components";
 import {
   setEndDate,
