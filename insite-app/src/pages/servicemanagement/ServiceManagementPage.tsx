@@ -30,27 +30,6 @@ const ManagementStyle = styled.div`
     margin-top: 40px;
   }
 `;
-// const AddButton = styled.button`
-//   flex: 1;
-//   justify-content: center;
-//   text-align: center;
-//   align-items: center;
-//   margin-right: 10px; /* 간격 조절 */
-//   padding: 20px; /* 버튼 크기 조절 */
-//   font-size: 18px; /* 폰트 크기 조절 */
-//   cursor: pointer;
-//   background-color: #2ce8c7; /* 배경색 */
-//   color: black;
-//   border: none;
-//   border-radius: 4px;
-//   transition: background-color 0.3s;
-//   text-align: center;
-//   &:hover {
-//     background-color: #00e6ff; /* 호버링 시 배경색 변경 */
-//   }
-//   width: 30rem;
-//   height: auto;
-// `;
 
 const StyledButton = styled.button`
   background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
@@ -63,19 +42,19 @@ const StyledButton = styled.button`
   box-shadow: 0 0 20px black;
   border-radius: 10px;
   display: block;
-  width: 30rem;
+  width: 10rem;
   cursor: pointer;
 
   &:hover {
     background-color: white;
     color: white;
     text-decoration: none;
-    transform: scale(1.1);
+    transform: scale(1.05);
     transition: transform 0.3s ease;
   }
 
   &:active {
-    transform: scale(0.96);
+    transform: scale(0.99);
     transition: transform 0.1s;
   }
 
@@ -101,7 +80,7 @@ const ModalContent = styled.div`
   border: 1px solid black;
   background: #333744;
   padding: 40px; /* 모달 크기 조절 */
-  border-radius: 8px;
+  border-radius: 10px;
   width: 20rem;
 `;
 
@@ -113,6 +92,7 @@ const InputField = styled.input`
   background-color: #1e1f23;
   color: white;
   border: 1px solid black;
+  border-radius: 10px;
 `;
 
 const ButtonContainer = styled.div`
@@ -120,33 +100,15 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ConfirmButton = styled.button`
-  flex: 1;
-  margin-right: 10px; /* 간격 조절 */
-  padding: 20px; /* 버튼 크기 조절 */
-  font-size: 18px; /* 폰트 크기 조절 */
-  cursor: pointer;
-  background-color: #9051e4; /* 배경색 */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #b990ec; /* 호버링 시 배경색 변경 */
-  }
-`;
-
 const CancelButton = styled.button`
   flex: 1;
   margin-left: 10px; /* 간격 조절 */
   padding: 20px; /* 버튼 크기 조절 */
-  font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
   background-color: #1e1f23; /* 배경색 */
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -315,7 +277,7 @@ function ServiceManagementPage() {
               onChange={handleButtonNameChange}
             />
             <ButtonContainer>
-              <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
+              <StyledButton onClick={handleConfirm}>확인</StyledButton>
               <CancelButton onClick={handleCancel}>취소</CancelButton>
             </ButtonContainer>
           </ModalContent>
