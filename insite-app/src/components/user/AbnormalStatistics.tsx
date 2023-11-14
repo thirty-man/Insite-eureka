@@ -40,10 +40,6 @@ function AbnormalStatistics() {
     fetchData();
   }, [endDateTime, startDateTime]);
 
-  // 카테고리 배열 생성
-
-  // 차트 구성
-
   return data.length > 0 ? (
     <Border>
       <StyledTable>
@@ -61,7 +57,10 @@ function AbnormalStatistics() {
           {data.map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id + 1}</TableCell>
-              <TableCell>{item.date}</TableCell>
+              <TableCell>
+                <p>{item.date.split("T")[0]}</p>
+                <p>{item.date.split("T")[1]}</p>
+              </TableCell>
               <TableCell>{item.cookieId}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.requestCnt}</TableCell>

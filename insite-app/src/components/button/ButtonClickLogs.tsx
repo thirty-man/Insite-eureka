@@ -154,7 +154,10 @@ function ButtonClickLogs() {
                     <TableRow key={item.id}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{item.currentUrl}</TableCell>
-                      <TableCell>{item.clickDateTime}</TableCell>
+                      <TableCell>
+                        <p>{item.clickDateTime.split("T")[0]}</p>
+                        <p>{item.clickDateTime.split("T")[1]}</p>
+                      </TableCell>
                       <TableCell>{item.cookieId}</TableCell>
                       <TableCell>
                         <div
