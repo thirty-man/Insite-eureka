@@ -15,6 +15,7 @@ function CreateRoom() {
   const [roomName, setRoomName] = useState<string>("");
   const [today, setToday] = useState<Date>(new Date());
   const [releaseDate, setReleaseDate] = useState<string>("날짜 설정");
+  const [time, setTime] = useState<string | null>("00:00");
   const [boxChecked, setBoxChecked] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [roomNameFocused, setRoomNameFocused] = useState<boolean>(false);
@@ -113,12 +114,16 @@ function CreateRoom() {
   };
 
   const handleTimeChange = (value: string | null) => {
-    const newReleasDate = `${releaseDate}+${value}`;
-    setReleaseDate(newReleasDate);
-    console.log(value);
+    if (value) {
+      setTime(value);
+    } else {
+      setTime("00:00");
+    }
   };
 
   const handleCalendar = () => {
+    const newReleasDate = `${releaseDate} ${time}`;
+    setReleaseDate(newReleasDate);
     setOpenCalendar((prev) => !prev);
   };
 
