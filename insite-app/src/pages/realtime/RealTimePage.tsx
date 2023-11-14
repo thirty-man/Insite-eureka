@@ -37,7 +37,7 @@ function RealTimePage() {
   return (
     <>
       <FirstCol>
-        <DefaultBox width="30rem" height="25rem">
+        <DefaultBox width="60rem" height="25rem">
           <TitleBox width="" height="10%">
             실시간 이용자
           </TitleBox>
