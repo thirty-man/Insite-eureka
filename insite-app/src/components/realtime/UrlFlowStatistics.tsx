@@ -46,7 +46,7 @@ function UrlFlowStatstics() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.referrer}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{(+item.percentage * 100).toPrecision(4)}%</TableCell>
+              <TableCell>{(+item.percentage * 100).toPrecision(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>
