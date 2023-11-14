@@ -94,7 +94,7 @@ function PageMovingStatistics() {
   };
 
   const transformedData = data.map((item) => ({
-    name: item.beforeUrl,
+    name: item.beforeUrl === "null" ? "외부사이트" : item.beforeUrl,
     y: item.count,
   }));
 
