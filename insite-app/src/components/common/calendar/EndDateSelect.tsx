@@ -79,15 +79,17 @@ function EndDateSelect({
   const latestDateObj = parseDate(latestDate);
   useEffect(() => {
     const getYearsInRange = (start: Date, end: Date) => {
-      const sYear = start.getFullYear();
-      const eYear = end.getFullYear();
+      const years = [];
+      for (
+        let year = start.getFullYear();
+        year <= end.getFullYear();
+        year += 1
+      ) {
+        years.push(year.toString());
+      }
 
-      // 디버깅: 시작 연도와 종료 연도 로깅
-      console.log("Start Year:", sYear, "End Year:", eYear);
-
-      return Array.from({ length: eYear - sYear + 1 }, (_, i) =>
-        (i + sYear).toString(),
-      );
+      console.log(years);
+      return years;
     };
 
     const getMonthsInRange = (start: Date, end: Date) => {
