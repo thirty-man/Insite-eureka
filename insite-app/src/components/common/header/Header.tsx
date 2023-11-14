@@ -316,7 +316,7 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
     const myApp = {
-      applicationId: item.id,
+      ApplicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
@@ -324,6 +324,7 @@ function Header() {
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
+    window.location.reload();
   };
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
