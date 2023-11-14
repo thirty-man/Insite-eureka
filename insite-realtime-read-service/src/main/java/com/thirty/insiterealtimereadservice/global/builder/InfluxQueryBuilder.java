@@ -31,7 +31,7 @@ public class InfluxQueryBuilder {
         );
 
         Flux query = Flux.from(bucket)
-            .range( -30L, ChronoUnit.MINUTES)
+            .range( getBeforeThirtyMinutes(), getNow())
             .filter(restrictions)
             .groupBy(new String[]{"name","cookieId"})
             .count();
