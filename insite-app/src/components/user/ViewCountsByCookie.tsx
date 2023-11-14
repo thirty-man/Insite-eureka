@@ -46,6 +46,9 @@ function ViewCountsByCookie() {
     credits: {
       enabled: false, // 워터마크 제거
     },
+    accessibility: {
+      enabled: false,
+    },
     chart: {
       type: "bar",
       backgroundColor: "transparent",

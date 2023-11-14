@@ -110,6 +110,9 @@ function ActiveUserPerTime() {
     credits: {
       enabled: false, // 워터마크 제거
     },
+    accessibility: {
+      enabled: false,
+    },
     title: {
       text: null,
     },
