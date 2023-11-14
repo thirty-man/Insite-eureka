@@ -190,7 +190,7 @@ function ServiceManagementPage() {
   const deleteData = async() =>{
     
     try{
-      const response = await deleteApplication(data.id);
+      const response = await deleteApplication(data.applicationToken);
       console.log("API 호출 성공",response);
       window.location.reload();
     }catch(error){
@@ -251,9 +251,6 @@ function ServiceManagementPage() {
               <Title>
                 <h1>내 서비스 관리</h1>
               </Title>
-              <ButtonContainer>
-              <ConfirmButton onClick={deleteData}>삭제</ConfirmButton>
-            </ButtonContainer>
               <br />
               <br />
               <div className="infoContainer">
