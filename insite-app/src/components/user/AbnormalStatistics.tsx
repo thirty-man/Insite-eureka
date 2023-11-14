@@ -59,7 +59,7 @@ function AbnormalStatistics() {
               <TableCell>{item.id + 1}</TableCell>
               <TableCell>
                 <p>{item.date.split("T")[0]}</p>
-                <p>{item.date.split("T")[1]}</p>
+                <p>{item.date.split("T")[1].split(".")[0]}</p>
               </TableCell>
               <TableCell>{item.cookieId}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>

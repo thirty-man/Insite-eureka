@@ -6,11 +6,11 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { getAllUrl, getViewCountsPerUser } from "@api/accumulApi";
 
-type FormatterContext = {
-  point: Highcharts.Point;
-  series: Highcharts.Series;
-  y: number;
-};
+// type FormatterContext = {
+//   point: Highcharts.Point;
+//   series: Highcharts.Series;
+//   y: number;
+// };
 
 function ViewCountsByCookie() {
   const [data, setData] = useState<CookieIdUrlDtoType[]>([]);
@@ -67,7 +67,7 @@ function ViewCountsByCookie() {
       const newUrlData = item.viewCountsPerUserDtoList.find(
         (urlDat) => urlDat.currentUrl === url,
       );
-      return newUrlData ? Number((newUrlData.ratio * 100).toFixed(2)) : 0;
+      return newUrlData ? Number((newUrlData.ratio * 100).toFixed(1)) : 0;
     }),
   }));
 
@@ -126,8 +126,7 @@ function ViewCountsByCookie() {
           enabled: true,
           useHTML: true,
           formatter() {
-            const context = this as unknown as FormatterContext;
-            return `<span style="color: white;">${context.y}%</span>`;
+            return "";
           },
           align: "center",
           verticalAlign: "middle",
