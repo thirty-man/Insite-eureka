@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { CookieIdUrlDtoType } from "@customtypes/dataTypes";
+import { CookieIdUrlDtoType, CurrentUrlDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { getViewCountsPerUser } from "@api/accumulApi";
+import { getAllUrl, getViewCountsPerUser } from "@api/accumulApi";
 
 type FormatterContext = {
   point: Highcharts.Point;
@@ -14,6 +14,7 @@ type FormatterContext = {
 
 function ViewCountsByCookie() {
   const [data, setData] = useState<CookieIdUrlDtoType[]>([]);
+  const [urlData, setUrlData] = useState<CurrentUrlDtoType[]>([]);
 
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
@@ -22,9 +23,21 @@ function ViewCountsByCookie() {
   const endDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
+
   useEffect(() => {
     const parseStartDateTime = new Date(startDateTime);
     const parseEndDateTime = new Date(endDateTime);
+
+    const getUrlList = async () => {
+      try {
+        const response = await getAllUrl(parseStartDateTime, parseEndDateTime);
+        if (!response.currentUrlDtoList) setUrlData([]);
+        else setUrlData(response.currentUrlDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
+
     const fetchData = async () => {
       try {
         const response = await getViewCountsPerUser(
@@ -38,8 +51,25 @@ function ViewCountsByCookie() {
       }
     };
 
+    getUrlList();
     fetchData();
   }, [endDateTime, startDateTime]);
+
+  // url 가져오기
+  const uniqueUrls = Array.from(
+    new Set(urlData.map((urlDat) => urlDat.currentUrl)),
+  );
+
+  // 차트에 넣을 데이터 생성
+  const seriesData = uniqueUrls.map((url) => ({
+    name: url,
+    data: data.map((item) => {
+      const newUrlList = item.viewCountsPerUserDtoList.find(
+        (urlDat) => urlDat.currentUrl === url,
+      );
+      return newUrlList ? newUrlList.ratio * 100 : 0;
+    }),
+  }));
 
   // 차트 구성
   const options = {
@@ -56,11 +86,9 @@ function ViewCountsByCookie() {
       height: 700, // 차트의 높이 설정
       color: "white",
     },
-    title: {
-      text: null,
-    },
+    title: "",
     xAxis: {
-      categories: data.map((dat) => dat.cookieId),
+      categories: data.map((item) => item.cookieId),
       labels: {
         style: {
           color: "white",
@@ -68,9 +96,7 @@ function ViewCountsByCookie() {
           maxWidth: "75px",
         },
       },
-      title: {
-        text: null,
-      },
+      title: "",
     },
     yAxis: {
       min: 0,
@@ -117,35 +143,7 @@ function ViewCountsByCookie() {
         color: "white",
       },
     },
-    series: [
-      {
-        name: "URL1",
-        data: data.map((dat) => {
-          const urlData = dat.viewCountsPerUserDtoList.find(
-            (urlDat) => urlDat.currentUrl === "/url1",
-          );
-          return urlData ? urlData.ratio * 100 : 0;
-        }),
-      },
-      {
-        name: "URL2",
-        data: data.map((dat) => {
-          const urlData = dat.viewCountsPerUserDtoList.find(
-            (urlDat) => urlDat.currentUrl === "/url2",
-          );
-          return urlData ? urlData.ratio * 100 : 0;
-        }),
-      },
-      {
-        name: "URL3",
-        data: data.map((dat) => {
-          const urlData = dat.viewCountsPerUserDtoList.find(
-            (urlDat) => urlDat.currentUrl === "/url3",
-          );
-          return urlData ? urlData.ratio * 100 : 0;
-        }),
-      },
-    ],
+    series: seriesData,
   };
 
   return data.length > 0 ? (
