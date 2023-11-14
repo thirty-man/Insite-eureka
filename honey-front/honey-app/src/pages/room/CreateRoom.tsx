@@ -1,7 +1,7 @@
 import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import useRouter from "@hooks/useRouter";
-import CustomCalendar from "@components/common/calendar";
+import { Calendar, TimePicker } from "@components/common/calendar";
 import moment from "moment";
 import axios, { AxiosError } from "axios";
 import { useRecoilState } from "recoil";
@@ -111,6 +111,13 @@ function CreateRoom() {
       }
     }
   };
+
+  const handleTimeChange = (value: string | null) => {
+    const newReleasDate = `${releaseDate}+${value}`;
+    setReleaseDate(newReleasDate);
+    console.log(value);
+  };
+
   const handleCalendar = () => {
     setOpenCalendar((prev) => !prev);
   };
@@ -321,7 +328,8 @@ function CreateRoom() {
           overz="z-[110]"
           openModal={openCalendar}
         >
-          <CustomCalendar onChange={handleDateChange} value={today} />
+          <Calendar onChange={handleDateChange} value={today} />
+          <TimePicker onChange={handleTimeChange} value="00:00" />
           <div className="fixed w-[300px] h-[40px] bottom-1/2 left-1/2 -translate-x-[150px] translate-y-[260px] z-[120] flex flex-row items-center justify-around">
             <button
               type="button"
