@@ -16,6 +16,7 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   font-size: 1.5rem;
   color: white;
   background-color: transparent;
+  cursor: default;
 `;
 
 /** 너비, 높이, 폰트 사이즈 */
