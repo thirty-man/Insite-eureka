@@ -122,7 +122,7 @@ function SideBar() {
 
   const myApp =
     sessionStorage.getItem("myApp") ||
-    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"https://www.takeinsite.com/error", "applicationToken":"사이트를 선택해주세요"}`;
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
   const target = JSON.parse(myApp).applicationUrl;
 
   useEffect(() => {

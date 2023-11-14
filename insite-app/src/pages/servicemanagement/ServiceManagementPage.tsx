@@ -164,7 +164,7 @@ const Title = styled.div`
 function ServiceManagementPage() {
   const myApp =
     sessionStorage.getItem("myApp") ||
-    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+    `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
   const data: ApplicationDtoType = JSON.parse(myApp);
   const [buttonList, setButtonList] = useState<ButtonType[]>([]);
@@ -271,8 +271,7 @@ function ServiceManagementPage() {
               <div className="infoContainer">
                 <p className="infoText">등록일 </p>
                 <TextBox width="500px" height="50px">
-                  {/* <p>{data.createTime}</p> */}
-                  <p>등록일 필요</p>
+                  <p>{data.createTime.split("T")[0]}</p>
                 </TextBox>
               </div>
               <div className="infoContainer">
