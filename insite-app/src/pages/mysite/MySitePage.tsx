@@ -208,6 +208,7 @@ function MySitePage() {
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
+    window.location.reload();
   };
 
   return (
