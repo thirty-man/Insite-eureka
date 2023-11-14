@@ -334,7 +334,9 @@ function CreateRoom() {
           openModal={openCalendar}
         >
           <Calendar onChange={handleDateChange} value={today} />
-          <TimePicker onChange={handleTimeChange} value="00:00" />
+          <div className="mt-[10px]">
+            <TimePicker onChange={handleTimeChange} value="00:00" />
+          </div>
           <div className="fixed w-[300px] h-[40px] bottom-1/2 left-1/2 -translate-x-[150px] translate-y-[260px] z-[120] flex flex-row items-center justify-around">
             <button
               type="button"
