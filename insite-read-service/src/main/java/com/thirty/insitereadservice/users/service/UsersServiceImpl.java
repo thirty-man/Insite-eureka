@@ -7,6 +7,7 @@ import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insitereadservice.activeusers.dto.request.ViewCountsPerActiveUserReqDto;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
 import com.thirty.insitereadservice.users.dto.*;
@@ -45,7 +46,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public AbnormalHistoryResDto getAbnormalHistory(AbnormalHistoryReqDto abnormalHistoryReqDto, int memberId) {
         String applicationToken = abnormalHistoryReqDto.getApplicationToken();
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(applicationToken,memberId));
+        memberServiceClient.validationMemberAndApplication(
+            MemberValidReqDto.create(applicationToken,memberId));
 
         //통계 시간 설정
         Instant startInstant = abnormalHistoryReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -96,7 +98,7 @@ public class UsersServiceImpl implements UsersService {
     //
     @Override
     public PageViewResDto getPageView(PageViewReqDto pageViewReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(pageViewReqDto.getApplicationToken(), memberId));
 
         //통계 시간 설정
         Instant startInstant = pageViewReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -141,7 +143,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserCountResDto getUserCount(UserCountReqDto userCountReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = userCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -188,7 +190,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public TotalUserCountResDto getTotalUserCount(TotalUserCountReqDto totalUserCountReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(totalUserCountReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = totalUserCountReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -218,7 +220,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public CookieIdUrlResDto getCookieIdUrlCount(ViewCountsPerUserReqDto viewCountsPerUserReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(userCountReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(viewCountsPerUserReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = viewCountsPerUserReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);

@@ -10,6 +10,7 @@ import com.thirty.insitereadservice.currenturl.dto.CurrentUrlDto;
 import com.thirty.insitereadservice.currenturl.dto.req.CurrentUrlListReqDto;
 import com.thirty.insitereadservice.currenturl.dto.res.CurrentUrlListResDto;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.TimeException;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,8 @@ public class CurrentUrlServiceImpl implements CurrentUrlService{
     private InfluxDBClient influxDBClient;
     @Override
     public CurrentUrlListResDto getCurrentUrlList(CurrentUrlListReqDto currentUrlListReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(
+            MemberValidReqDto.create(currentUrlListReqDto.getApplicationToken(),memberId));
         //범위 시간 지정
         Instant startInstant = currentUrlListReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
         Instant endInstant = currentUrlListReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);

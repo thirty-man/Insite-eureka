@@ -6,6 +6,7 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
 import com.influxdb.query.dsl.functions.restriction.Restrictions;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.flow.dto.*;
 import com.thirty.insitereadservice.flow.dto.request.*;
 import com.thirty.insitereadservice.flow.dto.response.*;
@@ -46,7 +47,7 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public EntryExitFlowResDto getEntryExitFlow(EntryExitFlowReqDto exitFlowReqDto, int memberId) {
         String token = exitFlowReqDto.getApplicationToken();
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
         Instant startInstant = exitFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -117,7 +118,7 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public EntryEnterFlowResDto getEntryEnterFlow(EntryEnterFlowReqDto entryEnterFlowReqDto, int memberId) {
         String token = entryEnterFlowReqDto.getApplicationToken();
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
         Instant startInstant = entryEnterFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -180,7 +181,7 @@ public class FlowServiceImpl implements FlowService {
     //
     @Override
     public CurrentUrlFlowResDto getUrlFlow(CurrentUrlFlowReqDto urlFlowReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(urlFlowReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(urlFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = urlFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -234,7 +235,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public ReferrerFlowResDto getReferrerFlow(ReferrerFlowReqDto referrerFlowReqDto,int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(referrerFlowReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(referrerFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간을 설정해주세요
         Instant startInstant = referrerFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -260,13 +261,6 @@ public class FlowServiceImpl implements FlowService {
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
 
-//        Collections.sort(tables, new Comparator<FluxTable>() {
-//            @Override
-//            public int compare(FluxTable o1, FluxTable o2){
-//                return -(o1.getRecords().size()-o2.getRecords().size());
-//            }
-//        });
-
         List<ReferrerFlowDto> referrerFlowDtoList = new ArrayList<>();
         PriorityQueue<ReferrerFlowDto> referrerFlowDtoPriorityQueue = new PriorityQueue<>();
         int id = 0;
@@ -288,7 +282,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public ExitFlowResDto getExitFlow(ExitFlowReqDto exitFlowReqDto,int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(exitFlowReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(exitFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = exitFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -340,7 +334,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public BounceResDto getBounceCounts(BounceReqDto bounceReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = bounceReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -401,7 +395,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public BeforeUrlFlowResDto getBeforeUrlFlow(BeforeUrlFlowReqDto beforeUrlFlowReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(beforeUrlFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
         Instant startInstant = beforeUrlFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
@@ -441,8 +435,6 @@ public class FlowServiceImpl implements FlowService {
         while (!beforeUrlFlowDtoPriorityQueue.isEmpty()){
             beforeUrlFlowDtoList.add(beforeUrlFlowDtoPriorityQueue.poll().addId(id++));
         }
-
-
 
         return BeforeUrlFlowResDto.create(beforeUrlFlowDtoList);
     }
