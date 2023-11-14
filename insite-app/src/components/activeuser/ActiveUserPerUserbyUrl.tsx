@@ -58,9 +58,7 @@ function ActiveUserPerUserbyUrl() {
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>
-                {(+item.activeUserPerUser).toPrecision(2)}회
-              </TableCell>
+              <TableCell>{(+item.activeUserPerUser).toPrecision(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
