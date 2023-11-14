@@ -93,7 +93,6 @@ function ViewCountsByCookie() {
         '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b> of total<br/>',
       shared: true,
     },
-
     plotOptions: {
       bar: {
         stacking: "percent",

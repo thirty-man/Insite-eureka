@@ -23,7 +23,7 @@ const Outer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 80%;
   margin: 0;
 `;
 
