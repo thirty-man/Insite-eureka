@@ -105,22 +105,9 @@ function CreateRoom() {
   };
 
   const handleTimeChange = (value: string | null) => {
-    const selectedDateTime = parseKoreanDateString(
-      releaseDate,
-      value || "00:00",
-    );
-
-    // 오늘 날짜에 대해 현재 시간 이후만 선택
-    if (
-      moment(selectedDateTime).isSame(moment(), "day") &&
-      selectedDateTime < new Date()
-    ) {
-      setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
-      setAlertModal(true);
-    } else {
-      setTime(value);
-    }
+    setTime(value);
   };
+
   const handleCalendar = () => {
     const datePart = releaseDate.split(" ").slice(0, 3).join(" "); // 날짜 부분만 추출
     const newReleaseDate = `${datePart} ${time}`; // 새로운 시간과 결합
@@ -220,8 +207,13 @@ function CreateRoom() {
       releaseDate,
       time || "00:00",
     );
-    if (selectedDateTime < new Date()) {
-      setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
+
+    // 오늘 날짜와 현재 시간 이후인지 검증
+    if (
+      moment(selectedDateTime).isSame(moment(), "day") &&
+      selectedDateTime < new Date()
+    ) {
+      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
       setAlertModal(true);
       return;
     }
