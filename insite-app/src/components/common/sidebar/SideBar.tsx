@@ -151,7 +151,7 @@ function SideBar() {
               $isActive={item.id === selectedMenuId}
               onClick={() => {
                 if (item.id === 7) {
-                  window.open(target, "_blank");
+                  window.open(`https://${target}`, "_blank");
                   return;
                 }
                 dispatch(setSelectedMenuId(item.id));
