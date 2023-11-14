@@ -59,7 +59,7 @@ function PageUsagePerActiveUser() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{(+item.ratio).toPrecision(2)}</TableCell>
+              <TableCell>{(+item.ratio).toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

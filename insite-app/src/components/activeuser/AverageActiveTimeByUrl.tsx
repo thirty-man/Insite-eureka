@@ -56,7 +56,7 @@ function AverageActiveTimeByUrl() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>
-                {(+item.averageActiveTime / 1000).toPrecision(2)}s
+                {(+item.averageActiveTime / 1000).toFixed(2)}s
               </TableCell>
             </TableRow>
           ))}
