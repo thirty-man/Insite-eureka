@@ -79,12 +79,17 @@ function EndDateSelect({
   const latestDateObj = parseDate(latestDate);
   useEffect(() => {
     const getYearsInRange = (start: Date, end: Date) => {
-      const sYear = start.getFullYear();
-      const eYear = end.getFullYear();
+      const years = [];
+      for (
+        let year = start.getFullYear();
+        year <= end.getFullYear();
+        year += 1
+      ) {
+        years.push(year.toString());
+      }
 
-      return Array.from({ length: eYear - sYear + 1 }, (i: number) =>
-        (i + sYear).toString(),
-      );
+      console.log(years);
+      return years;
     };
 
     const getMonthsInRange = (start: Date, end: Date) => {
