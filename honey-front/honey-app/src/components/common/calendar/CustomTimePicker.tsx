@@ -1,4 +1,6 @@
 import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import "./CustomeTimePicker.css";
 
 type Value = string | null;
 
