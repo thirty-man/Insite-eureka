@@ -43,7 +43,7 @@
             response_time: responseTime,
             os_id: navigator.platform,
             is_new: isNew,
-            application_token: "",
+            application_token: "30667c9a-1abd-457e-a93b-aa5a446f5998",
             application_url: window.location.origin,
             activity_id: "",
         };
@@ -53,7 +53,7 @@
 
     function sendData(data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8082/api/v1/data/page', true);
+        xhr.open('POST', 'https://takeinsite.com:8081/write-service/api/v1/data/page', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status !== 200) {
