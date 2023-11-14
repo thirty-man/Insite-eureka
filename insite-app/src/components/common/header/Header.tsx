@@ -316,7 +316,7 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     // dispatch(setSelectedSite(item.name));
     const myApp = {
-      ApplicationId: item.id,
+      applicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
@@ -335,8 +335,9 @@ function Header() {
 
   useEffect(() => {
     dispatch(setSelectedSite(name));
-    console.log("헤더바꿔라");
-  }, [dispatch, name]);
+    navi("/board");
+    console.log("헤더 바꿔라");
+  }, [dispatch, name, navi]);
 
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
