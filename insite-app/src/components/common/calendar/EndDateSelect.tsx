@@ -82,7 +82,10 @@ function EndDateSelect({
       const sYear = start.getFullYear();
       const eYear = end.getFullYear();
 
-      return Array.from({ length: eYear - sYear + 1 }, (i: number) =>
+      // 디버깅: 시작 연도와 종료 연도 로깅
+      console.log("Start Year:", sYear, "End Year:", eYear);
+
+      return Array.from({ length: eYear - sYear + 1 }, (_, i) =>
         (i + sYear).toString(),
       );
     };

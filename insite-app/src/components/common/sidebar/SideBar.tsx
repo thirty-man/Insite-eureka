@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import { IconFacebook, IconGithub, IconMail } from "@assets/icons";
 // import { homeLogo } from "@assets/images";
 import { useNavigate } from "react-router-dom";
@@ -123,6 +124,12 @@ function SideBar() {
     sessionStorage.getItem("myApp") ||
     `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"https://www.takeinsite.com/error", "applicationToken":"사이트를 선택해주세요"}`;
   const target = JSON.parse(myApp).applicationUrl;
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSelectedMenuId(1));
+    };
+  });
 
   return (
     <SideBarContainer>
