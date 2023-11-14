@@ -256,8 +256,7 @@ function ServiceManagementPage() {
               <div className="infoContainer">
                 <p className="infoText">등록일 </p>
                 <TextBox width="500px" height="50px">
-                  <p>{data.createTime}</p>
-                  {/* <p>등록일 필요</p> */}
+                  <p>{data.createTime.split("T")[0]}</p>
                 </TextBox>
               </div>
               <div className="infoContainer">
