@@ -90,7 +90,7 @@ function ButtonManagementPage() {
           <TitleBox width="" height="10%">
             버튼 누른 횟수
           </TitleBox>
-          <DropDown
+          <DropDown<ButtonType>
             items={buttonList}
             width="15rem"
             height="2rem"

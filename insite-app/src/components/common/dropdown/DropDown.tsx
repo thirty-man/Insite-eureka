@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import { dropdownArrow } from "@assets/icons";
-import { ItemType } from "@customtypes/dataTypes";
 import siteLogos from "../header/SiteLogo";
 
 interface ComponentProps {
@@ -12,10 +11,17 @@ interface ButtonProps {
   height: string;
 }
 
-interface DropDownProps extends ComponentProps, ButtonProps {
-  items: ItemType[];
+interface BaseType {
+  name: string;
+  id: number;
+}
+
+interface DropDownProps<T extends BaseType>
+  extends ComponentProps,
+    ButtonProps {
+  items: T[];
   initialValue: string;
-  onChange: (selectedItem: ItemType) => void;
+  onChange: (selectedItem: T) => void;
   openDropdown: boolean;
   close: () => void;
   toggle: () => void;
@@ -132,7 +138,7 @@ const SiteLogo = styled.img`
 `;
 
 /** 데이터, 너비, 높이(rem) */
-function DropDown({
+function DropDown<T extends BaseType>({
   items,
   width,
   height,
@@ -141,7 +147,7 @@ function DropDown({
   openDropdown,
   close,
   toggle,
-}: DropDownProps) {
+}: DropDownProps<T>) {
   const [selectedItem, setSelectedItem] = useState<string>(initialValue);
 
   const selectedSiteLogo = siteLogos[selectedItem || ""];

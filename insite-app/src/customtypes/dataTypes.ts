@@ -210,7 +210,7 @@ type ButtonLogsResDto = {
 };
 
 type ApplicationDtoType = {
-  applicationId: number;
+  id: number;
   name: string;
   applicationUrl: string;
   applicationToken: string;

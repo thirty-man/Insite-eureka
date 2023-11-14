@@ -200,8 +200,8 @@ function MySitePage() {
   };
 
   const selectSite = (item: ApplicationDtoType) => {
-    const myApp: ApplicationDtoType = {
-      applicationId: item.applicationId,
+    const myApp = {
+      applicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
@@ -217,7 +217,7 @@ function MySitePage() {
         <OverflowContainer>
           <OutletContainer>
             {siteList.map((item: ApplicationDtoType) => (
-              <MySitePageStyle key={item.applicationId}>
+              <MySitePageStyle key={item.id}>
                 <button
                   type="button"
                   style={{

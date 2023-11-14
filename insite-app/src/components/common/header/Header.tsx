@@ -16,7 +16,7 @@ import {
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
-import { ItemType } from "@customtypes/dataTypes";
+import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
@@ -312,8 +312,16 @@ function Header() {
     setOpenProfile((p) => !p);
   };
 
-  const handleSelectedSite = (item: ItemType) => {
+  const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
+    const myApp = {
+      applicationId: item.id,
+      name: item.name,
+      applicationUrl: item.applicationUrl,
+      applicationToken: item.applicationToken,
+    };
+    sessionStorage.setItem("myApp", JSON.stringify(myApp));
+    navi("/board");
   };
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
@@ -454,7 +462,7 @@ function Header() {
           </Modal>
         )}
         {siteList.length > 0 ? (
-          <DropDown
+          <DropDown<ApplicationDtoType>
             items={siteList}
             width="15rem"
             height="3rem"
