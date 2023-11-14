@@ -85,19 +85,16 @@ function CreateRoom() {
     return new Date(year, month, day, hour, minute);
   }
 
-  const handleDateChange = (
-    value: Value,
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    const eventTarget = event.target as HTMLElement;
-    const aria = eventTarget.getAttribute("aria-label");
-    if (aria !== null) {
-      const selectedDate = parseKoreanDateString(aria, time || "00:00");
+  const handleDateChange = (value: Value) => {
+    if (value instanceof Date && value !== null) {
+      const selectedDate = value; // 여기서 value를 사용
+      const formattedDate = moment(selectedDate).format("YYYY년 MM월 DD일");
+
       if (selectedDate < new Date()) {
         setAlertText("선택한 날짜와 시간은 현재 시간 이후여야 합니다.");
         setAlertModal(true);
       } else {
-        setReleaseDate(aria);
+        setReleaseDate(formattedDate);
         setToday(selectedDate);
       }
     } else {
