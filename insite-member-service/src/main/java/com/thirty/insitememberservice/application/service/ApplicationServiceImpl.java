@@ -148,6 +148,6 @@ public class ApplicationServiceImpl implements ApplicationService{
         }
         if(!optionalApplication.get().getApplicationUrl().equals(applicationVerifyReqDto.getApplicationUrl())){
             throw new ApplicationException(ErrorCode.NOT_EXIST_APPLICATION);
-        };
+        }
     }
 }
