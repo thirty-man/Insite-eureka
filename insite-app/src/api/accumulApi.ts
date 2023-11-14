@@ -3,7 +3,7 @@ import { accumulAPI } from "./Api";
 
 const myApp =
   sessionStorage.getItem("myApp") ||
-  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
 const data: ApplicationDtoType = JSON.parse(myApp);
 const { applicationToken } = data;
@@ -17,7 +17,7 @@ const getRefData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getRefData err", error); // 에러 처리
   }
 
   return [];
@@ -32,7 +32,7 @@ const getExitData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getExitData err", error); // 에러 처리
   }
 
   return [];
@@ -52,7 +52,7 @@ const getButtonDetailData = async (
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getButtonDetailData err", error); // 에러 처리
   }
 
   return [];
@@ -67,7 +67,7 @@ const getBounceCountData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getBounceCountData err", error); // 에러 처리
   }
 
   return [];
@@ -82,7 +82,7 @@ const getEnterCountData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getEnterCountData err", error); // 에러 처리
   }
 
   return [];
@@ -97,7 +97,7 @@ const getEntryExitData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getEntryExitData err", error); // 에러 처리
   }
 
   return [];
@@ -117,7 +117,7 @@ const getUrlFlowData = async (
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getUrlFlowData err", error); // 에러 처리
   }
 
   return [];
@@ -132,7 +132,7 @@ const getButtonDistData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getButtonDistData err", error); // 에러 처리
   }
 
   return [];
@@ -147,7 +147,7 @@ const getAllUrl = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getAllUrl err", error); // 에러 처리
   }
 
   return [];
@@ -167,7 +167,7 @@ const getButtonLogs = async (
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getButtonLogs err", error); // 에러 처리
   }
 
   return [];
@@ -183,7 +183,7 @@ const getViewCount = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getViewCount err", error); // 에러 처리
   }
 
   return [];
@@ -198,7 +198,7 @@ const getUserCount = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getUserCount err", error); // 에러 처리
   }
 
   return [];
@@ -213,7 +213,7 @@ const getAbnormalUserData = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getAbnormalUserData err", error); // 에러 처리
   }
 
   return [];
@@ -228,7 +228,7 @@ const getViewCountsPerUser = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getViewCountsPerUser err", error); // 에러 처리
   }
 
   return [];
@@ -246,7 +246,7 @@ const getActiveUser = async (startDateTime: Date, endDateTime: Date) => {
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getActiveUser err", error); // 에러 처리
   }
 
   return [];
@@ -264,7 +264,7 @@ const getActiveUserCounts = async (startDateTime: Date, endDateTime: Date) => {
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getActiveUserCounts err", error); // 에러 처리
   }
 
   return [];
@@ -280,7 +280,7 @@ const getOsActiveUser = async (startDateTime: Date, endDateTime: Date) => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getOsActiveUser err", error); // 에러 처리
   }
 
   return [];
@@ -299,7 +299,7 @@ const getAverageActiveTime = async (startDateTime: Date, endDateTime: Date) => {
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getAverageActiveTime err", error); // 에러 처리
   }
 
   return [];
@@ -321,7 +321,7 @@ const getViewCountsPerActiveUser = async (
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getViewCountsPerActiveUser err", error); // 에러 처리
   }
 
   return [];
@@ -339,7 +339,7 @@ const getActiveUserPerUser = async (startDateTime: Date, endDateTime: Date) => {
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getActiveUserPerUser err", error); // 에러 처리
   }
 
   return [];
@@ -360,7 +360,7 @@ const getActiveUsersPerTime = async (
     );
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("accumulApi - getActiveUsersPerTime err", error); // 에러 처리
   }
 
   return [];

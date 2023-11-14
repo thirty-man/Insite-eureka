@@ -11,7 +11,6 @@
 import { useState, useEffect } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import styled, { css } from "styled-components";
-import backgroundImg from "../../assets/images/애니메이션배경.gif";
 import backgroundImg2 from "../../assets/images/메인페이지_설명5.jpg";
 import MainHeader2 from "@components/common/header/MainHeader2";
 import { Element } from "react-scroll";
@@ -100,26 +99,8 @@ const DynamicBackground = styled(animated.div)`
   height: 100%;
   top: 0;
   left: 0;
-  background-image: url(${backgroundImg2}),
-    radial-gradient(circle at center, transparent 0%, #252531 80%),
-    url(${backgroundImg});
-  background-position:
-    left,
-    right center,
-    right;
-  background-repeat: no-repeat, no-repeat, no-repeat;
-  background-size: 45%, 55%, 55%; /* Set this to the correct size of your images */
-  z-index: 3;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 45%; /* Adjust this value so it overlays the left edge of the right image */
-    height: 100%;
-    width: 300px; /* Width of the blur effect */
-    background: linear-gradient(to left, rgba(0, 0, 0, 0), #252531);
-  }
+  background-image: url(${backgroundImg2});
+  background-repeat: no-repeat;
 `;
 
 function NotFoundErrorPage() {

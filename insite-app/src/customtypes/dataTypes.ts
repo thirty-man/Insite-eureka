@@ -128,6 +128,12 @@ type ViewCountsPerActiveUserDtoType = {
   ratio: number;
 };
 
+type PageViewDtoType = {
+  id: number;
+  currentUrl: string;
+  pageView: number;
+};
+
 type OSActiveUserDtoType = {
   id: number;
   os: string;
@@ -214,6 +220,7 @@ type ApplicationDtoType = {
   name: string;
   applicationUrl: string;
   applicationToken: string;
+  createTime: string;
 };
 
 type ActiveUsersPerTimeResDtoType = {
@@ -266,4 +273,5 @@ export type {
   ButtonLogsResDto,
   ApplicationDtoType,
   ActiveUsersPerTimeResDtoType,
+  PageViewDtoType,
 };

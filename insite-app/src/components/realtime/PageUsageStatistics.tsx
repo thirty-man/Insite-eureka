@@ -45,7 +45,7 @@ function PageUsageStatistics() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentPage}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{item.responseTime}s</TableCell>
+              <TableCell>{(+item.responseTime / 1000).toFixed(2)}s</TableCell>
             </TableRow>
           ))}
         </TableBody>

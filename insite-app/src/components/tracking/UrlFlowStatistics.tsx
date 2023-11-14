@@ -52,7 +52,11 @@ function UrlFlowStatistics() {
           {data.map((item, index) => (
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{item.referrer}</TableCell>
+              <TableCell>
+                {item.referrer === "null"
+                  ? "직접입력/페이지 내"
+                  : item.referrer}
+              </TableCell>
               <TableCell>{item.count}</TableCell>
             </TableRow>
           ))}

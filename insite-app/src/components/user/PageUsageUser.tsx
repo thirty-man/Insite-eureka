@@ -7,13 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@assets/styles/tableStyles";
-import { ViewCountsPerActiveUserDtoType } from "@customtypes/dataTypes";
+import { PageViewDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 import { getViewCount } from "@api/accumulApi";
 
 function PageUsagePerUser() {
-  const [data, setData] = useState<ViewCountsPerActiveUserDtoType[]>([]);
+  const [data, setData] = useState<PageViewDtoType[]>([]);
 
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
@@ -56,7 +56,7 @@ function PageUsagePerUser() {
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.count}</TableCell>
+              <TableCell>{item.pageView}</TableCell>
             </TableRow>
           ))}
         </TableBody>

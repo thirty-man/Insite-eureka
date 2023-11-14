@@ -47,15 +47,17 @@ function AverageActiveTimeByUrl() {
           <tr>
             <th>순위</th>
             <th>URL</th>
-            <th>평균체류시간(s)</th>
+            <th>평균체류시간</th>
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
-              <TableCell>{item.averageActiveTime}</TableCell>
+              <TableCell>
+                {(+item.averageActiveTime / 1000).toFixed(2)}s
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -23,7 +23,7 @@ const Outer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 80%;
   margin: 0;
 `;
 
@@ -31,7 +31,7 @@ const OutDiv = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  height: 100%;
+  height: 80%;
   margin-top: 1rem;
 `;
 
@@ -154,7 +154,10 @@ function ButtonClickLogs() {
                     <TableRow key={item.id}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{item.currentUrl}</TableCell>
-                      <TableCell>{item.clickDateTime}</TableCell>
+                      <TableCell>
+                        <p>{item.clickDateTime.split("T")[0]}</p>
+                        <p>{item.clickDateTime.split("T")[1]}</p>
+                      </TableCell>
                       <TableCell>{item.cookieId}</TableCell>
                       <TableCell>
                         <div
@@ -191,7 +194,7 @@ function ButtonClickLogs() {
               src={activeuserclickavg}
               alt="사용자당 클릭 수 평균"
             />
-            <NumberDiv>{clickCountsPerActiveUsers}</NumberDiv>
+            <NumberDiv>{clickCountsPerActiveUsers.toFixed(2)}</NumberDiv>
           </InnerIconBox>
         </IconDiv>
       </OutDiv>

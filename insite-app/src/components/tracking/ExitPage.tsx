@@ -58,7 +58,7 @@ function ExitPage() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.exitCount}</TableCell>
-              <TableCell>{+item.ratio.toFixed(4) * 100} %</TableCell>
+              <TableCell>{(+item.ratio * 100).toFixed(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>

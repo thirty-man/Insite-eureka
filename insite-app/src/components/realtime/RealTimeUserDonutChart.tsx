@@ -14,7 +14,7 @@ function RealTimeUserDonutChart() {
         const userCountDto = response.userCountDtoList;
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
           name: item.currentPage,
-          y: parseInt(Math.round(item.percentage * 100).toFixed(2), 10),
+          y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
             format: `{point.name}:<br> 횟수: ${item.count}`,
@@ -60,7 +60,7 @@ function RealTimeUserDonutChart() {
     },
     tooltip: {
       style: {
-        fontSize: "18px",
+        fontSize: "14px",
       },
       padding: 15,
     },

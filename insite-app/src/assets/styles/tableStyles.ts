@@ -27,11 +27,7 @@ const TableHeader = styled.thead`
   z-index: 1; /* 다른 내용 위에 나타나도록 설정 */
 `;
 
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    color: coral;
-  }
-`;
+const TableRow = styled.tr``;
 
 const TableCell = styled.td`
   max-width: 7rem;

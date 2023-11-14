@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import theme from "@assets/styles/colors";
 import styled from "styled-components";
 import { IconClock } from "@assets/icons";
-import { getActiveUserPerUser } from "@api/accumulApi";
+import { getActiveUsersPerTime } from "@api/accumulApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@reducer";
 
@@ -83,18 +83,16 @@ function ActiveUserPerTime() {
     const parseEndDateTime = new Date(endDateTime);
     const fetchData = async () => {
       try {
-        const response = await getActiveUserPerUser(
+        const response = await getActiveUsersPerTime(
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (!response.nightActiveUserCount) setData([]);
-        else
-          setData([
-            response.nightActiveUserCount,
-            response.morningActiveUserCount,
-            response.afternoonActiveUserCount,
-            response.eveningActiveUserCount,
-          ]);
+        setData([
+          response.nightActiveUserCount,
+          response.morningActiveUserCount,
+          response.afternoonActiveUserCount,
+          response.eveningActiveUserCount,
+        ]);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
@@ -109,6 +107,9 @@ function ActiveUserPerTime() {
   const options = {
     credits: {
       enabled: false, // 워터마크 제거
+    },
+    accessibility: {
+      enabled: false,
     },
     title: {
       text: null,

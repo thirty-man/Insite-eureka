@@ -498,13 +498,15 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
     const myApp = {
-      applicationId: item.id,
+      id: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
+      createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
+    window.location.reload();
   };
 
   const handleStartYear = (item: ItemType) => {

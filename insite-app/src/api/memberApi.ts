@@ -3,10 +3,11 @@ import { memberAPI } from "./Api";
 
 const myApp =
   sessionStorage.getItem("myApp") ||
-  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요"}`;
+  `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
 
 const data: ApplicationDtoType = JSON.parse(myApp);
 const { applicationToken } = data;
+
 
 // 버튼 목록 가져오기
 const getButtonList = async () => {
@@ -16,7 +17,7 @@ const getButtonList = async () => {
     });
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - getButtonList err", error); // 에러 처리
   }
 
   return [];
@@ -31,7 +32,7 @@ const createButton = async (name: string) => {
     });
     return response;
   } catch (error) {
-    // console.error("등록에러: ", error); // 에러 처리
+    console.error("memberApi - createButton err", error); // 에러 처리
   }
 
   return [];
@@ -44,11 +45,21 @@ const getSiteList = async () => {
     const response = await memberAPI.get("/application/list");
     return response.data;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - getSiteList err", error); // 에러 처리
   }
 
   return [];
 };
+
+const deleteApplication = async(applicationToken:string)=>{
+  try{
+    const response = await memberAPI.patch("/application/remove",{applicationToken});
+    return response.data;
+  } catch(error){
+    console.error("memberApi - deleteApplication error",error);
+  }
+  return [];
+}
 
 const createStie = async (name: string, applicationUrl: string) => {
   try {
@@ -59,10 +70,10 @@ const createStie = async (name: string, applicationUrl: string) => {
     });
     return response;
   } catch (error) {
-    // console.error(error); // 에러 처리
+    console.error("memberApi - createStie err", error); // 에러 처리
   }
 
   return [];
 };
 
-export { getButtonList, createButton, getSiteList, createStie };
+export { getButtonList, createButton, getSiteList, createStie,deleteApplication };

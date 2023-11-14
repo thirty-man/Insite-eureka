@@ -46,6 +46,9 @@ function ViewCountsByCookie() {
     credits: {
       enabled: false, // 워터마크 제거
     },
+    accessibility: {
+      enabled: false,
+    },
     chart: {
       type: "bar",
       backgroundColor: "transparent",
@@ -90,7 +93,6 @@ function ViewCountsByCookie() {
         '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b> of total<br/>',
       shared: true,
     },
-
     plotOptions: {
       bar: {
         stacking: "percent",

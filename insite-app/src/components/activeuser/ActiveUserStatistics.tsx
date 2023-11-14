@@ -49,16 +49,16 @@ function ActiveUserStatistics() {
             <th>순위</th>
             <th>URL</th>
             <th>활동 사용자 수</th>
-            <th>비율%</th>
+            <th>비율</th>
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentUrl}</TableCell>
               <TableCell>{item.activeUserCount}</TableCell>
-              <TableCell>{item.ratio}%</TableCell>
+              <TableCell>{(+item.ratio * 100).toFixed(2)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>
