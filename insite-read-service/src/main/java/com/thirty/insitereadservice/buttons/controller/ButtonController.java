@@ -9,6 +9,7 @@ import com.thirty.insitereadservice.buttons.dto.response.ClickCountsResDto;
 import com.thirty.insitereadservice.buttons.dto.response.EveryButtonRateResDto;
 import com.thirty.insitereadservice.buttons.dto.response.ButtonLogsResDto;
 import com.thirty.insitereadservice.buttons.service.ButtonService;
+import com.thirty.insitereadservice.global.jwt.JwtProcess;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,8 +33,8 @@ public class ButtonController {
         @Valid @RequestBody ClickCountsReqDto clickCountsReqDto,
         HttpServletRequest request
     ){
-//      int memberId = JwtProcess.verifyAccessToken(request);//검증
-        int memberId = 1;
+      int memberId = JwtProcess.verifyAccessToken(request);//검증
+
         ClickCountsResDto clickCountsResDto = buttonService.getClickCounts(clickCountsReqDto, memberId);
         return new ResponseEntity<>(clickCountsResDto, HttpStatus.OK);
     }
@@ -43,10 +44,9 @@ public class ButtonController {
         @Valid @RequestBody ButtonLogsReqDto exitPercentageReqDto,
         HttpServletRequest request
     ){
-//      int memberId = JwtProcess.verifyAccessToken(request);//검증
-        int memberId = 1;
-        ButtonLogsResDto buttonLogsResDto = buttonService.getButtonLogs(
-            exitPercentageReqDto,
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+
+        ButtonLogsResDto buttonLogsResDto = buttonService.getButtonLogs(exitPercentageReqDto,
             memberId
         );
         return new ResponseEntity<>(buttonLogsResDto, HttpStatus.OK);
@@ -58,10 +58,8 @@ public class ButtonController {
         @Valid @RequestBody EveryButtonRateReqDto everyButtonDistReqDto,
         HttpServletRequest request
     ){
-//      int memberId = JwtProcess.verifyAccessToken(request);//검증
-        int memberId = 1;
-        EveryButtonRateResDto everyButtonDistResDto = buttonService.getEveryButtonRate(
-            everyButtonDistReqDto,
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+        EveryButtonRateResDto everyButtonDistResDto = buttonService.getEveryButtonRate(everyButtonDistReqDto,
             memberId
         );
         return new ResponseEntity<>(everyButtonDistResDto, HttpStatus.OK);
@@ -73,8 +71,8 @@ public class ButtonController {
         @Valid @RequestBody ButtonAbnormalReqDto buttonAbnormalReqDto,
         HttpServletRequest request
     ){
-//      int memberId = JwtProcess.verifyAccessToken(request);//검증
-        int memberId = 1;
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+
         List<ButtonAbnormalResDto> buttonAbnormalResDtoList = buttonService.getButtonAbnormal(buttonAbnormalReqDto, memberId);
         return new ResponseEntity<>(buttonAbnormalResDtoList, HttpStatus.OK);
     }

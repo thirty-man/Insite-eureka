@@ -1,6 +1,5 @@
 package com.thirty.insitereadservice.activeusers.service;
 
-import com.thirty.insitereadservice.activeusers.dto.AverageActiveTimeDto;
 import com.thirty.insitereadservice.activeusers.dto.request.*;
 import com.thirty.insitereadservice.activeusers.dto.response.*;
 

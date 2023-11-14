@@ -5,7 +5,6 @@ import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
-import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insitereadservice.buttons.builder.ButtonsQueryBuilder;
 import com.thirty.insitereadservice.buttons.dto.ButtonLogDto;
 import com.thirty.insitereadservice.buttons.dto.ButtonRateDto;
@@ -25,16 +24,11 @@ import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insitereadservice.feignclient.dto.response.ButtonListResDto;
 import com.thirty.insitereadservice.global.error.ErrorCode;
 import com.thirty.insitereadservice.global.error.exception.ButtonException;
-import com.thirty.insitereadservice.global.error.exception.TimeException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,7 +37,6 @@ import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -52,9 +45,6 @@ import org.springframework.stereotype.Service;
 public class ButtonServiceImpl implements ButtonService{
     private final MemberServiceClient memberServiceClient;
     private final ButtonsQueryBuilder buttonsQueryBuilder;
-
-    @Value("${influxdb.bucket}")
-    private String bucket;
 
     @Resource
     private InfluxDBClient influxDBClient;

@@ -10,6 +10,7 @@ import com.thirty.insitereadservice.activeusers.dto.*;
 import com.thirty.insitereadservice.activeusers.dto.request.*;
 import com.thirty.insitereadservice.activeusers.dto.response.*;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
+import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +40,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ActiveUsersPerTimeResDto getActiveUsersPerTime(ActiveUsersPerTimeReqDto activeUsersPerTimeReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUsersPerTimeReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUsersPerTimeReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
 
         Flux query = activeUsersQueryBuilder.getActiveUserPerTime(
@@ -68,9 +69,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
     }
 
     @Override
-    public AverageActiveTimeResDto getAverageActiveTime(
-        AverageActiveTimeReqDto averageActiveTimeReqDto,int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
+    public AverageActiveTimeResDto getAverageActiveTime(AverageActiveTimeReqDto averageActiveTimeReqDto, int memberId) {
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
 
         Flux query = activeUsersQueryBuilder.getAverageActiveTime(
@@ -85,7 +85,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public OsActiveUserResDto getOsActiveUserCounts(OsActiveUserReqDto osActiveUserReqDto,int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
         Flux query = activeUsersQueryBuilder.getOsActiveUserCounts(
             osActiveUserReqDto.getStartDateTime(),
@@ -99,7 +99,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ActiveUserCountResDto getActiveUserCount(ActiveUserCountReqDto activeUserCountReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserCountReqDto.getApplicationToken(),memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Flux query = activeUsersQueryBuilder.getActiveUserCount(
@@ -114,7 +114,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ViewCountsPerActiveUserResDto getViewCounts(ViewCountsPerActiveUserReqDto viewCountsPerActiveUserReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(viewCountsPerActiveUserReqDto.getApplicationToken(),memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Flux actQuery = activeUsersQueryBuilder.getActivityIdCounts(
@@ -138,7 +138,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ActiveUserPerUserResDto getActiveUserPerUser(ActiveUserPerUserReqDto activeUserPerUserReqDto, int memberId) {
-        //        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(osActiveUserReqDto.getApplicationToken(),memberId));
+         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserPerUserReqDto.getApplicationToken(),memberId));
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         Flux actQuery = activeUsersQueryBuilder.getActivityIdCounts(
