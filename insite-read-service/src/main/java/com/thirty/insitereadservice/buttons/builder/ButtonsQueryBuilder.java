@@ -52,7 +52,7 @@ public class ButtonsQueryBuilder {
     }
 
     //해당 버튼을 누른 전체 사용자 수
-    public Flux getButtonClickActiveUsers(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken, String buttonName){
+    public Flux getButtonClickActiveUsersDesc(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken, String buttonName){
         Instant[] startAndEndInstant = getStartAndEndInstant(startDateTime,endDateTime);
 
         Restrictions restrictions = Restrictions.and(
@@ -64,14 +64,15 @@ public class ButtonsQueryBuilder {
         Flux query = Flux.from(bucket)
             .range(startAndEndInstant[0], startAndEndInstant[1])
             .filter(restrictions)
-            .groupBy("activityId");
+            .groupBy("activityId")
+            .sort(new String[]{"_time"}, true);
 
         log.info("query = {}" ,query);
         return query;
     }
 
     // data에서 모든 activityId의 마지막 활동 시간을 조회한다
-    public Flux getLastActive(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken, String buttonName){
+    public Flux getLastActive(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
         Instant[] startAndEndInstant = getStartAndEndInstant(startDateTime,endDateTime);
 
         Restrictions restrictions = Restrictions.and(
@@ -85,6 +86,39 @@ public class ButtonsQueryBuilder {
             .sort(new String[]{"_time"});
 
         log.info("dataQuery ={}", query);
+        return query;
+    }
+
+    public String getButtonAbnormal(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
+        Instant[] startAndEndInstant = getStartAndEndInstant(startDateTime,endDateTime);
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(startAndEndInstant[0]).append(", stop:").append(startAndEndInstant[1]).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"button\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+        queryBuilder.append("  |> group(columns:[\"\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+
+
+        log.info("query={}",queryBuilder);
+        return queryBuilder.toString();
+    }
+
+    public Flux getEveryButtonClickCountsDesc(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
+        Instant[] startAndEndInstant = getStartAndEndInstant(startDateTime,endDateTime);
+
+        Restrictions dataRestrictions = Restrictions.and(
+            Restrictions.measurement().equal("button"),
+            Restrictions.tag("applicationToken").equal(applicationToken)
+        );
+        Flux query = Flux.from(bucket)
+            .range(startAndEndInstant[0], startAndEndInstant[1])
+            .filter(dataRestrictions)
+            .groupBy("name")
+            .sort(new String[]{"_time"}, true);
+
+        log.info("query ={}", query);
         return query;
     }
 }
