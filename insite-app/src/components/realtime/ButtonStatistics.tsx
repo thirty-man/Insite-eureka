@@ -36,7 +36,7 @@ function ButtonStatistics() {
           <tr>
             <th>버튼</th>
             <th>누른 횟수</th>
-            <th>차지 비율</th>
+            <th>평균 클릭 횟수</th>
           </tr>
         </TableHeader>
         <TableBody>

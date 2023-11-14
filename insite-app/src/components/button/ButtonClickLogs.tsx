@@ -23,7 +23,7 @@ const Outer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 80%;
+  height: 100%;
   margin: 0;
 `;
 
@@ -31,7 +31,7 @@ const OutDiv = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  height: 100%;
+  height: 80%;
   margin-top: 1rem;
 `;
 
@@ -191,7 +191,9 @@ function ButtonClickLogs() {
               src={activeuserclickavg}
               alt="사용자당 클릭 수 평균"
             />
-            <NumberDiv>{clickCountsPerActiveUsers}</NumberDiv>
+            <NumberDiv>
+              {(clickCountsPerActiveUsers * 100).toPrecision(2)}
+            </NumberDiv>
           </InnerIconBox>
         </IconDiv>
       </OutDiv>
