@@ -150,7 +150,7 @@ function SideBar() {
             <MenuWrapper
               onClick={() => {
                 if (item.id === 7) {
-                  window.open(`https://${target}`, "_blank");
+                  window.open(target, "_blank");
                   return;
                 }
                 dispatch(setSelectedMenuId(item.id));

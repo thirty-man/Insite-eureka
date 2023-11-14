@@ -274,13 +274,13 @@ function MySitePage() {
             <br />
             <InputField
               type="text"
-              placeholder="서비스명"
+              placeholder="ex) 꿀스라이팅"
               value={serviceName}
               onChange={handleServiceNameChange}
             />
             <InputField
               type="text"
-              placeholder="서비스URL"
+              placeholder="ex) https://rollinghoney.com"
               value={serviceUrl}
               onChange={handleServiceUrlChange}
             />
