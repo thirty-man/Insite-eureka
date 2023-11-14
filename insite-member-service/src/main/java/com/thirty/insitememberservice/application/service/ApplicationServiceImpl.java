@@ -37,10 +37,10 @@ public class ApplicationServiceImpl implements ApplicationService{
         if(optionalMember.isEmpty()){
             throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
         }
-        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationUrlAndIsDeletedIsFalse(applicationCreateReqDto.getApplicationUrl());
-        if(optionalApplication.isPresent()){
-            throw new ApplicationException(ErrorCode.ALREADY_EXIST_APPLICATION);
-        }
+//        Optional<Application> optionalApplication = applicationRepository.findApplicationByApplicationUrlAndIsDeletedIsFalse(applicationCreateReqDto.getApplicationUrl());
+//        if(optionalApplication.isPresent()){
+//            throw new ApplicationException(ErrorCode.ALREADY_EXIST_APPLICATION);
+//        }
         Member member= optionalMember.get();
         String token=UUID.randomUUID().toString();
 
