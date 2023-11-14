@@ -220,6 +220,7 @@ type ApplicationDtoType = {
   name: string;
   applicationUrl: string;
   applicationToken: string;
+  createTime: string;
 };
 
 type ActiveUsersPerTimeResDtoType = {
