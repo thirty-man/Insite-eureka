@@ -118,6 +118,7 @@ function MySitePage() {
   const [serviceUrl, setServiceUrl] = useState("");
   const [siteList, setSiteList] = useState<ApplicationDtoType[]>([]);
   const navi = useNavigate();
+  const [change, setChange] = useState<boolean>(false);
 
   // Spring values for the image animations based on scroll
   const [{ scrollY }, setScrollY] = useSpring(() => ({ scrollY: 0 }));
@@ -138,6 +139,7 @@ function MySitePage() {
         const response = await getSiteList();
         if (!response.applicationDtoList) setSiteList([]);
         else setSiteList(response.applicationDtoList);
+        setChange(false);
       } catch (error) {
         // eslint-disable-next-line no-console
         // console.error(error); // 에러 처리
@@ -145,7 +147,7 @@ function MySitePage() {
     };
 
     fetchData();
-  }, []);
+  }, [change]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -173,6 +175,7 @@ function MySitePage() {
       try {
         const response = await createStie(serviceName, serviceUrl);
         console.log("어플 등록 성공", response);
+        setChange(true);
         closeModal();
         // window.location.reload();
       } catch (error) {
