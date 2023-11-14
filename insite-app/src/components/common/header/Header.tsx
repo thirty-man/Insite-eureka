@@ -316,10 +316,11 @@ function Header() {
   const handleSelectedSite = (item: ApplicationDtoType) => {
     dispatch(setSelectedSite(item.name));
     const myApp = {
-      applicationId: item.id,
+      ApplicationId: item.id,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
+      createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
@@ -425,7 +426,7 @@ function Header() {
           <Modal
             width="24rem"
             height="22rem"
-            $posX="35%"
+            $posX="25%"
             $posY="60%"
             $position="absolute"
             close={() => setOpenDate(false)}
@@ -511,7 +512,6 @@ function Header() {
                 onClick={() => {
                   navi("/mysite");
                   setOpenProfile(false);
-                  sessionStorage.clear();
                 }}
               >
                 사이트 선택하러 가기
