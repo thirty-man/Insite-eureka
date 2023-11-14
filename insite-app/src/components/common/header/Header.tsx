@@ -323,6 +323,7 @@ function Header() {
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
+    window.location.reload();
   };
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
