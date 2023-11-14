@@ -55,7 +55,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
     @Override
     public ActiveUserResDto getActiveUser(ActiveUserReqDto activeUserReqDto, int memberId) {
-//        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
+        memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(activeUserReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
 
         Flux query = activeUsersQueryBuilder.getActiveUser(
