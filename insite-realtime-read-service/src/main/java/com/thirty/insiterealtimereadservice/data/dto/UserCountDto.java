@@ -21,9 +21,9 @@ public class UserCountDto implements Comparable<UserCountDto> {
 
     private double percentage;
 
-    private int responseTime;
+    private double responseTime;
 
-    public static UserCountDto create(String currentPage, int count, double percentage, int responseTime){
+    public static UserCountDto create(String currentPage, int count, double percentage, double responseTime){
         return UserCountDto.builder()
             .currentPage(currentPage)
             .count(count)

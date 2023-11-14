@@ -13,9 +13,9 @@ public class CountWithResponseTime {
 
     private int count;
 
-    private int responseTime;
+    private double responseTime;
 
-    public static CountWithResponseTime create(int count, int responseTime){
+    public static CountWithResponseTime create(int count, double responseTime){
         return CountWithResponseTime.builder()
             .count(count)
             .responseTime(responseTime)

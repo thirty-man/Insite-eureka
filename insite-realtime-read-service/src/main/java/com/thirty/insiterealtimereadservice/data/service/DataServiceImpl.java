@@ -5,7 +5,6 @@ import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.influxdb.query.dsl.Flux;
-import com.influxdb.query.dsl.functions.restriction.Restrictions;
 import com.thirty.insiterealtimereadservice.data.dto.AbnormalDto;
 import com.thirty.insiterealtimereadservice.data.dto.CountWithResponseTime;
 import com.thirty.insiterealtimereadservice.data.dto.ReferrerDto;
@@ -16,9 +15,7 @@ import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import com.thirty.insiterealtimereadservice.feignclient.MemberServiceClient;
 import com.thirty.insiterealtimereadservice.feignclient.dto.request.MemberValidReqDto;
 import com.thirty.insiterealtimereadservice.global.builder.InfluxQueryBuilder;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,12 +141,12 @@ public class DataServiceImpl implements DataService{
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             String url = "";
-            int sumResponseTime = 0;
+            double sumResponseTime = 0;
 
             for (FluxRecord record : records) {
                 url = record.getValueByKey("currentUrl").toString();
                 String stringValueOfResponseTime = record.getValueByKey("responseTime").toString();
-                sumResponseTime += Integer.valueOf(stringValueOfResponseTime);
+                sumResponseTime += Double.valueOf(stringValueOfResponseTime);
 
             }
             if(!url.equals("")){
