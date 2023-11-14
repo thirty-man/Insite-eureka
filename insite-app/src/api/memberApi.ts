@@ -51,9 +51,9 @@ const getSiteList = async () => {
   return [];
 };
 
-const deleteApplication = async(applicationId:number)=>{
+const deleteApplication = async(applicationToken:string)=>{
   try{
-    const response = await memberAPI.patch("/application/remove");
+    const response = await memberAPI.patch("/application/remove",{applicationToken});
     return response.data;
   } catch(error){
     console.error("memberApi - deleteApplication error",error);
