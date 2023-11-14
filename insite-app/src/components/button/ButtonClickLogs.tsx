@@ -192,7 +192,7 @@ function ButtonClickLogs() {
               alt="사용자당 클릭 수 평균"
             />
             <NumberDiv>
-              {(clickCountsPerActiveUsers * 100).toPrecision(2)}
+              {(clickCountsPerActiveUsers * 100).toFixed(2)}
             </NumberDiv>
           </InnerIconBox>
         </IconDiv>
