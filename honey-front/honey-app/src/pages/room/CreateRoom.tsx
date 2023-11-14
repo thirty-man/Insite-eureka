@@ -131,7 +131,7 @@ function CreateRoom() {
       setAlertModal(true);
       return;
     }
-    setOpenCalendar((prev) => !prev);
+    setOpenCalendar(false);
   };
 
   const submitRoomData = async () => {
