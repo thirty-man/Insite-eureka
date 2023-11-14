@@ -104,6 +104,8 @@ function UserStatistics() {
           "#03c69b",
           "#00f194",
         ],
+        colorByPoint: true,
+        groupPadding: 0,
       },
     ],
   };
