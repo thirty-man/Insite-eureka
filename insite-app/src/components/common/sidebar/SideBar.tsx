@@ -48,12 +48,12 @@ const MenuContainer = styled.div`
   width: 100%;
   height: 90%;
 `;
-const MenuWrapper = styled.button<{ $isActive: boolean }>`
+const MenuWrapper = styled.button<{ isActive: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  background-color: ${(props) => (props.$isActive ? "#252531" : "black")};
+  background-color: ${(props) => (props.isActive ? "#252531" : "black")};
   color: white;
   width: 100%;
   height: 100%;
@@ -70,7 +70,7 @@ const MenuWrapper = styled.button<{ $isActive: boolean }>`
     /* filter: invert(100%); */
   }
 
-  ${({ $isActive }) => $isActive && `font-weight:600;`}
+  ${({ isActive }) => isActive && `font-weight:600;`}
 `;
 const MenuItem = styled.div`
   display: flex;
@@ -156,7 +156,7 @@ function SideBar() {
                 dispatch(setSelectedMenuId(item.id));
                 navi(item.route);
               }}
-              $isActive={item.id === selectedMenuId}
+              isActive={item.id === selectedMenuId}
             >
               <MenuItem>
                 <img src={icons[item.image]} alt={item.menu} />
