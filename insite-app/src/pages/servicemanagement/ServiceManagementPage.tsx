@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { DefaultBox } from "@components/common";
 import { useState, useEffect } from "react";
 import { ApplicationDtoType, ButtonType } from "@customtypes/dataTypes";
-import { createButton, getButtonList, deleteApplication } from "@api/memberApi";
-
+import { createButton, getButtonList } from "@api/memberApi";
 
 const ManagementStyle = styled.div`
   .parent {
@@ -148,17 +147,6 @@ function ServiceManagementPage() {
 
     fetchData();
   }, []);
-  
-  const deleteData = async() =>{
-    
-    try{
-      const response = await deleteApplication(data.id);
-      console.log("API 호출 성공",response);
-      window.location.reload();
-    }catch(error){
-      console.error(error);
-        }
-  }
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -173,7 +161,7 @@ function ServiceManagementPage() {
   ) => {
     setButtonName(event.target.value);
   };
-  
+
   // 버튼 추가
   const handleConfirm = () => {
     const createData = async () => {
@@ -213,9 +201,6 @@ function ServiceManagementPage() {
               <Title>
                 <h1>내 서비스 관리</h1>
               </Title>
-              <ButtonContainer>
-              <ConfirmButton onClick={deleteData}>삭제</ConfirmButton>
-            </ButtonContainer>
               <br />
               <br />
               <div className="infoContainer">
@@ -242,7 +227,6 @@ function ServiceManagementPage() {
                   <p>{data.applicationToken}</p>
                 </TextBox>
               </div>
-              
             </div>
 
             <div style={{ marginTop: "5%" }}>
@@ -276,7 +260,6 @@ function ServiceManagementPage() {
             <StyledButton type="button" onClick={openModal}>
               버튼 추가하기
             </StyledButton>
-            
           </DefaultBox>
         </div>
       </div>
