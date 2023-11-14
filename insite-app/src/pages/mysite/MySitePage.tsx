@@ -196,32 +196,14 @@ function MySitePage() {
     setServiceUrl("");
   };
 
-  // const selectSite = (item: ApplicationDtoType) => {
-  //   const myApp: ApplicationDtoType = {
-  //     applicationId: item.applicationId,
-  //     name: item.name,
-  //     applicationUrl: item.applicationUrl,
-  //     applicationToken: item.applicationToken,
-  //   };
-  //   sessionStorage.setItem("myApp", JSON.stringify(myApp));
-  //   navi("/board");
-  // };
-
-  const selectSite = async (item: ApplicationDtoType) => {
+  const selectSite = (item: ApplicationDtoType) => {
     const myApp: ApplicationDtoType = {
       applicationId: item.applicationId,
       name: item.name,
       applicationUrl: item.applicationUrl,
       applicationToken: item.applicationToken,
     };
-
-    // 비동기 처리
-    await new Promise<void>((resolve) => {
-      sessionStorage.setItem("myApp", JSON.stringify(myApp));
-      resolve();
-    });
-
-    // 페이지 이동
+    sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
   };
 
