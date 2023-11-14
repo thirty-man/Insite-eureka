@@ -8,6 +8,38 @@ import { createStie, getSiteList } from "@api/memberApi";
 import { useNavigate } from "react-router-dom";
 import { useSpring } from "react-spring";
 
+const StyledButton = styled.button`
+  background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px black;
+  border-radius: 10px;
+  display: block;
+  width: 15rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: white;
+    text-decoration: none;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  &:active {
+    transform: scale(0.99);
+    transition: transform 0.1s;
+  }
+
+  &:focus {
+    background-color: white;
+  }
+`;
+
 const MainContainer = styled.div`
   width: 90%;
   height: 70%;
@@ -60,7 +92,7 @@ const ModalBackground = styled.div`
 const ModalContent = styled.div`
   background: #333744;
   padding: 40px; /* 모달 크기 조절 */
-  border-radius: 8px;
+  border-radius: 10px;
 `;
 
 const InputField = styled.input`
@@ -71,6 +103,7 @@ const InputField = styled.input`
   background-color: #1e1f23;
   color: white;
   border: 1px solid black;
+  border-radius: 10px;
 `;
 
 const ButtonContainer = styled.div`
@@ -78,33 +111,15 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ConfirmButton = styled.button`
-  flex: 1;
-  margin-right: 10px; /* 간격 조절 */
-  padding: 20px; /* 버튼 크기 조절 */
-  font-size: 18px; /* 폰트 크기 조절 */
-  cursor: pointer;
-  background-color: #9051e4; /* 배경색 */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #b990ec; /* 호버링 시 배경색 변경 */
-  }
-`;
-
 const CancelButton = styled.button`
   flex: 1;
   margin-left: 10px; /* 간격 조절 */
   padding: 20px; /* 버튼 크기 조절 */
-  font-size: 18px; /* 폰트 크기 조절 */
   cursor: pointer;
   background-color: #1e1f23; /* 배경색 */
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -286,7 +301,7 @@ function MySitePage() {
               onChange={handleServiceUrlChange}
             />
             <ButtonContainer>
-              <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
+              <StyledButton onClick={handleConfirm}>확인</StyledButton>
               <CancelButton onClick={handleCancel}>취소</CancelButton>
             </ButtonContainer>
           </ModalContent>
