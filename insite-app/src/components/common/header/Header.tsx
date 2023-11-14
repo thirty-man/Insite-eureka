@@ -314,7 +314,7 @@ function Header() {
   };
 
   const handleSelectedSite = (item: ApplicationDtoType) => {
-    dispatch(setSelectedSite(item.name));
+    // dispatch(setSelectedSite(item.name));
     const myApp = {
       ApplicationId: item.id,
       name: item.name,
@@ -325,6 +325,18 @@ function Header() {
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     navi("/board");
   };
+
+  useEffect(() => {
+    const myApp =
+      sessionStorage.getItem("myApp") ||
+      `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
+
+    const data: ApplicationDtoType = JSON.parse(myApp);
+    const { name } = data;
+    dispatch(setSelectedSite(name));
+    console.log("헤더바꿔");
+  }, [dispatch]);
+
   const handlenewStartDate = (item: string) => {
     setNewStartDate(item);
   };
