@@ -51,7 +51,7 @@ function StartDateSelect({
     (state: RootState) => state.DateSelectionInfo.end,
   );
   const latestDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
+    (state: RootState) => state.DateSelectionInfo.latest,
   );
 
   const startDate = useSelector(
