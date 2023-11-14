@@ -58,7 +58,7 @@ function BeforeUrl() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.exitPage}</TableCell>
               <TableCell>{item.exitCount}</TableCell>
-              <TableCell>{+item.exitRate.toFixed(4) * 100}%</TableCell>
+              <TableCell>{(+item.exitRate * 100).toPrecision(4)}%</TableCell>
             </TableRow>
           ))}
         </TableBody>
