@@ -173,8 +173,7 @@ function MypageTitle() {
         />
       </div>
       <div>
-        개봉일 : {showDate || ""}
-        {showTime || ""}
+        개봉일 : {showDate || ""} {showTime || ""}
       </div>
       <div className="flex justify-center items-center">
         <button
