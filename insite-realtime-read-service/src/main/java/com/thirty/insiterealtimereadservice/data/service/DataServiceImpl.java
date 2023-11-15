@@ -66,8 +66,13 @@ public class DataServiceImpl implements DataService{
 
         List<FluxTable> tables = queryApi.query(query.toString());
 
+        int sum = 0;
+        for(FluxTable table : tables){
+            sum += table.getRecords().size();
+        }
+
         Map<String, CountWithResponseTime> urlWithCountAndResponseTime = getCurrentUrlWithCountWithResponseTime(tables);
-        return UserCountResDto.create(getUserCountDtoList(urlWithCountAndResponseTime));
+        return UserCountResDto.create(getUserCountDtoList(sum , urlWithCountAndResponseTime));
     }
 
     @Override
@@ -90,10 +95,6 @@ public class DataServiceImpl implements DataService{
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord record : records) {
                 String referrer = record.getValueByKey("referrer").toString();
-
-                if(referrer.equals("null")){
-                    continue;
-                }
 
                 String count = record.getValueByKey("_value").toString();
                 double referrerCount = Double.valueOf(count);
@@ -156,7 +157,7 @@ public class DataServiceImpl implements DataService{
     }
 
     @NotNull
-    private List<UserCountDto> getUserCountDtoList(Map<String, CountWithResponseTime> urlWithCountAndResponseTime) {
+    private List<UserCountDto> getUserCountDtoList(int sum, Map<String, CountWithResponseTime> urlWithCountAndResponseTime) {
         PriorityQueue<UserCountDto> userCountDtoPriorityQueue = new PriorityQueue<>();
         List<UserCountDto> userCountDtoList = new ArrayList<>();
 
@@ -167,6 +168,7 @@ public class DataServiceImpl implements DataService{
                 url,
                 countWithResponseTime.getViewCount(),
                 countWithResponseTime.getUserCount(),
+                sum == 0 ? 0.0 : countWithResponseTime.getViewCount()/(double) sum,
                 countWithResponseTime.getResponseTime()
             ));
         }

@@ -71,7 +71,10 @@ public class InfluxQueryBuilder {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(applicationToken)
+            Restrictions.tag("applicationToken").equal(applicationToken),
+            Restrictions.tag("referrer").notEqual("null"),
+            Restrictions.tag("referrer").notEqual("https://kauth.kakao.com/"),
+            Restrictions.tag("referrer").notEqual("https://accounts.kakao.com/")
         );
         Flux query = Flux.from(bucket)
             .range(getBeforeThirtyMinutes(), getNow())
