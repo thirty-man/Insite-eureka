@@ -5,17 +5,17 @@ import { DefaultBox } from "@components/common";
 import { useState, useEffect } from "react";
 import { ApplicationDtoType, ButtonType } from "@customtypes/dataTypes";
 import { createButton, getButtonList } from "@api/memberApi";
-// import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-// import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-// const CodeContainer = styled.div`
-//   max-height: 400px; // You can adjust this value
-//   overflow-y: auto; // Enable vertical scrolling
-//   padding: 10px;
-//   /* background-color: #1e1f23; // Optional: for better contrast */
-//   border-radius: 10px; // Optional: for styling
-//   margin-top: 10px;
-// `;
+const CodeContainer = styled.div`
+  max-height: 400px; // You can adjust this value
+  overflow-y: auto; // Enable vertical scrolling
+  padding: 10px;
+  /* background-color: #1e1f23; // Optional: for better contrast */
+  border-radius: 10px; // Optional: for styling
+  margin-top: 10px;
+`;
 
 const ManagementStyle = styled.div`
   .parent {
@@ -74,62 +74,62 @@ const StyledButton = styled.button`
   }
 `;
 
-// const ScriptModalOpenButton = styled.button`
-//   background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
-//   padding: 15px 30px;
-//   text-align: center;
-//   text-transform: uppercase;
-//   transition: 0.5s;
-//   background-size: 200% auto;
-//   color: white;
-//   box-shadow: 0 0 20px black;
-//   border-radius: 10px;
-//   display: block;
-//   width: 500px;
-//   cursor: pointer;
+const ScriptModalOpenButton = styled.button`
+  background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px black;
+  border-radius: 10px;
+  display: block;
+  width: 500px;
+  cursor: pointer;
 
-//   &:hover {
-//     background-color: white;
-//     color: white;
-//     text-decoration: none;
-//     transform: scale(1.02);
-//     transition: transform 0.3s ease;
-//   }
+  &:hover {
+    background-color: white;
+    color: white;
+    text-decoration: none;
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+  }
 
-//   &:active {
-//     transform: scale(0.99);
-//     transition: transform 0.1s;
-//   }
+  &:active {
+    transform: scale(0.99);
+    transition: transform 0.1s;
+  }
 
-//   &:focus {
-//     background-color: white;
-//   }
-// `;
+  &:focus {
+    background-color: white;
+  }
+`;
 
-// const ScriptButton = styled.button`
-//   background-color: transparent;
-//   padding: 5px 10px;
-//   text-align: center;
-//   text-transform: uppercase;
-//   transition: 0.1s;
-//   width: 10rem;
-//   cursor: pointer;
-//   color: white;
-//   text-transform: none;
-//   border-radius: 3px;
+const ScriptButton = styled.button`
+  background-color: transparent;
+  padding: 5px 10px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.1s;
+  width: 10rem;
+  cursor: pointer;
+  color: white;
+  text-transform: none;
+  border-radius: 3px;
 
-//   &:hover {
-//     background-color: #333744;
-//     color: white;
-//     text-decoration: none;
-//     transition: transform 0.1s ease;
-//   }
+  &:hover {
+    background-color: #333744;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.1s ease;
+  }
 
-//   &:active {
-//     transform: scale(0.95);
-//     transition: transform 0.1s;
-//   }
-// `;
+  &:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+  }
+`;
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -152,12 +152,12 @@ const ModalContent = styled.div`
   width: 20rem;
 `;
 
-// const ModalButtonWrapper = styled.div`
-//   width: 100%; // Take full width of the container
-//   display: flex;
-//   justify-content: center; // Center button horizontally
-//   margin-top: 20px; // Add some space above the button
-// `;
+const ModalButtonWrapper = styled.div`
+  width: 100%; // Take full width of the container
+  display: flex;
+  justify-content: center; // Center button horizontally
+  margin-top: 20px; // Add some space above the button
+`;
 
 const InputField = styled.input`
   width: 89%;
@@ -197,40 +197,40 @@ const Title = styled.div`
   align-items: center;
 `;
 
-// const TextModalContent = styled.div`
-//   position: fixed;
-//   top: 40%; // Adjust according to your layout
-//   left: 60%;
-//   transform: translate(-50%, -50%);
-//   width: 70%;
-//   max-width: 800px;
-//   height: auto;
-//   background: black;
-//   padding: 20px;
-//   border-radius: 10px;
-//   overflow-y: auto; // Enable scrolling
-//   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-// `;
+const TextModalContent = styled.div`
+  position: fixed;
+  top: 40%; // Adjust according to your layout
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 800px;
+  height: auto;
+  background: black;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-y: auto; // Enable scrolling
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+`;
 
 function ServiceManagementPage() {
   // Inside your ServiceManagementPage component
-  // const [activeTab, setActiveTab] = useState("WithAnalyticsJsx");
-  // const [codeContent, setCodeContent] = useState("");
+  const [activeTab, setActiveTab] = useState("WithAnalyticsJsx");
+  const [codeContent, setCodeContent] = useState("");
 
-  // useEffect(() => {
-  //   const fetchCode = async () => {
-  //     const path = `src/assets/scripts/${activeTab}.txt`; // Adjust the path
-  //     try {
-  //       const response = await fetch(path);
-  //       const text = await response.text();
-  //       setCodeContent(text);
-  //     } catch (error) {
-  //       console.error("Failed to fetch code:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchCode = async () => {
+      const path = `src/assets/scripts/${activeTab}.txt`; // Adjust the path
+      try {
+        const response = await fetch(path);
+        const text = await response.text();
+        setCodeContent(text);
+      } catch (error) {
+        console.error("Failed to fetch code:", error);
+      }
+    };
 
-  //   fetchCode();
-  // }, [activeTab]);
+    fetchCode();
+  }, [activeTab]);
 
   const myApp =
     sessionStorage.getItem("myApp") ||
@@ -241,11 +241,11 @@ function ServiceManagementPage() {
   const [buttonName, setButtonName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const [isTextModalOpen, setIsTextModalOpen] = useState(false);
+  const [isTextModalOpen, setIsTextModalOpen] = useState(false);
 
-  // const toggleTextModal = () => {
-  //   setIsTextModalOpen(!isTextModalOpen);
-  // };
+  const toggleTextModal = () => {
+    setIsTextModalOpen(!isTextModalOpen);
+  };
 
   // 버튼 리스트 가져오기
   useEffect(() => {
@@ -352,7 +352,7 @@ function ServiceManagementPage() {
                   <p>{data.applicationToken}</p>
                 </TextBox>
               </div>
-              {/* <div className="infoContainer">
+              <div className="infoContainer">
                 <p className="infoText">코드 </p>
                 <ScriptModalOpenButton onClick={toggleTextModal}>
                   스크립트 코드
@@ -395,7 +395,7 @@ function ServiceManagementPage() {
                     <CancelButton onClick={toggleTextModal}>닫 기</CancelButton>
                   </ModalButtonWrapper>
                 </TextModalContent>
-              )} */}
+              )}
             </div>
 
             <div style={{ marginTop: "5%" }}>
