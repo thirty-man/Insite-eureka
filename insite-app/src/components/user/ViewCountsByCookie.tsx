@@ -102,15 +102,12 @@ function ViewCountsByCookie() {
       title: {
         text: null,
       },
-      min: 0,
-      max: 4,
       scrollbar: {
         enabled: true,
       },
       tickLength: 0,
     },
     yAxis: {
-      min: 0,
       title: {
         text: "URL",
         style: {
