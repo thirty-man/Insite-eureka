@@ -45,7 +45,9 @@ function MypageTitle() {
   useEffect(() => {
     if (selectedRoom === undefined) return;
     setTitle(selectedRoom.roomTitle);
-    setShowTime(selectedRoom.showTime.split("T")[0]);
+    const parts = selectedRoom.showTime.split("T");
+    setShowDate(parts[0]);
+    setShowTime(parts[1].split(".")[0]);
   }, [selectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
