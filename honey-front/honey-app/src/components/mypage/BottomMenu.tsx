@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { greedyPooh, sendPot } from "@assets/images";
 import axios from "axios";
+import { traceButton } from "../../../Tracebutton";
 
 function ButtomMenu() {
   const { routeTo } = useRouter();
@@ -107,7 +108,11 @@ function ButtomMenu() {
             text="메시지 보내기"
             color="3"
             className={buttonStyle}
-            onClick={() => showMemberList()}
+            onClick={() => {
+              showMemberList();
+              traceButton("메시지 보내기");
+            }}
+            // onClick={() => showMemberList()}
           />
           {memberOpen && (
             <PotModal
@@ -155,13 +160,21 @@ function ButtomMenu() {
             text="초대 링크 복사"
             color="3"
             className={buttonStyle}
-            onClick={() => roomPaste()}
+            onClick={() => {
+              roomPaste();
+              traceButton("초대 링크 복사");
+            }}
+            // onClick={() => roomPaste()}
           />
           <TextButton
             text="방 수정"
             color="3"
             className={buttonStyle}
-            onClick={() => modifyRoom()}
+            onClick={() => {
+              modifyRoom();
+              traceButton("방 수정");
+            }}
+            // onClick={() => modifyRoom()}
           />
           <TextButton
             text="방 탈퇴"
