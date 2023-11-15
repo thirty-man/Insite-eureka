@@ -63,6 +63,8 @@ function RealTimeUserDonutChart() {
       },
     },
     tooltip: {
+      pointFormat:
+        '<span style="color:{point.color}">{point.fullName}</span>: {point.y}%',
       style: {
         fontSize: "14px",
       },
