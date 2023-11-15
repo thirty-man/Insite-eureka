@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { IconCalendar } from "@assets/icons";
 
 interface CalendarButtonProps {
-  startDate: string;
-  endDate: string;
+  date: string;
+  onClick: (e: React.MouseEvent) => void;
 }
 
 const Border = styled.div`
@@ -27,14 +27,6 @@ const DateText = styled.div`
   margin-right: 2px;
 `;
 
-const DateText2 = styled.div`
-  width: 2%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
 const DateImg = styled.img`
   width: 30%;
   height: 50%;
@@ -57,13 +49,11 @@ const CalendarContainer = styled.div`
   padding: 5px;
 `;
 
-function CalendarButton({ startDate, endDate }: CalendarButtonProps) {
+function CalendarButton({ date, onClick }: CalendarButtonProps) {
   return (
     <Border>
-      <CalendarContainer>
-        <DateText>{startDate}</DateText>
-        <DateText2>~</DateText2>
-        <DateText>{endDate}</DateText>
+      <CalendarContainer onClick={onClick}>
+        <DateText>{date}</DateText>
         <DateImg src={IconCalendar} alt="calendar icon" />
       </CalendarContainer>
     </Border>
