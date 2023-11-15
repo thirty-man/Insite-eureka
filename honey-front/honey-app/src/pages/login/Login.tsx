@@ -128,7 +128,7 @@ function Login() {
         <span>s Writing</span>
       </div>
 
-      <div className="flex h-3/6 justify-center items-center">
+      <div className="flex h-2/6 justify-center items-center">
         <div className="flex flex-col h-full items-center justify-center">
           <img src={threebear} alt="mainpooh" />
           <button type="button" onClick={handleLoginClick}>
