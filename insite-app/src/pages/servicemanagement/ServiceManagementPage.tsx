@@ -219,7 +219,7 @@ function ServiceManagementPage() {
 
   useEffect(() => {
     const fetchCode = async () => {
-      const path = `src/assets/scripts/${activeTab}.txt`; // Adjust the path
+      const path = `../../assets/scripts/${activeTab}.txt`; // Adjust the path
       try {
         const response = await fetch(path);
         const text = await response.text();
