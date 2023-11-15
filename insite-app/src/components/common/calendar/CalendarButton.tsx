@@ -9,7 +9,7 @@ interface CalendarButtonProps {
 const Border = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   min-width: 100px;
   width: 50%;
   height: 80%;
@@ -41,6 +41,7 @@ const DateImg = styled.img`
   justify-content: center;
   margin-right: 5px;
   filter: invert(100%);
+  margin-left: 15px;
 `;
 
 const CalendarContainer = styled.div`
