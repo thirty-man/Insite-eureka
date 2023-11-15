@@ -431,9 +431,7 @@ function Header() {
     if (startD > endD || startD < pastD) {
       startD = pastD;
     }
-
-    dispatch(setStartDate(startDate.toString().split("T")[0]));
-    dispatch(setEndDate(newEndDate));
+    dispatch(setStartDate(startD.toString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
@@ -446,9 +444,7 @@ function Header() {
     if (endD > latestD) {
       endD = latestD;
     }
-
-    dispatch(setStartDate(newStartDate));
-    dispatch(setEndDate(endDate.toString().split("T")[0]));
+    dispatch(setEndDate(endD.toString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
