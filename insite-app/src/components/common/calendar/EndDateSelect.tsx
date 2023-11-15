@@ -59,7 +59,10 @@ function EndDateSelect({
   };
 
   const parseString = (dateStr: string) => {
-    const [year, month, day] = dateStr.split("-");
+    const [year, month, day] = dateStr.split("-").map((val, index) => {
+      if (index === 0) return val;
+      return String(parseInt(val, 10));
+    });
     return [year, month, day];
   };
 
@@ -75,19 +78,27 @@ function EndDateSelect({
   const startDateObj = startDate ? parseDate(startDate) : parseDate(pastDate);
   const latestDateObj = parseDate(latestDate);
 
-  const getYearsInRange = (start: Date, end: Date) => {
+  const getYearsInRange = (start: Date, latest: Date) => {
     const years = [];
-    for (let year = start.getFullYear(); year <= end.getFullYear(); year += 1) {
+    for (
+      let year = start.getFullYear();
+      year <= latest.getFullYear();
+      year += 1
+    ) {
       years.push(year.toString());
     }
     return years;
   };
 
-  const getMonthsInRange = (start: Date, end: Date) => {
+  const getMonthsInRange = (start: Date, latest: Date) => {
     const months = [];
     // 시작과 종료가 같은 년도일 때만
-    if (start.getFullYear() === end.getFullYear()) {
-      for (let month = start.getMonth(); month <= end.getMonth(); month += 1) {
+    if (start.getFullYear() === latest.getFullYear()) {
+      for (
+        let month = start.getMonth();
+        month <= latest.getMonth();
+        month += 1
+      ) {
         months.push((month + 1).toString()); // 실제 월은 1에서 시작합니다.
       }
     } else {
@@ -99,48 +110,46 @@ function EndDateSelect({
     return months;
   };
 
-  const getDaysInRange = (start: Date, end: Date) => {
-    const days: string[] = [];
-    // 시작과 종료 날짜가 같은 년, 같은 월일 때만
-    if (
-      start.getFullYear() === end.getFullYear() &&
-      start.getMonth() === end.getMonth()
-    ) {
-      for (let day = start.getDate(); day <= end.getDate(); day += 1) {
-        days.push(day.toString());
-      }
-    } else {
-      // 해당 월의 마지막 일자를 계산합니다.
-      const month = start.getMonth();
-      const year = start.getFullYear();
+  const yearArray = getYearsInRange(startDateObj, latestDateObj);
+  const monthArray = getMonthsInRange(startDateObj, latestDateObj);
+  const [dayOptions, setDayOptions] = useState<ItemType[]>([]);
+
+  useEffect(() => {
+    const getDaysInRange = (year: number, month: number) => {
+      const days = [];
       let lastDayOfMonth;
 
-      if (month === 1) {
-        // 2월의 경우
+      if (month === 2) {
         lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+      } else if (month === 4 || month === 6 || month === 9 || month === 11) {
+        lastDayOfMonth = 30;
       } else {
-        lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+        lastDayOfMonth = 31;
       }
 
       for (let day = 1; day <= lastDayOfMonth; day += 1) {
         days.push(day.toString());
       }
-    }
-    return days;
-  };
 
-  const yearArray = getYearsInRange(startDateObj, latestDateObj);
-  const monthArray = getMonthsInRange(startDateObj, latestDateObj);
-  const dayArray = getDaysInRange(startDateObj, latestDateObj);
+      return days;
+    };
+
+    const newDayOptions = getDaysInRange(
+      parseInt(endYear, 10),
+      parseInt(endMonth, 10),
+    );
+    setDayOptions(
+      newDayOptions.map((day, index) => {
+        return { id: index, name: day };
+      }),
+    );
+  }, [endYear, endMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
     return { id: index, name: year };
   });
   const monthOptions: ItemType[] = monthArray.map((month, index) => {
     return { id: index, name: month };
-  });
-  const dayOptions: ItemType[] = dayArray.map((day, index) => {
-    return { id: index, name: day };
   });
 
   const handleEndYear = (item: ItemType) => {
@@ -154,8 +163,10 @@ function EndDateSelect({
   };
 
   useEffect(() => {
-    const newEndDate: string = `${endYear}-${endMonth}-${endDay}`;
-
+    const newEndDate: string = `${endYear}-${endMonth.padStart(
+      2,
+      "0",
+    )}-${endDay.padStart(2, "0")}`;
     onChange(newEndDate);
   }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
 
