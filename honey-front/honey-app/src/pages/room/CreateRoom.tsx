@@ -127,7 +127,7 @@ function CreateRoom() {
       moment(selectedDateTime).isSame(moment(), "day") &&
       selectedDateTime < new Date()
     ) {
-      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
+      setAlertText("공개 시각은 현재 시각 이후로 설정할 수 있습니다.");
       setAlertModal(true);
       return;
     }
@@ -233,7 +233,7 @@ function CreateRoom() {
       moment(selectedDateTime).isSame(moment(), "day") &&
       selectedDateTime < new Date()
     ) {
-      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
+      setAlertText("공개 시각은 현재 시각 이후로 설정할 수 있습니다.");
       setAlertModal(true);
       return;
     }
