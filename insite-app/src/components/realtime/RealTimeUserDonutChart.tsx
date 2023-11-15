@@ -70,7 +70,7 @@ function RealTimeUserDonutChart() {
     },
     series: [
       {
-        name: "사용량(%)",
+        fullName: "사용량(%)",
         data,
       },
     ],
