@@ -64,8 +64,8 @@ public class UsersServiceImpl implements UsersService {
         queryBuilder.append("  |> range(start: ").append(startInstant).append(", stop:").append(endInstant).append(")\n");
         queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
             .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
-        queryBuilder.append("  |> group(columns:[\"\"])\n");
-        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+        queryBuilder.append("  |> group(columns:[\"cookieId\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"], desc: true)");
 
         log.info("query = {}" ,queryBuilder);
 
@@ -75,21 +75,20 @@ public class UsersServiceImpl implements UsersService {
         int id = 0 ;
 
         for (FluxTable fluxTable : tables) {
-            List<FluxRecord> records = fluxTable.getRecords();
 
-            for (FluxRecord record: records) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                LocalDateTime date = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+            FluxRecord  recentRecord = fluxTable.getRecords().get(0);
 
-                String cookieId = record.getValueByKey("cookieId").toString();
-                String currentUrl = record.getValueByKey("currentUrl").toString();
-                String language = record.getValueByKey("language").toString();
-                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
-                String osId = record.getValueByKey("osId").toString();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            LocalDateTime date = LocalDateTime.parse(recentRecord.getValueByKey("_time").toString(), formatter);
 
-                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
-                abnormalDtoList.add(AbnormalDto.create(cookieId,date,currentUrl,language,requestCnt,osId).addId(id++));
-            }
+            String cookieId = recentRecord.getValueByKey("cookieId").toString();
+            String currentUrl = recentRecord.getValueByKey("currentUrl").toString();
+            String language = recentRecord.getValueByKey("language").toString();
+            String stringValueOfRequestCnt = recentRecord.getValueByKey("requestCnt").toString();
+            String osId = recentRecord.getValueByKey("osId").toString();
+
+            int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+            abnormalDtoList.add(AbnormalDto.create(cookieId,date,currentUrl,language,requestCnt,osId).addId(id++));
         }
 
         return AbnormalHistoryResDto.create(abnormalDtoList);
