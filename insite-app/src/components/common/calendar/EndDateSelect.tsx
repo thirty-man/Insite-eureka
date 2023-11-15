@@ -163,8 +163,10 @@ function EndDateSelect({
   };
 
   useEffect(() => {
-    const newEndDate: string = `${endYear}-${endMonth}-${endDay}`;
-
+    const newEndDate: string = `${endYear}-${endMonth.padStart(
+      2,
+      "0",
+    )}-${endDay.padStart(2, "0")}`;
     onChange(newEndDate);
   }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
 

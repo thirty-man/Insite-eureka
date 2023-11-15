@@ -165,7 +165,11 @@ function StartDateSelect({
   };
 
   useEffect(() => {
-    const newStartDate: string = `${startYear}-${startMonth}-${startDay}`;
+    const newStartDate: string = `${startYear}-${startMonth.padStart(
+      2,
+      "0",
+    )}-${startDay.padStart(2, "0")}`;
+
     onChange(newStartDate);
   }, [startYear, startMonth, startDay, pastDate, dispatch, onChange]);
 
