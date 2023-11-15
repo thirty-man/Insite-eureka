@@ -484,7 +484,7 @@ function Header() {
           )}
           {openStartDate && (
             <Modal
-              width="26.4rem"
+              width="26.5rem"
               height="13rem"
               $posX="4.1%"
               $posY="66%"
@@ -512,7 +512,7 @@ function Header() {
 
           {openEndDate && (
             <Modal
-              width="26.4rem"
+              width="26.5rem"
               height="13rem"
               $posX="4.1%"
               $posY="66%"
