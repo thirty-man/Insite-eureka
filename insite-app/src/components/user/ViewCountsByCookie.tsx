@@ -82,7 +82,7 @@ function ViewCountsByCookie() {
     chart: {
       type: "bar",
       backgroundColor: "transparent",
-      width: 350, // 차트의 너비 설정
+      width: 300, // 차트의 너비 설정
       height: 700, // 차트의 높이 설정
       color: "white",
       scrollablePlotArea: {
@@ -102,6 +102,8 @@ function ViewCountsByCookie() {
       title: {
         text: null,
       },
+      min: 0,
+      max: 4,
       scrollbar: {
         enabled: true,
       },
