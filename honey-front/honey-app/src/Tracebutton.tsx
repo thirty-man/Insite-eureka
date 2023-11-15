@@ -55,7 +55,8 @@ function sendData(data: AnalyticsData) {
       }
       return response.json();
     })
-    .catch((error) => {
+    .catch(() => {
+      // console.log("ok");
       // console.error(
       //   "There has been a problem with your fetch operation:",
       //   error,
