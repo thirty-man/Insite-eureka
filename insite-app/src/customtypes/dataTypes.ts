@@ -33,7 +33,8 @@ type StyleType = {
 // -------------- DtoType
 type UserCountDtoType = {
   id: number;
-  count: number;
+  userCount: number;
+  viewCount: number;
   percentage: number;
   currentPage: string;
   responseTime: string;

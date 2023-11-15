@@ -36,6 +36,7 @@ function PageUsageStatistics() {
             <th>순위</th>
             <th>URL</th>
             <th>사용자 수</th>
+            <th>조회수</th>
             <th>랜더링 시간</th>
           </tr>
         </TableHeader>
@@ -44,7 +45,8 @@ function PageUsageStatistics() {
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentPage}</TableCell>
-              <TableCell>{item.count}</TableCell>
+              <TableCell>{item.userCount}</TableCell>
+              <TableCell>{item.viewCount}</TableCell>
               <TableCell>{(+item.responseTime / 1000).toFixed(2)}s</TableCell>
             </TableRow>
           ))}

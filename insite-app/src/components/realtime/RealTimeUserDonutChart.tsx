@@ -15,13 +15,13 @@ function RealTimeUserDonutChart() {
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
           name:
             item.currentPage.length <= 10
-              ? item.currentPage.length
+              ? item.currentPage
               : `${item.currentPage.slice(0, 10)}...`,
           fullName: item.currentPage,
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
-            format: `{point.fullName}:<br> 횟수: ${item.count}`,
+            format: `{point.name}:<br> 조회수: ${item.viewCount}`,
             style: {
               fontSize: "15px",
               textOutline: "2px 2px white",
