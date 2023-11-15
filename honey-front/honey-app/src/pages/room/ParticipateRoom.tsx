@@ -82,7 +82,7 @@ function ParticipateRoom() {
         setIsOpen(response.data.isOpen);
         const parts = response.data.showTime.split("T");
         setDate(parts[0]);
-        setTime(parts[1].split(".")[0]);
+        setTime(parts[1].split(".")[0].slice(0, 5));
       });
     // .catch((error) => {
     //   console.log("part Err : ", error.response);

@@ -38,7 +38,7 @@ function MypageTitle() {
       setSelectedRoom(roomList[0]);
       const parts = roomList[0].showTime.split("T");
       setShowDate(parts[0]);
-      setShowTime(parts[1].split(".")[0]);
+      setShowTime(parts[1].split(".")[0].slice(0, 5));
     }
   }, [roomList, setSelectedRoom]);
 
@@ -47,7 +47,7 @@ function MypageTitle() {
     setTitle(selectedRoom.roomTitle);
     const parts = selectedRoom.showTime.split("T");
     setShowDate(parts[0]);
-    setShowTime(parts[1].split(".")[0]);
+    setShowTime(parts[1].split(".")[0].slice(0, 5));
   }, [selectedRoom, setTitle]);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
