@@ -25,12 +25,14 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
     &:before {
       content: "안녕하세요";
       position: absolute;
+      font-size: 0.7rem;
       top: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border-width: 8px;
+      border-width: 8px 8px 0;
       border-style: solid;
-      border-color: transparent transparent white transparent;
+      background-color: black;
+      border-color: black;
     }
   }
 `;
