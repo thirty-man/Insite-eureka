@@ -17,9 +17,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.StringTokenizer;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -277,18 +279,21 @@ public class ActiveusersServiceImpl implements ActiveusersService {
     private List<OsActiveUserDto> getOsActiveUserDtoList(List<FluxTable> tables) {
         List<OsActiveUserDto> osActiveUserDtoList = new ArrayList<>();
         PriorityQueue<OsActiveUserDto> osActiveUserDtoPriorityQueue = new PriorityQueue<>();
+
         int size=0;
         for(FluxTable fluxTable : tables){
             List<FluxRecord> records = fluxTable.getRecords();
-            for(FluxRecord record:records){
+            size += records.size();
+            String os = records.get(0).getValueByKey("osId").toString();
 
-                String os = record.getValueByKey("osId").toString();
-                String stringValueOfCount = record.getValueByKey("_value").toString();
-                int count = Integer.valueOf(stringValueOfCount);
-                size+=count;
-                osActiveUserDtoPriorityQueue.offer(OsActiveUserDto.create(os,count));
+            Set<String> activityIdSet = new HashSet<>();
+            for(FluxRecord record:records){
+                String activityId = record.getValueByKey("activityId").toString();
+                activityIdSet.add(activityId);
             }
+            osActiveUserDtoPriorityQueue.offer(OsActiveUserDto.create(os, activityIdSet.size()));
         }
+
         int id = 0;
         while(!osActiveUserDtoPriorityQueue.isEmpty()){
             osActiveUserDtoList.add(osActiveUserDtoPriorityQueue.poll().addId(id++,size));

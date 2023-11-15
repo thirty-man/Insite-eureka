@@ -94,8 +94,7 @@ public class ActiveUsersQueryBuilder {
         Flux query = Flux.from(bucket)
             .range(startAndEndInstant[0], startAndEndInstant[1])
             .filter(restrictions)
-            .groupBy("osId")
-            .count();
+            .groupBy("osId");
 
         log.info("query= {}", query);
 

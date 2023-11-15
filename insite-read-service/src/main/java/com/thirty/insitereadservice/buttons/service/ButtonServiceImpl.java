@@ -144,13 +144,7 @@ public class ButtonServiceImpl implements ButtonService{
         }
         //각 버튼 클릭 수, 증감률
         double totalAvg = totalCLickCounts/(double)clickedButtons;
-        log.info("totalAvg= {}", totalAvg);
         Map<String, Integer> buttonNameWithClickCounts = getStringIntegerMap(tables);
-
-        for(String button : buttonNameWithClickCounts.keySet()){
-            log.info("buttonName={}", button);
-            log.info("counts={}", buttonNameWithClickCounts.get(button));
-        }
 
         for(String buttonName : buttonNameWithClickCounts.keySet()){
             int count = buttonNameWithClickCounts.get(buttonName);
@@ -160,8 +154,6 @@ public class ButtonServiceImpl implements ButtonService{
 
                 if(buttonRateDto.getName().equals(buttonName)){
                     buttonRateDto.saveValues(count, increaseDecreaseRate);
-                    log.info("@@buttonName={}",buttonName);
-                    log.info("@@count={}", count);
                 }
             }
         }
