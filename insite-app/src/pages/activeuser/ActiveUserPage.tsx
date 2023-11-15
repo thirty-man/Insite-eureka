@@ -1,9 +1,12 @@
-import ActiveUserPerTime from "@components/activeuser/ActiveUserPerTime";
-import ActiveUserPerUserbyUrl from "@components/activeuser/ActiveUserPerUserbyUrl";
-import ActiveUsersStatistics from "@components/activeuser/ActiveUserStatistics";
-import AverageActiveTimeByUrl from "@components/activeuser/AverageActiveTimeByUrl";
-import OsActiveUser from "@components/activeuser/OSActiveUser";
-import PageUsagePerActiveUser from "@components/activeuser/PageUsagePerActiveUser";
+import {
+  ActiveUserPerTime,
+  ActiveUserPerUserbyUrl,
+  ActiveUserStatistics,
+  AverageActiveTimeByUrl,
+  OsActiveUser,
+  PageUsagePerActiveUser,
+  TotalUser,
+} from "@components/activeuser";
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
 import styled from "styled-components";
 
@@ -22,14 +25,6 @@ const ContentDiv = styled.div`
   align-items: center;
   width: 100%;
   height: 90%;
-`;
-
-const InvisibleDiv = styled.div`
-  width: 30rem;
-  height: 25rem;
-  margin: 1%;
-  padding: 0;
-  border-radius: 15px;
 `;
 
 const SecondCol = styled.div`
@@ -58,7 +53,7 @@ function ActiveUserPage() {
           </TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
-              <ActiveUsersStatistics />
+              <ActiveUserStatistics />
             </TextBox>
           </ContentDiv>
         </DefaultBox>
@@ -84,7 +79,16 @@ function ActiveUserPage() {
         </DefaultBox>
       </FirstCol>
       <SecondCol>
-        <InvisibleDiv />
+        <DefaultBox width="30rem" height="25rem">
+          <TitleBox width="" height="10%">
+            총 사용자 수
+          </TitleBox>
+          <ContentDiv>
+            <TextBox width="90%" height="90%">
+              <TotalUser />
+            </TextBox>
+          </ContentDiv>
+        </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox width="" height="10%">
             OS 별 활동 사용자 수
