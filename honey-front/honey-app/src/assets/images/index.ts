@@ -1,6 +1,4 @@
 import Background from "./background.png";
-import PoohLogin from "./푸꿀1.png";
-import PoohHelpModal from "./pooh1.png";
 import KakaoLoginButton from "./kakao_login_medium_wide.png";
 import closeCupboard from "./close_cupboard.png";
 import greedyPooh from "./greedypooh.png";
@@ -18,11 +16,11 @@ import Pen from "./pen.png";
 import prevArrow from "./prevArrow.png";
 import nextArrow from "./nextArrow.png";
 import newbear from "./newbear.png";
+import onebear from "./1돌이.png";
+import threebear from "./3돌이.png";
 
 export {
   Background,
-  PoohLogin,
-  PoohHelpModal,
   KakaoLoginButton,
   closeCupboard,
   greedyPooh,
@@ -40,4 +38,6 @@ export {
   prevArrow,
   nextArrow,
   newbear,
+  onebear,
+  threebear,
 };

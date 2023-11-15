@@ -1,5 +1,5 @@
 import HelpIcon from "@assets/icons";
-import { KakaoLoginButton, PoohHelpModal, PoohLogin } from "@assets/images";
+import { KakaoLoginButton, newbear, threebear } from "@assets/images";
 import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -97,16 +97,12 @@ function Login() {
             </div>
           </div>
           <Modal
-            className="fixed w-[120px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[120] bg-transparent flex items-center justify-center"
+            className="fixed w-[150px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[120] bg-transparent flex items-center justify-center"
             overlay={false}
             overz=""
             openModal
           >
-            <img
-              src={PoohHelpModal}
-              className="w-[100px] h-[90px]"
-              alt="푸 모달"
-            />
+            <img src={newbear} className="w-[200px] h-[90px]" alt="푸 모달" />
           </Modal>
           <Modal
             className="fixed w-[100px] h-[35px] bottom-1/2 left-1/2 -translate-x-[50px] translate-y-[170px] z-[120] rounded-[60px] bg-cg-1 flex items-center justify-center"
@@ -134,7 +130,7 @@ function Login() {
 
       <div className="flex h-3/6 justify-center items-center">
         <div className="flex flex-col h-full items-center justify-center">
-          <img src={PoohLogin} alt="mainpooh" />
+          <img src={threebear} alt="mainpooh" />
           <button type="button" onClick={handleLoginClick}>
             <img src={KakaoLoginButton} alt="kakao Login Btn" />
           </button>

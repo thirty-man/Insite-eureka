@@ -10,13 +10,12 @@ import {
 } from "@recoil/atom";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { greedyPooh, sendPot } from "@assets/images";
+import { onebear, sendPot } from "@assets/images";
 import axios from "axios";
 import { traceButton } from "../../Tracebutton";
 
 function ButtomMenu() {
   const { routeTo } = useRouter();
-  const greedyPoohImg = greedyPooh;
   const sendPotImg = sendPot;
   const buttonStyle: string =
     "flex rounded-xl sm:h-[17%] h-[15%] m-2 p-3 sm:w-[50%] w-[60%] sm:text-[20px] text-[13px] justify-center items-center";
@@ -184,7 +183,7 @@ function ButtomMenu() {
           />
         </div>
         <div className="flex w-[50%] justify-center items">
-          <img src={greedyPoohImg} alt="푸" className="" />
+          <img src={onebear} alt="푸" className="" />
         </div>
       </div>
       {alertModal && (
