@@ -40,6 +40,13 @@ const InnerDiv = styled.div`
   width: 50rem;
 `;
 
+const OverDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+`;
+
 function UserPage() {
   return (
     <RowDiv>
@@ -85,7 +92,9 @@ function UserPage() {
             사용자 별 페이지 조회 수
           </TitleBox>
           <ContentDiv>
-            <ViewCountsByCookie />
+            <OverDiv>
+              <ViewCountsByCookie />
+            </OverDiv>
           </ContentDiv>
         </DefaultBox>
       </InnerDiv>

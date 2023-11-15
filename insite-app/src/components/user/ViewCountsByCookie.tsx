@@ -119,7 +119,7 @@ function ViewCountsByCookie() {
     tooltip: {
       headerFormat: '<span style="font-size: 13px">{point.key}</span><br/>',
       pointFormat:
-        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
+        '<span style="">{series.name}</span>: <b>{point.y}%</b><br/>',
       shared: true,
     },
     plotOptions: {
