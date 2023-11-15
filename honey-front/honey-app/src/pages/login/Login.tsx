@@ -4,7 +4,7 @@ import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useRouter from "@hooks/useRouter";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { logoutState } from "@recoil/atom";
 import { traceButton } from "../../Tracebutton";
@@ -19,6 +19,7 @@ function Login() {
   const logout = useRecoilValue(logoutState);
   const setLogout = useSetRecoilState(logoutState);
   const [logoutModal, setLogoutModal] = useState<boolean>(logout);
+  const navi = useNavigate();
 
   const authenticateUser = (code: string) => {
     axios
@@ -37,7 +38,7 @@ function Login() {
         const savedUrl = sessionStorage.getItem("redirectUrl");
 
         if (savedUrl) {
-          routeTo(savedUrl);
+          navi(savedUrl);
           sessionStorage.removeItem("redirectUrl");
           return;
         }
