@@ -431,6 +431,7 @@ function Header() {
     if (startD > endD || startD < pastD) {
       startD = pastD;
     }
+    console.log("setStartDate:", startD.toString().split("T")[0]);
     dispatch(setStartDate(startD.toString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
@@ -459,7 +460,7 @@ function Header() {
 
   const parseStartDate = formatDateString(startDate);
   const parseEndDate = formatDateString(endDate);
-
+  console.log("parseStartDate:", parseStartDate);
   return (
     <HeaderContainer>
       <HeaderWrapper>
