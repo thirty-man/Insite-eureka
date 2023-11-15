@@ -9,11 +9,11 @@ interface CalendarButtonProps {
 const Border = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   min-width: 100px;
-  width: 70%;
-  height: 90%;
-  border-radius: 15px;
+  width: 60%;
+  height: 80%;
+  border-radius: 30px;
 
   &:hover {
     background-color: gray;

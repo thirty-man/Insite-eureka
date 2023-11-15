@@ -348,6 +348,7 @@ function Header() {
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     dispatch(setSelectedMenuId(1));
+    navi("/board");
     window.location.reload();
   };
   const handlenewStartDate = (item: string) => {
@@ -485,8 +486,8 @@ function Header() {
             <Modal
               width="26rem"
               height="13rem"
-              $posX="0%"
-              $posY="80%"
+              $posX="3%"
+              $posY="65%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >
@@ -513,8 +514,8 @@ function Header() {
             <Modal
               width="26rem"
               height="13rem"
-              $posX="0%"
-              $posY="80%"
+              $posX="3%"
+              $posY="65%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >
