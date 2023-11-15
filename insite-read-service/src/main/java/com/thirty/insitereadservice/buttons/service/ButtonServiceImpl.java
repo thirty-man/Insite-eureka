@@ -147,6 +147,11 @@ public class ButtonServiceImpl implements ButtonService{
         log.info("totalAvg= {}", totalAvg);
         Map<String, Integer> buttonNameWithClickCounts = getStringIntegerMap(tables);
 
+        for(String button : buttonNameWithClickCounts.keySet()){
+            log.info("buttonName={}", button);
+            log.info("counts={}", buttonNameWithClickCounts.get(button));
+        }
+
         for(String buttonName : buttonNameWithClickCounts.keySet()){
             int count = buttonNameWithClickCounts.get(buttonName);
             double increaseDecreaseRate = ((count - totalAvg)/ totalAvg);
@@ -155,8 +160,8 @@ public class ButtonServiceImpl implements ButtonService{
 
                 if(buttonRateDto.getName().equals(buttonName)){
                     buttonRateDto.saveValues(count, increaseDecreaseRate);
-                    log.info("@buttonName={}",buttonName);
-                    log.info("@count={}", count);
+                    log.info("@@buttonName={}",buttonName);
+                    log.info("@@count={}", count);
                 }
             }
         }
@@ -351,12 +356,6 @@ public class ButtonServiceImpl implements ButtonService{
             String buttonName = fluxTable.getRecords().get(0).getValueByKey("name").toString();
             buttonNameWithClickCounts.put(buttonName, records.size());
         }
-
-        for(String button : buttonNameWithClickCounts.keySet()){
-            log.info("buttonName={}", button);
-            log.info("counts={}", buttonNameWithClickCounts.get(button));
-        }
-
         return buttonNameWithClickCounts;
     }
 }
