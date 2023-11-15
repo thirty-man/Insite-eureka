@@ -30,8 +30,6 @@ const DateText = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-left: 2px;
-  margin-right: 2px;
 `;
 
 const DateImg = styled.img`

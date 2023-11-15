@@ -117,13 +117,13 @@ function StartDateSelect({
       const days = [];
       let lastDayOfMonth;
 
-      if (month === 1) {
-        // 2월의 경우 윤년 검사
+      if (month === 2) {
+        // 2월 (실제로는 3을 나타냄)
         lastDayOfMonth = isLeapYear(year) ? 29 : 28;
-      } else if (month === 3 || month === 5 || month === 8 || month === 10) {
-        lastDayOfMonth = 30; // 4월, 6월, 9월, 11월은 30일까지
+      } else if (month === 4 || month === 6 || month === 9 || month === 11) {
+        lastDayOfMonth = 30; // 4월, 6월, 9월, 11월 (각각 5, 7, 10, 12를 나타냄)
       } else {
-        lastDayOfMonth = 31; // 나머지 월은 31일까지
+        lastDayOfMonth = 31; // 나머지 월
       }
 
       for (let day = 1; day <= lastDayOfMonth; day += 1) {
@@ -132,6 +132,7 @@ function StartDateSelect({
 
       return days;
     };
+
     const newDayOptions = getDaysInRange(
       parseInt(startYear, 10),
       parseInt(startMonth, 10),
