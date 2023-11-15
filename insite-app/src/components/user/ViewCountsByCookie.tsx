@@ -85,10 +85,9 @@ function ViewCountsByCookie() {
       width: 350, // 차트의 너비 설정
       height: 700, // 차트의 높이 설정
       color: "white",
-    },
-    scrollablePlotArea: {
-      minWidth: 300, // 최소 너비 설정
-      scrollPositionX: 1, // 초기 스크롤 위치 설정
+      scrollablePlotArea: {
+        minWidth: 300, // 스크롤 가능한 플롯 영역의 최소 너비 설정
+      },
     },
     title: "",
     xAxis: {
@@ -118,9 +117,9 @@ function ViewCountsByCookie() {
       },
     },
     tooltip: {
-      headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
+      headerFormat: '<span style="font-size: 13px">{point.key}</span><br/>',
       pointFormat:
-        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b> of total<br/>',
+        '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
       shared: true,
     },
     plotOptions: {
@@ -144,6 +143,10 @@ function ViewCountsByCookie() {
     legend: {
       itemStyle: {
         color: "white",
+        fontSize: "12px",
+        lineHeight: "14px",
+        padding: "5px",
+        margin: "5px",
       },
     },
     series: seriesData,
