@@ -155,6 +155,8 @@ public class ButtonServiceImpl implements ButtonService{
 
                 if(buttonRateDto.getName().equals(buttonName)){
                     buttonRateDto.saveValues(count, increaseDecreaseRate);
+                    log.info("@buttonName={}",buttonName);
+                    log.info("@count={}", count);
                 }
             }
         }
