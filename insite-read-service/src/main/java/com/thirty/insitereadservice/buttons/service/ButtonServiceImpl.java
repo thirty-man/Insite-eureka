@@ -343,10 +343,16 @@ public class ButtonServiceImpl implements ButtonService{
     @NotNull
     private Map<String, Integer> getStringIntegerMap(List<FluxTable> tables) {
         Map<String, Integer> buttonNameWithClickCounts = new HashMap<>();
+        for(int i = 0 ; i < tables.size(); i++){
+            buttonNameWithClickCounts.put(tables.get(i).getRecords().get(0).getValueByKey("buttonName").toString(), 0);
+        }
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
-            buttonNameWithClickCounts.put(records.get(0).getValueByKey("name").toString(), records.size());
+            for(FluxRecord record : records){
+                String buttonName = record.getValueByKey("buttonName").toString();
+                buttonNameWithClickCounts.put(buttonName , buttonNameWithClickCounts.get(buttonName));
+            }
         }
         return buttonNameWithClickCounts;
     }
