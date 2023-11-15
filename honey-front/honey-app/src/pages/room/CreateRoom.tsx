@@ -14,7 +14,7 @@ function CreateRoom() {
   const { VITE_API_URL } = import.meta.env;
   const [roomName, setRoomName] = useState<string>("");
   const [today, setToday] = useState<Date>(new Date());
-  const [releaseDate, setReleaseDate] = useState<string>("날짜 설정");
+  const [releaseDate, setReleaseDate] = useState<string>("");
   const [time, setTime] = useState<string | null>("00:00");
   const [boxChecked, setBoxChecked] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
@@ -223,6 +223,21 @@ function CreateRoom() {
       }
     }
 
+    const selectedDateTime = parseKoreanDateString(
+      releaseDate,
+      time || "00:00",
+    );
+
+    // 오늘 날짜와 현재 시간 이후인지 검증
+    if (
+      moment(selectedDateTime).isSame(moment(), "day") &&
+      selectedDateTime < new Date()
+    ) {
+      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
+      setAlertModal(true);
+      return;
+    }
+    setOpenCalendar(false);
     submitRoomData();
   };
 
