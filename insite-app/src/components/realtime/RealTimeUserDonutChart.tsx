@@ -21,7 +21,7 @@ function RealTimeUserDonutChart() {
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
-            format: `{point.name}:<br> 조회수: ${item.viewCount}`,
+            format: `{point.name}<br> 조회수: ${item.viewCount}`,
             style: {
               fontSize: "15px",
               textOutline: "2px 2px white",
@@ -67,10 +67,14 @@ function RealTimeUserDonutChart() {
         fontSize: "14px",
       },
       padding: 15,
+      formatter(): string {
+        // 포맷을 원하는 대로 조정합니다.
+        return `{point.fullName}<br>조회수: {point.viewCount}`;
+      },
     },
     series: [
       {
-        fullName: "사용량(%)",
+        name: "사용량(%)",
         data,
       },
     ],
