@@ -13,15 +13,15 @@ function RealTimeUserDonutChart() {
         const response = await getUserCount();
         const userCountDto = response.userCountDtoList;
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
-          fullName: item.currentPage,
-          name:
+          sliceName:
             item.currentPage.length <= 10
               ? item.currentPage
               : `${item.currentPage.slice(0, 10)}...`,
+          name: item.currentPage,
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
-            format: `{point.name}<br> 조회수: ${item.viewCount}`,
+            format: `{point.sliceName}<br> 조회수: ${item.viewCount}`,
             style: {
               fontSize: "15px",
               textOutline: "2px 2px white",
@@ -67,10 +67,6 @@ function RealTimeUserDonutChart() {
         fontSize: "14px",
       },
       padding: 15,
-      formatter(): string {
-        // 포맷을 원하는 대로 조정합니다.
-        return `{point.fullName}<br>조회수: {point.viewCount}`;
-      },
     },
     series: [
       {
