@@ -20,6 +20,7 @@ import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Alert, Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
+import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -335,7 +336,7 @@ function Header() {
       createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
-    navi("/board");
+    dispatch(setSelectedMenuId(1));
     window.location.reload();
   };
   const handlenewStartDate = (item: string) => {
