@@ -17,6 +17,19 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   color: white;
   background-color: transparent;
   cursor: default;
+
+  &:hover {
+    &:before {
+      content: "안녕하세요";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
+  }
 `;
 
 /** 너비, 높이, 폰트 사이즈 */
