@@ -14,6 +14,7 @@ import com.thirty.ggulswriting.room.dto.response.RoomMemberResDto;
 import com.thirty.ggulswriting.room.dto.response.RoomResDto;
 import com.thirty.ggulswriting.message.dto.MessageListDto;
 import com.thirty.ggulswriting.message.dto.response.MessageListResDto;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -232,8 +233,7 @@ public class RoomServiceImpl implements RoomService {
 		}
 
 		Room room = optionalRoom.get();
-		Boolean isOpen = true;
-		if(room.getPassword() != null) isOpen = false;
+		Boolean isOpen = room.getPassword() == null;
 		return RoomDetailResDto.of(room.getMember().getName(), room.getRoomTitle(), isOpen, room.getShowTime());
 	}
 
@@ -305,6 +305,14 @@ public class RoomServiceImpl implements RoomService {
 			throw new MemberException(ErrorCode.NOT_EXIST_MEMBER);
 		}
 
+		LocalDateTime showTime = roomCreateReqDto.getShowTime();
+		LocalDateTime now = LocalDateTime.now();
+
+		//공개 시간 검증
+		if(showTime.isBefore(now) || showTime.equals(now)){
+			throw new RoomException(ErrorCode.NOT_VALID_DATETIME);
+		}
+
 		Member member = optionalMember.get();
 
 		//비밀번호 인코딩
@@ -318,7 +326,7 @@ public class RoomServiceImpl implements RoomService {
 		Room room = Room.create(
 				member,
 				roomCreateReqDto.getRoomTitle(),
-				roomCreateReqDto.getShowTime(),
+				showTime,
 				encodedPassword,
 				encodedPassword.equals(salt)
 		);
@@ -343,10 +351,7 @@ public class RoomServiceImpl implements RoomService {
 		for(Room room: roomList){
 			int memberCount = participationRepository.countAllByRoomAndIsOutIsFalse(room);
 
-			Boolean isOpen = true;
-			if(room.getPassword() != null){
-				isOpen = false;
-			}
+			Boolean isOpen = room.getPassword() == null;
 
 			RoomSearchDto roomListDto = RoomSearchDto.of(room.getRoomId(), room.getRoomTitle(),room.getMember().getName(),memberCount,isOpen);
 			roomSearchDtoList.add(roomListDto);
