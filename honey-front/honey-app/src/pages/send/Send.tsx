@@ -8,7 +8,7 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import { mypageSelectedRoom, selectedMemberState } from "@recoil/atom";
 import completeSendState from "@recoil/atom/completeSendState";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -32,6 +32,13 @@ function Send() {
     content,
     honey_case_type: String(selectedPotIdx),
   };
+
+  useEffect(() => {
+    console.log("시험");
+    if (!selectedMember) {
+      navi("/mypage");
+    }
+  }, [navi, selectedMember]);
 
   function send() {
     // 전송 api요청
