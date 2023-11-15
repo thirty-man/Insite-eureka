@@ -8,7 +8,7 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import { mypageSelectedRoom, selectedMemberState } from "@recoil/atom";
 import completeSendState from "@recoil/atom/completeSendState";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -24,7 +24,6 @@ function Send() {
   const selectedRoom = useRecoilValue<RoomType>(mypageSelectedRoom);
   const [, setCompleteSend] = useRecoilState<boolean>(completeSendState);
   const { VITE_API_URL } = import.meta.env;
-  console.log(selectedMember);
 
   function send() {
     // 전송 api요청
@@ -48,6 +47,12 @@ function Send() {
         navi("/mypage");
       });
   }
+
+  useEffect(() => {
+    if (selectedMember.id === -1) {
+      navi(-1);
+    }
+  });
 
   function goToBack() {
     navi(-1);
