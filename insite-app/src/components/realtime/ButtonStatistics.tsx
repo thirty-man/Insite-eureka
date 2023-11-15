@@ -44,7 +44,7 @@ function ButtonStatistics() {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.count}</TableCell>
-              <TableCell>{(+item.countPerUser * 100).toFixed(2)}%</TableCell>
+              <TableCell>{(+item.countPerUser).toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
