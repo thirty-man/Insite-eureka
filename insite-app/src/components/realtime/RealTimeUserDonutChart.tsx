@@ -13,11 +13,15 @@ function RealTimeUserDonutChart() {
         const response = await getUserCount();
         const userCountDto = response.userCountDtoList;
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
-          name: item.currentPage,
+          name:
+            item.currentPage.length <= 10
+              ? item.currentPage.length
+              : `${item.currentPage.slice(0, 10)}...`,
+          fullName: item.currentPage,
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
-            format: `{point.name}:<br> 횟수: ${item.count}`,
+            format: `{point.fullName}:<br> 횟수: ${item.count}`,
             style: {
               fontSize: "15px",
               textOutline: "2px 2px white",
@@ -46,7 +50,7 @@ function RealTimeUserDonutChart() {
     chart: {
       type: "pie",
       backgroundColor: "transparent",
-      width: 300, // 차트의 너비 설정
+      width: 400, // 차트의 너비 설정
       height: 300, // 차트의 높이 설정
     },
     title: {
