@@ -99,7 +99,15 @@ function ViewCountsByCookie() {
           maxWidth: "75px",
         },
       },
-      title: "",
+      title: {
+        text: null,
+      },
+      min: 0,
+      max: 4,
+      scrollbar: {
+        enabled: true,
+      },
+      tickLength: 0,
     },
     yAxis: {
       min: 0,
