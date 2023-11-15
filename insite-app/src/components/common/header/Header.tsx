@@ -112,7 +112,7 @@ const CalendarWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  width: 38%;
+  width: 48%;
   min-width: 38%;
   height: 100%;
   margin-right: 20px;
