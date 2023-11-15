@@ -19,6 +19,9 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   cursor: default;
 
   &:hover {
+    position: relative;
+    z-index: 1;
+
     &:before {
       content: "안녕하세요";
       position: absolute;
