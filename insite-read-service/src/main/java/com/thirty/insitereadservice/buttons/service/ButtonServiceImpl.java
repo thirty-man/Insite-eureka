@@ -138,13 +138,13 @@ public class ButtonServiceImpl implements ButtonService{
             return EveryButtonRateResDto.create(0.0, buttonRateDtoList);
         }
 
-        double totalCLickCounts = 0.0;
+        int totalCLickCounts = 0;
         for(FluxTable fluxTable : tables){
             totalCLickCounts += fluxTable.getRecords().size();
         }
         //각 버튼 클릭 수, 증감률
-        double totalAvg = totalCLickCounts/clickedButtons;
-
+        double totalAvg = totalCLickCounts/(double)clickedButtons;
+        log.info("totalAvg= {}", totalAvg);
         Map<String, Integer> buttonNameWithClickCounts = getStringIntegerMap(tables);
 
         for(String buttonName : buttonNameWithClickCounts.keySet()){
@@ -349,6 +349,12 @@ public class ButtonServiceImpl implements ButtonService{
             String buttonName = fluxTable.getRecords().get(0).getValueByKey("name").toString();
             buttonNameWithClickCounts.put(buttonName, records.size());
         }
+
+        for(String button : buttonNameWithClickCounts.keySet()){
+            log.info("buttonName={}", button);
+            log.info("counts={}", buttonNameWithClickCounts.get(button));
+        }
+
         return buttonNameWithClickCounts;
     }
 }
