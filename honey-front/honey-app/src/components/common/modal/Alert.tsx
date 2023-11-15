@@ -34,7 +34,7 @@ function Alert({
         overz=""
         openModal
       >
-        <img src={newbear} className="w-[150px] h-[90px]" alt="곰 모달" />
+        <img src={newbear} className="w-[200px] h-[90px]" alt="곰 모달" />
       </Modal>
       <Modal
         className="fixed w-[100px] h-[35px] bottom-1/2 left-1/2 -translate-x-[50px] translate-y-[170px] z-[220] rounded-[60px] bg-cg-1 flex items-center justify-center"
