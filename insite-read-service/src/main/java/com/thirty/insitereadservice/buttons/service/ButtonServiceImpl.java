@@ -351,7 +351,7 @@ public class ButtonServiceImpl implements ButtonService{
 
             for(FluxRecord record : records){
                 String buttonName = record.getValueByKey("name").toString();
-                buttonNameWithClickCounts.put(buttonName , buttonNameWithClickCounts.get(buttonName));
+                buttonNameWithClickCounts.put(buttonName , buttonNameWithClickCounts.get(buttonName)+1);
             }
         }
         return buttonNameWithClickCounts;
