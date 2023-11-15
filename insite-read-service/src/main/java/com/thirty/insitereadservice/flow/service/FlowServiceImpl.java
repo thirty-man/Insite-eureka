@@ -247,7 +247,10 @@ public class FlowServiceImpl implements FlowService {
 
         Restrictions restrictions = Restrictions.and(
             Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(referrerFlowReqDto.getApplicationToken())
+            Restrictions.tag("applicationToken").equal(referrerFlowReqDto.getApplicationToken()),
+            Restrictions.tag("referrer").notEqual("null"),
+            Restrictions.tag("referrer").notEqual("https://kauth.kakao.com/"),
+            Restrictions.tag("referrer").notEqual("https://accounts.kakao.com/")
         );
         Flux query = Flux.from(bucket)
             .range(startInstant, endInstant)
