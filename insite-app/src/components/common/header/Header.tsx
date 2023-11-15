@@ -120,7 +120,9 @@ const CalendarWrapper = styled.div`
   border: 3px solid #6646ef;
   cursor: pointer;
 `;
-
+const DateText = styled.div`
+  font-size: 16px;
+`;
 const DateSelectContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -472,6 +474,7 @@ function Header() {
                   date={parseStartDate}
                   onClick={handleStartDate}
                 />
+                <DateText>~</DateText>
                 <CalendarButton date={parseEndDate} onClick={handleEndDate} />
               </CalendarWrapper>
             </CalendarContainer>
@@ -480,8 +483,8 @@ function Header() {
             <Modal
               width="24rem"
               height="13rem"
-              $posX="10%"
-              $posY="60%"
+              $posX="8%"
+              $posY="50%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >
@@ -508,8 +511,8 @@ function Header() {
             <Modal
               width="24rem"
               height="13rem"
-              $posX="10%"
-              $posY="60%"
+              $posX="8%"
+              $posY="50%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >
