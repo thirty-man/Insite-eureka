@@ -24,6 +24,7 @@ function Send() {
   const selectedRoom = useRecoilValue<RoomType>(mypageSelectedRoom);
   const [, setCompleteSend] = useRecoilState<boolean>(completeSendState);
   const { VITE_API_URL } = import.meta.env;
+  console.log(selectedMember);
 
   function send() {
     // 전송 api요청
