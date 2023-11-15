@@ -1,0 +1,2 @@
+import { traceButton } from "./Tracebutton";
+<button onClick={() => traceButton("{버튼이름을 입력해주세요.}")}></button>;

@@ -219,7 +219,7 @@ function ServiceManagementPage() {
 
   useEffect(() => {
     const fetchCode = async () => {
-      const path = `../../assets/scripts/${activeTab}.txt`; // Adjust the path
+      const path = `/scripts/${activeTab}.txt`; // Adjust the path
       try {
         const response = await fetch(path);
         const text = await response.text();
@@ -362,8 +362,8 @@ function ServiceManagementPage() {
               {isTextModalOpen && (
                 <TextModalContent>
                   <div>
-                    <ScriptButton onClick={() => setActiveTab("OnClick")}>
-                      OnClick.jsx
+                    <ScriptButton onClick={() => setActiveTab("사용법")}>
+                      사용법
                     </ScriptButton>
                     <ScriptButton
                       onClick={() => setActiveTab("TracebuttonJsx")}

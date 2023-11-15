@@ -13,9 +13,10 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: white;
   background-color: transparent;
+  font-weight: bold;
   cursor: default;
 
   &:hover {

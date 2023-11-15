@@ -10,7 +10,7 @@ const persistConfig = {
   storage: storageSession,
   whitelist: [
     "DateSelectionInfo",
-    "SelectedSiteInfo",
+    "SelectedItemInfo",
     "SelectedSidebarMenuInfo",
   ],
   blacklist: [],
