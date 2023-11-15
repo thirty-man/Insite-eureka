@@ -10,6 +10,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!token && location.pathname !== "/login") {
+      sessionStorage.setItem("redirectUrl", window.location.href);
       navi("/login");
     } else {
       setIsVerified(true);
