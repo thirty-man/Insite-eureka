@@ -485,26 +485,22 @@ function Header() {
               </DateSelectContainer>
             </Modal>
           )}
-          {siteList.length > 0 ? (
-            <DropDown<ApplicationDtoType>
-              items={siteList}
-              width="15rem"
-              height="3rem"
-              initialValue={selectedSite}
-              onChange={handleSelectedSite}
-              openDropdown={openSite}
-              close={() => {
-                setOpenSite(false);
-              }}
-              toggle={() => {
-                setOpenProfile(false);
-                setOpenDate(false);
-                setOpenSite((p) => !p);
-              }}
-            />
-          ) : (
-            <div>사이트를 등록해주세요</div>
-          )}
+          <DropDown<ApplicationDtoType>
+            items={siteList}
+            width="15rem"
+            height="3rem"
+            initialValue={selectedSite}
+            onChange={handleSelectedSite}
+            openDropdown={openSite}
+            close={() => {
+              setOpenSite(false);
+            }}
+            toggle={() => {
+              setOpenProfile(false);
+              setOpenDate(false);
+              setOpenSite((p) => !p);
+            }}
+          />
           <ProfileWrapper>
             <ProfileButton>
               <ProfileImg
