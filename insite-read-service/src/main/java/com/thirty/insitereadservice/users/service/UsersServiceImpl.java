@@ -63,7 +63,7 @@ public class UsersServiceImpl implements UsersService {
         queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
         queryBuilder.append("  |> range(start: ").append(startInstant).append(", stop:").append(endInstant).append(")\n");
         queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
-            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 10)\n");
+            .append(applicationToken).append("\" and float(v: r.requestCnt) >= 15)\n");
         queryBuilder.append("  |> group(columns:[\"cookieId\"])\n");
         queryBuilder.append("  |> sort(columns: [\"_time\"], desc: true)");
 
