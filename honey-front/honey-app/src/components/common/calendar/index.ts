@@ -1,3 +1,4 @@
 import Calendar from "./CustomCalendar";
+import TimePicker from "./CustomTimePicker";
 
-export default Calendar;
+export { Calendar, TimePicker };

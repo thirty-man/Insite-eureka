@@ -15,7 +15,7 @@ function ParticipateRoom() {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedRoom, setSelectedRoom] = useRecoilState(selectedRoomState);
   const [date, setDate] = useState("");
-  const [, setTime] = useState("");
+  const [time, setTime] = useState("");
   const { VITE_API_URL } = import.meta.env;
   const [alertModal, setAlertModal] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
@@ -82,7 +82,7 @@ function ParticipateRoom() {
         setIsOpen(response.data.isOpen);
         const parts = response.data.showTime.split("T");
         setDate(parts[0]);
-        // setTime(parts[1]);
+        setTime(parts[1].split(".")[0].slice(0, 5));
       });
     // .catch((error) => {
     //   console.log("part Err : ", error.response);
@@ -105,7 +105,7 @@ function ParticipateRoom() {
               공개일
             </div>
             <div className="flex w-[90%] h-[13%] min-h-[50px] sm:text-[24px] text-[15px] bg-cg-2 rounded-2xl justify-center items-center">
-              {date}
+              {date} {time}
             </div>
             {!isOpen && (
               <>

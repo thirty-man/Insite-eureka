@@ -1,7 +1,7 @@
 import { Alert, Modal } from "@components/common/modal";
 import { useState, useEffect } from "react";
 import useRouter from "@hooks/useRouter";
-import CustomCalendar from "@components/common/calendar";
+import { Calendar, TimePicker } from "@components/common/calendar";
 import moment from "moment";
 import axios, { AxiosError } from "axios";
 import { useRecoilState } from "recoil";
@@ -14,7 +14,8 @@ function CreateRoom() {
   const { VITE_API_URL } = import.meta.env;
   const [roomName, setRoomName] = useState<string>("");
   const [today, setToday] = useState<Date>(new Date());
-  const [releaseDate, setReleaseDate] = useState<string>("날짜 설정");
+  const [releaseDate, setReleaseDate] = useState<string>("");
+  const [time, setTime] = useState<string | null>("00:00");
   const [boxChecked, setBoxChecked] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [roomNameFocused, setRoomNameFocused] = useState<boolean>(false);
@@ -29,7 +30,9 @@ function CreateRoom() {
   );
 
   useEffect(() => {
-    setToday(new Date());
+    const now = new Date();
+    setToday(now);
+    setReleaseDate(moment(now).format("YYYY년 MM월 DD일")); // 초기 날짜 설정
   }, []);
 
   const handleInputFocus = () => {
@@ -41,6 +44,7 @@ function CreateRoom() {
       setRoomNameFocused(false);
     }
   };
+
   const handleRoomPasswordFocus = () => {
     setRoomPasswordFocused(true);
   };
@@ -66,70 +70,74 @@ function CreateRoom() {
     setRoomPasswordFocused(false);
   };
 
-  function parseKoreanDateString(dateString: string): Date {
-    const matches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
+  function parseKoreanDateString(dateString: string, timeString: string): Date {
+    const dateMatches = dateString.match(/(\d+)년 (\d+)월 (\d+)일/);
+    const timeMatches = timeString.match(/(\d+):(\d+)/);
 
-    if (!matches) {
-      throw new Error("Invalid date string format.");
+    if (!dateMatches || !timeMatches) {
+      throw new Error("Invalid date or time string format.");
     }
 
-    const year = parseInt(matches[1], 10);
-    const month = parseInt(matches[2], 10) - 1; // JavaScript의 month는 0부터 시작
-    const day = parseInt(matches[3], 10);
+    const year = parseInt(dateMatches[1], 10);
+    const month = parseInt(dateMatches[2], 10) - 1;
+    const day = parseInt(dateMatches[3], 10);
+    const hour = parseInt(timeMatches[1], 10);
+    const minute = parseInt(timeMatches[2], 10);
 
-    return new Date(year, month, day);
+    return new Date(year, month, day, hour, minute);
   }
-  const compareDate = (value: Value): boolean => {
-    const nextDate = moment().add(1, "days").startOf("day");
-    if (!(value instanceof Date) || value === null) {
-      return false;
-    }
 
-    const selectedDate = moment(value);
+  const handleDateChange = (value: Value) => {
+    if (value instanceof Date && value !== null) {
+      const selectedDate = value;
+      const formattedDate = moment(selectedDate).format("YYYY년 MM월 DD일");
 
-    if (selectedDate.isBefore(nextDate)) {
-      return true;
-    }
-    return false;
-  };
-  const handleDateChange = (
-    value: Value,
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    if (compareDate(value)) {
-      setAlertText("종료일은 오늘 이후의 날짜만 선택할 수 있습니다.");
-      setAlertModal(true);
-      // alert("종료일은 오늘 이후의 날짜만 선택할 수 있습니다."); alert 0
-    } else {
-      const eventTarget = event.target as HTMLElement;
-      const aria = eventTarget.getAttribute("aria-label");
-      if (aria !== null) {
-        setReleaseDate(aria);
-        setToday(parseKoreanDateString(aria));
+      if (selectedDate < moment().startOf("day").toDate()) {
+        setAlertText("오늘 이전의 날짜는 선택할 수 없습니다.");
+        setAlertModal(true);
       } else {
-        setReleaseDate("날짜 설정");
+        setReleaseDate(formattedDate); // 날짜 선택 시 releaseDate 업데이트
+        setToday(selectedDate);
       }
+    } else {
+      setReleaseDate("날짜 설정");
     }
   };
+
+  const handleTimeChange = (value: string | null) => {
+    setTime(value);
+  };
+
   const handleCalendar = () => {
-    setOpenCalendar((prev) => !prev);
+    setOpenCalendar((p) => !p);
   };
 
-  const parseKoreanDateStringtoLocalDateTime = (dateString: string): Date => {
-    const regex = /(\d{4})년 (\d{1,2})월 (\d{1,2})일/;
-    const match = dateString.match(regex);
-    if (!match) throw new Error("Invalid date format");
+  const handleSetting = () => {
+    const datePart = releaseDate.split(" ").slice(0, 3).join(" "); // 날짜 부분만 추출
+    const newReleaseDate = `${datePart} ${time}`; // 새로운 시간과 결합
+    setReleaseDate(newReleaseDate);
 
-    const year = parseInt(match[1], 10);
-    const month = parseInt(match[2], 10);
-    const day = parseInt(match[3], 10);
+    const selectedDateTime = parseKoreanDateString(
+      releaseDate,
+      time || "00:00",
+    );
 
-    return new Date(year, month - 1, day);
+    // 오늘 날짜와 현재 시간 이후인지 검증
+    if (
+      moment(selectedDateTime).isSame(moment(), "day") &&
+      selectedDateTime < new Date()
+    ) {
+      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
+      setAlertModal(true);
+      return;
+    }
+    setOpenCalendar(false);
   };
+
   const submitRoomData = async () => {
     try {
       const token = sessionStorage.getItem("Authorization");
-      const dateObject = parseKoreanDateStringtoLocalDateTime(releaseDate);
+      const dateObject = parseKoreanDateString(releaseDate, time || "00:00");
       const formattedDate = moment(dateObject).format("YYYY-MM-DDTHH:mm:ss");
 
       const postData = {
@@ -215,6 +223,21 @@ function CreateRoom() {
       }
     }
 
+    const selectedDateTime = parseKoreanDateString(
+      releaseDate,
+      time || "00:00",
+    );
+
+    // 오늘 날짜와 현재 시간 이후인지 검증
+    if (
+      moment(selectedDateTime).isSame(moment(), "day") &&
+      selectedDateTime < new Date()
+    ) {
+      setAlertText("오늘 날짜에 대해서는 현재 시간 이후만 설정할 수 있습니다.");
+      setAlertModal(true);
+      return;
+    }
+    setOpenCalendar(false);
     submitRoomData();
   };
 
@@ -321,19 +344,22 @@ function CreateRoom() {
           overz="z-[110]"
           openModal={openCalendar}
         >
-          <CustomCalendar onChange={handleDateChange} value={today} />
+          <Calendar onChange={handleDateChange} value={today} />
+          <div className="mt-[10px]">
+            <TimePicker onChange={handleTimeChange} value="00:00" />
+          </div>
           <div className="fixed w-[300px] h-[40px] bottom-1/2 left-1/2 -translate-x-[150px] translate-y-[260px] z-[120] flex flex-row items-center justify-around">
             <button
               type="button"
               className="w-[100px] h-[35px] rounded-[60px] bg-cg-2 flex items-center justify-center"
-              onClick={handleCalendar}
+              onClick={handleSetting}
             >
               설정
             </button>
             <button
               type="button"
               className="w-[100px] h-[35px] rounded-[60px] bg-cg-2 flex items-center justify-center"
-              onClick={handleCalendar}
+              onClick={() => setOpenCalendar(false)}
             >
               닫기
             </button>
