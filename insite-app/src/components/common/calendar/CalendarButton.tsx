@@ -11,9 +11,9 @@ const Border = styled.div`
   align-items: center;
   justify-content: space-evenly;
   min-width: 100px;
-  width: 60%;
+  width: 50%;
   height: 80%;
-  border-radius: 30px;
+  border-radius: 12px;
 
   &:hover {
     background-color: gray;
