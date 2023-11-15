@@ -13,11 +13,7 @@ function RealTimeUserDonutChart() {
         const response = await getUserCount();
         const userCountDto = response.userCountDtoList;
         const seriesData = userCountDto.map((item: UserCountDtoType) => ({
-          name:
-            item.currentPage.length <= 10
-              ? item.currentPage
-              : `${item.currentPage.slice(0, 10)}...`,
-          fullName: item.currentPage,
+          name: item.currentPage,
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
