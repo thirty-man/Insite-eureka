@@ -33,6 +33,14 @@ function Login() {
           sessionStorage.setItem("Authorization", authToken);
           sessionStorage.setItem("RefreshToken", refreshToken);
         }
+        sessionStorage.setItem("redirectUrl", window.location.href);
+        const savedUrl = sessionStorage.getItem("redirectUrl");
+
+        if (savedUrl) {
+          routeTo(savedUrl);
+          sessionStorage.removeItem("redirectUrl");
+          return;
+        }
         routeTo("/");
       });
     // .catch((error) => {
