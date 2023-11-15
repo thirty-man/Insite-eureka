@@ -214,7 +214,7 @@ const TextModalContent = styled.div`
 
 function ServiceManagementPage() {
   // Inside your ServiceManagementPage component
-  const [activeTab, setActiveTab] = useState("WithAnalyticsJsx");
+  const [activeTab, setActiveTab] = useState("사용법");
   const [codeContent, setCodeContent] = useState("");
 
   useEffect(() => {
