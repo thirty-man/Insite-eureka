@@ -11,13 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CountWithResponseTime {
 
-    private int count;
+    private int viewCount;
+
+    private int userCount;
 
     private double responseTime;
 
-    public static CountWithResponseTime create(int count, double responseTime){
+    public static CountWithResponseTime create(int viewCount, int userCount, double responseTime){
         return CountWithResponseTime.builder()
-            .count(count)
+            .viewCount(viewCount)
+            .userCount(userCount)
             .responseTime(responseTime)
             .build();
     }

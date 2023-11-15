@@ -1,6 +1,5 @@
 package com.thirty.insiterealtimereadservice.data.dto;
 
-import com.thirty.insiterealtimereadservice.data.dto.response.UserCountResDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,17 +16,17 @@ public class UserCountDto implements Comparable<UserCountDto> {
 
     private String currentPage;
 
-    private int count;
+    private int viewCount;
 
-    private double percentage;
+    private int userCount;
 
     private double responseTime;
 
-    public static UserCountDto create(String currentPage, int count, double percentage, double responseTime){
+    public static UserCountDto create(String currentPage, int viewCount, int userCount, double responseTime){
         return UserCountDto.builder()
             .currentPage(currentPage)
-            .count(count)
-            .percentage(percentage)
+            .viewCount(viewCount)
+            .userCount(userCount)
             .responseTime(responseTime)
             .build();
     }
@@ -39,6 +38,6 @@ public class UserCountDto implements Comparable<UserCountDto> {
 
     @Override
     public int compareTo(@NotNull UserCountDto o) {
-        return o.getCount() - this.getCount();
+        return o.getViewCount() - this.getViewCount();
     }
 }
