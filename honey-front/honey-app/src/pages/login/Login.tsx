@@ -38,7 +38,8 @@ function Login() {
         const savedUrl = sessionStorage.getItem("redirectUrl");
 
         if (savedUrl) {
-          navi(savedUrl);
+          const relativePath = savedUrl.replace(window.location.origin, "");
+          navi(relativePath);
           sessionStorage.removeItem("redirectUrl");
           return;
         }
