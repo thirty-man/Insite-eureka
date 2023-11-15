@@ -17,6 +17,7 @@ import writePaper from "./writepaper.png";
 import Pen from "./pen.png";
 import prevArrow from "./prevArrow.png";
 import nextArrow from "./nextArrow.png";
+import newbear from "./newbear.png";
 
 export {
   Background,
@@ -38,4 +39,5 @@ export {
   Pen,
   prevArrow,
   nextArrow,
+  newbear,
 };
