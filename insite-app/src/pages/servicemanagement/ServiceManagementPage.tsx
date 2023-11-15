@@ -362,8 +362,8 @@ function ServiceManagementPage() {
               {isTextModalOpen && (
                 <TextModalContent>
                   <div>
-                    <ScriptButton onClick={() => setActiveTab("OnClick")}>
-                      OnClick.jsx
+                    <ScriptButton onClick={() => setActiveTab("사용법")}>
+                      사용법
                     </ScriptButton>
                     <ScriptButton
                       onClick={() => setActiveTab("TracebuttonJsx")}
