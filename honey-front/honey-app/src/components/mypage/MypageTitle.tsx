@@ -15,6 +15,7 @@ import { mypageSelectedRoom } from "@recoil/atom";
 function MypageTitle() {
   const roomList = useRecoilValue<RoomType[]>(getMyRoomlistSelector);
   const [title, setTitle] = useState<string>("방이 없습니다.");
+  const [showDate, setShowDate] = useState<string>("");
   const [showTime, setShowTime] = useState<string>("");
   const [selectedRoom, setSelectedRoom] =
     useRecoilState<RoomType>(mypageSelectedRoom);
@@ -35,7 +36,9 @@ function MypageTitle() {
     if (roomList && roomList.length > 0) {
       setTitle(roomList[0].roomTitle);
       setSelectedRoom(roomList[0]);
-      setShowTime(roomList[0].showTime.split("T")[0]);
+      const parts = roomList[0].showTime.split("T");
+      setShowDate(parts[0]);
+      setShowTime(parts[1].split(".")[0]);
     }
   }, [roomList, setSelectedRoom]);
 
@@ -167,7 +170,10 @@ function MypageTitle() {
           onClick={() => logout()}
         />
       </div>
-      <div>개봉일 : {showTime || ""}</div>
+      <div>
+        개봉일 : {showDate || ""}
+        {showTime || ""}
+      </div>
       <div className="flex justify-center items-center">
         <button
           className="bg-cg-3 rounded-xl p-2 m-2"
