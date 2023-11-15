@@ -39,7 +39,7 @@ const DateImg = styled.img`
 `;
 
 const CalendarContainer = styled.div`
-  width: 100%;
+  width: 40%;
   height: 100%;
   min-width: 50%;
   display: flex;

@@ -108,6 +108,10 @@ const CalendarContainer = styled.div`
   justify-content: flex-end;
 `;
 const CalendarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
   width: 38%;
   min-width: 38%;
   height: 100%;
@@ -134,8 +138,8 @@ const SettingDate = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 8rem;
-  height: 14rem;
+  width: 6rem;
+  height: 8rem;
   cursor: pointer;
   background-color: #6646ef;
   border-radius: 8px;
@@ -473,7 +477,7 @@ function Header() {
           {openStartDate && (
             <Modal
               width="24rem"
-              height="16rem"
+              height="13rem"
               $posX="10%"
               $posY="60%"
               $position="absolute"
@@ -501,7 +505,7 @@ function Header() {
           {openEndDate && (
             <Modal
               width="24rem"
-              height="16rem"
+              height="13rem"
               $posX="20%"
               $posY="60%"
               $position="absolute"
