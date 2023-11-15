@@ -24,7 +24,7 @@ public class MessageSendReqDto {
 	@NotNull
 	private String nickName;
 
-	@Size(max = 100, message = "내용은 100자 제한입니다.")
+	@Size(max = 450, message = "내용은 450자 제한입니다.")
 	private String content;
 
 	@NotNull
