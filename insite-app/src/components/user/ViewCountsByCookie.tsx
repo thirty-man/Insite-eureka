@@ -86,6 +86,10 @@ function ViewCountsByCookie() {
       height: 700, // 차트의 높이 설정
       color: "white",
     },
+    scrollablePlotArea: {
+      minWidth: 300, // 최소 너비 설정
+      scrollPositionX: 1, // 초기 스크롤 위치 설정
+    },
     title: "",
     xAxis: {
       categories: data.map((item) => item.cookieId),
