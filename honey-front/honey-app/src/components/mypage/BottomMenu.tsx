@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { greedyPooh, sendPot } from "@assets/images";
 import axios from "axios";
-import { traceButton } from "../../../Tracebutton";
+import { traceButton } from "../../Tracebutton";
 
 function ButtomMenu() {
   const { routeTo } = useRouter();
