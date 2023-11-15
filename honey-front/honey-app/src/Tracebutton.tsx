@@ -42,7 +42,6 @@ function createCookieId() {
 
 // 집계된 데이터를 전송하는 함수입니다.
 function sendData(data: AnalyticsData) {
-  console.log(data);
   fetch("https://takeinsite.com:8081/write-service/api/v1/data/button", {
     method: "POST",
     headers: {

@@ -57,7 +57,6 @@ function gatherData(path: string) {
   if (navigationEntries.length > 0) {
     const navigationTiming =
       navigationEntries[0] as PerformanceNavigationTiming;
-    console.log(navigationTiming);
     responseTime = navigationTiming.loadEventEnd - navigationTiming.startTime;
   }
   const cookieId = getCookieId() || ((isNew = true), createCookieId());
@@ -86,7 +85,6 @@ function gatherData(path: string) {
 
 // 집계된 데이터를 전송하는 함수입니다.
 function sendData(data: AnalyticsData) {
-  console.log(data);
   fetch("https://takeinsite.com:8081/write-service/api/v1/data/page", {
     method: "POST",
     headers: {
