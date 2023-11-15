@@ -344,13 +344,13 @@ public class ButtonServiceImpl implements ButtonService{
     private Map<String, Integer> getStringIntegerMap(List<FluxTable> tables) {
         Map<String, Integer> buttonNameWithClickCounts = new HashMap<>();
         for(int i = 0 ; i < tables.size(); i++){
-            buttonNameWithClickCounts.put(tables.get(i).getRecords().get(0).getValueByKey("buttonName").toString(), 0);
+            buttonNameWithClickCounts.put(tables.get(i).getRecords().get(0).getValueByKey("name").toString(), 0);
         }
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
             for(FluxRecord record : records){
-                String buttonName = record.getValueByKey("buttonName").toString();
+                String buttonName = record.getValueByKey("name").toString();
                 buttonNameWithClickCounts.put(buttonName , buttonNameWithClickCounts.get(buttonName));
             }
         }
