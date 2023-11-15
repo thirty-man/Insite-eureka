@@ -232,6 +232,8 @@ function ServiceManagementPage() {
     fetchCode();
   }, [activeTab]);
 
+  useEffect(() => {});
+
   const myApp =
     sessionStorage.getItem("myApp") ||
     `{"applicationId":0,"name":"사이트를 선택해주세요.","applicationUrl":"사이트를 선택해주세요", "applicationToken":"사이트를 선택해주세요", "createTime" : "사이트를 선택해주세요"}`;
