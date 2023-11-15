@@ -9,11 +9,16 @@ interface CalendarButtonProps {
 const Border = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  min-width: 100px;
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  border: 3px solid #6646ef;
+
+  &:hover {
+    background-color: gray;
+    opacity: 75%;
+  }
 `;
 
 const DateText = styled.div`
@@ -39,9 +44,9 @@ const DateImg = styled.img`
 `;
 
 const CalendarContainer = styled.div`
-  width: 40%;
+  width: 100%;
   height: 100%;
-  min-width: 50%;
+  min-width: 200px;
   display: flex;
   flex-direction: row;
   align-items: center;

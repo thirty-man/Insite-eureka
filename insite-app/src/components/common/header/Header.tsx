@@ -116,6 +116,8 @@ const CalendarWrapper = styled.div`
   min-width: 38%;
   height: 100%;
   margin-right: 20px;
+  border-radius: 15px;
+  border: 3px solid #6646ef;
   cursor: pointer;
 `;
 
@@ -506,7 +508,7 @@ function Header() {
             <Modal
               width="24rem"
               height="13rem"
-              $posX="20%"
+              $posX="10%"
               $posY="60%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
