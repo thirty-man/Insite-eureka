@@ -47,9 +47,9 @@ function StartDateSelect({
   const pastDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.past,
   );
-  const endDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.end,
-  );
+  // const endDate = useSelector(
+  //   (state: RootState) => state.DateSelectionInfo.end,
+  // );
   const latestDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.end,
   );
@@ -73,7 +73,7 @@ function StartDateSelect({
   };
 
   const pastDateObj = parseDate(pastDate);
-  const endDateObj = endDate ? parseDate(endDate) : parseDate(latestDate);
+  const latestDateObj = parseDate(latestDate);
 
   const getYearsInRange = (past: Date, latest: Date) => {
     const years = [];
@@ -86,7 +86,6 @@ function StartDateSelect({
     }
     return years;
   };
-
   const getMonthsInRange = (past: Date, latest: Date) => {
     const months = [];
     if (past.getFullYear() === latest.getFullYear()) {
@@ -106,49 +105,49 @@ function StartDateSelect({
     return months;
   };
 
-  const getDaysInRange = (past: Date, latest: Date) => {
-    const days = [];
-    if (
-      past.getFullYear() === latest.getFullYear() &&
-      past.getMonth() === latest.getMonth()
-    ) {
-      for (let day = past.getDate(); day <= latest.getDate(); day += 1) {
-        days.push(day.toString());
-      }
-    } else {
-      // 해당 월의 마지막 일자를 계산합니다.
-      const month = past.getMonth();
-      const year = past.getFullYear();
+  // 예시: 범위 내의 년도 옵션 가져오기
+  const yearArray = getYearsInRange(pastDateObj, latestDateObj);
+  // 예시: 범위 내의 월 옵션 가져오기
+  const monthArray = getMonthsInRange(pastDateObj, latestDateObj);
+  // 예시: 범위 내의 일 옵션 가져오기
+  const [dayOptions, setDayOptions] = useState<ItemType[]>([]);
+
+  useEffect(() => {
+    const getDaysInRange = (year: number, month: number) => {
+      const days = [];
       let lastDayOfMonth;
 
       if (month === 1) {
-        // 2월의 경우
+        // 2월의 경우 윤년 검사
         lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+      } else if (month === 3 || month === 5 || month === 8 || month === 10) {
+        lastDayOfMonth = 30; // 4월, 6월, 9월, 11월은 30일까지
       } else {
-        lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+        lastDayOfMonth = 31; // 나머지 월은 31일까지
       }
 
       for (let day = 1; day <= lastDayOfMonth; day += 1) {
         days.push(day.toString());
       }
-    }
-    return days;
-  };
-  // 예시: 범위 내의 년도 옵션 가져오기
-  const yearArray = getYearsInRange(pastDateObj, endDateObj);
-  // 예시: 범위 내의 월 옵션 가져오기
-  const monthArray = getMonthsInRange(pastDateObj, endDateObj);
-  // 예시: 범위 내의 일 옵션 가져오기
-  const dayArray = getDaysInRange(pastDateObj, endDateObj);
+
+      return days;
+    };
+    const newDayOptions = getDaysInRange(
+      parseInt(startYear, 10),
+      parseInt(startMonth, 10),
+    );
+    setDayOptions(
+      newDayOptions.map((day, index) => {
+        return { id: index, name: day };
+      }),
+    );
+  }, [startYear, startMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
     return { id: index, name: year };
   });
   const monthOptions: ItemType[] = monthArray.map((month, index) => {
     return { id: index, name: month };
-  });
-  const dayOptions: ItemType[] = dayArray.map((day, index) => {
-    return { id: index, name: day };
   });
 
   const handleStartYear = (item: ItemType) => {
