@@ -14,6 +14,8 @@ const Border = styled.div`
   width: 50%;
   height: 80%;
   border-radius: 12px;
+  margin-left: 5px;
+  margin-right: 5px;
 
   &:hover {
     background-color: gray;
@@ -41,7 +43,6 @@ const DateImg = styled.img`
   justify-content: center;
   margin-right: 5px;
   filter: invert(100%);
-  margin-left: 15px;
 `;
 
 const CalendarContainer = styled.div`

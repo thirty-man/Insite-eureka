@@ -75,19 +75,26 @@ function StartDateSelect({
   const pastDateObj = parseDate(pastDate);
   const endDateObj = endDate ? parseDate(endDate) : parseDate(latestDate);
 
-  const getYearsInRange = (start: Date, end: Date) => {
+  const getYearsInRange = (past: Date, latest: Date) => {
     const years = [];
-    for (let year = start.getFullYear(); year <= end.getFullYear(); year += 1) {
+    for (
+      let year = past.getFullYear();
+      year <= latest.getFullYear();
+      year += 1
+    ) {
       years.push(year.toString());
     }
     return years;
   };
 
-  const getMonthsInRange = (start: Date, end: Date) => {
+  const getMonthsInRange = (past: Date, latest: Date) => {
     const months = [];
-    // 시작과 종료가 같은 년도일 때만
-    if (start.getFullYear() === end.getFullYear()) {
-      for (let month = start.getMonth(); month <= end.getMonth(); month += 1) {
+    if (past.getFullYear() === latest.getFullYear()) {
+      for (
+        let month = past.getMonth();
+        month <= latest.getMonth();
+        month += 1
+      ) {
         months.push((month + 1).toString()); // 실제 월은 1에서 시작합니다.
       }
     } else {
@@ -99,20 +106,19 @@ function StartDateSelect({
     return months;
   };
 
-  const getDaysInRange = (start: Date, end: Date) => {
+  const getDaysInRange = (past: Date, latest: Date) => {
     const days = [];
-    // 시작과 종료 날짜가 같은 년, 같은 월일 때만
     if (
-      start.getFullYear() === end.getFullYear() &&
-      start.getMonth() === end.getMonth()
+      past.getFullYear() === latest.getFullYear() &&
+      past.getMonth() === latest.getMonth()
     ) {
-      for (let day = start.getDate(); day <= end.getDate(); day += 1) {
+      for (let day = past.getDate(); day <= latest.getDate(); day += 1) {
         days.push(day.toString());
       }
     } else {
       // 해당 월의 마지막 일자를 계산합니다.
-      const month = start.getMonth();
-      const year = start.getFullYear();
+      const month = past.getMonth();
+      const year = past.getFullYear();
       let lastDayOfMonth;
 
       if (month === 1) {
