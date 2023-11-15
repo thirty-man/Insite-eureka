@@ -44,9 +44,9 @@ const DateImg = styled.img`
 `;
 
 const CalendarContainer = styled.div`
-  width: 40%;
+  width: 100%;
   height: 100%;
-  min-width: 50%;
+  min-width: 200px;
   display: flex;
   flex-direction: row;
   align-items: center;

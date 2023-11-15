@@ -508,7 +508,7 @@ function Header() {
             <Modal
               width="24rem"
               height="13rem"
-              $posX="20%"
+              $posX="10%"
               $posY="60%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
