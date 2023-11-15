@@ -75,7 +75,7 @@ function Send() {
 
   // 랜덤 꿀단지일경우(potIdx==0)=> send할 때, if문으로 Math.random함수로 인덱스 정해주면 될 듯
 
-  return (
+  return selectedMember ? (
     <>
       <div className="flex h-full justify-center items-center">
         <div className="flex justify-center items-center h-[80%] w-full bg-cover bg-writePaper bg-size">
@@ -171,6 +171,8 @@ function Send() {
         </Modal>
       )}
     </>
+  ) : (
+    <div>잘못된 접근</div>
   );
 }
 
