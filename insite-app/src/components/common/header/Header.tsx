@@ -122,6 +122,8 @@ const CalendarWrapper = styled.div`
 `;
 const DateText = styled.div`
   font-size: 16px;
+  margin-right: 2px;
+  margin-left: 2px;
 `;
 const DateSelectContainer = styled.div`
   display: flex;
@@ -481,10 +483,10 @@ function Header() {
           )}
           {openStartDate && (
             <Modal
-              width="24rem"
+              width="26rem"
               height="13rem"
-              $posX="8%"
-              $posY="50%"
+              $posX="0%"
+              $posY="80%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >
@@ -509,10 +511,10 @@ function Header() {
 
           {openEndDate && (
             <Modal
-              width="24rem"
+              width="26rem"
               height="13rem"
-              $posX="8%"
-              $posY="50%"
+              $posX="0%"
+              $posY="80%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
             >

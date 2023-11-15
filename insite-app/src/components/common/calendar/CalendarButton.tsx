@@ -11,7 +11,7 @@ const Border = styled.div`
   align-items: center;
   justify-content: space-between;
   min-width: 100px;
-  width: 80%;
+  width: 70%;
   height: 90%;
   border-radius: 15px;
 
