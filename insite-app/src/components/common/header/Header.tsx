@@ -18,7 +18,7 @@ import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
 import { ApplicationDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
-import { Alert, Modal, MoveModal } from "@components/common/modal";
+import { Alert, Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
 
@@ -483,10 +483,10 @@ function Header() {
             </CalendarContainer>
           )}
           {openStartDate && (
-            <MoveModal
+            <Modal
               width="26.4rem"
               height="13rem"
-              $posX="4%"
+              $posX="4.1%"
               $posY="66%"
               $position="absolute"
               close={() => setOpenStartDate(false)}
@@ -507,14 +507,14 @@ function Header() {
                 />
                 <SettingDate onClick={setStartDateRange}>설정</SettingDate>
               </DateSelectContainer>
-            </MoveModal>
+            </Modal>
           )}
 
           {openEndDate && (
-            <MoveModal
+            <Modal
               width="26.4rem"
               height="13rem"
-              $posX="4%"
+              $posX="4.1%"
               $posY="66%"
               $position="absolute"
               close={() => setOpenEndDate(false)}
@@ -535,7 +535,7 @@ function Header() {
                 />
                 <SettingDate onClick={setEndDateRange}>설정</SettingDate>
               </DateSelectContainer>
-            </MoveModal>
+            </Modal>
           )}
           <DropDown<ApplicationDtoType>
             items={siteList}
