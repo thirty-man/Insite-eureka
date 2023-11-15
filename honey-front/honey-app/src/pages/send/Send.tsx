@@ -60,7 +60,7 @@ function Send() {
     setSelectedPotIdx((prev) => (prev - 1 + pots.length) % pots.length);
   };
 
-  return selectedMember.id !== -1 ? (
+  return selectedMember !== undefined ? (
     <>
       <div className="flex h-full justify-center items-center">
         <div className="flex justify-center items-center h-[80%] w-full bg-cover bg-writePaper bg-size">
