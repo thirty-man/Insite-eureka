@@ -29,7 +29,7 @@ function Alert({
         </div>
       </div>
       <Modal
-        className="fixed w-[120px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[220] bg-transparent flex items-center justify-center"
+        className="fixed w-[200px] h-[120px] bottom-1/2 left-1/2 -translate-x-[180px] translate-y-[190px] z-[220] bg-transparent flex items-center justify-center"
         overlay={false}
         overz=""
         openModal
