@@ -37,13 +37,13 @@ const ModalContent = styled.div<ModalContentType>`
   z-index: 10000;
   @keyframes modal {
     0% {
-      transform: translateY(-20%);
+      transform: translate(-50%, 50%) translateX(4%) translateY(66%);
       height: 10%;
       opacity: 0;
       overflow-y: hidden;
     }
     100% {
-      transform: translateY(0);
+      transform: translate(-50%, 50%) translateX(4%) translateY(66%);
       height: auto;
       opacity: 1;
       overflow-y: auto;
