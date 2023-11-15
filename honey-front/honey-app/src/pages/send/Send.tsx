@@ -25,19 +25,19 @@ function Send() {
   const [, setCompleteSend] = useRecoilState<boolean>(completeSendState);
   const { VITE_API_URL } = import.meta.env;
 
-  const messageSendReqDto = {
-    member_id_to: selectedMember.id,
-    room_id: selectedRoom.id,
-    nick_name: nickName,
-    content,
-    honey_case_type: String(selectedPotIdx),
-  };
-
   function send() {
     // 전송 api요청
     const config = {
       "Content-Type": "application/json",
       headers: { Authorization: token },
+    };
+
+    const messageSendReqDto = {
+      member_id_to: selectedMember.id,
+      room_id: selectedRoom.id,
+      nick_name: nickName,
+      content,
+      honey_case_type: String(selectedPotIdx),
     };
 
     axios
@@ -60,7 +60,7 @@ function Send() {
     setSelectedPotIdx((prev) => (prev - 1 + pots.length) % pots.length);
   };
 
-  return selectedMember !== undefined ? (
+  return (
     <>
       <div className="flex h-full justify-center items-center">
         <div className="flex justify-center items-center h-[80%] w-full bg-cover bg-writePaper bg-size">
@@ -156,8 +156,6 @@ function Send() {
         </Modal>
       )}
     </>
-  ) : (
-    <div>잘못된 접근</div>
   );
 }
 
