@@ -59,7 +59,10 @@ function EndDateSelect({
   };
 
   const parseString = (dateStr: string) => {
-    const [year, month, day] = dateStr.split("-");
+    const [year, month, day] = dateStr.split("-").map((val, index) => {
+      if (index === 0) return val;
+      return String(parseInt(val, 10));
+    });
     return [year, month, day];
   };
 

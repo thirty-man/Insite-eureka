@@ -425,29 +425,32 @@ function Header() {
   };
 
   const setStartDateRange = () => {
-    const d1 = new Date(newStartDate);
-    const d2 = new Date(newEndDate);
+    let startD = new Date(newStartDate);
+    const endD = new Date(newEndDate);
+    const pastD = new Date(pastDate);
 
-    if (d1 > d2) {
-      setOpenAlert(true);
-      return;
+    // startDate가 endDate보다 늦거나 pastDate보다 이르면 pastDate로 설정
+    if (startD > endD || startD < pastD) {
+      startD = pastD;
     }
-    dispatch(setStartDate(newStartDate));
+
+    dispatch(setStartDate(startDate.toString().split("T")[0]));
     dispatch(setEndDate(newEndDate));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
 
   const setEndDateRange = () => {
-    const d1 = new Date(newEndDate);
-    const d2 = new Date(newEndDate);
+    let endD = new Date(newEndDate);
+    const latestD = new Date(latestDate);
 
-    if (d1 > d2) {
-      setOpenAlert(true);
-      return;
+    // endDate가 latestDate를 초과하면 latestDate로 설정
+    if (endD > latestD) {
+      endD = latestD;
     }
+
     dispatch(setStartDate(newStartDate));
-    dispatch(setEndDate(newEndDate));
+    dispatch(setEndDate(endDate.toString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
