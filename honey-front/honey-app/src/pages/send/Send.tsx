@@ -8,7 +8,7 @@ import { RoomType, UserType } from "@customtype/dataTypes";
 import { mypageSelectedRoom, selectedMemberState } from "@recoil/atom";
 import completeSendState from "@recoil/atom/completeSendState";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -33,13 +33,6 @@ function Send() {
     honey_case_type: String(selectedPotIdx),
   };
 
-  useEffect(() => {
-    console.log("시험");
-    if (!selectedMember) {
-      navi("/mypage");
-    }
-  }, [navi, selectedMember]);
-
   function send() {
     // 전송 api요청
     const config = {
@@ -53,24 +46,11 @@ function Send() {
         setCompleteSend(true);
         navi("/mypage");
       });
-    // .catch((error) => {
-    //   if (error.response.data.errorCode === "000") {
-    //     console.error("Error Send:", error.response.data.errorCode);
-    //     // 000에러를 받았을 때 JWT에서 리프래쉬토큰을 다시 호출하는 axios를 작성
-    //     // 그런데 여기서 no를 반환받으면 다시 로그인을 시켜야 한다
-    //   }
-    //   console.error("Error Send:", error.response.data.errorCode);
-    // });
   }
 
   function goToBack() {
     navi(-1);
   }
-
-  // if (selectedMember === undefined) {
-  //   return <AccessError />;
-  // }
-  // {selectedMember.name}
 
   const nextPot = () => {
     setSelectedPotIdx((prev) => (prev + 1) % pots.length);
@@ -80,9 +60,7 @@ function Send() {
     setSelectedPotIdx((prev) => (prev - 1 + pots.length) % pots.length);
   };
 
-  // 랜덤 꿀단지일경우(potIdx==0)=> send할 때, if문으로 Math.random함수로 인덱스 정해주면 될 듯
-
-  return selectedMember ? (
+  return selectedMember.id !== -1 ? (
     <>
       <div className="flex h-full justify-center items-center">
         <div className="flex justify-center items-center h-[80%] w-full bg-cover bg-writePaper bg-size">

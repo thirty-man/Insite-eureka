@@ -3,7 +3,10 @@ import { atom } from "recoil";
 
 const selectedMemberState = atom<UserType>({
   key: "selectedMemberAtom",
-  default: undefined,
+  default: {
+    id: -1,
+    name: "정보가 없습니다.",
+  },
 });
 
 export default selectedMemberState;
