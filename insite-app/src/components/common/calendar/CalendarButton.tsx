@@ -43,7 +43,6 @@ const DateImg = styled.img`
   justify-content: center;
   margin-right: 5px;
   filter: invert(100%);
-  margin-left: 5px;
 `;
 
 const CalendarContainer = styled.div`
