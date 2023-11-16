@@ -49,6 +49,7 @@ const Tooltip = styled.div`
   z-index: 10001;
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
+  margin-left: 100%;
   margin-right: 0;
   opacity: 75%;
   transition: opacity 0.3s;
@@ -60,7 +61,7 @@ const Tooltip = styled.div`
     left: 10%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: transparent transparent black transparent;
   }
 `;
 
