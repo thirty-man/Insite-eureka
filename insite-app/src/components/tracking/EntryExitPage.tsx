@@ -25,8 +25,7 @@ function BeforeUrl() {
   useEffect(() => {
     const parseStartDateTime = new Date(startDateTime);
     const parseEndDateTime = new Date(endDateTime);
-    console.log("안되는 곳 start: ", parseStartDateTime);
-    console.log("안되는 곳 end: ", parseEndDateTime);
+
     const fetchData = async () => {
       try {
         const response = await getEntryExitData(
