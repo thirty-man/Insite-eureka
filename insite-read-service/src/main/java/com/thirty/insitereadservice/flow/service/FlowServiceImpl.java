@@ -263,7 +263,6 @@ public class FlowServiceImpl implements FlowService {
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("referrer")
-            .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
 
         log.info("query= {}", query);
