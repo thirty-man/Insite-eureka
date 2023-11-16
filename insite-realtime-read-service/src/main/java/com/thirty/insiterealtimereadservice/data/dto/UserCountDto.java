@@ -16,18 +16,15 @@ public class UserCountDto implements Comparable<UserCountDto> {
 
     private String currentPage;
 
-    private int viewCount;
-
     private int userCount;
 
     private double percentage;
 
     private double responseTime;
 
-    public static UserCountDto create(String currentPage, int viewCount, int userCount,double percentage, double responseTime){
+    public static UserCountDto create(String currentPage, int userCount,double percentage, double responseTime){
         return UserCountDto.builder()
             .currentPage(currentPage)
-            .viewCount(viewCount)
             .userCount(userCount)
             .percentage(percentage)
             .responseTime(responseTime)
@@ -41,6 +38,6 @@ public class UserCountDto implements Comparable<UserCountDto> {
 
     @Override
     public int compareTo(@NotNull UserCountDto o) {
-        return o.getViewCount() - this.getViewCount();
+        return o.getUserCount() - this.getUserCount();
     }
 }

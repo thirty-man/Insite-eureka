@@ -97,7 +97,8 @@ public class InfluxQueryBuilder {
         Flux query = Flux.from(bucket)
             .range(getBeforeThirtyMinutes(), getNow())
             .filter(restrictions)
-            .groupBy("currentUrl");
+            .groupBy(new String[]{"cookieId"})
+            .sort(new String[]{"_time"}, true);
 
         log.info("query= {}",query);
         return query;

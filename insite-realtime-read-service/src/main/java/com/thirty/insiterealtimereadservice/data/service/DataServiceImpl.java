@@ -65,13 +65,8 @@ public class DataServiceImpl implements DataService{
 
         List<FluxTable> tables = queryApi.query(query.toString());
 
-        int sum = 0;
-        for(FluxTable table : tables){
-            sum += table.getRecords().size();
-        }
-
         Map<String, CountWithResponseTime> urlWithCountAndResponseTime = getCurrentUrlWithCountWithResponseTime(tables);
-        return UserCountResDto.create(getUserCountDtoList(sum , urlWithCountAndResponseTime));
+        return UserCountResDto.create(getUserCountDtoList(tables.size(), urlWithCountAndResponseTime));
     }
 
     @Override
@@ -134,22 +129,18 @@ public class DataServiceImpl implements DataService{
 
     private Map<String, CountWithResponseTime> getCurrentUrlWithCountWithResponseTime(List<FluxTable> tables){
         Map<String, CountWithResponseTime> urlWithCountAndResponseTime = new HashMap<>();
-
         for (FluxTable fluxTable : tables) {
-            Set<String> userCount = new HashSet<>();
             List<FluxRecord> records = fluxTable.getRecords();
 
             String url = records.get(0).getValueByKey("currentUrl").toString();
-            double sumResponseTime = 0;
-            for (FluxRecord record : records) {
-                String stringValueOfResponseTime = record.getValueByKey("responseTime").toString();
-                userCount.add(record.getValueByKey("cookieId").toString());
+            String stringValueOfResponseTime = records.get(0).getValueByKey("responseTime").toString();
+            Double responseTime = Double.valueOf(stringValueOfResponseTime);
 
-                sumResponseTime += Double.valueOf(stringValueOfResponseTime);
+            if(urlWithCountAndResponseTime.containsKey(url)){
+                urlWithCountAndResponseTime.put(url, urlWithCountAndResponseTime.get(url).addResponseTime(responseTime).addUserCount());
+            }else{
+                urlWithCountAndResponseTime.put(url, CountWithResponseTime.create(1, responseTime));
             }
-
-            int size = records.size();
-            urlWithCountAndResponseTime.put(url, CountWithResponseTime.create(size, userCount.size(), sumResponseTime/size));
         }
 
         return urlWithCountAndResponseTime;
@@ -162,13 +153,12 @@ public class DataServiceImpl implements DataService{
 
         for(String url : urlWithCountAndResponseTime.keySet()){
             CountWithResponseTime countWithResponseTime = urlWithCountAndResponseTime.get(url);
-
+            int userCount = countWithResponseTime.getUserCount();
             userCountDtoPriorityQueue.offer(UserCountDto.create(
                 url,
-                countWithResponseTime.getViewCount(),
-                countWithResponseTime.getUserCount(),
-                sum == 0 ? 0.0 : countWithResponseTime.getViewCount()/(double) sum,
-                countWithResponseTime.getResponseTime()
+                userCount,
+                sum == 0 ? 0.0 : userCount/(double) sum,
+                countWithResponseTime.getResponseTime()/userCount
             ));
         }
 
