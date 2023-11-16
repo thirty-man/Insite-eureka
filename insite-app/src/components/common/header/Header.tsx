@@ -17,12 +17,11 @@ import {
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
-import { ApplicationDtoType, UserCountDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
-import { getUserCount } from "@api/realtimeApi";
+import { ApplicationDtoType } from "@customtypes/dataTypes";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -41,7 +40,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   font-weight: 500;
   color: white;
   position: relative;
@@ -53,12 +52,6 @@ const ProfileWrapper = styled.div`
   padding-right: 2rem;
   margin-left: 3rem;
 `;
-// const Section = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-evenly;
-//   width: 100%;
-// `;
 
 const ProfileButton = styled.button`
   display: flex;
@@ -163,40 +156,6 @@ const SettingDate = styled.button`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
-// const IconWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   position: relative;
-//   flex-direction: row;
-//   justify-content: flex-start;
-// `;
-
-// const IconDiv = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 2.8rem;
-//   height: 2.8rem;
-//   background-color: #00e6ff;
-//   border-radius: 15px;
-//   cursor: pointer;
-// `;
-// const IconImg = styled.img`
-//   width: 50%;
-//   height: 50%;
-// `;
-
-// const TextWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-//   justify-content: center;
-// `;
-
-// const TextDiv = styled.div`
-//   width: 100%;
-//   font-size: 15px;
-// `;
 
 function Header() {
   const navi = useNavigate();
@@ -232,34 +191,6 @@ function Header() {
 
     fetchData();
   }, []);
-  const [userData, setUserData] = useState<UserCountDtoType[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getUserCount();
-        if (!response.userCountDtoList) setUserData([]);
-        else setUserData(response.userCountDtoList);
-      } catch (error) {
-        // 에러 처리
-      }
-    };
-
-    console.log("사용자수", totalCount);
-    fetchData();
-    const intervalId = setInterval(fetchData, 3000); // 3초마다 데이터 갱신
-    return () => clearInterval(intervalId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // userData가 변경될 때마다 totalCount를 다시 계산
-    const sumOfUserCount = userData.reduce((total, item) => {
-      return total + item.userCount;
-    }, 0);
-
-    setTotalCount(sumOfUserCount);
-  }, [userData]); // userData의 변화를 감지
 
   const startDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
