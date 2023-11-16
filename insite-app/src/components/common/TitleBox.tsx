@@ -8,8 +8,8 @@ interface TitleBoxProps {
 }
 
 const TitleBoxStyle = styled.div`
-  width: fit-content;
-  max-width: 300px;
+  width: 100%;
+  height: 100%;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -35,7 +35,8 @@ const InfoIconWrapper = styled.div`
 
 const Tooltip = styled.div`
   visibility: hidden;
-  width: 120px;
+  width: 400px;
+  max-width: 500px;
   background-color: black;
   color: #fff;
   text-align: center;
