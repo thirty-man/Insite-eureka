@@ -40,7 +40,7 @@ const Tooltip = styled.div`
   width: 400px;
   background-color: black;
   color: #fff;
-  text-align: start;
+  text-align: center;
   font-size: 14px;
   font-weight: 200;
   border-radius: 6px;
@@ -48,7 +48,7 @@ const Tooltip = styled.div`
   position: absolute;
   z-index: 10001;
   top: 100%; // 아이콘 바로 아래로 위치 조정
-  left: -30%; // 왼쪽으로 약간 이동
+  left: -130%; // 왼쪽으로 약간 이동
   margin-right: 0;
   opacity: 0;
   transition: opacity 0.3s;
