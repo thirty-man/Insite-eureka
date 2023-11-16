@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 import { useEffect, useState } from "react";
 import { CookieIdUrlDtoType, CurrentUrlDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
@@ -82,14 +83,19 @@ function ViewCountsByCookie() {
     chart: {
       type: "bar",
       backgroundColor: "transparent",
-      width: 300, // 차트의 너비 설정
+      width: 400, // 차트의 너비 설정
       height: 700, // 차트의 높이 설정
       color: "white",
       scrollablePlotArea: {
         minWidth: 300, // 스크롤 가능한 플롯 영역의 최소 너비 설정
       },
     },
-    title: "",
+    title: {
+      text: "총 사용자 수 : " + data.length + "명", // 총 사용자 수 표시
+      style: {
+        color: "white",
+      },
+    },
     xAxis: {
       categories: data.map((item) => item.cookieId),
       labels: {

@@ -1,4 +1,4 @@
-	페이지 데이터 추적 📄
+페이지 데이터 추적 🌐
 
 ⭐ Single Page Application ⭐
 
@@ -40,7 +40,7 @@
     <head> 태그 내부에 아래 스크립트 코드를 추가하세요.
 	<script src="https://takeinsite.com:8081/write-service/api/v1/InsiteTrackers.js" token="{토큰을 입력해주세요}"></script>
 
-버튼 데이터 추적 🖱️
+버튼 데이터 추적 ✅
 
 ⭐ Single Page Application / Multi Page Application⭐
 
