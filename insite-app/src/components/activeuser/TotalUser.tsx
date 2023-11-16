@@ -20,6 +20,7 @@ const Myeong = styled.p`
   font-size: 1rem;
   text-align: end;
   justify-content: end;
+  color: white;
 `;
 
 function TotalUser() {
