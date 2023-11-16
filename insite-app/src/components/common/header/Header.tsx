@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { IconUser, IconUser2 } from "@assets/icons";
+import { IconUser } from "@assets/icons";
 import {
   CalendarButton,
   StartDateSelect,
@@ -53,12 +53,12 @@ const ProfileWrapper = styled.div`
   padding-right: 2rem;
   margin-left: 3rem;
 `;
-const Section = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-`;
+// const Section = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-evenly;
+//   width: 100%;
+// `;
 
 const ProfileButton = styled.button`
   display: flex;
@@ -163,40 +163,40 @@ const SettingDate = styled.button`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-  flex-direction: row;
-  justify-content: flex-start;
-`;
+// const IconWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   position: relative;
+//   flex-direction: row;
+//   justify-content: flex-start;
+// `;
 
-const IconDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.8rem;
-  height: 2.8rem;
-  background-color: #00e6ff;
-  border-radius: 15px;
-  cursor: pointer;
-`;
-const IconImg = styled.img`
-  width: 50%;
-  height: 50%;
-`;
+// const IconDiv = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 2.8rem;
+//   height: 2.8rem;
+//   background-color: #00e6ff;
+//   border-radius: 15px;
+//   cursor: pointer;
+// `;
+// const IconImg = styled.img`
+//   width: 50%;
+//   height: 50%;
+// `;
 
-const TextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-`;
+// const TextWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   flex-direction: column;
+//   justify-content: center;
+// `;
 
-const TextDiv = styled.div`
-  width: 100%;
-  font-size: 15px;
-`;
+// const TextDiv = styled.div`
+//   width: 100%;
+//   font-size: 15px;
+// `;
 
 function Header() {
   const navi = useNavigate();
@@ -541,7 +541,7 @@ function Header() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <IconWrapper>
+        {/* <IconWrapper>
           <IconDiv>
             <IconImg src={IconUser2} alt="user count" />
           </IconDiv>
@@ -549,132 +549,134 @@ function Header() {
             <TextDiv>총 사용자수 현황</TextDiv>
             <TextDiv>{totalCount}명</TextDiv>
           </TextWrapper>
-        </IconWrapper>
-        <Section>
-          {(currentPathname === "/board/track" ||
-            currentPathname === "/board/user" ||
-            currentPathname === "/board/active" ||
-            currentPathname === "/board/button") && (
-            <CalendarContainer>
-              <CalendarWrapper>
-                <CalendarButton
-                  date={parseStartDate}
-                  onClick={handleStartDate}
-                />
-                <DateText>~</DateText>
-                <CalendarButton date={parseEndDate} onClick={handleEndDate} />
-              </CalendarWrapper>
-            </CalendarContainer>
-          )}
-          {openStartDate && (
-            <Modal
-              width="26.4rem"
-              height="13rem"
-              $posX="4.12%"
-              $posY="66%"
-              $position="absolute"
-              close={() => setOpenStartDate(false)}
-            >
-              <DateSelectContainer>
-                <DateHeader>시작 날짜 선택</DateHeader>
-                <StartDateSelect
-                  onChange={handlenewStartDate}
-                  openDropStartYear={openDropStartYear}
-                  closeDropStartYear={() => setOpenDropStartYear(false)}
-                  toggleDropStartYear={handleToggleStartYear}
-                  openDropStartMonth={openDropStartMonth}
-                  closeDropStartMonth={() => setOpenDropStartMonth(false)}
-                  toggleDropStartMonth={handleToggleStartMonth}
-                  openDropStartDay={openDropStartDay}
-                  closeDropStartDay={() => setOpenDropStartDay(false)}
-                  toggleDropStartDay={handleToggleStartDay}
-                />
-                <SettingDate onClick={setStartDateRange}>설정</SettingDate>
-              </DateSelectContainer>
-            </Modal>
-          )}
-
-          {openEndDate && (
-            <Modal
-              width="26.4rem"
-              height="13rem"
-              $posX="4.12%"
-              $posY="66%"
-              $position="absolute"
-              close={() => setOpenEndDate(false)}
-            >
-              <DateSelectContainer>
-                <DateHeader>종료 날짜 선택</DateHeader>
-                <EndDateSelect
-                  onChange={handlenewEndDate}
-                  openDropEndYear={openDropEndYear}
-                  closeDropEndYear={() => setOpenDropEndYear(false)}
-                  toggleDropEndYear={handleToggleEndYear}
-                  openDropEndMonth={openDropEndMonth}
-                  closeDropEndMonth={() => setOpenDropEndMonth(false)}
-                  toggleDropEndMonth={handleToggleEndMonth}
-                  openDropEndDay={openDropEndDay}
-                  closeDropEndDay={() => setOpenDropEndDay(false)}
-                  toggleDropEndDay={handleToggleEndDay}
-                />
-                <SettingDate onClick={setEndDateRange}>설정</SettingDate>
-              </DateSelectContainer>
-            </Modal>
-          )}
-          <DropDown<ApplicationDtoType>
-            items={siteList}
-            width="15rem"
-            height="3rem"
-            initialValue={selectedSite}
-            onChange={handleSelectedSite}
-            openDropdown={openSite}
-            close={() => {
-              setOpenSite(false);
-            }}
-            toggle={() => {
-              setOpenProfile(false);
-              setOpenStartDate(false);
-              setOpenEndDate(false);
-              setOpenSite((p) => !p);
-            }}
-          />
-          <ProfileWrapper>
-            <ProfileButton>
-              <ProfileImg
-                src={IconUser}
-                alt="my profile"
-                onClick={handleToggleProfile}
+          <IconDiv>
+            <IconImg src={IconAbnormal} alt="IconAbnormal" />
+          </IconDiv>
+          <TextWrapper>
+            <TextDiv>총 비정상적 접근 수</TextDiv>
+            <TextDiv>{totalCount}번</TextDiv>
+          </TextWrapper>
+        </IconWrapper> */}
+        {(currentPathname === "/board/track" ||
+          currentPathname === "/board/user" ||
+          currentPathname === "/board/active" ||
+          currentPathname === "/board/button") && (
+          <CalendarContainer>
+            <CalendarWrapper>
+              <CalendarButton date={parseStartDate} onClick={handleStartDate} />
+              <DateText>~</DateText>
+              <CalendarButton date={parseEndDate} onClick={handleEndDate} />
+            </CalendarWrapper>
+          </CalendarContainer>
+        )}
+        {openStartDate && (
+          <Modal
+            width="26.4rem"
+            height="13rem"
+            $posX="4.12%"
+            $posY="66%"
+            $position="absolute"
+            close={() => setOpenStartDate(false)}
+          >
+            <DateSelectContainer>
+              <DateHeader>시작 날짜 선택</DateHeader>
+              <StartDateSelect
+                onChange={handlenewStartDate}
+                openDropStartYear={openDropStartYear}
+                closeDropStartYear={() => setOpenDropStartYear(false)}
+                toggleDropStartYear={handleToggleStartYear}
+                openDropStartMonth={openDropStartMonth}
+                closeDropStartMonth={() => setOpenDropStartMonth(false)}
+                toggleDropStartMonth={handleToggleStartMonth}
+                openDropStartDay={openDropStartDay}
+                closeDropStartDay={() => setOpenDropStartDay(false)}
+                toggleDropStartDay={handleToggleStartDay}
               />
-            </ProfileButton>
-            {openProfile && (
-              <Modal
-                width="15rem"
-                height="6.5rem"
-                $posX="-50%"
-                $posY="80%"
-                close={() => setOpenProfile(false)}
-                $position="absolute"
+              <SettingDate onClick={setStartDateRange}>설정</SettingDate>
+            </DateSelectContainer>
+          </Modal>
+        )}
+
+        {openEndDate && (
+          <Modal
+            width="26.4rem"
+            height="13rem"
+            $posX="4.12%"
+            $posY="66%"
+            $position="absolute"
+            close={() => setOpenEndDate(false)}
+          >
+            <DateSelectContainer>
+              <DateHeader>종료 날짜 선택</DateHeader>
+              <EndDateSelect
+                onChange={handlenewEndDate}
+                openDropEndYear={openDropEndYear}
+                closeDropEndYear={() => setOpenDropEndYear(false)}
+                toggleDropEndYear={handleToggleEndYear}
+                openDropEndMonth={openDropEndMonth}
+                closeDropEndMonth={() => setOpenDropEndMonth(false)}
+                toggleDropEndMonth={handleToggleEndMonth}
+                openDropEndDay={openDropEndDay}
+                closeDropEndDay={() => setOpenDropEndDay(false)}
+                toggleDropEndDay={handleToggleEndDay}
+              />
+              <SettingDate onClick={setEndDateRange}>설정</SettingDate>
+            </DateSelectContainer>
+          </Modal>
+        )}
+        <DropDown<ApplicationDtoType>
+          items={siteList}
+          width="15rem"
+          height="3rem"
+          initialValue={selectedSite}
+          onChange={handleSelectedSite}
+          openDropdown={openSite}
+          close={() => {
+            setOpenSite(false);
+          }}
+          toggle={() => {
+            setOpenProfile(false);
+            setOpenStartDate(false);
+            setOpenEndDate(false);
+            setOpenSite((p) => !p);
+          }}
+        />
+        <ProfileWrapper>
+          <ProfileButton>
+            <ProfileImg
+              src={IconUser}
+              alt="my profile"
+              onClick={handleToggleProfile}
+            />
+          </ProfileButton>
+          {openProfile && (
+            <Modal
+              width="15rem"
+              height="6.5rem"
+              $posX="-50%"
+              $posY="80%"
+              close={() => setOpenProfile(false)}
+              $position="absolute"
+            >
+              <Option
+                onClick={() => {
+                  navi("/login");
+                  setOpenProfile(false);
+                }}
               >
-                <Option
-                  onClick={() => {
-                    navi("/login");
-                    setOpenProfile(false);
-                  }}
-                >
-                  로그아웃
-                </Option>
-                <Option
-                  onClick={() => {
-                    navi("/mysite");
-                    setOpenProfile(false);
-                  }}
-                >
-                  사이트 선택하러 가기
-                </Option>
-              </Modal>
-            )}
-          </ProfileWrapper>
-        </Section>
+                로그아웃
+              </Option>
+              <Option
+                onClick={() => {
+                  navi("/mysite");
+                  setOpenProfile(false);
+                }}
+              >
+                사이트 선택하러 가기
+              </Option>
+            </Modal>
+          )}
+        </ProfileWrapper>
       </HeaderWrapper>
     </HeaderContainer>
   );
