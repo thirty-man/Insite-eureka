@@ -42,12 +42,13 @@ const Tooltip = styled.div`
   color: #fff;
   text-align: start;
   font-size: 14px;
+  font-weight: 200;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 10001;
   top: 100%; // 아이콘 바로 아래로 위치 조정
-  left: -10%; // 왼쪽으로 약간 이동
+  left: -30%; // 왼쪽으로 약간 이동
   margin-right: 0;
   opacity: 0;
   transition: opacity 0.3s;
