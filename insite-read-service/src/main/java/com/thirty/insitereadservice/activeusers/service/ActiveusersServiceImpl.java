@@ -75,13 +75,13 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(averageActiveTimeReqDto.getApplicationToken(),memberId));
         QueryApi queryApi = influxDBClient.getQueryApi();
 
-        Flux query = activeUsersQueryBuilder.getAverageActiveTime(
+        String query = activeUsersQueryBuilder.getAverageActiveTime(
             averageActiveTimeReqDto.getStartDateTime(),
             averageActiveTimeReqDto.getEndDateTime(),
             averageActiveTimeReqDto.getApplicationToken()
         );
 
-        List<FluxTable> tables = queryApi.query(query.toString());
+        List<FluxTable> tables = queryApi.query(query);
         return AverageActiveTimeResDto.create(getAverageActiveTimeDtoList(tables));
     }
 

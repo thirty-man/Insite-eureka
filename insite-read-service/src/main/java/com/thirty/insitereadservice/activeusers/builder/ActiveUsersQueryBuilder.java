@@ -66,21 +66,19 @@ public class ActiveUsersQueryBuilder {
         return query;
     }
 
-    public Flux getAverageActiveTime(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
+    public String getAverageActiveTime(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
         Instant[] startAndEndInstant = getStartAndEndInstant(startDateTime,endDateTime);
 
-        Restrictions restrictions = Restrictions.and(
-            Restrictions.measurement().equal("data"),
-            Restrictions.tag("applicationToken").equal(applicationToken)
-        );
-        Flux query = Flux.from(bucket)
-            .range(startAndEndInstant[0], startAndEndInstant[1])
-            .filter(restrictions)
-            .groupBy(new String [] {"currentUrl","activityId"})
-            .sort(new String[]{"_time"},true);
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("from(bucket: \"").append(bucket).append("\")\n");
+        queryBuilder.append("  |> range(start: ").append(startAndEndInstant[0]).append(", stop:").append(startAndEndInstant[1]).append(")\n");
+        queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
+            .append(applicationToken).append("\" and float(v: r.requestCnt) < 3)\n");
+        queryBuilder.append("  |> group(columns:[\"currentUrl\",\"activityId\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"], desc: true)");
 
-        log.info("query= {}", query);
-        return query;
+        log.info("query= {}", queryBuilder);
+        return queryBuilder.toString();
     }
 
     public Flux getOsActiveUserCounts(LocalDateTime startDateTime, LocalDateTime endDateTime, String applicationToken){
