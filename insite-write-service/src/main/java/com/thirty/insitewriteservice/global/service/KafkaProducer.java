@@ -46,21 +46,21 @@ public class KafkaProducer {
 		// Measurement 추가
 		sb.append("data");
 		// Tags 추가
-		sb.append(",cookieId=").append(dataReqDto.getCookieId());
-		sb.append(",currentUrl=").append(dataReqDto.getCurrentUrl());
-		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl() == null || dataReqDto.getBeforeUrl().length() <= 1 ? "null" : dataReqDto.getBeforeUrl());
-		sb.append(",referrer=").append(dataReqDto.getReferrer() == null || dataReqDto.getReferrer().length() <= 1 ? "null" : dataReqDto.getReferrer());
-		sb.append(",language=").append(dataReqDto.getLanguage());
-		sb.append(",responseTime=").append(dataReqDto.getResponseTime());
-		sb.append(",osId=").append(dataReqDto.getOsId());
+		sb.append(",cookieId=").append(dataReqDto.getCookieId().replace(" ", "-"));
+		sb.append(",currentUrl=").append(dataReqDto.getCurrentUrl().replace(" ", "-"));
+		sb.append(",beforeUrl=").append(dataReqDto.getBeforeUrl() == null || dataReqDto.getBeforeUrl().length() <= 1 ? "null" : dataReqDto.getBeforeUrl().replace(" ", "-"));
+		sb.append(",referrer=").append(dataReqDto.getReferrer() == null || dataReqDto.getReferrer().length() <= 1 ? "null" : dataReqDto.getReferrer().replace(" ", "-"));
+		sb.append(",language=").append(dataReqDto.getLanguage().replace(" ", "-"));
+		sb.append(",responseTime=").append(dataReqDto.getResponseTime().replace(" ", "-"));
+		sb.append(",osId=").append(dataReqDto.getOsId().replace(" ", "-"));
 		sb.append(",isNew=").append(dataReqDto.isNew() ? "true" : "false");
-		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken());
-		sb.append(",activityId=").append(dataReqDto.getActivityId());
-		sb.append(",requestCnt=").append(dataReqDto.getRequestCnt());
+		sb.append(",applicationToken=").append(dataReqDto.getApplicationToken().replace(" ", "-"));
+		sb.append(",activityId=").append(dataReqDto.getActivityId().replace(" ", "-"));
+		sb.append(",requestCnt=").append(dataReqDto.getRequestCnt().replace(" ", "-"));
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");
 		// 필드 추가 (단일 필드인 경우)
-		sb.append("applicationUrl=\"").append(dataReqDto.getApplicationUrl()).append("\"");
+		sb.append("applicationUrl=\"").append(dataReqDto.getApplicationUrl().replace(" ", "-")).append("\"");
 		// Timestamp 추가 (나노초 단위로 변환) (UTC 변환 추가)
 		sb.append(" ").append((System.currentTimeMillis() + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L) * 1000000);
 		return sb.toString();
@@ -72,16 +72,16 @@ public class KafkaProducer {
 		// Measurement 추가
 		sb.append("button");
 		// Tags 추가
-		sb.append(",cookieId=").append(buttonReqDto.getCookieId());
-		sb.append(",currentUrl=").append(buttonReqDto.getCurrentUrl());
+		sb.append(",cookieId=").append(buttonReqDto.getCookieId().replace(" ", "-"));
+		sb.append(",currentUrl=").append(buttonReqDto.getCurrentUrl().replace(" ", "-"));
 		sb.append(",name=").append(buttonReqDto.getName().replace(" ", "-"));
-		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken());
-		sb.append(",activityId=").append(buttonReqDto.getActivityId());
-		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt());
+		sb.append(",applicationToken=").append(buttonReqDto.getApplicationToken().replace(" ", "-"));
+		sb.append(",activityId=").append(buttonReqDto.getActivityId().replace(" ", "-"));
+		sb.append(",requestCnt=").append(buttonReqDto.getRequestCnt().replace(" ", "-"));
 		// 태그와 필드 사이에 공백 추가
 		sb.append(" ");
 		// 필드 추가 (단일 필드인 경우)
-		sb.append("applicationUrl=\"").append(buttonReqDto.getApplicationUrl()).append("\"");
+		sb.append("applicationUrl=\"").append(buttonReqDto.getApplicationUrl().replace(" ", "-")).append("\"");
 		// Timestamp 추가 (나노초 단위로 변환)
 		sb.append(" ").append((System.currentTimeMillis() + ZoneOffset.ofHours(9).getTotalSeconds() * 1000L) * 1000000);
 		return sb.toString();
