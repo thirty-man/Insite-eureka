@@ -110,8 +110,8 @@ public class InfluxQueryBuilder {
         queryBuilder.append("  |> range(start: ").append(getBeforeThirtyMinutes()).append(", stop:").append(getNow()).append(")\n");
         queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
             .append(applicationToken).append("\" and float(v: r.requestCnt) >= 15)\n");
-        queryBuilder.append("  |> group(columns:[\"\"])\n");
-        queryBuilder.append("  |> sort(columns: [\"_time\"])");
+        queryBuilder.append("  |> group(columns:[\"cookieId\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"], desc:true)");
 
         log.info("query={}",queryBuilder);
         return queryBuilder.toString();

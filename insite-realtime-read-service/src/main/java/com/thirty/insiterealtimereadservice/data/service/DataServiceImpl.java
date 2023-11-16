@@ -174,23 +174,21 @@ public class DataServiceImpl implements DataService{
         List<AbnormalDto> abnormalDtoList = new ArrayList<>();
         int id = 0;
         for (FluxTable fluxTable : tables) {
-            List<FluxRecord> records = fluxTable.getRecords();
-            for (FluxRecord record : records) {
-                String cookieId = record.getValueByKey("cookieId").toString();
+            FluxRecord recentRecords = fluxTable.getRecords().get(0);
+            String cookieId = recentRecords.getValueByKey("cookieId").toString();
 
-                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                String stringValueOfTime = record.getValueByKey("_time").toString();
-                LocalDateTime time = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
+            DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            String stringValueOfTime = recentRecords.getValueByKey("_time").toString();
+            LocalDateTime time = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
 
-                String currentUrl = record.getValueByKey("currentUrl").toString();
-                String language = record.getValueByKey("language").toString();
-                String osId = record.getValueByKey("osId").toString();
-                String stringValueOfRequestCnt = record.getValueByKey("requestCnt").toString();
-                int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
+            String currentUrl = recentRecords.getValueByKey("currentUrl").toString();
+            String language = recentRecords.getValueByKey("language").toString();
+            String osId = recentRecords.getValueByKey("osId").toString();
+            String stringValueOfRequestCnt = recentRecords.getValueByKey("requestCnt").toString();
+            int requestCnt = Integer.valueOf(stringValueOfRequestCnt);
 
-                abnormalDtoList.add(AbnormalDto.create(cookieId,time,currentUrl,language,requestCnt,osId).addId(id++));
-            }
+            abnormalDtoList.add(AbnormalDto.create(cookieId,time,currentUrl,language,requestCnt,osId).addId(id++));
         }
         return abnormalDtoList;
     }
