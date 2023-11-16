@@ -23,6 +23,7 @@ import IconClock from "./icon_clock.svg";
 import activeuserclickavg from "./activeuserclickavg.svg";
 import clickavgexit from "./clickavgexit.svg";
 import IconInfo from "./icon_info.svg";
+import IconAbnormal from "./icon_abnormal.svg";
 
 export {
   IconApi,
@@ -50,4 +51,5 @@ export {
   activeuserclickavg,
   clickavgexit,
   IconInfo,
+  IconAbnormal,
 };
