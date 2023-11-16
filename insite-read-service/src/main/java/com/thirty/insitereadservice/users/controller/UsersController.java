@@ -1,15 +1,9 @@
 package com.thirty.insitereadservice.users.controller;
 
 import com.thirty.insitereadservice.global.jwt.JwtProcess;
-import com.thirty.insitereadservice.users.dto.request.PageViewReqDto;
-import com.thirty.insitereadservice.users.dto.request.UserCountReqDto;
-import com.thirty.insitereadservice.users.dto.request.ViewCountsPerUserReqDto;
-import com.thirty.insitereadservice.users.dto.response.CookieIdUrlResDto;
-import com.thirty.insitereadservice.users.dto.response.PageViewResDto;
-import com.thirty.insitereadservice.users.dto.response.UserCountResDto;
+import com.thirty.insitereadservice.users.dto.request.*;
+import com.thirty.insitereadservice.users.dto.response.*;
 import com.thirty.insitereadservice.users.dto.ViewCountsPerUserDto;
-import com.thirty.insitereadservice.users.dto.request.AbnormalHistoryReqDto;
-import com.thirty.insitereadservice.users.dto.response.AbnormalHistoryResDto;
 import com.thirty.insitereadservice.users.service.UsersService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -67,5 +61,13 @@ public class UsersController {
 
         CookieIdUrlResDto cookieIdUrlResDto= usersService.getCookieIdUrlCount(viewCountsPerUserReqDto,memberId);
         return new ResponseEntity<>(cookieIdUrlResDto,HttpStatus.OK);
+    }
+
+    @PostMapping("/total-users")
+    public ResponseEntity<TotalUserCountResDto> getTotalUsers(@Valid @RequestBody TotalUserCountReqDto totalUserCountReqDto,
+                                                              HttpServletRequest request){
+        int memberId = JwtProcess.verifyAccessToken(request);//검증
+        TotalUserCountResDto totalUserCountResDto =usersService.getTotalUserCount(totalUserCountReqDto,memberId);
+        return new ResponseEntity<>(totalUserCountResDto,HttpStatus.OK);
     }
 }
