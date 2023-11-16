@@ -61,7 +61,7 @@ const Tooltip = styled.div`
     left: 70%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent black transparent;
+    border-color: black transparent transparent transparent;
   }
 `;
 
