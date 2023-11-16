@@ -100,7 +100,7 @@ function TrackingPage() {
       </SecondCol>
       <ThirdCol>
         <DefaultBox width="96rem" height="25rem">
-          <TitleBox>페이지 이동 통계</TitleBox>
+          <TitleBox>페이지 별 직전 페이지 통계</TitleBox>
           <ContentDiv>
             <PageMovingStatistics />
           </ContentDiv>
