@@ -40,16 +40,16 @@ const Tooltip = styled.div`
   width: 400px;
   background-color: black;
   color: #fff;
-  text-align: center;
+  text-align: start;
   font-size: 16px;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 10001;
   top: 50%; // 위치를 위쪽으로 조정
-  right: 5%;
+  left: 5%;
   margin-right: 0; // 오른쪽 마진을 0으로 설정
-  opacity: 0;
+  opacity: 75%;
   transition: opacity 0.3s;
 
   &::before {
