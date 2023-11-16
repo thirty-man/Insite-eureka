@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +83,11 @@ public class FlowServiceImpl implements FlowService {
                 int len = records.size()-1;
                 String exitPageUrl = records.get(len).getValueByKey("currentUrl").toString();
 
+                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                LocalDateTime userLastTime = LocalDateTime.parse(records.get(len).getValueByKey("_time").toString(), formatter);
+                String stringValueOfTime = records.get(len).getValueByKey("_time").toString();
+                LocalDateTime userLastTime = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
+
 
                 //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
                 if(userLastTime.isAfter(nowMinusActiveTime) || userLastTime.equals(nowMinusActiveTime)){

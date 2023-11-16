@@ -174,8 +174,10 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 String activityId = records.get(0).getValueByKey("activityId").toString();
 
                 //날짜 변환
+                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                LocalDateTime startTime = LocalDateTime.parse(records.get(0).getValueByKey("_time").toString(), formatter);
+                String stringValueOfTime = records.get(0).getValueByKey("_time").toString();
+                LocalDateTime startTime = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
 
                 LocalDateTime endTime;
 

@@ -303,8 +303,10 @@ public class ButtonServiceImpl implements ButtonService{
             List<FluxRecord> records = fluxTable.getRecords();
 
             for (FluxRecord record : records) {
+                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                LocalDateTime currentDateTime = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+                String stringValueOfTime = record.getValueByKey("_time").toString();
+                LocalDateTime currentDateTime = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
 
                 String buttonName = record.getValueByKey("name").toString();
                 String cookieId = record.getValueByKey("cookieId").toString();
