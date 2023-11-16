@@ -147,6 +147,8 @@ function EndDateSelect({
         ? startDateObj.getDate()
         : 1;
 
+    console.log(startDay);
+
     const newDayOptions = getDaysInRange(
       parseInt(endYear, 10),
       parseInt(endMonth, 10),
@@ -157,7 +159,7 @@ function EndDateSelect({
         return { id: index, name: day };
       }),
     );
-  }, [startDateObj, endDateObj, endYear, endMonth, startDate]);
+  }, [startDateObj, endDateObj, endYear, endMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
     return { id: index, name: year };
