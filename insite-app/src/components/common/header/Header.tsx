@@ -441,7 +441,7 @@ function Header() {
   };
 
   const setEndDateRange = () => {
-    const startD = new Date(newStartDate);
+    // const startD = new Date(newStartDate);
     let endD = new Date(newEndDate);
     const latestD = new Date(latestDate);
 
@@ -449,9 +449,9 @@ function Header() {
     if (endD > latestD) {
       endD = latestD;
     }
-    if (endD < startD) {
-      endD = new Date(endDate);
-    }
+    // if (endD < startD) {
+    //   endD = new Date(endDate);
+    // }
 
     dispatch(setEndDate(endD.toISOString().split("T")[0]));
     setOpenStartDate(false);
