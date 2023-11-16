@@ -94,70 +94,71 @@ function EndDateSelect({
   const yearArray = getYearsInRange(startDateObj, latestDateObj);
   const [monthOptions, setMonthOptions] = useState<ItemType[]>([]);
   const [dayOptions, setDayOptions] = useState<ItemType[]>([]);
-  const getMonthsInRange = (start: Date, end: Date) => {
-    const months = [];
-    if (start.getFullYear() === end.getFullYear()) {
-      for (let month = start.getMonth() + 1; month <= 12; month += 1) {
-        months.push(month.toString());
-      }
-    } else {
-      for (let month = 1; month <= 12; month += 1) {
-        months.push(month.toString());
-      }
-    }
-    return months;
-  };
 
-  const getDaysInRange = (
-    year: number,
-    month: number,
-    startDay: number = 1,
-  ) => {
-    const days = [];
-    let lastDayOfMonth;
-
-    if (month === 2) {
-      lastDayOfMonth = isLeapYear(year) ? 29 : 28;
-    } else if (month === 4 || month === 6 || month === 9 || month === 11) {
-      lastDayOfMonth = 30;
-    } else {
-      lastDayOfMonth = 31;
-    }
-
-    for (let day = startDay; day <= lastDayOfMonth; day += 1) {
-      days.push(day.toString());
-    }
-
-    return days;
-  };
   useEffect(() => {
+    const getMonthsInRange = (start: Date, end: Date) => {
+      const months = [];
+      if (start.getFullYear() === end.getFullYear()) {
+        for (let month = start.getMonth() + 1; month <= 12; month += 1) {
+          months.push(month.toString());
+        }
+      } else {
+        for (let month = 1; month <= 12; month += 1) {
+          months.push(month.toString());
+        }
+      }
+      return months;
+    };
+
+    const getDaysInRange = (
+      year: number,
+      month: number,
+      startDay: number = 1,
+    ) => {
+      const days = [];
+      let lastDayOfMonth;
+
+      if (month === 2) {
+        lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+      } else if (month === 4 || month === 6 || month === 9 || month === 11) {
+        lastDayOfMonth = 30;
+      } else {
+        lastDayOfMonth = 31;
+      }
+
+      for (let day = startDay; day <= lastDayOfMonth; day += 1) {
+        days.push(day.toString());
+      }
+
+      return days;
+    };
+
     const newMonthOptions = getMonthsInRange(startDateObj, endDateObj);
-    const newStartDay =
+    setMonthOptions(
+      newMonthOptions.map((month, index) => {
+        return { id: index, name: month };
+      }),
+    );
+
+    // 일 옵션 업데이트
+    const startDay =
       startDateObj.getFullYear() === parseInt(endYear, 10) &&
       startDateObj.getMonth() + 1 === parseInt(endMonth, 10)
         ? startDateObj.getDate()
         : 1;
+
+    console.log(1);
+
     const newDayOptions = getDaysInRange(
       parseInt(endYear, 10),
       parseInt(endMonth, 10),
-      newStartDay,
+      startDay,
     );
-
-    // 상태 업데이트 최적화
-    if (JSON.stringify(monthOptions) !== JSON.stringify(newMonthOptions)) {
-      setMonthOptions(
-        newMonthOptions.map((month, index) => ({ id: index, name: month })),
-      );
-    }
-
-    // 이전 startDay 상태와 비교
-    if (JSON.stringify(dayOptions) !== JSON.stringify(newDayOptions)) {
-      console.log(newStartDay); // 디버깅을 위한 로그
-      setDayOptions(
-        newDayOptions.map((day, index) => ({ id: index, name: day })),
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setDayOptions(
+      newDayOptions.map((day, index) => {
+        return { id: index, name: day };
+      }),
+    );
   }, [startDateObj, endDateObj, endYear, endMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
@@ -181,6 +182,7 @@ function EndDateSelect({
     )}-${endDay.padStart(2, "0")}`;
 
     onChange(newEndDate);
+    console.log(2);
   }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
 
   return (
