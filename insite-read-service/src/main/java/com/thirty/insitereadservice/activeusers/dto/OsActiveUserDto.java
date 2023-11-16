@@ -23,9 +23,13 @@ public class OsActiveUserDto implements Comparable<OsActiveUserDto>{
             .build();
     }
 
-    public OsActiveUserDto addId(int id,int size){
+    public OsActiveUserDto addId(int id){
         this.id = id;
-        this.ratio= count/(double)size;
+        return this;
+    }
+
+    public OsActiveUserDto calculateRatio(double ratio){
+        this.ratio = ratio;
         return this;
     }
 

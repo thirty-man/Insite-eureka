@@ -297,7 +297,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
         int id = 0;
         while(!osActiveUserDtoPriorityQueue.isEmpty()){
-            osActiveUserDtoList.add(osActiveUserDtoPriorityQueue.poll().addId(id++,size));
+            OsActiveUserDto osActiveUserDto = osActiveUserDtoPriorityQueue.poll();
+            osActiveUserDtoList.add(osActiveUserDto.addId(id++).calculateRatio(osActiveUserDto.getCount()/(double)size));
         }
         return osActiveUserDtoList;
     }
