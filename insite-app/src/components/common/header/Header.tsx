@@ -446,7 +446,7 @@ function Header() {
     if (endD > latestD) {
       endD = latestD;
     }
-    dispatch(setEndDate(endD.toString().split("T")[0]));
+    dispatch(setEndDate(endD.toISOString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
