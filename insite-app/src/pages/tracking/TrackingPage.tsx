@@ -27,13 +27,13 @@ const ContentDiv = styled.div`
   height: 90%;
 `;
 
-const InvisiableDiv = styled.div`
-  width: 30rem;
-  height: 25rem;
-  margin: 1%;
-  padding: 0;
-  border-radius: 15px;
-`;
+// const InvisiableDiv = styled.div`
+//   width: 30rem;
+//   height: 25rem;
+//   margin: 1%;
+//   padding: 0;
+//   border-radius: 15px;
+// `;
 
 const SecondCol = styled.div`
   display: flex;

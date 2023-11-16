@@ -34,7 +34,7 @@ type StyleType = {
 type UserCountDtoType = {
   id: number;
   userCount: number;
-  viewCount: number;
+  // viewCount: number;
   percentage: number;
   currentPage: string;
   responseTime: string;

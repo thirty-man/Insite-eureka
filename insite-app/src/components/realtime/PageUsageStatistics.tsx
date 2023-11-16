@@ -46,7 +46,6 @@ function PageUsageStatistics() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.currentPage}</TableCell>
               <TableCell>{item.userCount}</TableCell>
-              <TableCell>{item.viewCount}</TableCell>
               <TableCell>{(+item.responseTime / 1000).toFixed(2)}s</TableCell>
             </TableRow>
           ))}
