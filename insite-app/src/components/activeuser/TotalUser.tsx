@@ -16,8 +16,10 @@ const CountBox = styled.div`
 `;
 
 const Myeong = styled.p`
+  display: flex;
   font-size: 1rem;
-  white-space: nowrap;
+  text-align: end;
+  justify-content: end;
 `;
 
 function TotalUser() {
