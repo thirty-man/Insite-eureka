@@ -74,8 +74,8 @@ public class ActiveUsersQueryBuilder {
         queryBuilder.append("  |> range(start: ").append(startAndEndInstant[0]).append(", stop:").append(startAndEndInstant[1]).append(")\n");
         queryBuilder.append("  |> filter(fn: (r) => r._measurement == \"data\" and r.applicationToken == \"")
             .append(applicationToken).append("\" and float(v: r.requestCnt) < 3)\n");
-        queryBuilder.append("  |> group(columns:[\"currentUrl\",\"activityId\"])\n");
-        queryBuilder.append("  |> sort(columns: [\"_time\"], desc: true)");
+        queryBuilder.append("  |> group(columns:[\"activityId\"])\n");
+        queryBuilder.append("  |> sort(columns: [\"_time\"], desc: false)");
 
         log.info("query= {}", queryBuilder);
         return queryBuilder.toString();
