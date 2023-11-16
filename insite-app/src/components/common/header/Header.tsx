@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { IconUser } from "@assets/icons";
+import { IconUser, IconUser2 } from "@assets/icons";
 import {
   CalendarButton,
   StartDateSelect,
@@ -17,12 +17,12 @@ import {
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
-import { ApplicationDtoType } from "@customtypes/dataTypes";
+import { ApplicationDtoType, UserCountDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
-// import { getUserCount } from "@api/realtimeApi";
+import { getUserCount } from "@api/realtimeApi";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -157,39 +157,39 @@ const SettingDate = styled.button`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
-// const IconWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   position: relative;
-//   flex-direction: row;
-//   justify-content: flex-start;
-// `;
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
 
-// const IconDiv = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 2.8rem;
-//   height: 2.8rem;
-//   background-color: #00e6ff;
-//   border-radius: 15px;
-//   cursor: pointer;
-// `;
-// const IconImg = styled.img`
-//   width: 50%;
-//   height: 50%;
-// `;
+const IconDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background-color: #00e6ff;
+  border-radius: 15px;
+  cursor: pointer;
+`;
+const IconImg = styled.img`
+  width: 50%;
+  height: 50%;
+`;
 
-// const TextWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-//   justify-content: center;
-// `;
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`;
 
-// const TextDiv = styled.div`
-//   font-size: 20px;
-// `;
+const TextDiv = styled.div`
+  font-size: 20px;
+`;
 
 function Header() {
   const navi = useNavigate();
@@ -225,30 +225,30 @@ function Header() {
 
     fetchData();
   }, []);
-  // const [userData, setUserData] = useState<UserCountDtoType[]>([]);
-  // const [totalCount, setTotalCount] = useState<number>(0);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await getUserCount();
-  //       if (!response.userCountDtoList) setUserData([]);
-  //       else setUserData(response.userCountDtoList);
-  //     } catch (error) {
-  //       // console.error(error); // 에러 처리
-  //     }
-  //   };
+  const [userData, setUserData] = useState<UserCountDtoType[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getUserCount();
+        if (!response.userCountDtoList) setUserData([]);
+        else setUserData(response.userCountDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
 
-  //   fetchData();
-  //   const sumOfUserCount = userData.reduce((total, item) => {
-  //     return total + item.userCount;
-  //   }, 0);
+    fetchData();
+    const sumOfUserCount = userData.reduce((total, item) => {
+      return total + item.userCount;
+    }, 0);
 
-  //   setTotalCount(sumOfUserCount);
+    setTotalCount(sumOfUserCount);
 
-  //   const intervalId = setInterval(fetchData, 3000);
-  //   return () => clearInterval(intervalId);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+    const intervalId = setInterval(fetchData, 3000);
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
@@ -530,7 +530,7 @@ function Header() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        {/* <IconWrapper>
+        <IconWrapper>
           <IconDiv>
             <IconImg src={IconUser2} alt="user count" />
           </IconDiv>
@@ -538,7 +538,7 @@ function Header() {
             <TextDiv>총 사용자수 현황 (명)</TextDiv>
             <TextDiv>{totalCount}</TextDiv>
           </TextWrapper>
-        </IconWrapper> */}
+        </IconWrapper>
         {(currentPathname === "/board/track" ||
           currentPathname === "/board/user" ||
           currentPathname === "/board/active" ||
