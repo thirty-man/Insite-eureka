@@ -235,14 +235,14 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 size.put(currentUrl,1);
             }
             try {
-                StringTokenizer st = new StringTokenizer(records.get(records.size() - 1).getValueByKey("_time").toString(),"T");
+                StringTokenizer st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
                 String from ="";
                 from+=st.nextToken();
                 from+=" ";
                 from+=st.nextToken();
                 SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
                 Date fromDate = transFormat.parse(from);
-                st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
+                st = new StringTokenizer(records.get(records.size() - 1).getValueByKey("_time").toString(),"T");
                 String to="";
                 to+=st.nextToken();
                 to+=" ";
