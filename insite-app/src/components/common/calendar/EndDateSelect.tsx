@@ -44,9 +44,9 @@ function EndDateSelect({
   const startDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
-  const pastDate = useSelector(
-    (state: RootState) => state.DateSelectionInfo.past,
-  );
+  // const pastDate = useSelector(
+  //   (state: RootState) => state.DateSelectionInfo.past,
+  // );
   const latestDate = useSelector(
     (state: RootState) => state.DateSelectionInfo.latest,
   );
@@ -75,7 +75,7 @@ function EndDateSelect({
     return new Date(year, month - 1, day); // 월은 0에서 시작합니다.
   };
 
-  const startDateObj = startDate ? parseDate(startDate) : parseDate(pastDate);
+  const startDateObj = parseDate(startDate);
   const endDateObj = parseDate(endDate);
   const latestDateObj = parseDate(latestDate);
 
