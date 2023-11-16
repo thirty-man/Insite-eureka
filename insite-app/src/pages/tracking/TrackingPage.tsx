@@ -27,7 +27,7 @@ const ContentDiv = styled.div`
   height: 90%;
 `;
 
-// const InvisibleDiv = styled.div`
+// const InvisiableDiv = styled.div`
 //   width: 30rem;
 //   height: 25rem;
 //   margin: 1%;
