@@ -38,19 +38,18 @@ const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
   width: 400px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: gray;
   color: #fff;
-  text-align: center;
-  font-size: 14px;
+  text-align: start;
+  font-size: 15px;
   font-weight: 300;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 15px;
   position: absolute;
   z-index: 10001;
-  transform: translateX(100px);
+  transform: translateX(120px);
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
-  margin-left: -150px;
   margin-right: 0;
   transition: opacity 0.3s;
 
