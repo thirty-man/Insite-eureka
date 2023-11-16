@@ -7,19 +7,21 @@ import styled from "styled-components";
 const OutDiv = styled.div`
   display: flex;
   flex-direction: column;
-  color: rgba(174, 75, 255, 0.7);
 `;
 
 const CountBox = styled.div`
-  font-size: 7rem;
+  color: rgba(174, 75, 255, 0.7);
+  font-size: 4.5rem;
 `;
+
 const Myeong = styled.p`
   font-size: 1rem;
+  white-space: nowrap;
 `;
 
 function TotalUser() {
   const [activeData, setActiveData] = useState<number>(-1);
-  const [normalData, setnormalData] = useState<number>(-1);
+  const [normalData, setNormalData] = useState<number>(-1);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -49,8 +51,8 @@ function TotalUser() {
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (!response.totalUserCountRes.total) setnormalData(-1);
-        else setnormalData(response.activeUserCount.total);
+        if (!response.total) setNormalData(-1);
+        else setNormalData(response.total);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
