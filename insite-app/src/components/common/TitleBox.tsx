@@ -1,3 +1,4 @@
+import { IconInfo } from "@assets/icons";
 import styled from "styled-components";
 
 interface TitleBoxProps {
@@ -17,6 +18,7 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   background-color: transparent;
   font-weight: bold;
   cursor: default;
+  position: relative;
 
   &:hover {
     position: relative;
@@ -36,10 +38,22 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
     }
   }
 `;
+const InfoIcon = styled.img`
+  width: 10%;
+  height: 10%;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+`;
 
 /** 너비, 높이, 폰트 사이즈 */
 function TitleBox({ children }: TitleBoxProps) {
-  return <TitleBoxStyle>{children}</TitleBoxStyle>;
+  return (
+    <TitleBoxStyle>
+      {children} <InfoIcon src={IconInfo} alt="Info" />
+    </TitleBoxStyle>
+  );
 }
 
 export default TitleBox;

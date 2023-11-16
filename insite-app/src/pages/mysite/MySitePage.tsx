@@ -8,7 +8,7 @@ import { createStie, getSiteList } from "@api/memberApi";
 import { useNavigate } from "react-router-dom";
 import { useSpring } from "react-spring";
 import { useDispatch } from "react-redux";
-import { setPastDate } from "@reducer/DateSelectionInfo";
+import { setPastDate, setStartDate } from "@reducer/DateSelectionInfo";
 
 const StyledButton = styled.button`
   background-image: linear-gradient(to right, #4776e6 0%, #8e54e9 51%, #4776e6);
@@ -226,6 +226,7 @@ function MySitePage() {
       createTime: item.createTime,
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
+    dispatch(setStartDate(item.createTime));
     dispatch(setPastDate(item.createTime));
     navi("/board");
     window.location.reload();

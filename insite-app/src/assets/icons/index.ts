@@ -22,6 +22,7 @@ import googleLogo from "./googleLogo.svg";
 import IconClock from "./icon_clock.svg";
 import activeuserclickavg from "./activeuserclickavg.svg";
 import clickavgexit from "./clickavgexit.svg";
+import IconInfo from "./icon_info.svg";
 
 export {
   IconApi,
@@ -48,4 +49,5 @@ export {
   IconClock,
   activeuserclickavg,
   clickavgexit,
+  IconInfo,
 };
