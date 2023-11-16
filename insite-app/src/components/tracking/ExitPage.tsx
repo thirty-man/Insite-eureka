@@ -25,8 +25,6 @@ function ExitPage() {
   useEffect(() => {
     const parseStartDateTime = new Date(startDateTime);
     const parseEndDateTime = new Date(endDateTime);
-    console.log("원래: ", parseStartDateTime);
-    console.log("원래: ", parseEndDateTime);
     const fetchData = async () => {
       try {
         const response = await getExitData(

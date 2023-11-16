@@ -182,7 +182,9 @@ function DropDown<T extends BaseType>({
 
   const onClickSelect = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggle();
+    if (items.length > 0) {
+      toggle();
+    }
   };
 
   return (
