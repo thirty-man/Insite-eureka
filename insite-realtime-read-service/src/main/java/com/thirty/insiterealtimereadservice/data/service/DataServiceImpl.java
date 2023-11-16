@@ -189,8 +189,10 @@ public class DataServiceImpl implements DataService{
             for (FluxRecord record : records) {
                 String cookieId = record.getValueByKey("cookieId").toString();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                LocalDateTime time = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
+                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                String stringValueOfTime = record.getValueByKey("_time").toString();
+                LocalDateTime time = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
 
                 String currentUrl = record.getValueByKey("currentUrl").toString();
                 String language = record.getValueByKey("language").toString();
