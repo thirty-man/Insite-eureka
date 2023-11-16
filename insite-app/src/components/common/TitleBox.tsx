@@ -24,7 +24,9 @@ const TitleBoxStyle = styled.div`
 const InfoIconWrapper = styled.div`
   margin-left: 10px;
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 
   &:hover .Tooltip {
@@ -35,11 +37,12 @@ const InfoIconWrapper = styled.div`
 
 const Tooltip = styled.div`
   visibility: hidden;
-  width: 400px;
-  max-width: 500px;
+  width: 500px;
+  max-width: 1000px;
   background-color: black;
   color: #fff;
   text-align: center;
+  font-size: 18px;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
@@ -63,8 +66,8 @@ const Tooltip = styled.div`
 `;
 
 const InfoIcon = styled.img`
-  width: 20px; // 아이콘 크기 조절
-  height: 20px;
+  width: 100%; // 아이콘 크기 조절
+  height: 100%;
 `;
 
 function TitleBox({ children, text }: TitleBoxProps) {

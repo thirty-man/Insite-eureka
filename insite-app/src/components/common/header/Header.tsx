@@ -17,11 +17,12 @@ import {
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
 import DropDown from "@components/common/dropdown/DropDown";
-import { ApplicationDtoType } from "@customtypes/dataTypes";
+import { ApplicationDtoType, UserCountDtoType } from "@customtypes/dataTypes";
 import { setSelectedSite } from "@reducer/SelectedItemInfo";
 import { Modal } from "@components/common/modal";
 import { getSiteList } from "@api/memberApi";
 import { setSelectedMenuId } from "@reducer/SelectedSidebarMenuInfo";
+import { getUserCount } from "@api/realtimeApi";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -190,6 +191,31 @@ function Header() {
     };
 
     fetchData();
+  }, []);
+  const [userData, setUserData] = useState<UserCountDtoType[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getUserCount();
+        if (!response.userCountDtoList) setUserData([]);
+        else setUserData(response.userCountDtoList);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+
+    const sumOfUserCount = userData.reduce((total, item) => {
+      return total + item.userCount;
+    }, 0);
+    console.log(totalCount);
+    setTotalCount(sumOfUserCount);
+
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startDate = useSelector(
