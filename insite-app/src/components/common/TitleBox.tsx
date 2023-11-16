@@ -39,6 +39,8 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   }
 `;
 const InfoIcon = styled.img`
+  width: 10%;
+  height: 10%;
   position: absolute;
   right: 0;
   top: 50%;
