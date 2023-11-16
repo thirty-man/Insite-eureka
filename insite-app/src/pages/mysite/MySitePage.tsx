@@ -44,7 +44,7 @@ const StyledButton = styled.button`
 
 const MainContainer = styled.div`
   width: 90%;
-  height: 70%;
+  height: 90%;
 `;
 
 const OverflowContainer = styled.div`
