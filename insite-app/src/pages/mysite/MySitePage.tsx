@@ -44,7 +44,7 @@ const StyledButton = styled.button`
 
 const MainContainer = styled.div`
   width: 90%;
-  height: 90%;
+  height: 80%;
 `;
 
 const OverflowContainer = styled.div`
@@ -63,8 +63,8 @@ const OutletContainer = styled.div`
 
 const MySitePageStyle = styled.div`
   margin: 5%;
-  height: 20rem;
-  width: 20rem;
+  height: 15rem;
+  width: 15rem;
   padding: 20px;
   box-sizing: border-box;
 `;
