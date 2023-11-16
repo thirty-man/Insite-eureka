@@ -37,7 +37,7 @@ const InfoIconWrapper = styled.div`
 const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
-  width: 280px;
+  width: 275px;
   background-color: black;
   color: #fff;
   text-align: start;
@@ -47,7 +47,7 @@ const Tooltip = styled.div`
   padding: 15px;
   position: absolute;
   z-index: 10001;
-  transform: translateX(90px);
+  transform: translateX(85px);
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
   margin-right: 0;
@@ -58,7 +58,7 @@ const Tooltip = styled.div`
     position: absolute;
     background-color: black;
     top: -5px; // 화살표를 툴팁 상단으로 이동
-    left: 60%; // 화살표를 왼쪽으로 조금 이동
+    left: 70%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent black transparent;
