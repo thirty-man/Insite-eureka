@@ -21,7 +21,7 @@ function RealTimeUserDonutChart() {
           y: Number(Math.round(item.percentage * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
-            // format: `{point.sliceName}<br> 조회수: ${item.viewCount}`,
+            format: `{point.sliceName}<br> 사용자 수: ${item.userCount}`,
             style: {
               fontSize: "15px",
               textOutline: "2px 2px white",
