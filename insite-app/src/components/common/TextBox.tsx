@@ -15,9 +15,19 @@ const TextBoxStyle = styled.div<TextBoxProps>`
   color: white;
   background-color: ${(props) => props.theme.colors.b3};
   border-radius: 15px;
-  /* box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.22); */
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+    transform: scale(1.02);
+    transition: transform 0.1s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
+  }
+
+  &:active {
+    transform: scale(0.99);
+    transition: transform 0.1s;
+  }
 `;
 
 /** 검정색 테스트 박스: 너비, 높이 */
