@@ -176,8 +176,8 @@ const SettingDate = styled.button`
 //   cursor: pointer;
 // `;
 // const IconImg = styled.img`
-//   width: 100%;
-//   height: 100%;
+//   width: 50%;
+//   height: 50%;
 // `;
 
 // const TextWrapper = styled.div`

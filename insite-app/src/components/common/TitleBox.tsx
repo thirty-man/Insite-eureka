@@ -41,27 +41,25 @@ const Tooltip = styled.div`
   background-color: black;
   color: #fff;
   text-align: start;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 10001;
-  top: 50%; // 위치를 위쪽으로 조정
-  left: 5%;
-  margin-right: 0; // 오른쪽 마진을 0으로 설정
-  opacity: 75%;
+  top: 100%; // 아이콘 바로 아래로 위치 조정
+  left: -10%; // 왼쪽으로 약간 이동
+  margin-right: 0;
+  opacity: 0;
   transition: opacity 0.3s;
 
   &::before {
     content: "";
     position: absolute;
-    bottom: 100%;
-    right: 50%; // 화살표의 위치를 오른쪽으로 조정
-    z-index: 10001;
-    margin-right: -5px; // 오른쪽 마진을 조정
+    top: -5px; // 화살표를 툴팁 상단으로 이동
+    left: 10%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent black transparent;
+    border-color: black transparent transparent transparent;
   }
 `;
 
