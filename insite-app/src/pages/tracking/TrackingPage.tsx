@@ -27,13 +27,13 @@ const ContentDiv = styled.div`
   height: 90%;
 `;
 
-const InvisiableDiv = styled.div`
-  width: 30rem;
-  height: 25rem;
-  margin: 1%;
-  padding: 0;
-  border-radius: 15px;
-`;
+// const InvisibleDiv = styled.div`
+//   width: 30rem;
+//   height: 25rem;
+//   margin: 1%;
+//   padding: 0;
+//   border-radius: 15px;
+// `;
 
 const SecondCol = styled.div`
   display: flex;
@@ -81,7 +81,7 @@ function TrackingPage() {
         </DefaultBox>
       </FirstCol>
       <SecondCol>
-        {/* <InvisiableDiv /> */}
+        {/* <InvisibleDiv /> */}
         <DefaultBox width="30rem" height="25rem">
           <TitleBox>총 유입 사용자 수</TitleBox>
           <ContentDiv>
