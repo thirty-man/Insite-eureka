@@ -37,28 +37,28 @@ const InfoIconWrapper = styled.div`
 const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
-  width: 400px;
-  background-color: black;
+  width: 300px;
+  background-color: 333744;
   color: #fff;
-  text-align: center;
-  font-size: 14px;
+  text-align: start;
+  font-size: 15px;
   font-weight: 300;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 15px;
   position: absolute;
   z-index: 10001;
+  transform: translateX(120px);
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
-  margin-left: -150px;
   margin-right: 0;
-  opacity: 75%;
   transition: opacity 0.3s;
 
   &::before {
     content: "";
     position: absolute;
+    background-color: 333744;
     top: -5px; // 화살표를 툴팁 상단으로 이동
-    left: 90%; // 화살표를 왼쪽으로 조금 이동
+    left: 60%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent black transparent;
