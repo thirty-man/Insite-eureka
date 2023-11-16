@@ -19,6 +19,7 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
   font-weight: bold;
   cursor: default;
   position: relative;
+  z-index: 100;
 
   &:hover {
     position: relative;

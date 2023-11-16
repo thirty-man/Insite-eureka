@@ -147,8 +147,6 @@ function EndDateSelect({
         ? startDateObj.getDate()
         : 1;
 
-    console.log(1);
-
     const newDayOptions = getDaysInRange(
       parseInt(endYear, 10),
       parseInt(endMonth, 10),
@@ -183,7 +181,6 @@ function EndDateSelect({
     )}-${endDay.padStart(2, "0")}`;
 
     onChange(newEndDate);
-    console.log(2);
   }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
 
   return (

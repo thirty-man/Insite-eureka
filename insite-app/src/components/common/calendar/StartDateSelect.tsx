@@ -145,7 +145,6 @@ function StartDateSelect({
         return { id: index, name: day };
       }),
     );
-    console.log(3);
   }, [startYear, startMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
@@ -171,7 +170,6 @@ function StartDateSelect({
       "0",
     )}-${startDay.padStart(2, "0")}`;
     onChange(newStartDate);
-    console.log(4);
   }, [startYear, startMonth, startDay, pastDate, dispatch, onChange]);
 
   return (
