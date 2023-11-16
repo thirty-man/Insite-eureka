@@ -37,7 +37,7 @@ const InfoIconWrapper = styled.div`
 const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
-  width: 290px;
+  width: 280px;
   background-color: black;
   color: #fff;
   text-align: start;
@@ -47,7 +47,7 @@ const Tooltip = styled.div`
   padding: 15px;
   position: absolute;
   z-index: 10001;
-  transform: translateX(95px);
+  transform: translateX(90px);
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
   margin-right: 0;
