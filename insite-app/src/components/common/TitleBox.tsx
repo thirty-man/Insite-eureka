@@ -47,7 +47,7 @@ const Tooltip = styled.div`
   position: absolute;
   z-index: 100;
   top: 50%; // 위치를 위쪽으로 조정
-  right: 110%; // 왼쪽으로 나오도록 조정
+  right: 50%; // 왼쪽으로 나오도록 조정
   margin-right: 0; // 오른쪽 마진을 0으로 설정
   opacity: 0;
   transition: opacity 0.3s;
@@ -65,6 +65,7 @@ const Tooltip = styled.div`
 `;
 
 const InfoIcon = styled.img`
+  padding-top: 1px;
   width: 20px;
   height: 20px;
 `;
