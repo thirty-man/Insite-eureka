@@ -184,7 +184,8 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 if(size == 1){
                     endTime = startTime.plusMinutes(30L);
                 }else{
-                    endTime = LocalDateTime.parse(records.get(size-1).getValueByKey("_time").toString(), formatter).plusMinutes(30L);
+                    String stringValueOfEndTime = records.get(size-1).getValueByKey("_time").toString();
+                    endTime = LocalDateTime.parse(stringValueOfEndTime, stringValueOfEndTime.length() < 24 ? formatter : millisecondFormatter).plusMinutes(30L);
                 }
 
                 activeUserWithActiveTimeMap.put(activityId, ActiveTimeDto.create(startTime,endTime));
@@ -250,7 +251,6 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
                 Date toDate = transFormat.parse(to);
                 double sec =(toDate.getTime()-fromDate.getTime())/1000;
-                log.info("sec={}",sec);
                 if(map.containsKey(currentUrl)){
                     map.replace(currentUrl,map.get(currentUrl)+sec);
                 }
@@ -266,7 +266,6 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         map.forEach((key,value)->{
             String current = key;
             double average = value/size.get(current);
-            log.info("average={}",average);
             averageActiveTimeDtoPriorityQueue.add(AverageActiveTimeDto.create(current,average));
 
         });
