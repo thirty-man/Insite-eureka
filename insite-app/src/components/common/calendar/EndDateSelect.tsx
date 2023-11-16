@@ -94,45 +94,43 @@ function EndDateSelect({
   const yearArray = getYearsInRange(startDateObj, latestDateObj);
   const [monthOptions, setMonthOptions] = useState<ItemType[]>([]);
   const [dayOptions, setDayOptions] = useState<ItemType[]>([]);
+  const getMonthsInRange = (start: Date, end: Date) => {
+    const months = [];
+    if (start.getFullYear() === end.getFullYear()) {
+      for (let month = start.getMonth() + 1; month <= 12; month += 1) {
+        months.push(month.toString());
+      }
+    } else {
+      for (let month = 1; month <= 12; month += 1) {
+        months.push(month.toString());
+      }
+    }
+    return months;
+  };
 
+  const getDaysInRange = (
+    year: number,
+    month: number,
+    startDay: number = 1,
+  ) => {
+    const days = [];
+    let lastDayOfMonth;
+
+    if (month === 2) {
+      lastDayOfMonth = isLeapYear(year) ? 29 : 28;
+    } else if (month === 4 || month === 6 || month === 9 || month === 11) {
+      lastDayOfMonth = 30;
+    } else {
+      lastDayOfMonth = 31;
+    }
+
+    for (let day = startDay; day <= lastDayOfMonth; day += 1) {
+      days.push(day.toString());
+    }
+
+    return days;
+  };
   useEffect(() => {
-    const getMonthsInRange = (start: Date, end: Date) => {
-      const months = [];
-      if (start.getFullYear() === end.getFullYear()) {
-        for (let month = start.getMonth() + 1; month <= 12; month += 1) {
-          months.push(month.toString());
-        }
-      } else {
-        for (let month = 1; month <= 12; month += 1) {
-          months.push(month.toString());
-        }
-      }
-      return months;
-    };
-
-    const getDaysInRange = (
-      year: number,
-      month: number,
-      startDay: number = 1,
-    ) => {
-      const days = [];
-      let lastDayOfMonth;
-
-      if (month === 2) {
-        lastDayOfMonth = isLeapYear(year) ? 29 : 28;
-      } else if (month === 4 || month === 6 || month === 9 || month === 11) {
-        lastDayOfMonth = 30;
-      } else {
-        lastDayOfMonth = 31;
-      }
-
-      for (let day = startDay; day <= lastDayOfMonth; day += 1) {
-        days.push(day.toString());
-      }
-
-      return days;
-    };
-
     const newMonthOptions = getMonthsInRange(startDateObj, endDateObj);
     setMonthOptions(
       newMonthOptions.map((month, index) => {
@@ -159,6 +157,7 @@ function EndDateSelect({
         return { id: index, name: day };
       }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDateObj, endDateObj, endYear, endMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
