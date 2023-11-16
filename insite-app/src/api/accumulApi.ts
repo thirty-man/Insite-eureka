@@ -366,6 +366,21 @@ const getActiveUsersPerTime = async (
   return [];
 };
 
+const getTotalUsers = async (startDateTime: Date, endDateTime: Date) => {
+  try {
+    const response = await accumulAPI.post("/users/total-users", {
+      applicationToken,
+      startDateTime,
+      endDateTime,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("accumulApi - getActiveUsersPerTime err", error); // 에러 처리
+  }
+
+  return [];
+};
+
 export {
   getRefData,
   getExitData,
@@ -388,4 +403,5 @@ export {
   getViewCountsPerActiveUser,
   getActiveUserPerUser,
   getActiveUsersPerTime,
+  getTotalUsers,
 };

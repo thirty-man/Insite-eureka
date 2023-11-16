@@ -1,14 +1,20 @@
-import { getActiveUserCounts } from "@api/accumulApi";
+import { getActiveUserCounts, getTotalUsers } from "@api/accumulApi";
 import { RootState } from "@reducer";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
+const OutDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: rgba(174, 75, 255, 0.7);
+`;
+
 const CountBox = styled.div`
-  font-size: 8rem;
+  font-size: 7rem;
 `;
 const Myeong = styled.p`
-  font-size: 2rem;
+  font-size: 1rem;
 `;
 
 function TotalUser() {
@@ -39,12 +45,12 @@ function TotalUser() {
 
     const getData = async () => {
       try {
-        const response = await getActiveUserCounts(
+        const response = await getTotalUsers(
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (!response.activeUserCount) setnormalData(-1);
-        else setnormalData(response.activeUserCount);
+        if (!response.totalUserCountRes.total) setnormalData(-1);
+        else setnormalData(response.activeUserCount.total);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
@@ -55,7 +61,7 @@ function TotalUser() {
   }, [startDateTime, endDateTime]);
 
   return activeData !== -1 ? (
-    <>
+    <OutDiv>
       <div>사용자</div>
       <CountBox>
         {normalData}
@@ -66,7 +72,7 @@ function TotalUser() {
         {activeData}
         <Myeong>명</Myeong>
       </CountBox>
-    </>
+    </OutDiv>
   ) : (
     <div>데이터가 없습니다</div>
   );
