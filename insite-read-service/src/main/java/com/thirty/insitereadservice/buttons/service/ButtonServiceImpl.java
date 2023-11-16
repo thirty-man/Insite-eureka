@@ -180,7 +180,7 @@ public class ButtonServiceImpl implements ButtonService{
                 String stringValueOfButtonClick = userButtonClickTime.get(activityId);
                 String stringValueOfUserLastTime = userLastTime.get(activityId);
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 LocalDateTime buttonClickDateTimePlusActiveMinutes = LocalDateTime.parse(stringValueOfButtonClick, formatter).plusMinutes(30);
                 LocalDateTime userLastDateTimePlusActiveMinutes = LocalDateTime.parse(stringValueOfUserLastTime, formatter).plusMinutes(30);
                 LocalDateTime now = LocalDateTime.now();
@@ -257,7 +257,7 @@ public class ButtonServiceImpl implements ButtonService{
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord record : records) {
                 //log 출력을 위해 dto 생성
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 LocalDateTime time = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
 
                 String currentUrl = record.getValueByKey("currentUrl").toString();
@@ -303,7 +303,7 @@ public class ButtonServiceImpl implements ButtonService{
             List<FluxRecord> records = fluxTable.getRecords();
 
             for (FluxRecord record : records) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 LocalDateTime currentDateTime = LocalDateTime.parse(record.getValueByKey("_time").toString(), formatter);
 
                 String buttonName = record.getValueByKey("name").toString();

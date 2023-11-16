@@ -78,7 +78,7 @@ public class UsersServiceImpl implements UsersService {
 
             FluxRecord  recentRecord = fluxTable.getRecords().get(0);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
             LocalDateTime date = LocalDateTime.parse(recentRecord.getValueByKey("_time").toString(), formatter);
 
             String cookieId = recentRecord.getValueByKey("cookieId").toString();

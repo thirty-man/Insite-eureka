@@ -82,7 +82,7 @@ public class FlowServiceImpl implements FlowService {
                 int len = records.size()-1;
                 String exitPageUrl = records.get(len).getValueByKey("currentUrl").toString();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 LocalDateTime userLastTime = LocalDateTime.parse(records.get(len).getValueByKey("_time").toString(), formatter);
 
                 //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
