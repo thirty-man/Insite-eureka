@@ -81,7 +81,7 @@ public class InfluxQueryBuilder {
             .range(getBeforeThirtyMinutes(), getNow())
             .filter(restrictions)
             .groupBy("referrer")
-            .count();
+            .sort(new String[]{"_time"}, true);
 
         log.info("query= {}",query);
 

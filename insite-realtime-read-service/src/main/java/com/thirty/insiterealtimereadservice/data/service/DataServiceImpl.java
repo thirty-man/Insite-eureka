@@ -50,9 +50,8 @@ public class DataServiceImpl implements DataService{
         Flux query = influxQueryBuilder.getReferrer(applicationToken);
 
         List<FluxTable> tables = queryApi.query(query.toString());
-        double sum = 0.0;
 
-        Map<String, Double> referrerWithCount = getReferrerWithCountAndPlusSum(sum, tables);
+        Map<String, Integer> referrerWithCount = getReferrerWithCountAndPlusSum(tables);
         return ReferrerResDto.create(getReferrerDtoList(referrerWithCount.get("sum"), referrerWithCount));
     }
 
@@ -87,27 +86,27 @@ public class DataServiceImpl implements DataService{
         return AbnormalResDto.create(getAbnormalDtoList(tables));
     }
 
-    private Map<String, Double> getReferrerWithCountAndPlusSum(double sum , List<FluxTable> tables){
+    private Map<String, Integer> getReferrerWithCountAndPlusSum(List<FluxTable> tables){
 
-        Map<String, Double> referrerWithCount= new HashMap<>();
-
+        Map<String, Integer> referrerWithCount= new HashMap<>();
+        int sum = 0;
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
+            Set<String> cookieIdSet = new HashSet<>();
+            String referrer = records.get(0).getValueByKey("referrer").toString();
             for (FluxRecord record : records) {
-                String referrer = record.getValueByKey("referrer").toString();
-
-                String count = record.getValueByKey("_value").toString();
-                double referrerCount = Double.valueOf(count);
-                sum += referrerCount;
-                referrerWithCount.put(referrer, referrerCount);
+                cookieIdSet.add(record.getValueByKey("cookieId").toString());
             }
+            int userCount = cookieIdSet.size();
+            sum+=userCount;
+            referrerWithCount.put(referrer, userCount);
         }
         referrerWithCount.put("sum", sum);
         return referrerWithCount;
     }
 
     @NotNull
-    private List<ReferrerDto> getReferrerDtoList(double sum, Map<String, Double> referrerWithCount) {
+    private List<ReferrerDto> getReferrerDtoList(int sum, Map<String, Integer> referrerWithCount) {
         List<ReferrerDto> referrerDtoList = new ArrayList<>();
         PriorityQueue<ReferrerDto> referrerDtoPriorityQueue = new PriorityQueue<>();
 
@@ -117,12 +116,12 @@ public class DataServiceImpl implements DataService{
                 continue;
             }
 
-            double curCount = referrerWithCount.get(url);
+            int curCount = referrerWithCount.get(url);
 
             referrerDtoPriorityQueue.offer(ReferrerDto.create(
                 url,
-                (int)curCount,
-                (sum == 0) ? 0.0 : curCount/ sum
+                curCount,
+                (sum == 0) ? 0.0 : curCount/ (double)sum
             ));
         }
 
