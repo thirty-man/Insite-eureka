@@ -37,7 +37,7 @@ const InfoIconWrapper = styled.div`
 const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
-  width: 450px;
+  width: 400px;
   background-color: black;
   color: #fff;
   text-align: center;
@@ -47,7 +47,6 @@ const Tooltip = styled.div`
   position: absolute;
   z-index: 100;
   top: 50%; // 위치를 위쪽으로 조정
-  right: 50%; // 왼쪽으로 나오도록 조정
   margin-right: 0; // 오른쪽 마진을 0으로 설정
   opacity: 0;
   transition: opacity 0.3s;
