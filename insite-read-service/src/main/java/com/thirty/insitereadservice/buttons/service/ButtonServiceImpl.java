@@ -274,7 +274,7 @@ public class ButtonServiceImpl implements ButtonService{
         Collections.sort(buttonLogDtoList, new Comparator<ButtonLogDto>(){
             @Override
             public int compare(ButtonLogDto dto1, ButtonLogDto dto2) {
-                return dto1.getClickDateTime().compareTo(dto2.getClickDateTime());
+                return dto2.getClickDateTime().compareTo(dto1.getClickDateTime());
             }
         });
         return buttonLogDtoList;
