@@ -5,11 +5,15 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const CountBox = styled.div`
-  font-size: 10rem;
+  font-size: 8rem;
+`;
+const Myeong = styled.p`
+  font-size: 2rem;
 `;
 
 function TotalUser() {
-  const [data, setData] = useState<number>(-1);
+  const [activeData, setActiveData] = useState<number>(-1);
+  const [normalData, setnormalData] = useState<number>(-1);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -26,18 +30,43 @@ function TotalUser() {
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (!response.activeUserCount) setData(-1);
-        else setData(response.activeUserCount);
+        if (!response.activeUserCount) setActiveData(-1);
+        else setActiveData(response.activeUserCount);
+      } catch (error) {
+        // console.error(error); // 에러 처리
+      }
+    };
+
+    const getData = async () => {
+      try {
+        const response = await getActiveUserCounts(
+          parseStartDateTime,
+          parseEndDateTime,
+        );
+        if (!response.activeUserCount) setnormalData(-1);
+        else setnormalData(response.activeUserCount);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
     };
 
     fetchData();
+    getData();
   }, [startDateTime, endDateTime]);
 
-  return data !== -1 ? (
-    <CountBox>{data}</CountBox>
+  return activeData !== -1 ? (
+    <>
+      <div>사용자</div>
+      <CountBox>
+        {normalData}
+        <Myeong>명</Myeong>
+      </CountBox>
+      <div>활동 사용자</div>
+      <CountBox>
+        {activeData}
+        <Myeong>명</Myeong>
+      </CountBox>
+    </>
   ) : (
     <div>데이터가 없습니다</div>
   );
