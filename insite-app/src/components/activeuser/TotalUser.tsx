@@ -15,6 +15,7 @@ const CountBox = styled.div`
   font-size: 4.5rem;
   justify-content: end;
   align-items: end;
+  flex-shrink: 1; /* 추가된 부분 */
 `;
 
 const Myeong = styled.p`
@@ -72,7 +73,8 @@ function TotalUser() {
     <OutDiv>
       <div>사용자</div>
       <CountBox>
-        {normalData}
+        {/* {normalData} */}
+        123123123123123123
         <Myeong>명</Myeong>
       </CountBox>
       <div>활동 사용자</div>
