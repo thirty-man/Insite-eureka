@@ -42,7 +42,7 @@ const Tooltip = styled.div`
   color: #fff;
   text-align: center;
   font-size: 14px;
-  font-weight: 200;
+  font-weight: 300;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
