@@ -81,7 +81,7 @@ function TrackingPage() {
         </DefaultBox>
       </FirstCol>
       <SecondCol>
-        {/* <InvisiableDiv /> */}
+        {/* <InvisibleDiv /> */}
         <DefaultBox width="30rem" height="25rem">
           <TitleBox>총 유입 사용자 수</TitleBox>
           <ContentDiv>
