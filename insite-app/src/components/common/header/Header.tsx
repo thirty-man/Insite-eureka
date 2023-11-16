@@ -206,14 +206,13 @@ function Header() {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
-
     const sumOfUserCount = userData.reduce((total, item) => {
       return total + item.userCount;
     }, 0);
     console.log(totalCount);
     setTotalCount(sumOfUserCount);
 
+    const intervalId = setInterval(fetchData, 3000);
     return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

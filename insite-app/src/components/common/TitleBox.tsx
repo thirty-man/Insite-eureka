@@ -66,8 +66,8 @@ const Tooltip = styled.div`
 `;
 
 const InfoIcon = styled.img`
-  width: 100%; // 아이콘 크기 조절
-  height: 100%;
+  width: 20%; // 아이콘 크기 조절
+  height: 20%;
 `;
 
 function TitleBox({ children, text }: TitleBoxProps) {
