@@ -146,8 +146,6 @@ function EndDateSelect({
       startDateObj.getMonth() + 1 === parseInt(endMonth, 10)
         ? startDateObj.getDate()
         : 1;
-    console.log(startDay);
-    console.log(startDate);
 
     const newDayOptions = getDaysInRange(
       parseInt(endYear, 10),
