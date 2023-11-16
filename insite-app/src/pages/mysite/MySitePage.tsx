@@ -51,12 +51,13 @@ const OverflowContainer = styled.div`
   overflow-y: auto; /* 스크롤이 필요한 경우에만 스크롤 표시 */
   width: 100%;
   height: 100%; /* 동적으로 계산되도록 설정 */
+  margin-top: 20px;
 `;
 
 const OutletContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 1%;
   color: white;
 `;
