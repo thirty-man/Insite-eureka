@@ -45,8 +45,9 @@ const Tooltip = styled.div`
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
-  z-index: 100;
+  z-index: 10001;
   top: 50%; // 위치를 위쪽으로 조정
+  right: 25%;
   margin-right: 0; // 오른쪽 마진을 0으로 설정
   opacity: 0;
   transition: opacity 0.3s;
@@ -56,6 +57,7 @@ const Tooltip = styled.div`
     position: absolute;
     bottom: 100%;
     right: 50%; // 화살표의 위치를 오른쪽으로 조정
+    z-index: 10001;
     margin-right: -5px; // 오른쪽 마진을 조정
     border-width: 5px;
     border-style: solid;
