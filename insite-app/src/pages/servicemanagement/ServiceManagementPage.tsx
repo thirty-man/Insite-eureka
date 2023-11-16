@@ -199,7 +199,7 @@ const Title = styled.div`
 
 const TextModalContent = styled.div`
   position: fixed;
-  top: 40%; // Adjust according to your layout
+  top: 50%; // Adjust according to your layout
   left: 60%;
   transform: translate(-50%, -50%);
   width: 70%;
