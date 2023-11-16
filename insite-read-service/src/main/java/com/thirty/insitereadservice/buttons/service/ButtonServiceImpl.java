@@ -270,11 +270,11 @@ public class ButtonServiceImpl implements ButtonService{
                 buttonLogDtoList.add(ButtonLogDto.create(currentUrl,time,cookieId, requestCnt >= 10).addId(id++));
             }
         }
-        //클릭 시간 오름차순으로 정렬
+        //클릭 시간 내림차순으로 정렬
         Collections.sort(buttonLogDtoList, new Comparator<ButtonLogDto>(){
             @Override
             public int compare(ButtonLogDto dto1, ButtonLogDto dto2) {
-                return dto1.getClickDateTime().compareTo(dto2.getClickDateTime());
+                return dto2.getClickDateTime().compareTo(dto1.getClickDateTime());
             }
         });
         return buttonLogDtoList;
