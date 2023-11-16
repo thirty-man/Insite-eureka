@@ -159,7 +159,8 @@ function EndDateSelect({
         return { id: index, name: day };
       }),
     );
-  }, [startDateObj, endDateObj, endYear, endMonth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endYear, endMonth]);
 
   const yearOptions: ItemType[] = yearArray.map((year, index) => {
     return { id: index, name: year };
