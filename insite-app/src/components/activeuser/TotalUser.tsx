@@ -28,7 +28,7 @@ const Myeong = styled.p`
 
 function TotalUser() {
   const [activeData, setActiveData] = useState<number>(-1);
-  const [normalData, setNormalData] = useState<number>(-1);
+  const [, setNormalData] = useState<number>(-1);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -73,13 +73,13 @@ function TotalUser() {
     <OutDiv>
       <div>사용자</div>
       <CountBox>
-        {/* {normalData} */}
+        {/* {normalData.toLocaleString()} */}
         123123123123123123
         <Myeong>명</Myeong>
       </CountBox>
       <div>활동 사용자</div>
       <CountBox>
-        {activeData}
+        {activeData.toLocaleString()}
         <Myeong>명</Myeong>
       </CountBox>
     </OutDiv>
