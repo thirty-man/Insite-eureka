@@ -38,7 +38,7 @@ const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
   width: 300px;
-  background-color: #333744;
+  background-color: black;
   color: #fff;
   text-align: start;
   font-size: 15px;
@@ -56,7 +56,7 @@ const Tooltip = styled.div`
   &::before {
     content: "";
     position: absolute;
-    background-color: #333744;
+    background-color: black;
     top: -5px; // 화살표를 툴팁 상단으로 이동
     left: 60%; // 화살표를 왼쪽으로 조금 이동
     border-width: 5px;

@@ -41,7 +41,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   font-weight: 500;
   color: white;
   position: relative;
@@ -188,7 +188,8 @@ const TextWrapper = styled.div`
 `;
 
 const TextDiv = styled.div`
-  font-size: 20px;
+  width: 100%;
+  font-size: 15px;
 `;
 
 function Header() {
@@ -535,8 +536,8 @@ function Header() {
             <IconImg src={IconUser2} alt="user count" />
           </IconDiv>
           <TextWrapper>
-            <TextDiv>총 사용자수 현황 (명)</TextDiv>
-            <TextDiv>{totalCount}</TextDiv>
+            <TextDiv>총 사용자수 현황</TextDiv>
+            <TextDiv>{totalCount}명</TextDiv>
           </TextWrapper>
         </IconWrapper>
         {(currentPathname === "/board/track" ||
