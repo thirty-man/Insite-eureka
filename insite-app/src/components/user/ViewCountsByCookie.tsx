@@ -83,7 +83,7 @@ function ViewCountsByCookie() {
     chart: {
       type: "bar",
       backgroundColor: "transparent",
-      width: 300, // 차트의 너비 설정
+      width: 400, // 차트의 너비 설정
       height: 700, // 차트의 높이 설정
       color: "white",
       scrollablePlotArea: {
@@ -91,7 +91,7 @@ function ViewCountsByCookie() {
       },
     },
     title: {
-      text: "총 사용자 수 : " + data.length + "명", // Set the title to the length of the data array
+      text: "총 사용자 수 : " + data.length + "명", // 총 사용자 수 표시
       style: {
         color: "white",
       },
