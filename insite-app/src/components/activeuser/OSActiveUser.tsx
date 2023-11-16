@@ -30,7 +30,7 @@ function OsActiveUser() {
 
         const seriesData = newData.map((item: OSActiveUserDtoType) => ({
           name: item.os,
-          y: Number(Math.round(item.ratio * 1000).toFixed(2)),
+          y: Number(Math.round(item.ratio * 100).toFixed(2)),
           dataLabels: {
             enabled: true,
             format: `{point.name}:<br> 횟수: ${item.count}`,
