@@ -38,7 +38,7 @@ const Tooltip = styled.div`
   white-space: pre-line;
   visibility: hidden;
   width: 400px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
   text-align: center;
   font-size: 14px;
@@ -51,7 +51,6 @@ const Tooltip = styled.div`
   right: 0%;
   margin-left: -150px;
   margin-right: 0;
-  opacity: 75%;
   transition: opacity 0.3s;
 
   &::before {
