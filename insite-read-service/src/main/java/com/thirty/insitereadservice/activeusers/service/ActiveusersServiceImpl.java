@@ -244,10 +244,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
             }
             for(FluxRecord record:records){
                 String currentUrl = record.getValueByKey("currentUrl").toString();
-                String beforeUrl = record.getValueByKey("beforeUrl").toString();
-                if(beforeUrl.equals("null"))
-                    continue;
-                if(beforeUrl.equals(before)){
+                if(!currentUrl.equals(before)){
                     if(map.containsKey(currentUrl)) {
                         size.replace(currentUrl,size.get(currentUrl)+1);
                     }
@@ -276,7 +273,6 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                     fromDate=toDate;
                 }
                 else{
-                    before=currentUrl;
                     continue;
                 }
             }
