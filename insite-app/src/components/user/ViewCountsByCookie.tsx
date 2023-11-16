@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 import { useEffect, useState } from "react";
 import { CookieIdUrlDtoType, CurrentUrlDtoType } from "@customtypes/dataTypes";
 import { useSelector } from "react-redux";
@@ -89,7 +90,12 @@ function ViewCountsByCookie() {
         minWidth: 300, // 스크롤 가능한 플롯 영역의 최소 너비 설정
       },
     },
-    title: "",
+    title: {
+      text: "총 사용자 수 : " + data.length + "명", // Set the title to the length of the data array
+      style: {
+        color: "white",
+      },
+    },
     xAxis: {
       categories: data.map((item) => item.cookieId),
       labels: {
