@@ -49,7 +49,7 @@ const Tooltip = styled.div`
   z-index: 10001;
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
-  margin-left: 100%;
+  margin-left: 150px;
   margin-right: 0;
   opacity: 75%;
   transition: opacity 0.3s;
