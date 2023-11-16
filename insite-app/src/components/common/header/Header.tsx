@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { IconUser } from "@assets/icons";
+import { IconUser, IconUser2 } from "@assets/icons";
 import {
   CalendarButton,
   StartDateSelect,
@@ -178,6 +178,17 @@ const IconDiv = styled.div`
 const IconImg = styled.img`
   width: 100%;
   height: 100%;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const TextDiv = styled.div`
+  font-size: 20px;
 `;
 
 function Header() {
@@ -521,8 +532,12 @@ function Header() {
       <HeaderWrapper>
         <IconWrapper>
           <IconDiv>
-            <IconImg src={IconUser} alt="user count" />
+            <IconImg src={IconUser2} alt="user count" />
           </IconDiv>
+          <TextWrapper>
+            <TextDiv>총 사용자수 현황 (명)</TextDiv>
+            <TextDiv>{totalCount}</TextDiv>
+          </TextWrapper>
         </IconWrapper>
         {(currentPathname === "/board/track" ||
           currentPathname === "/board/user" ||

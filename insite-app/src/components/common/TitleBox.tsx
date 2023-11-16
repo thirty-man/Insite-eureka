@@ -8,23 +8,24 @@ interface TitleBoxProps {
 }
 
 const TitleBoxStyle = styled.div`
+  width: fit-content; // 컨텐츠에 맞게 너비 조정
   padding: 10px;
   display: flex;
   align-items: center;
+  justify-content: center; // 가운데 정렬
   font-size: 1.3rem;
   color: white;
   background-color: transparent;
   font-weight: bold;
   cursor: default;
   position: relative;
+  margin: 0 auto; // 상하좌우 마진 자동으로 조정하여 중앙에 위치
 `;
 
 const InfoIconWrapper = styled.div`
   margin-left: 10px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block; // inline-block으로 변경
   cursor: pointer;
 
   &:hover .Tooltip {
@@ -34,20 +35,20 @@ const InfoIconWrapper = styled.div`
 `;
 
 const Tooltip = styled.div`
+  white-space: pre-line;
   visibility: hidden;
-  width: 500px;
-  max-width: 1000px;
+  width: 450px;
   background-color: black;
   color: #fff;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 100;
-  top: 125%;
-  left: 50%;
-  margin-left: -60px;
+  top: 50%; // 위치를 위쪽으로 조정
+  right: 110%; // 왼쪽으로 나오도록 조정
+  margin-right: 0; // 오른쪽 마진을 0으로 설정
   opacity: 0;
   transition: opacity 0.3s;
 
@@ -55,8 +56,8 @@ const Tooltip = styled.div`
     content: "";
     position: absolute;
     bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
+    right: 50%; // 화살표의 위치를 오른쪽으로 조정
+    margin-right: -5px; // 오른쪽 마진을 조정
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent black transparent;
@@ -64,8 +65,8 @@ const Tooltip = styled.div`
 `;
 
 const InfoIcon = styled.img`
-  width: 20%; // 아이콘 크기 조절
-  height: 20%;
+  width: 20px;
+  height: 20px;
 `;
 
 function TitleBox({ children, text }: TitleBoxProps) {
