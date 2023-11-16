@@ -169,7 +169,6 @@ function StartDateSelect({
       2,
       "0",
     )}-${startDay.padStart(2, "0")}`;
-    console.log("newStartDate:", newStartDate);
     onChange(newStartDate);
   }, [startYear, startMonth, startDay, pastDate, dispatch, onChange]);
 
