@@ -5,6 +5,7 @@ interface TitleBoxProps {
 }
 
 const TitleBoxStyle = styled.div<TitleBoxProps>`
+  width: fit-content;
   max-width: 300px;
   height: auto;
   padding: 10px;
