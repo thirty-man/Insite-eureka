@@ -23,9 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -206,7 +208,7 @@ public class FlowServiceImpl implements FlowService {
             .groupBy("beforeUrl")
             .pivot(new String[]{"_time"},new String[]{"_field"},"_value")
             .yield();
-        log.info("query = {}",query.toString());
+        log.info("query = {}", query);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
@@ -276,9 +278,14 @@ public class FlowServiceImpl implements FlowService {
         for(FluxTable fluxTable:tables){
             List<FluxRecord> records = fluxTable.getRecords();
             String referrer = records.get(0).getValueByKey("referrer").toString();
-            int count = records.size();
+            Set<String> activityIdSet = new HashSet<>();
 
-            referrerFlowDtoPriorityQueue.offer(ReferrerFlowDto.create(referrer,count));
+            for(FluxRecord record : records){
+                String activityId = record.getValueByKey("activityId").toString();
+                activityIdSet.add(activityId);
+            }
+
+            referrerFlowDtoPriorityQueue.offer(ReferrerFlowDto.create(referrer,activityIdSet.size()));
         }
 
         while (!referrerFlowDtoPriorityQueue.isEmpty()){
@@ -310,7 +317,7 @@ public class FlowServiceImpl implements FlowService {
             .groupBy("activityId")
                 .sort(new String[]{"_time"},true)
             .yield();
-        System.out.println(query.toString());
+        log.info("query={}",query);
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(query.toString());
         PriorityQueue<ExitFlowDto> exitFlowDtoPriorityQueue = new PriorityQueue<>();
