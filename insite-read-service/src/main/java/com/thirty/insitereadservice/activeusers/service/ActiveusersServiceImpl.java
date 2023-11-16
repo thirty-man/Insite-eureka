@@ -254,7 +254,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                     else{
                         size.put(currentUrl,1);
                     }
-                    st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
+                    st = new StringTokenizer(record.getValueByKey("_time").toString(),"T");
                     String to="";
                     to+=st.nextToken();
                     to+=" ";
@@ -273,6 +273,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                         map.put(currentUrl,sec);
                     }
                     before=currentUrl;
+                    fromDate=toDate;
                 }
                 else{
                     before=currentUrl;
