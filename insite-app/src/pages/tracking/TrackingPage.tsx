@@ -5,6 +5,7 @@ import {
   ExitPage,
   PageMovingStatistics,
   UrlFlowStatistics,
+  TotalUser,
 } from "@components/tracking";
 import { DefaultBox, TextBox, TitleBox } from "@components/common";
 import styled from "styled-components";
@@ -80,7 +81,15 @@ function TrackingPage() {
         </DefaultBox>
       </FirstCol>
       <SecondCol>
-        <InvisiableDiv />
+        {/* <InvisiableDiv /> */}
+        <DefaultBox width="30rem" height="25rem">
+          <TitleBox>총 유입 사용자 수</TitleBox>
+          <ContentDiv>
+            <TextBox width="90%" height="90%">
+              <TotalUser />
+            </TextBox>
+          </ContentDiv>
+        </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
           <TitleBox>입구 페이지</TitleBox>
           <ContentDiv>

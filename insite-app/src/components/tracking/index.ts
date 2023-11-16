@@ -4,6 +4,7 @@ import BounceCount from "./BounceCount";
 import EnterPage from "./EnterPage";
 import EntryExitPage from "./EntryExitPage";
 import PageMovingStatistics from "./PageMovingStatistics";
+import TotalUser from "./TotalUser";
 
 export {
   UrlFlowStatistics,
@@ -12,4 +13,5 @@ export {
   EnterPage,
   EntryExitPage,
   PageMovingStatistics,
+  TotalUser,
 };
