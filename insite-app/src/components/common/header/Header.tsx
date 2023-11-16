@@ -157,6 +157,28 @@ const SettingDate = styled.button`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+const IconDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background-color: #00e6ff;
+  border-radius: 15px;
+  cursor: pointer;
+`;
+const IconImg = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 
 function Header() {
   const navi = useNavigate();
@@ -497,6 +519,11 @@ function Header() {
   return (
     <HeaderContainer>
       <HeaderWrapper>
+        <IconWrapper>
+          <IconDiv>
+            <IconImg src={IconUser} alt="user count" />
+          </IconDiv>
+        </IconWrapper>
         {(currentPathname === "/board/track" ||
           currentPathname === "/board/user" ||
           currentPathname === "/board/active" ||
