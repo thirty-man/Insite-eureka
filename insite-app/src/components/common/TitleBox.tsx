@@ -47,7 +47,7 @@ const Tooltip = styled.div`
   padding: 5px 0;
   position: absolute;
   z-index: 10001;
-  transform: translateX(10px);
+  transform: translateX(100px);
   top: 100%; // 아이콘 바로 아래로 위치 조정
   right: 0%;
   margin-left: -150px;
