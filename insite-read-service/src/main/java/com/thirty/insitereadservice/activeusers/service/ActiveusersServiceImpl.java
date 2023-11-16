@@ -12,6 +12,7 @@ import com.thirty.insitereadservice.activeusers.dto.response.*;
 import com.thirty.insitereadservice.feignclient.MemberServiceClient;
 import com.thirty.insitereadservice.feignclient.dto.request.MemberValidReqDto;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -223,43 +224,60 @@ public class ActiveusersServiceImpl implements ActiveusersService {
 
         int id=0;
 
-        for(FluxTable fluxTable: tables){
+        for(FluxTable fluxTable: tables){//activityId에 따른 활동
             List<FluxRecord> records = fluxTable.getRecords();
+            Date fromDate =Date.from(Instant.now());
+            Date toDate = Date.from(Instant.now());
             if(records.size()<=1)
                 continue;
-            String currentUrl = records.get(0).getValueByKey("currentUrl").toString();
-            if(map.containsKey(currentUrl)) {
-                size.replace(currentUrl,size.get(currentUrl)+1);
-            }
-            else{
-                size.put(currentUrl,1);
-            }
+            String before = records.get(0).getValueByKey("currentUrl").toString();
+            StringTokenizer st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
+            String from ="";
+            from+=st.nextToken();
+            from+=" ";
+            from+=st.nextToken();
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
             try {
-                StringTokenizer st = new StringTokenizer(records.get(records.size() - 1).getValueByKey("_time").toString(),"T");
-                String from ="";
-                from+=st.nextToken();
-                from+=" ";
-                from+=st.nextToken();
-                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
-                Date fromDate = transFormat.parse(from);
-                st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
-                String to="";
-                to+=st.nextToken();
-                to+=" ";
-                to+=st.nextToken();
+                fromDate = transFormat.parse(from);
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }
+            for(FluxRecord record:records){
+                String currentUrl = record.getValueByKey("currentUrl").toString();
+                String beforeUrl = record.getValueByKey("beforeUrl").toString();
+                if(beforeUrl.equals("null"))
+                    continue;
+                if(beforeUrl.equals(before)){
+                    if(map.containsKey(currentUrl)) {
+                        size.replace(currentUrl,size.get(currentUrl)+1);
+                    }
+                    else{
+                        size.put(currentUrl,1);
+                    }
+                    st = new StringTokenizer(records.get(0).getValueByKey("_time").toString(),"T");
+                    String to="";
+                    to+=st.nextToken();
+                    to+=" ";
+                    to+=st.nextToken();
 
-
-                Date toDate = transFormat.parse(to);
-                double sec =(toDate.getTime()-fromDate.getTime())/1000;
-                if(map.containsKey(currentUrl)){
-                    map.replace(currentUrl,map.get(currentUrl)+sec);
+                    try {
+                        toDate = transFormat.parse(to);
+                    }catch (Exception e){
+                        log.error(e.getMessage());
+                    }
+                    double sec =(toDate.getTime()-fromDate.getTime())/1000;
+                    if(map.containsKey(currentUrl)){
+                        map.replace(currentUrl,map.get(currentUrl)+sec);
+                    }
+                    else{
+                        map.put(currentUrl,sec);
+                    }
+                    before=currentUrl;
                 }
                 else{
-                    map.put(currentUrl,sec);
+                    before=currentUrl;
+                    continue;
                 }
-            }
-            catch(Exception e){
-                log.error(e.getMessage());
             }
         }
 
