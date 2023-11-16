@@ -177,7 +177,6 @@ function EndDateSelect({
       2,
       "0",
     )}-${endDay.padStart(2, "0")}`;
-    console.log(newEndDate);
 
     onChange(newEndDate);
   }, [endYear, endMonth, endDay, latestDate, dispatch, onChange]);
