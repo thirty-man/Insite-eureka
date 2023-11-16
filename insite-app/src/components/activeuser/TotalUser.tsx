@@ -76,6 +76,7 @@ function TotalUser() {
       <CountBox>
         {normalData.toLocaleString()}
         <Myeong>명</Myeong>
+        <br />
       </CountBox>
       <div>활동 사용자</div>
       <CountBox>
