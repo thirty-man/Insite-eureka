@@ -7,9 +7,9 @@ const todayDate = new Date();
 const today: string = ParsingDate(todayDate);
 
 const initialState: DateSelectionType = {
-  start: "2003-01-01", // 똑같이 past값으로 초기값 설정
+  past: today,
+  start: today,
   end: today,
-  past: "1999-01-01", // 백에서 past값 가져오기
   latest: today,
 };
 

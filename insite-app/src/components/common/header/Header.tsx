@@ -12,6 +12,7 @@ import styled from "styled-components";
 import {
   setEndDate,
   setLatestDate,
+  setPastDate,
   setStartDate,
 } from "@reducer/DateSelectionInfo";
 import ParsingDate from "@components/ParsingDate";
@@ -346,6 +347,7 @@ function Header() {
     };
     sessionStorage.setItem("myApp", JSON.stringify(myApp));
     dispatch(setSelectedMenuId(1));
+    dispatch(setPastDate(item.createTime));
     navi("/board");
     window.location.reload();
   };
