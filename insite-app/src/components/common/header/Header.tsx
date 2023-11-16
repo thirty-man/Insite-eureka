@@ -431,8 +431,9 @@ function Header() {
     if (startD > endD || startD < pastD) {
       startD = pastD;
     }
-    console.log("setStartDate:", startD.toString().split("T")[0]);
-    dispatch(setStartDate(startD.toString().split("T")[0]));
+
+    console.log("setStartDate:", startD.toISOString().split("T")[0]);
+    dispatch(setStartDate(startD.toISOString().split("T")[0]));
     setOpenStartDate(false);
     setOpenEndDate(false);
   };
