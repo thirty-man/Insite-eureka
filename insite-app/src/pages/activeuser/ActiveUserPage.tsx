@@ -48,9 +48,7 @@ function ActiveUserPage() {
     <>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            활동 사용자 수 조회
-          </TitleBox>
+          <TitleBox>활동 사용자 수 조회</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <ActiveUserStatistics />
@@ -58,9 +56,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            URL 별 활동 사용자 평균 체류 시간
-          </TitleBox>
+          <TitleBox>평균 체류 시간</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <AverageActiveTimeByUrl />
@@ -68,9 +64,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            URL 별 활동 사용자 수 / 사용자 수
-          </TitleBox>
+          <TitleBox>재접속 횟수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <ActiveUserPerUserbyUrl />
@@ -80,9 +74,7 @@ function ActiveUserPage() {
       </FirstCol>
       <SecondCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            총 사용자 수
-          </TitleBox>
+          <TitleBox>총 사용자 수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <TotalUser />
@@ -90,9 +82,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            OS 별 활동 사용자 수
-          </TitleBox>
+          <TitleBox>OS 별 활동 사용자 수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <OsActiveUser />
@@ -100,9 +90,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            페이지 조회 / 활동 사용자 수
-          </TitleBox>
+          <TitleBox>페이지 조회 / 활동 사용자 수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <PageUsagePerActiveUser />
@@ -112,9 +100,7 @@ function ActiveUserPage() {
       </SecondCol>
       <ThirdCol>
         <DefaultBox width="102rem" height="25rem">
-          <TitleBox width="" height="10%">
-            시간 별 활동 사용자 수
-          </TitleBox>
+          <TitleBox>시간 별 활동 사용자 수</TitleBox>
           <ContentDiv>
             <ActiveUserPerTime />
           </ContentDiv>

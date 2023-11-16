@@ -53,9 +53,7 @@ function UserPage() {
       <InnerDiv>
         <FirstCol>
           <DefaultBox width="25rem" height="25rem">
-            <TitleBox width="" height="10%">
-              사용자 수 조회
-            </TitleBox>
+            <TitleBox>사용자 수 조회</TitleBox>
             <ContentDiv>
               <TextBox width="90%" height="90%">
                 <UserStatistics />
@@ -63,9 +61,7 @@ function UserPage() {
             </ContentDiv>
           </DefaultBox>
           <DefaultBox width="25rem" height="25rem">
-            <TitleBox width="" height="10%">
-              페이지 조회 수
-            </TitleBox>
+            <TitleBox>페이지 조회 수</TitleBox>
             <ContentDiv>
               <TextBox width="90%" height="90%">
                 <PageUsagePerUser />
@@ -75,9 +71,7 @@ function UserPage() {
         </FirstCol>
         <SecondCol>
           <DefaultBox width="51rem" height="25rem">
-            <TitleBox width="" height="10%">
-              비정상적 사용자 접근 내역
-            </TitleBox>
+            <TitleBox>비정상적 사용자 접근 내역</TitleBox>
             <ContentDiv>
               <TextBox width="90%" height="90%">
                 <AbnormalStatistics />
@@ -88,9 +82,7 @@ function UserPage() {
       </InnerDiv>
       <InnerDiv>
         <DefaultBox width="25rem" height="51rem">
-          <TitleBox width="" height="10%">
-            사용자 별 페이지 조회 수
-          </TitleBox>
+          <TitleBox>사용자 별 페이지 조회 수</TitleBox>
           <ContentDiv>
             <OverDiv>
               <ViewCountsByCookie />

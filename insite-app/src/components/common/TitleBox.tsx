@@ -2,13 +2,11 @@ import styled from "styled-components";
 
 interface TitleBoxProps {
   children: React.ReactNode;
-  width: string;
-  height: string;
 }
 
 const TitleBoxStyle = styled.div<TitleBoxProps>`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  max-width: 300px;
+  height: auto;
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -24,12 +22,12 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
     z-index: 1;
 
     &:before {
-      content: "안녕하세요";
+      content: "안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요";
       position: absolute;
       font-size: 0.7rem;
       top: 100%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-40%);
       border-width: 8px 8px 0;
       border-style: solid;
       background-color: black;
@@ -39,12 +37,8 @@ const TitleBoxStyle = styled.div<TitleBoxProps>`
 `;
 
 /** 너비, 높이, 폰트 사이즈 */
-function TitleBox({ children, width, height }: TitleBoxProps) {
-  return (
-    <TitleBoxStyle width={width} height={height}>
-      {children}
-    </TitleBoxStyle>
-  );
+function TitleBox({ children }: TitleBoxProps) {
+  return <TitleBoxStyle>{children}</TitleBoxStyle>;
 }
 
 export default TitleBox;

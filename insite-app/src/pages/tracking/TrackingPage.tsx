@@ -55,9 +55,7 @@ function TrackingPage() {
     <>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            유입 경로 통계
-          </TitleBox>
+          <TitleBox>유입 경로 통계</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <UrlFlowStatistics />
@@ -65,9 +63,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            페이지 종료율
-          </TitleBox>
+          <TitleBox>페이지 종료율</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <ExitPage />
@@ -75,9 +71,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            바운스 횟수
-          </TitleBox>
+          <TitleBox>바운스 횟수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <BounceCount />
@@ -88,9 +82,7 @@ function TrackingPage() {
       <SecondCol>
         <InvisiableDiv />
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            입구 페이지
-          </TitleBox>
+          <TitleBox>입구 페이지</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <EnterPage />
@@ -98,9 +90,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            출구 페이지(30분)
-          </TitleBox>
+          <TitleBox>출구 페이지(30분)</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <EntryExitPage />
@@ -110,9 +100,7 @@ function TrackingPage() {
       </SecondCol>
       <ThirdCol>
         <DefaultBox width="96rem" height="25rem">
-          <TitleBox width="100%" height="10%">
-            페이지 이동 통계
-          </TitleBox>
+          <TitleBox>페이지 이동 통계</TitleBox>
           <ContentDiv>
             <PageMovingStatistics />
           </ContentDiv>

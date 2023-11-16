@@ -38,17 +38,13 @@ function RealTimePage() {
     <>
       <FirstCol>
         <DefaultBox width="60rem" height="25rem">
-          <TitleBox width="" height="10%">
-            실시간 이용자
-          </TitleBox>
+          <TitleBox>실시간 이용자</TitleBox>
           <ContentDiv>
             <RealTimeUserDonutChart />
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="62rem" height="25rem">
-          <TitleBox width="" height="10%">
-            페이지 이용 통계
-          </TitleBox>
+          <TitleBox>페이지 이용 통계</TitleBox>
           <TextBox width="90%" height="80%">
             <PageUsageStatistics />
           </TextBox>
@@ -56,25 +52,19 @@ function RealTimePage() {
       </FirstCol>
       <SecondCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            유입 경로 통계
-          </TitleBox>
+          <TitleBox>유입 경로 통계</TitleBox>
           <TextBox width="90%" height="80%">
             <UrlFlowStatstics />
           </TextBox>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            버튼 통계
-          </TitleBox>
+          <TitleBox>버튼 통계</TitleBox>
           <TextBox width="90%" height="80%">
             <ButtonStatistics />
           </TextBox>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox width="" height="10%">
-            트래픽 공격 감지
-          </TitleBox>
+          <TitleBox>트래픽 공격 감지</TitleBox>
           <ContentDiv>
             <TrafficAttack />
           </ContentDiv>
