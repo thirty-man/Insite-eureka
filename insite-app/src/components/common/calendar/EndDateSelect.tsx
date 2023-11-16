@@ -132,31 +132,31 @@ function EndDateSelect({
   };
   useEffect(() => {
     const newMonthOptions = getMonthsInRange(startDateObj, endDateObj);
-    setMonthOptions(
-      newMonthOptions.map((month, index) => {
-        return { id: index, name: month };
-      }),
-    );
-
-    // 일 옵션 업데이트
-    const startDay =
+    const newStartDay =
       startDateObj.getFullYear() === parseInt(endYear, 10) &&
       startDateObj.getMonth() + 1 === parseInt(endMonth, 10)
         ? startDateObj.getDate()
         : 1;
-
-    console.log(startDay);
-
     const newDayOptions = getDaysInRange(
       parseInt(endYear, 10),
       parseInt(endMonth, 10),
-      startDay,
+      newStartDay,
     );
-    setDayOptions(
-      newDayOptions.map((day, index) => {
-        return { id: index, name: day };
-      }),
-    );
+
+    // 상태 업데이트 최적화
+    if (JSON.stringify(monthOptions) !== JSON.stringify(newMonthOptions)) {
+      setMonthOptions(
+        newMonthOptions.map((month, index) => ({ id: index, name: month })),
+      );
+    }
+
+    // 이전 startDay 상태와 비교
+    if (JSON.stringify(dayOptions) !== JSON.stringify(newDayOptions)) {
+      console.log(newStartDay); // 디버깅을 위한 로그
+      setDayOptions(
+        newDayOptions.map((day, index) => ({ id: index, name: day })),
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDateObj, endDateObj, endYear, endMonth]);
 
