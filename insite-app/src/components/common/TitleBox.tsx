@@ -42,22 +42,22 @@ const Tooltip = styled.div`
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
-  z-index: 1;
-  bottom: 125%;
+  z-index: 100;
+  top: 125%;
   left: 50%;
   margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
 
-  &::after {
+  &::before {
     content: "";
     position: absolute;
-    top: 100%;
+    bottom: 100%;
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: transparent transparent black transparent;
   }
 `;
 
