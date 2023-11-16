@@ -10,18 +10,25 @@ const OutDiv = styled.div`
 `;
 
 const CountBox = styled.div`
+  display: flex;
   color: rgba(174, 75, 255, 0.7);
   font-size: 4.5rem;
+  justify-content: end;
+  align-items: end;
+  flex-shrink: 1; /* 추가된 부분 */
 `;
 
 const Myeong = styled.p`
+  display: flex;
   font-size: 1rem;
-  white-space: nowrap;
+  text-align: end;
+  justify-content: end;
+  color: white;
 `;
 
 function TotalUser() {
   const [activeData, setActiveData] = useState<number>(-1);
-  const [normalData, setNormalData] = useState<number>(-1);
+  const [, setNormalData] = useState<number>(-1);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -66,12 +73,13 @@ function TotalUser() {
     <OutDiv>
       <div>사용자</div>
       <CountBox>
-        {normalData}
+        {/* {normalData.toLocaleString()} */}
+        123123123123123123
         <Myeong>명</Myeong>
       </CountBox>
       <div>활동 사용자</div>
       <CountBox>
-        {activeData}
+        {activeData.toLocaleString()}
         <Myeong>명</Myeong>
       </CountBox>
     </OutDiv>
