@@ -64,7 +64,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>재접속 횟수</TitleBox>
+          <TitleBox>사용자당 활동 횟수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <ActiveUserPerUserbyUrl />
@@ -90,7 +90,7 @@ function ActiveUserPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>페이지 조회 / 활동 사용자 수</TitleBox>
+          <TitleBox>활동당 페이지 조회수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <PageUsagePerActiveUser />

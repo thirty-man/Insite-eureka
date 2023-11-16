@@ -11,8 +11,9 @@ const OutDiv = styled.div`
 
 const CountBox = styled.div`
   display: flex;
-  color: rgba(174, 75, 255, 0.7);
+  color: #bf9cef;
   font-size: 3rem;
+  font-weight: bold;
   justify-content: end;
   align-items: end;
   flex-shrink: 1; /* 추가된 부분 */

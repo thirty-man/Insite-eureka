@@ -16,9 +16,9 @@ const TextBoxStyle = styled.div<ButtonBoxProps>`
   color: white;
   background-color: ${(props) => props.color};
   border-radius: 15px;
-  box-shadow:
+  /* box-shadow:
     0 14px 28px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.22);
+    0 10px 10px rgba(0, 0, 0, 0.22); */
 `;
 
 /** 검정색 테스트 박스: 너비, 높이 */

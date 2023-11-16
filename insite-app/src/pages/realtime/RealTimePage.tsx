@@ -38,13 +38,13 @@ function RealTimePage() {
     <>
       <FirstCol>
         <DefaultBox width="60rem" height="25rem">
-          <TitleBox>실시간 이용자</TitleBox>
+          <TitleBox>실시간 사용자</TitleBox>
           <ContentDiv>
             <RealTimeUserDonutChart />
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="62rem" height="25rem">
-          <TitleBox>페이지 이용 통계</TitleBox>
+          <TitleBox>실시간 페이지 이용 통계</TitleBox>
           <TextBox width="90%" height="80%">
             <PageUsageStatistics />
           </TextBox>
