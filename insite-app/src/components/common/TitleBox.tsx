@@ -52,17 +52,6 @@ const Tooltip = styled.div`
   right: 0%;
   margin-right: 0;
   transition: opacity 0.3s;
-
-  &::before {
-    content: "";
-    position: absolute;
-    background-color: black;
-    top: -5px; // 화살표를 툴팁 상단으로 이동
-    left: 70%; // 화살표를 왼쪽으로 조금 이동
-    border-width: 5px;
-    border-style: solid;
-    border-color: black transparent transparent transparent;
-  }
 `;
 
 const InfoIcon = styled.img`
