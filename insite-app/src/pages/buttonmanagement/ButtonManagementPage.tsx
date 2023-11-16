@@ -71,19 +71,19 @@ function ButtonManagementPage() {
     <>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>버튼 통계</TitleBox>
+          <TitleBox text="텍스트">버튼 통계</TitleBox>
           <ContentDiv>
             <ButtonStatistics />
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="62rem" height="25rem">
-          <TitleBox>버튼 클릭 로그</TitleBox>
+          <TitleBox text="텍스트">버튼 클릭 로그</TitleBox>
           <ButtonClickLogs />
         </DefaultBox>
       </FirstCol>
       <SecondCol>
         <DefaultBox width="102rem" height="25rem">
-          <TitleBox>버튼 누른 횟수</TitleBox>
+          <TitleBox text="텍스트">버튼 누른 횟수</TitleBox>
           <DropDown<ButtonType>
             items={buttonList}
             width="15rem"

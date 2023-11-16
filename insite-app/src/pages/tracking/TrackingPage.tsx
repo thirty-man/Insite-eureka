@@ -56,7 +56,7 @@ function TrackingPage() {
     <>
       <FirstCol>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>유입 경로 통계</TitleBox>
+          <TitleBox text="텍스트">유입 경로 통계</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <UrlFlowStatistics />
@@ -64,7 +64,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>페이지 종료율</TitleBox>
+          <TitleBox text="텍스트">페이지 종료율</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <ExitPage />
@@ -72,7 +72,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>바운스 횟수</TitleBox>
+          <TitleBox text="텍스트">바운스 횟수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <BounceCount />
@@ -83,7 +83,7 @@ function TrackingPage() {
       <SecondCol>
         {/* <InvisibleDiv /> */}
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>총 유입 사용자 수</TitleBox>
+          <TitleBox text="텍스트">총 유입 사용자 수</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <TotalUser />
@@ -91,7 +91,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>입구 페이지</TitleBox>
+          <TitleBox text="텍스트">입구 페이지</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <EnterPage />
@@ -99,7 +99,7 @@ function TrackingPage() {
           </ContentDiv>
         </DefaultBox>
         <DefaultBox width="30rem" height="25rem">
-          <TitleBox>출구 페이지(30분)</TitleBox>
+          <TitleBox text="텍스트">출구 페이지(30분)</TitleBox>
           <ContentDiv>
             <TextBox width="90%" height="90%">
               <EntryExitPage />
@@ -109,7 +109,7 @@ function TrackingPage() {
       </SecondCol>
       <ThirdCol>
         <DefaultBox width="96rem" height="25rem">
-          <TitleBox>페이지 별 직전 페이지 통계</TitleBox>
+          <TitleBox text="텍스트">페이지 별 직전 페이지 통계</TitleBox>
           <ContentDiv>
             <PageMovingStatistics />
           </ContentDiv>
