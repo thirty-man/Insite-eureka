@@ -299,7 +299,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
         int size=0;
         for(FluxTable fluxTable : tables){
             List<FluxRecord> records = fluxTable.getRecords();
-            size += records.size();
+
             String os = records.get(0).getValueByKey("osId").toString();
 
             Set<String> activityIdSet = new HashSet<>();
@@ -307,6 +307,7 @@ public class ActiveusersServiceImpl implements ActiveusersService {
                 String activityId = record.getValueByKey("activityId").toString();
                 activityIdSet.add(activityId);
             }
+            size += activityIdSet.size();
             osActiveUserDtoPriorityQueue.offer(OsActiveUserDto.create(os, activityIdSet.size()));
         }
 
