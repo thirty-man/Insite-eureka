@@ -21,7 +21,7 @@ const Myeong = styled.p`
 
 function TotalUser() {
   const [activeData, setActiveData] = useState<number>(-1);
-  const [normalData, setnormalData] = useState<number>(-1);
+  const [normalData, setNormalData] = useState<number>(-1);
   const startDateTime = useSelector(
     (state: RootState) => state.DateSelectionInfo.start,
   );
@@ -51,8 +51,8 @@ function TotalUser() {
           parseStartDateTime,
           parseEndDateTime,
         );
-        if (!response.totalUserCountRes.total) setnormalData(-1);
-        else setnormalData(response.activeUserCount.total);
+        if (!response.total) setNormalData(-1);
+        else setNormalData(response.total);
       } catch (error) {
         // console.error(error); // 에러 처리
       }
