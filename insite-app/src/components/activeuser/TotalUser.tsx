@@ -10,6 +10,7 @@ const OutDiv = styled.div`
 `;
 
 const CountBox = styled.div`
+  display: flex;
   color: rgba(174, 75, 255, 0.7);
   font-size: 4.5rem;
 `;
