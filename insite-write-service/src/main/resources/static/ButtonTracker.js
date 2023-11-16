@@ -25,7 +25,7 @@
     // Data를 전송하는 함수입니다.
     function sendData(data) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://takeinsite.com:8081/write-service/api/v1/data/page', true);
+        xhr.open('POST', 'https://takeinsite.com:8081/write-service/api/v1/data/button', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status !== 200) {

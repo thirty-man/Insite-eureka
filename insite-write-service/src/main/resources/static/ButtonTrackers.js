@@ -3,7 +3,7 @@
     function getTokenFromScriptTag() {
         var scripts = document.getElementsByTagName('script');
         for (var i = 0; i < scripts.length; i++) {
-            if (scripts[i].src.includes("InsiteTrackers.js")) {
+            if (scripts[i].src.includes("ButtonTrackers.js")) {
                 return scripts[i].getAttribute('token') || '';
             }
         }
