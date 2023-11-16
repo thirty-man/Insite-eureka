@@ -7,14 +7,16 @@ import styled from "styled-components";
 const OutDiv = styled.div`
   display: flex;
   flex-direction: column;
-  color: rgba(174, 75, 255, 0.7);
 `;
 
 const CountBox = styled.div`
-  font-size: 7rem;
+  color: rgba(174, 75, 255, 0.7);
+  font-size: 4.5rem;
 `;
+
 const Myeong = styled.p`
   font-size: 1rem;
+  white-space: nowrap;
 `;
 
 function TotalUser() {
