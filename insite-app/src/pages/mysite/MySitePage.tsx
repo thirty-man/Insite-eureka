@@ -50,7 +50,7 @@ const MainContainer = styled.div`
 const OverflowContainer = styled.div`
   overflow-y: auto; /* 스크롤이 필요한 경우에만 스크롤 표시 */
   width: 100%;
-  height: 80%; /* 동적으로 계산되도록 설정 */
+  height: 100%; /* 동적으로 계산되도록 설정 */
 `;
 
 const OutletContainer = styled.div`
