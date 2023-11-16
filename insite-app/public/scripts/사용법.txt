@@ -1,21 +1,24 @@
-	
 	페이지 데이터 추적 📄
 
-	⭐ Single Page Application ⭐
+⭐ Single Page Application ⭐
 
-1)	WithAnalytics.jsx / WithAnalytics.tsx
-	파일 중 서비스에 맞는 버전으로 코드를 복사하여 프로젝트에 파일을 추가하세요.
+1.	
+    WithAnalytics.jsx / WithAnalytics.tsx
+    파일 중 서비스에 맞는 버전으로 코드를 복사하여 프로젝트에 파일을 추가하세요.
 
-2)	코드 내부에서,
+2.
+    코드 내부에서,
 	...
 	application_token: "{토큰을 입력해주세요}" 
 	...
 	해당 부분에 토큰을 입력하세요.
 
-3)	router 에서 1번에서 생성한 파일을 import 하세요.
+3.  
+    router 에서 1번에서 생성한 파일을 import 하세요.
 	import { withAnalytics } from "./WithAnalytics";
 
-4)	<App /> 컴포넌트를 withAnalytics로 감싸 전체 페이지를 추적하거나
+4.	
+    <App /> 컴포넌트를 withAnalytics로 감싸 전체 페이지를 추적하거나
 	<RoomList /> 컴포넌트만을 withAnalytics로 감싸 원하는 페이지만을 추적하세요.
 
 	const routePaths: RouteObject[] = [
@@ -30,30 +33,33 @@
 	        element: <RoomList />,
 	      },
 	      ...
-
 	
-	⭐ Multi Page Application ⭐
+⭐ Multi Page Application ⭐
 
-1)	<head> 태그 내부에 아래 스크립트 코드를 추가하세요.
+1.	
+    <head> 태그 내부에 아래 스크립트 코드를 추가하세요.
 	<script src="https://takeinsite.com:8081/write-service/api/v1/InsiteTrackers.js" token="{토큰을 입력해주세요}"></script>
 
+버튼 데이터 추적 🖱️
 
-	버튼 데이터 추적 🖱️
+⭐ Single Page Application / Multi Page Application⭐
 
-	⭐ Single Page Application / Multi Page Application⭐
-
-1)	TraceButton.jsx / TraceButton.tsx
+1.	
+    TraceButton.jsx / TraceButton.tsx
 	파일 중 서비스에 맞는 버전으로 코드를 복사하여 프로젝트에 파일을 추가하세요.
 
-2)	코드 내부에서,
+2.	
+    Code 내부에서
 	...
 	application_token: "{토큰을 입력해주세요}" 
 	...
 	해당 부분에 토큰을 입력하세요.
 
-3)	1번에서 생성한 파일을 import 하세요.
+3.
+	File을 import 하세요.
 	import { TraceButton } from "./TraceButton";
 
-4)	타겟 버튼의 onClick에 아래와 같이 traceButton 함수를 추가하세요.
+4.
+	추적할 버튼의 onClick 에 아래와 같이 traceButton 함수를 추가하세요.
 	<button onClick={() => traceButton("{버튼이름을 입력해주세요.}")}></button>;
 	버튼이름은 "내 서비스 관리" 에서 추가한 버튼 이름과 동일해야 합니다.
