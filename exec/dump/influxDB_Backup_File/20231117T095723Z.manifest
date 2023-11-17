@@ -1,0 +1,97 @@
+{
+  "manifestVersion": 2,
+  "kv": {
+    "fileName": "20231117T095723Z.bolt.gz",
+    "size": 4269,
+    "compression": 1
+  },
+  "sql": {
+    "fileName": "20231117T095723Z.sqlite.gz",
+    "size": 3451,
+    "compression": 1
+  },
+  "buckets": [
+    {
+      "organizationID": "64389aeae967a4e9",
+      "organizationName": "thirty",
+      "bucketID": "113d72e1b1842e9b",
+      "bucketName": "_monitoring",
+      "description": "System bucket for monitoring logs",
+      "defaultRetentionPolicy": "autogen",
+      "retentionPolicies": [
+        {
+          "name": "autogen",
+          "replicaN": 1,
+          "duration": 604800000000000,
+          "shardGroupDuration": 86400000000000,
+          "shardGroups": [],
+          "subscriptions": []
+        }
+      ]
+    },
+    {
+      "organizationID": "64389aeae967a4e9",
+      "organizationName": "thirty",
+      "bucketID": "176b30b1a19f78d7",
+      "bucketName": "insite",
+      "defaultRetentionPolicy": "autogen",
+      "retentionPolicies": [
+        {
+          "name": "autogen",
+          "replicaN": 1,
+          "duration": 0,
+          "shardGroupDuration": 604800000000000,
+          "shardGroups": [
+            {
+              "id": 1,
+              "startTime": "2023-11-06T00:00:00Z",
+              "endTime": "2023-11-13T00:00:00Z",
+              "shards": [
+                {
+                  "id": 1,
+                  "shardOwners": [],
+                  "fileName": "20231117T095723Z.1.tar.gz",
+                  "size": 32,
+                  "compression": 1
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "startTime": "2023-11-13T00:00:00Z",
+              "endTime": "2023-11-20T00:00:00Z",
+              "shards": [
+                {
+                  "id": 2,
+                  "shardOwners": [],
+                  "fileName": "20231117T095723Z.2.tar.gz",
+                  "size": 225570,
+                  "compression": 1
+                }
+              ]
+            }
+          ],
+          "subscriptions": []
+        }
+      ]
+    },
+    {
+      "organizationID": "64389aeae967a4e9",
+      "organizationName": "thirty",
+      "bucketID": "4da17764c6b35d0b",
+      "bucketName": "_tasks",
+      "description": "System bucket for task logs",
+      "defaultRetentionPolicy": "autogen",
+      "retentionPolicies": [
+        {
+          "name": "autogen",
+          "replicaN": 1,
+          "duration": 259200000000000,
+          "shardGroupDuration": 86400000000000,
+          "shardGroups": [],
+          "subscriptions": []
+        }
+      ]
+    }
+  ]
+}
