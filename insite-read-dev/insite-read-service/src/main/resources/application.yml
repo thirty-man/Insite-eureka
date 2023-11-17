@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: insite-read-service
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://3.36.72.8:8888"
+

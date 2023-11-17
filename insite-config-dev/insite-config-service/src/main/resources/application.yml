@@ -1,0 +1,23 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: insite-config-service
+  rabbitmq:
+    host: insite-rabbit
+    port: 5672
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${GIT_URI}
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,busrefresh
