@@ -70,37 +70,35 @@ public class FlowServiceImpl implements FlowService {
             .range(startInstant, endInstant)
             .filter(restrictions)
             .groupBy("activityId")
-            .sort(new String[]{"_time"});
+            .sort(new String[]{"_time"},true);
 
         log.info("query = {}" ,query);
 
         List<FluxTable> tables = queryApi.query(query.toString());
         Map<String, Integer> exitPageRank = new HashMap<>();
-        double totalUser = tables.size();
+        int totalUser = tables.size();
         LocalDateTime nowMinusActiveTime = LocalDateTime.now().minusMinutes(30);
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
 
-            if (!records.isEmpty()) {
-                int len = records.size()-1;
-                String exitPageUrl = records.get(len).getValueByKey("currentUrl").toString();
+            String exitPageUrl = records.get(0).getValueByKey("currentUrl").toString();
 
-                DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                String stringValueOfTime = records.get(len).getValueByKey("_time").toString();
-                LocalDateTime userLastTime = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
+            DateTimeFormatter millisecondFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            String stringValueOfTime = records.get(0).getValueByKey("_time").toString();
+            LocalDateTime userLastTime = LocalDateTime.parse(stringValueOfTime, stringValueOfTime.length() < 24 ? formatter : millisecondFormatter);
 
 
-                //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
-                if(userLastTime.isAfter(nowMinusActiveTime) || userLastTime.equals(nowMinusActiveTime)){
-                    continue;
-                }
-                
-                if(exitPageRank.containsKey(exitPageUrl)){
-                    exitPageRank.put(exitPageUrl, exitPageRank.get(exitPageUrl)+1);
-                }else{
-                    exitPageRank.put(exitPageUrl, 1);
-                }
+            //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
+            if(userLastTime.isAfter(nowMinusActiveTime) || userLastTime.equals(nowMinusActiveTime)){
+                totalUser--;
+                continue;
+            }
+
+            if(exitPageRank.containsKey(exitPageUrl)){
+                exitPageRank.put(exitPageUrl, exitPageRank.get(exitPageUrl)+1);
+            }else{
+                exitPageRank.put(exitPageUrl, 1);
             }
         }
 
@@ -111,7 +109,7 @@ public class FlowServiceImpl implements FlowService {
         for(String exitPageUrl: exitPageRank.keySet()){
             int count = exitPageRank.get(exitPageUrl);
             entryExitFlowDtoPriorityQueue.offer(
-                EntryExitFlowDto.create(exitPageUrl, count,(totalUser == 0.0) ? 0.0:count/totalUser));
+                EntryExitFlowDto.create(exitPageUrl, count,(totalUser == 0.0) ? 0.0:count/(double)totalUser));
         }
 
         while(!entryExitFlowDtoPriorityQueue.isEmpty()){
