@@ -91,6 +91,8 @@ public class FlowServiceImpl implements FlowService {
 
             //사용자의 마지막 시간이 현재시간-30분 이후 인경우 접속중
             if(userLastTime.isAfter(nowMinusActiveTime) || userLastTime.equals(nowMinusActiveTime)){
+                log.info("activityId = {}", records.get(0).getValueByKey("activityId").toString());
+                log.info("currentUrl = {}", exitPageUrl);
                 log.info("last time = {}" , userLastTime);
                 totalUser--;
                 continue;
