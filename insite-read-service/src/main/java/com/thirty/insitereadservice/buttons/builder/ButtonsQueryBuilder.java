@@ -20,8 +20,8 @@ public class ButtonsQueryBuilder {
     private String bucket;
 
     private Instant[] getStartAndEndInstant(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        Instant startInstant = startDateTime.plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = endDateTime.plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = startDateTime.toInstant(ZoneOffset.UTC);
+        Instant endInstant = endDateTime.plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);

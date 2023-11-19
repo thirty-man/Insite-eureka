@@ -41,8 +41,8 @@ public class CurrentUrlServiceImpl implements CurrentUrlService{
         memberServiceClient.validationMemberAndApplication(
             MemberValidReqDto.create(currentUrlListReqDto.getApplicationToken(),memberId));
         //범위 시간 지정
-        Instant startInstant = currentUrlListReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = currentUrlListReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = currentUrlListReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = currentUrlListReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant)  || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);

@@ -128,8 +128,6 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
-//        Instant startInstant = entryEnterFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-//        Instant endInstant = entryEnterFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
         Instant startInstant = entryEnterFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
         Instant endInstant = entryEnterFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
@@ -193,8 +191,8 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(urlFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = urlFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = urlFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = urlFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = urlFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -247,8 +245,8 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(referrerFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간을 설정해주세요
-        Instant startInstant = referrerFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = referrerFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = referrerFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = referrerFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -302,8 +300,6 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(exitFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-//        Instant startInstant = exitFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-//        Instant endInstant = exitFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
         Instant startInstant = exitFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
         Instant endInstant = exitFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
@@ -356,8 +352,8 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(bounceReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = bounceReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = bounceReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = bounceReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = bounceReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
@@ -417,8 +413,8 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(beforeUrlFlowReqDto.getApplicationToken(),memberId));
 
         //통계 시간 설정
-        Instant startInstant = beforeUrlFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = beforeUrlFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = beforeUrlFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = beforeUrlFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
