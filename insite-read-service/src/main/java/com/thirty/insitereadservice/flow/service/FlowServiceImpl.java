@@ -53,8 +53,8 @@ public class FlowServiceImpl implements FlowService {
         memberServiceClient.validationMemberAndApplication(MemberValidReqDto.create(token,memberId));
 
         //통계 시간 설정
-        Instant startInstant = exitFlowReqDto.getStartDateTime().plusHours(9).toInstant(ZoneOffset.UTC);
-        Instant endInstant = exitFlowReqDto.getEndDateTime().plusHours(33).toInstant(ZoneOffset.UTC);
+        Instant startInstant = exitFlowReqDto.getStartDateTime().toInstant(ZoneOffset.UTC);
+        Instant endInstant = exitFlowReqDto.getEndDateTime().plusHours(24).toInstant(ZoneOffset.UTC);
 
         if(startInstant.isAfter(endInstant) || startInstant.equals(endInstant)){
             throw new TimeException(ErrorCode.START_TIME_BEFORE_END_TIME);
