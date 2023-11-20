@@ -99,7 +99,7 @@
     *   ```
         git checkout -b dev  
         git pull origin dev  
-        git checkout -b 9th_A101_0911111
+        git checkout -b 10th_A101_1011111
 3.  변경사항을 commit 하세요 (`git commit -am 'Add some fooBar'`)
 4.  브랜치에 Push 하세요 (`git push origin 10th_A101_1011111`)
 5.  새로운 Merge Request를 요청하세요
